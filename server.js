@@ -9,7 +9,11 @@ const session = require('express-session') //enables them to stay logged in
 const MongoStore = require('connect-mongo')
 const mongooseDb= require('./config/dbM')
 
+<<<<<<< HEAD
 require('dotenv').config({path:'./config/.env'}); // to use with enviroment variables initializes enviroment vars
+=======
+require('dotenv').config({path:"./config/.env"}); // to use with enviroment variables initializes enviroment vars
+>>>>>>> main
 
 require('./config/passport')(passport)
 
