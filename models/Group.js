@@ -1,12 +1,17 @@
 const mongoose = require('mongoose')
 
 const MemberSchema = new mongoose.Schema({
-   user:{
+    userid:{
+        type:String,
+        required:true,
+    },
+    username:{
     type:String,
+    required:true,
    },
    role:{
     type:String,
-    default:'1'
+    default:'1',
    }
   
   })
@@ -18,7 +23,7 @@ const GroupSchema = new mongoose.Schema({
         required:true,
     },
     members:{
-        type:[MemberSchema]
+        type:[MemberSchema],
     }
 },
 {
