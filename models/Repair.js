@@ -14,16 +14,16 @@ const ProcedureSchema = new mongoose.Schema({
 
 })
 
-const memberSchema = new mongoose.Schema({
-   user:{
-    type:String,
-   },
-   role:{
-    type:String,
-    default:'1'
-   }
+// const memberSchema = new mongoose.Schema({
+//    user:{
+//     type:String,
+//    },
+//    role:{
+//     type:String,
+//     default:'1'
+//    }
   
-  })
+//   })
 
 //parent schema
 const RepairSchema = new mongoose.Schema({
@@ -54,9 +54,9 @@ const RepairSchema = new mongoose.Schema({
         type:Boolean,
         default:false,
     },
-    members:{
-        type:[memberSchema]
-    }
+    // members:{
+    //     type:[memberSchema]
+    // }
 
 
     
