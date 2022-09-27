@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 //subdocument of RepairSchema
 const ProcedureSchema = new mongoose.Schema({
     images:[String],
-        procedureNum:{
+    procedureNum:{
             type:Number,
             default:0
     },
@@ -31,11 +31,11 @@ const RepairSchema = new mongoose.Schema({
     procedureArr:{
         type:[ProcedureSchema]
     },
-    group:{
+    group:{//asigned server side
         type:String,
         default:'public'
     },
-    createdBy:{
+    createdBy:{//asigned serverside
         type:String,
         default:'public'
     },
