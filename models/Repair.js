@@ -2,28 +2,17 @@ const mongoose = require('mongoose')
 
 //subdocument of RepairSchema
 const ProcedureSchema = new mongoose.Schema({
-  images:[String],
-  procedureNum:{
-      type:Number,
-      default:0
-  },
-  instructions:{
-      type:String,
-  },
-  thumbs:[String],
+    images:[String],
+        procedureNum:{
+            type:Number,
+            default:0
+    },
+    instructions:{
+        type:String,
+    },
+    thumbs:[String],
 
 })
-
-// const memberSchema = new mongoose.Schema({
-//    user:{
-//     type:String,
-//    },
-//    role:{
-//     type:String,
-//     default:'1'
-//    }
-  
-//   })
 
 //parent schema
 const RepairSchema = new mongoose.Schema({
@@ -54,19 +43,10 @@ const RepairSchema = new mongoose.Schema({
         type:Boolean,
         default:false,
     },
-    // members:{
-    //     type:[memberSchema]
-    // }
-
-
-    
 },
 {
     collection:"repair-reports"
 }
 )
-
-
-
 
 module.exports  = mongoose.model('Repair', RepairSchema)
