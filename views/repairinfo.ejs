@@ -16,9 +16,7 @@
     </header>
 	
 		<section class=" row small-padding  grey">  
-            <div>
-            
-            </div>
+           
             <span>
                 Repair group:<%= repair.group %>
                 <!-- Repair ID:<%= repair._id %> -->
@@ -103,7 +101,18 @@
 
 
        
-        <footer>			
+        <footer>	
+            <div>
+                <!-- if username === createdby || user.role === admin -->
+                <form action="">
+                    <details>
+                        <summary class="btn"> Delete Report</summary>
+                        <button class="btn red">confirm delete</button>
+                        
+                    </details>
+                   
+                   </form>
+            </div>		
 			
 		</footer>
         <%- include("./partials/scripts"); -%>
