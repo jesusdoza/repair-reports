@@ -8,6 +8,10 @@ module.exports.testPost = async (req, res)=>{
     res.send(req.user)
 }
 
+module.exports.deletePost = async (req, res)=>{
+    res.send('delete not implemented ID: '+ req.params.id)
+}
+
 //add repair to database
 module.exports.addRepair = async (req, res)=>{
         try {
