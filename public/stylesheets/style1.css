@@ -7,6 +7,10 @@ ul,ol{
     margin: 0;
 }
 
+nav{
+    background-color: #21b2a6;
+}
+
 body *{
     color: black;
 }
