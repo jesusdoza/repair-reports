@@ -3,77 +3,28 @@
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html class="" lang="en">
 	<head>
-		<link href="https://cdn.jsdelivr.net/npm/daisyui@2.31.0/dist/full.css" rel="stylesheet" type="text/css" />
-		<script src="https://cdn.tailwindcss.com"></script>
-		<link rel="stylesheet" href="stylesheets/style1.css">
+		<%- include("./partials/head.ejs"); -%>
 	</head>
-	<body class="search-page  blue-grey darken-4">
+	<body class="search-page center-block">
 		<!-- search bar -->
 		<header>
 			<nav>
-				<div class="navbar bg-base-100">
-					<div class="flex-1">
-					  <a class="btn btn-ghost normal-case text-xl">daisyUI</a>
-					</div>
-					<!-- drop down -->
-					<div class="dropdown">
-						<label tabindex="0" class="btn btn-ghost lg:hidden">
-						  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
-						</label>
-						<ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-						  <li><a>Item 1</a></li>
-						  <li><a>Item 1</a></li>
-						  <li><a>Item 3</a></li>
-						</ul>
-					  </div>
-					<!-- drop down -->
-
-					<div class="flex-none gap-2">
-					  <div class="form-control">
-						<input type="text" placeholder="Search" class="input input-bordered" />
-					  </div>
-					  <div class="dropdown dropdown-end">
-						<label tabindex="0" class="btn btn-ghost btn-circle avatar">
-						  <div class="w-10 rounded-full">
-							<img src="https://placeimg.com/80/80/people" />
-						  </div>
-						</label>
-						<ul tabindex="0" class="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52">
-						  <li>
-							<a class="justify-between">
-							  Profile
-							  <span class="badge">New</span>
-							</a>
-						  </li>
-						  <li><a>Settings</a></li>
-						  <li><a>Logout</a></li>
-						</ul>
-					  </div>
-					</div>
-				  </div>
-				<%- include("./partials/reg-menu"); -%>
-				<%- include("./partials/mobile-menu"); -%>
-
-				<!-- avatar -->
+				<%- include("./partials/mobile-menu.ejs"); -%>
 				
 			</nav>
-			<%- include("./partials/search-bar"); -%>
-			<!-- <form action="/repair/search" method="get">
-				<input class="search_input" type="text" name="searchPhrase" placeholder="Search for Fault code / issue">
-				<button class="search_button" type="submit">Search</button>
-			</form> -->
+			
 		</header>
 		
-		<main class="">
+		
 			<!-- results -->
-		<section class="results " >
+		<section class="latest card results " >
 
 			<%- include("./partials/repairs-list"); -%>
-		</section>
+		
 
-		</main>
+		</section>
 		
 				
 			

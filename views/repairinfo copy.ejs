@@ -2,19 +2,18 @@
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-		
-        <%- include("./partials/head.ejs"); -%>
-	</head>
-	<body class="search-page center-block">
-		<!-- search bar -->
-		<header>
-			<nav>
-				<%- include("./partials/mobile-menu.ejs"); -%>
-				
-			</nav>
-			
-		</header>
+<head>
+    <%- include("./partials/head"); -%>
+</head>
+<body class=" blue-grey darken-4" >
+    <header>
+        
+        <nav>
+            <%- include("./partials/reg-menu"); -%>
+            <%- include("./partials/mobile-menu"); -%>
+        </nav>
+        <%- include("./partials/search-bar"); -%>
+    </header>
 	
 		<section class=" row small-padding  grey">  
            
@@ -116,9 +115,16 @@
             </div>		
 			
 		</footer>
-     
+        <%- include("./partials/scripts"); -%>
 
-       
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var elems = document.querySelectorAll('.chips');
+                var instances = M.Chips.init(elems, options);
+            });
+
+            $('.chips').chips();
+        </script>
 </body>
 </html>
 

@@ -1,40 +1,28 @@
-h2{
-    font-size: 2rem;
-}
-ul,ol{
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
 
-body *{
-    color: black;
-}
-legend{
-    font-size: 1.5rem;
-}
+
 .entry{
   height: 500px;
   overflow: hidden;
   width: 90%;
   margin:50px 0;
-}
+  padding: 10px;
 
-.med-titlebox{
-    height: 10%;
 }
-
 
 
 .entry_brief{
-    /* font-size: 2rem; */
-    /* overflow: hidden; */
     height: 100%;
 }
-
-.card-stacked{
-    overflow: hidden;
+.submenu{
+    z-index: 30;
 }
+
+figure img{
+
+    width: 100%;
+}
+
+
 .card{
     height: 100%;
     width: 100%;
@@ -119,7 +107,6 @@ TYPOGRAPHY
     text-overflow: clip;
     height: 50%;
     width: 100%;
-    background-color: green;
 }
 .title{
     font-size: 1.5rem;
