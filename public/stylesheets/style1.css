@@ -14,9 +14,10 @@ legend{
     font-size: 1.5rem;
 }
 .entry{
-  min-height: 300px;
+  height: 500px;
   overflow: hidden;
-  width: 80%;
+  width: 90%;
+  margin:50px 0;
 }
 
 .med-titlebox{
@@ -34,7 +35,10 @@ legend{
 .card-stacked{
     overflow: hidden;
 }
-
+.card{
+    height: 100%;
+    width: 100%;
+}
 .img-mini{
     max-width: 40%;
     max-height: 300px;
@@ -43,6 +47,7 @@ legend{
 /*=============================== 
 STYLES
 ================================ */
+
 .center-block{
     margin: 0 auto;
 }
@@ -93,9 +98,11 @@ STYLES
 .entry-list{
     display: flex;
     flex-wrap: wrap;
-    flex-direction: column;
     align-content: center;
+    justify-content: center;
 }
+
+
 
 .small-padding{
     padding: 3%;
@@ -109,6 +116,10 @@ TYPOGRAPHY
 .instructions{
     white-space: pre-line;
     text-align: left;
+    text-overflow: clip;
+    height: 50%;
+    width: 100%;
+    background-color: green;
 }
 .title{
     font-size: 1.5rem;
@@ -134,15 +145,18 @@ TYPOGRAPHY
 media queries
 ======================================== */
 
+@media screen and (min-width: 310px) {
+    .instructions{
+        font-size: 2rem;
+    }
+  }
 @media screen and (min-width: 1023px) {
-    .entry-list {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      align-items:center;
-      justify-content: space-evenly;
+    
+    .entry-list{
+        width: 100%;
     }
     .entry{
         width: 50%;
     }
+   
   }
