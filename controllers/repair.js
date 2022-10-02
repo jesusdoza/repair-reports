@@ -86,7 +86,7 @@ module.exports.searchRepairs = async (req, res)=>{
                   }
                 }
               ]);
-        res.render('search.ejs',{title:'Search Results',repairs:results});
+        res.render('search.ejs',{title:'Search Results',repairs:results,user:req.user});
     } catch (error) {
         res.status(400).json({message:'failed to get repairs', "error":error.message})
     }
@@ -99,10 +99,15 @@ module.exports.getNewestRepairs = async (req, res)=>{
         console.log( `number of repairs requested`,req.params.num)
         const numRepairs = req.params.num ? req.params.num : 8;
 
+        //retrieve certain number of repairs that have not been removed
         const results = await Repair.find({removed:{$ne:true}}).sort({_id:-1}).limit(numRepairs);
         console.log( `number of repairs returned`,results.length)
         
-        res.render('latest.ejs',{title:'Latest Repairs',repairs:results})
+        res.render('latest.ejs',{
+            title:'Latest Repairs',
+            repairs:results,
+            user:req.user
+        })
     
     } catch (error) {
         res.status(500).json({message:'failed get repairs', "error":error.message})
@@ -137,7 +142,7 @@ module.exports.getRepairPage = async (req, res)=>{
     //    const repairObj = await dataBase.findRepair(repairId)//! use model
        const repairObj = await Repair.findOne({_id:repairId}).lean() /// swap to mongoose
 
-       res.render('repairinfo.ejs',{title:'Repair Information',repair:repairObj})
+       res.render('repairinfo.ejs',{title:'Repair Information',repair:repairObj,user:req.user})
     }
     catch(err){
        res.status(400).json({message:`ID: ${request.params.repairId}  NOT FOUND`, error:err.message})
@@ -153,7 +158,7 @@ module.exports.getSearchPage = async (req, res)=>{
     try{
         // get paremeter from ur
 
-       res.render('search-page.ejs',{title:'Search Records'})
+       res.render('search-page.ejs',{title:'Search Records',user:req.user})
     }
     catch(err){
        res.status(400).json({message:`ID: ${request.params.repairId}  NOT FOUND`, error:err.message})
