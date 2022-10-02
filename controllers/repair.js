@@ -97,9 +97,9 @@ module.exports.getNewestRepairs = async (req, res)=>{
     try {
         console.log(`controller repair.getNewestRepairs`)
         console.log( `number of repairs requested`,req.params.num)
-        const numRepairs = 8;
+        const numRepairs = req.params.num ? req.params.num : 8;
 
-        const results = await Repair.find().sort({_id:-1}).limit(numRepairs);
+        const results = await Repair.find({removed:{$ne:true}}).sort({_id:-1}).limit(numRepairs);
         console.log( `number of repairs returned`,results.length)
         
         res.render('latest.ejs',{title:'Latest Repairs',repairs:results})
@@ -116,7 +116,6 @@ module.exports.getRepair = async (req, res)=>{
         try{
             // get paremeter from url
            const repairId = req.params.id
-        //    const repairObj = await dataBase.findRepair(repairId)//! use model
            const repairObj = await Repair.findOne({_id:repairId}).lean() /// swap to mongoose
     
            console.log(`getting repair JSON`,repairObj)

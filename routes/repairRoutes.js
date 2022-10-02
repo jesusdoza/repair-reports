@@ -7,11 +7,11 @@ const router = express.Router();
 
 //controllers
 const repairsController = require('../controllers/repair')
-
+router.get('/',ensureAuth,repairsController.getNewestRepairs)
+router.get('/:num',ensureAuth,repairsController.getNewestRepairs)
 // @route '/repair'
 router.get('/delete/:id',ensureAuth,repairsController.deletePost)
 router.get('/testPost',ensureAuth,repairsController.testPost)
-router.get('/',ensureAuth,repairsController.getNewestRepairs)
 router.post('/',ensureAuth,repairsController.addRepair)
 router.get('/search',ensureAuth,repairsController.searchRepairs)////
 router.get('/searchpage',ensureAuth,repairsController.getSearchPage)

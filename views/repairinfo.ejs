@@ -24,7 +24,7 @@
                 <section class="card small-padding">
                     <h2 class="text-xl">
                         Repair group: 
-                        <span class="badge badge-lg"><%= repair.group %></span>
+                        <span class="badge badge-lg"><%= repair.group ? repair.group : 'public' %></span>
                     </h2>
                     <h2 class="text-xl">
                         Repair ID:  
@@ -32,7 +32,7 @@
                     </h2>
                     <h2 class="text-xl">
                         Repair Documented by: 
-                        <span class="badge badge-lg"><%= repair.createdBy %></span>
+                        <span class="badge badge-lg"><%= repair.createdBy ? repair.createdBy : 'public' %></span>
                     </h2>
                     
                 </section>
@@ -64,14 +64,10 @@
                                 <% for (let a= 0 ; repair.procedureArr[i].images.length > a ; a++){ %>
                                     <div id="item<%=a%><%=i%>" class="carousel-item w-full">
                                         <a class="w-full" href="<%= repair.procedureArr[i].images[a] %>">
-
-                                        <%if (repair.procedureArr[i].thumbs){%>
-                                            <img class=" rounded red image-preview" src=" <%= repair.procedureArr[i].thumbs[a]%>" alt="repair image" class="rounded img-mini">
-                                            
-                                        <%}else{%>
-                                            <img src=" <%= repair.procedureArr[i].images[a]%>" alt="repair image" class="rounded img-mini">
+                                            <!-- update below -->
+                                        <%if (repair.procedureArr[i].images){%>
+                                            <img loading="lazy" src="<%= repair.procedureArr[i].images[a].replace('/upload/','/upload/c_scale,w_600/')%>">
                                         <%}%>
-                                        
                                         <span>Click to see full image</span>
                                         </a>
                                     </div>
