@@ -35,7 +35,14 @@ figure img{
 /*=============================== 
 STYLES
 ================================ */
+.procedure-item{
+    /* height: 300px; */
+}
 
+.pic-container{
+    width: 100%;
+    
+}
 .center-block{
     margin: 0 auto;
 }
