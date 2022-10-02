@@ -16,18 +16,25 @@
 		</header>
 	
 		<section class=" row small-padding  grey">  
-           
-            <span>
-                Repair group:<%= repair.group %>
-                <!-- Repair ID:<%= repair._id %> -->
-            </span> 
+            <h1 class="text-xl">
+                Title: 
+                <span class="badge badge-lg"><%= repair.title %></span>
+            </h1>
             <section class="grey"> 
-                <section class="card blue small-padding">
-                    <!-- title -->
-                    <span>Title:</span>
-                    <h1 class="chip"><%= repair.title %></h1> 
-                    <h3 class="chip ">Repair ID:<%= repair._id %></h3>  
-                    <h3 class="chip ">Repair Documented by: <%= repair.createdBy %></h3>  
+                <section class="card small-padding">
+                    <h2 class="text-xl">
+                        Repair group: 
+                        <span class="badge badge-lg"><%= repair.group %></span>
+                    </h2>
+                    <h2 class="text-xl">
+                        Repair ID:  
+                        <span class="badge badge-lg"><%= repair._id %></span>
+                    </h2>
+                    <h2 class="text-xl">
+                        Repair Documented by: 
+                        <span class="badge badge-lg"><%= repair.createdBy %></span>
+                    </h2>
+                    
                 </section>
     
                 <section class="rounded">
@@ -43,6 +50,7 @@
                 
             </section> 
                 
+            <!-- procedures -->
             <ol class="procedure-list" data-currentProcId="1">   
                 
                 <% for (let i= 0 ; repair.procedureArr.length > i ; i++){ %>
