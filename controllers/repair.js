@@ -8,7 +8,7 @@ module.exports.testPost = async (req, res)=>{
     try {
         const user = User.findOne({username:req.user.username})
     
-        res.send(req.user)
+        res.render('test')
         
     } catch (error) {
         
