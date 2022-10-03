@@ -25,6 +25,7 @@ module.exports.deletePost = async (req, res)=>{
             await report.save()
             // res.send({message:'user is admin or creator',rep:report})
             res.redirect('/repair/')
+            
         }   
         // res.send({user,report})
     } catch (error) {
