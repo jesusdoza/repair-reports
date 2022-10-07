@@ -6,7 +6,7 @@ const User = require('../models/User')
 
 module.exports.testPost = async (req, res)=>{
     try {
-        const user = User.findOne({username:req.user.username})
+       console.log(req.session.passport)
     
         res.render('test')
         
