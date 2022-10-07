@@ -10,6 +10,9 @@ nav{
 li.fill.search-area{
     width: 100%;
 }
+li.fill{
+    width: 100%;
+}
 .entry{
   height: 500px;
   overflow: hidden;
@@ -58,7 +61,7 @@ STYLES
     width: 100%;
 }
 
-.mobile-menu li{
+.mobile-menu > li{
     width: 50%;
 }
 
