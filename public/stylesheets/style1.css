@@ -1,4 +1,5 @@
 
+
 body{
     width: 100%;
 }
@@ -17,16 +18,19 @@ li.fill{
   height: 500px;
   overflow: hidden;
   width: 100%;
+
   margin:50px 0;
   padding: 10px;
 
 }
+
 
 .hidden{
     width: 0;
     height: 0;
     visibility: hidden;
 }
+
 .entry_brief{
     height: 100%;
 }
@@ -35,6 +39,7 @@ li.fill{
 }
 
 figure img{
+
     width: 100%;
 }
 
@@ -43,7 +48,9 @@ figure img{
     height: 100%;
     width: 100%;
 }
+
 /* .img-mini{
+
     max-width: 40%;
     max-height: 300px;
 } */
@@ -51,6 +58,7 @@ figure img{
 /*=============================== 
 STYLES
 ================================ */
+
 
 #mobile-nav{
     justify-content:space-evenly;
@@ -64,6 +72,7 @@ STYLES
 .mobile-menu > li{
     width: 50%;
 }
+
 
 .procedure-item{
     /* height: 300px; */
@@ -170,6 +179,7 @@ media queries
 ======================================== */
 
 @media screen and (min-width: 310px) {
+
     
     .instructions{
         font-size: 2rem;
@@ -178,6 +188,7 @@ media queries
   }
 /*   
 @media (width: 310px)and  (min-width: 1023px) {
+
     
     .entry-list{
         width: 100%;
@@ -186,4 +197,6 @@ media queries
         width: 50%;
     }
    
+
   } */
+

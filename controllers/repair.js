@@ -24,11 +24,13 @@ module.exports.deletePost = async (req, res)=>{
             report.removed = true;
             await report.save()
             // res.send({message:'user is admin or creator',rep:report})
+
             res.redirect('/repair/') 
         }else{
             console.log('user not allowed')
             throw new Error(`user: ${user.username} not allowed`)
         }
+
     } catch (error) {
         
         res.send({err:'delete error implemented ID: '+ req.params.id, message: error.message})
