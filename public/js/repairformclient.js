@@ -71,7 +71,8 @@ class Procedure {
         <textarea id="instructions1" class="textarea textarea-warning instructions center-block large-input white" 
             placeholder="Instructions"
             name="instructions1"
-            value=""></textarea>
+            value=""
+            rows="8"></textarea>
         
     </section>
    <section>

@@ -185,14 +185,20 @@ media queries
 ======================================== */
 
 @media screen and (min-width: 310px) {
+  
     .form-desc{
         flex-direction: column;
         justify-content: center;
         align-items: center;
         
     }
+    .textarea{
+        width: 50%;
+    }
     .engine-models{
+        width: 80%;
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
         justify-content: center;
     }

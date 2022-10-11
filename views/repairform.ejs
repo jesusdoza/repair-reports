@@ -18,14 +18,14 @@
             <!-- <div class="loading"></div> -->
             <div id="" class="loading-text">Loading</div>
         </section>
-		<main>
+		<main class="card">
        
 
             <!-- on change of form state mostly from image upload preview the image -->
-            <form id="repair-form" class=" repair-form" action="#" encType="multipart/form-data" >
-                <legend class="form-desc flex-center">
+            <form id="repair-form" class="small-padding repair-form" action="#" encType="multipart/form-data" >
+                <legend class=" form-desc flex-center">
 
-                    <div class="  form-control w-full max-w-xs">
+                    <div class="  form-control  max-w-xs">
                         <label class="label">
                           <span class="label-text">Title: </span>
                         </label>
@@ -33,7 +33,7 @@
                         <label class="label">
                         </label>
                     </div>
-                    <div class="form-control w-full max-w-xs">
+                    <div class="form-control  max-w-xs">
                         <label class="label">
                           <span class="label-text">Search Tags: </span>
                         </label>
@@ -41,7 +41,7 @@
                         <label class="label">
                         </label>
                     </div>
-                    <div class="form-control w-full max-w-xs">
+                    <div class="form-control  max-w-xs">
                         <label class="label">
                           <span class="label-text">Search Tags: </span>
                         </label>
@@ -53,7 +53,7 @@
                
 
                 <!-- pick model of engine -->
-                    <section class=" blue-grey darken-1">
+                    <section class="container blue-grey darken-1">
 
                         <fieldset class="border engine-models">
                             <legend>Choose Engine</legend>
@@ -104,9 +104,9 @@
                         
                            
                            <!-- repair instructions -->
-                           <li class=" procedure small-padding card w-96 bg-base-100 shadow-xl" data-procedureId="1">
+                           <li class=" procedure small-padding card  bg-base-100 shadow-xl" data-procedureId="1">
                               
-                                   <section class=" card grey procedure--details small-padding">
+                                   <section class="  grey procedure--details small-padding">
                                        <h3>Repair Procedure</h3>
                            
                                        
@@ -132,14 +132,15 @@
                                        </fieldset>
                                        <fieldset class="">
                                            <legend class="" >Instructions</legend>
-                                           <textarea id="instructions1" class="textarea textarea-warning instructions center-block large-input white" 
+                                           <!-- <textarea id="instructions1" class="textarea textarea-warning instructions center-block large-input white" 
                                                 placeholder="Instructions"
                                                 name="instructions1"
-                                                value=""></textarea>
-                                           <!-- <textarea placeholder="instructions or description here" 
+                                                value=""
+                                                rows="8"></textarea> -->
+                                           <textarea placeholder="instructions or description here" 
                                             name="instructions1" id="instructions1" 
                                             class=" instructions center-block large-input white" 
-                                            value=""></textarea> -->
+                                            value=""></textarea>
                                        </fieldset>
                                     
                                    </section>
