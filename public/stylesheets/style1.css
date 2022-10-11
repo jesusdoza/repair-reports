@@ -83,6 +83,7 @@ figure img{
 /*=============================== 
 STYLES
 ================================ */
+
 .center-block{
     margin: 0 auto;
 }
@@ -104,7 +105,7 @@ STYLES
 
 
 .border{
-    border: 3px green solid;
+    border: 3px rgb(51, 56, 51) solid;
 }
 .small-padding{
     padding: 3%;
@@ -178,6 +179,21 @@ media queries
 ======================================== */
 
 @media screen and (min-width: 310px) {
+    .form-desc{
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        
+    }
+    .engine-models{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .form-control{
+        justify-content: center;
+        
+    }
     .full-nav{
         display: none;
     }
@@ -193,6 +209,13 @@ media queries
     }
   
   }
+  @media  (min-width: 600px) {
+    .form-desc{
+        flex-direction: row;
+    }
+  
+  }
+    
 
   @media  (min-width: 760px) {
     /* remove mobile nave */
