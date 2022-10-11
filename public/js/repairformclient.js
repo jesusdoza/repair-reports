@@ -47,7 +47,7 @@ class Procedure {
     }
     procedureHtml(){
         const element = ` 
-        <section class=" card grey procedure--details small-padding">
+        <section class=" procedure small-padding card w-96 bg-base-100 shadow-xl">
         <h3>Repair Procedure</h3>
 
         
@@ -72,7 +72,7 @@ class Procedure {
         
     </section>
    <section>
-        <div class="btn-large add-proc" data-action="add-procedure">
+        <div class="btn add-proc" data-action="add-procedure">
             add another step
         </div>
    </section>  `;
@@ -201,14 +201,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                  headers: {'Content-Type':'application/json'},
                  body:JSON.stringify(repairObj)
              }).then(data=>data.json())
-         
-         
-             
-            //  const repairId = await response._id
-            //  console.log(`post serv respons`,response)
-            //  console.log(`post serv repair ID`,repairId)
-         
-             
              return response;
            
         }
@@ -265,33 +257,6 @@ function addProcedureToInstructions(event){
 
 
 
-// async function postRepair(repairObj){
-
-//     try{
-//         // let repair = JSON.stringify({repairObj})
-
-//         const response = await fetch(`/repair`,{
-//              method: 'post',
-//              headers: {'Content-Type':'application/json'},
-//              body:JSON.stringify(repairObj)
-//          }).then(data=>data.json())
-     
-     
-         
-//          const repairId = await response._id
-//          console.log(`post serv respons`,response)
-//          console.log(`post serv repair ID`,repairId)
-     
-         
-//          return repairId;
-       
-//     }
-   
-//     catch(error){
-//         console.error(`post error`)
-//     }
-    
-// }
 
 
 
