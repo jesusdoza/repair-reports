@@ -205,7 +205,9 @@ media queries
     }
     
     .instructions{
-        font-size: 2rem;
+        font-size: 1.2rem;
+        width: 100%;
+        color: rgb(237, 223, 223);
     }
 
     .search-area{

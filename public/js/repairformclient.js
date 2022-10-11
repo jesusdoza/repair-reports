@@ -68,7 +68,10 @@ class Procedure {
         
         </fieldset>
         <h6>Instructions</h6>
-        <textarea placeholder="instructions or description here" name="instructions1" id="instructions1" class="instructions white" cols="5" rows="5" value="test dfafamongo"></textarea>
+        <textarea id="instructions1" class="textarea textarea-warning instructions center-block large-input white" 
+            placeholder="Instructions"
+            name="instructions1"
+            value=""></textarea>
         
     </section>
    <section>
