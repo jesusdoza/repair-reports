@@ -186,3 +186,14 @@ media queries
   
   }
 
+  
+@media  (min-width: 1023px) {
+    
+    .entry-list{
+        width: 100%;
+    }
+    .entry{
+        width: 50%;
+    }
+   
+  }
