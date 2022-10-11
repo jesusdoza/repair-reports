@@ -178,17 +178,51 @@ media queries
 ======================================== */
 
 @media screen and (min-width: 310px) {
-
+    .full-nav{
+        display: none;
+    }
     
     .instructions{
         font-size: 2rem;
     }
+
+    .search-area{
+        width: 0;
+        height: 0;
+        visibility:hidden;
+    }
   
   }
 
+  @media  (min-width: 760px) {
+    /* remove mobile nave */
+    .mobile-nav{
+        width: 0;
+        height: 0;
+        display: none;
+    }
+    .full-nav{
+        display:block;
+    }
+
+
+
+
+    .entry-list{
+        width: 100%;
+    }
+    .entry{
+        width: 50%;
+    }
+   
+  }
   
 @media  (min-width: 1023px) {
-    
+    .search-area{
+        visibility: visible;
+        width: fit-content;
+        height: 100%;
+    }
     .entry-list{
         width: 100%;
     }
