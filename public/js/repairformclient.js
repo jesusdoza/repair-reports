@@ -47,39 +47,44 @@ class Procedure {
     }
     procedureHtml(){
         const element = ` 
-        <section class=" procedure small-padding card w-96 bg-base-100 shadow-xl">
-        <h3>Repair Procedure</h3>
-
-        
-        <!-- images uploaded -->
-        <fieldset class=" procedure--images-list ">
-            <legend>Images
-                <!-- add another image button -->
-                
-            </legend>
-
-            <ol class="uploads" data-totalfiles="0" data-uploadId="0">
-                
-            
-            </ol>
-            <div class="btn blue " data-action="add-image">
-            add another image
-            </div>
-        
-        </fieldset>
-        <h6>Instructions</h6>
-        <textarea id="instructions1" class="textarea textarea-warning instructions center-block large-input white" 
-            placeholder="Instructions"
-            name="instructions1"
-            value=""
-            rows="8"></textarea>
-        
-    </section>
-   <section>
-        <div class="btn add-proc" data-action="add-procedure">
-            add another step
-        </div>
-   </section>  `;
+        <section class="grey procedure--details small-padding">
+                                       <h3>Repair Procedure</h3>
+                           
+                                       
+                                       <!-- images uploaded -->
+                                       <fieldset class=" procedure--images-list ">
+                                           <legend>Images
+                                               <!-- add another image button -->
+                                               
+                                           </legend>
+       
+                                            <ol class="uploads" data-totalfiles="0" data-uploadId="0">
+                                               <!-- <li class="imageuploaded small-padding ">
+                                                   <img src="" alt="repair image" class="img-mini">
+                                                   <input  data-uploadnum="1" type="file" name="picture1" accept="image/*" onchange="previewImage(event)"  >
+                                                   <span class="button--mobile rounded clickable">remove item</span>
+                                               </li> -->
+                                           
+                                            </ol>
+                                            <div class="btn " data-action="add-image">
+                                                add another image
+                                            </div>
+                                       
+                                       </fieldset>
+                                       <!-- <fieldset class=""> -->
+                                           <legend class="" >Instructions</legend>
+                                           <textarea id="instructions1" class="textarea textarea-warning instructions center-block large-input white" 
+                                                placeholder="Instructions"
+                                                name="instructions1"
+                                                value=""
+                                                rows="8"></textarea>
+                                           <!-- <textarea placeholder="instructions or description here" 
+                                            name="instructions1" id="instructions1" 
+                                            class=" instructions center-block large-input white" 
+                                            value=""></textarea>
+                                       </fieldset> -->
+                                    
+                                   </section>  `;
 
    return element;
     }
@@ -250,7 +255,7 @@ function addProcedureToInstructions(event){
 
     const li = document.createElement('li');
         li.dataset.procedureid=instructions.dataset.currentprocid;
-        li.classList.add('procedure',  'small-padding')
+        li.classList.add('procedure','small-padding','card','bg-base-100','shadow-xl')
         li.innerHTML=procedure.procedureHtml();
     
 
