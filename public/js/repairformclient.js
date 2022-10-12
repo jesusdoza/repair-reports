@@ -149,8 +149,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const statusIcons = document.querySelector('.status-icons')
     statusIcons.classList.toggle("hidden");//show loading message
 
-    const form = document.querySelector('form');
-    form.classList.toggle("hidden");//hide form 
+    const form = document.querySelector('#repair-form');
+    // form.classList.toggle("hidden");//hide form 
 
     let procArr = [] //array with all the procedures for this repair
     const repair = new Repair // actual object to submit to server
@@ -167,7 +167,8 @@ document.addEventListener('DOMContentLoaded', async () => {
            procedure.images= images.links; // add images urls Array
            procedure.thumbs = images.thumbs;
            procedure.procedureNum = index; //identifying sequence number
-           procedure.instructions = proc.querySelector('.instructions').value
+           //! problem here
+           procedure.instructions = proc.querySelector('.instructions').value //instructions for this procedure
         return (procedure)
        
     })
