@@ -164,7 +164,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         //upload images if any
         const images= await uploadImages(proc, signData)
-
  
         const procedure = new Procedure();
            procedure.images= images.links; // add images urls Array
