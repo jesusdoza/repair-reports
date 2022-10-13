@@ -92,6 +92,7 @@ figure img{
 /*=============================== 
 STYLES
 ================================ */
+<<<<<<< HEAD
 .controls{
     display: flex;
     flex-direction: row;
@@ -104,6 +105,9 @@ STYLES
 .btn:hover{
     background-color: chartreuse;
 }
+=======
+
+>>>>>>> main
 .status-icons{
     background-color: white;
    display: flex;
