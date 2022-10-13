@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     statusIcons.classList.toggle("hidden");//show loading message
 
     const form = document.querySelector('#repair-form');//get repair form
-    // form.classList.toggle("hidden");//hide form 
+    form.classList.toggle("hidden");//hide form 
 
     let procArr = [] //array with all the procedures for this repair
     const repair = new Repair // actual object to submit to server
