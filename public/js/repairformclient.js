@@ -66,7 +66,7 @@ class Procedure {
                                                </li> -->
                                            
                                             </ol>
-                                            <div class="btn " data-action="add-image">
+                                            <div class="btn bg-warning text-black" data-action="add-image">
                                                 add another image
                                             </div>
                                        
@@ -84,7 +84,12 @@ class Procedure {
                                             value=""></textarea>
                                        </fieldset> -->
                                     
-                                   </section>  `;
+                                   </section> 
+                                   <section>
+                                    <div class="btn bg-accent text-base-200 add-proc" data-action="add-procedure">
+                                        add another step
+                                    </div>
+                                  </section>  `;
 
    return element;
     }
@@ -121,6 +126,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             
             case 'remove-image':
                 removeImage(event);
+                break;
+            case 'remove-procedure':
+                removeProc(event);
                 break;
             case 'add-procedure':
                 addProcedureToInstructions(event);
