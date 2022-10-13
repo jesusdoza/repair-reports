@@ -150,11 +150,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const statusIcons = document.querySelector('.status-icons')//
     statusIcons.classList.toggle("hidden");//show loading message
 
-<<<<<<< HEAD
     const form = document.querySelector('#repair-form');//get repair form
-=======
-    const form = document.querySelector('#repair-form');
->>>>>>> main
     // form.classList.toggle("hidden");//hide form 
 
     let procArr = [] //array with all the procedures for this repair
