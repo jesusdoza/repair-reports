@@ -92,22 +92,18 @@ figure img{
 /*=============================== 
 STYLES
 ================================ */
-<<<<<<< HEAD
 .controls{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
 }
-.controls .btn:hover{
+.warning .btn:hover{
     background-color: rgb(210, 27, 27);
 }
 .btn:hover{
     background-color: chartreuse;
 }
-=======
-
->>>>>>> main
 .status-icons{
     background-color: white;
    display: flex;
