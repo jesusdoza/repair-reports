@@ -85,11 +85,17 @@ class Procedure {
                                        </fieldset> -->
                                     
                                    </section> 
-                                   <section>
-                                    <div class="btn bg-accent text-base-200 add-proc" data-action="add-procedure">
-                                        add another step
-                                    </div>
-                                  </section>  `;
+                                   <section class="controls">
+                                   <div class="bg-accent text-base-200 btn add-proc" data-action="add-procedure">
+                                       add another step
+                                   </div>
+                                   
+                                   <details class="">
+                                       <summary class=" btn text-black bg-warning remove-proc"> Delete Procedure</summary>
+                                       <button class="btn   bg-error-content text-white" data-action="remove-procedure">confirm delete</button>
+                                       
+                                   </details>
+                                 </section> `;
 
    return element;
     }
@@ -128,7 +134,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 removeImage(event);
                 break;
             case 'remove-procedure':
-                removeProc(event);
+                console.log('remove procedure clicked')
+                // removeProc(event);
                 break;
             case 'add-procedure':
                 addProcedureToInstructions(event);
