@@ -319,15 +319,15 @@ function addProcedureToInstructions(event){
 
     let uploadPromises = Array.from(imagesToUpload).map(async (filesList)=>{
         for (let i = 0; i < filesList.length; i++) {
-    
             let file = filesList[i];
             formData.append("file", file);
             formData.append("api_key", signData.apikey);
             formData.append("timestamp", signData.timestamp);
             formData.append("signature", signData.signature);
             // formData.append("eager", "c_pad,h_300,w_400|c_crop,h_200,w_260"); //some form of transformation dont need
-            formData.append("folder", "cata"); //put this file in folder named cata
-        
+            // formData.append("folder", "cata"); //put this file in folder named cata
+            formData.append("folder", signData.folder); //put this file in folder named cata
+
             const response = await fetch(url, {
                     method: "POST",
                     body: formData

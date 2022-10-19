@@ -10,7 +10,7 @@ const signuploadform = () => {
   const signature = cloudinary.utils.api_sign_request({
     timestamp: timestamp,
     // eager: 'c_pad,h_300,w_400|c_crop,h_200,w_260',
-    folder: 'cata'  //has to match on client side too
+    folder: process.env.cloud_folder  //has to match on client side too
   }, apiSecret);
 
    
