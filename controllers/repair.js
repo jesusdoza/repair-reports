@@ -48,6 +48,8 @@ module.exports.addRepair = async (req, res)=>{
                 engineMake: req.body.engineMake,
                 createdBy:req.user.username,
                 removed:false,
+                group:req.user.username
+
             }
             console.log(req.body)
             // console.log(`post at /repairform`,entry)

@@ -25,14 +25,12 @@ const GroupSchema = new mongoose.Schema({
     members:{
         type:[MemberSchema],
     },
-    createdby:{
+    createdBy:{
         type:String,
         immutable:true,
     }
 },
-{
-    collection:"repair-reports"
-}
+
 )
 
 
