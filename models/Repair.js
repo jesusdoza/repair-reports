@@ -47,7 +47,7 @@ const RepairSchema = new mongoose.Schema({
         type:String,
         default:'public'
     },
-    visibility:{
+    visibility:{//client sent
         default:'public',
         type:String,
     },
@@ -55,7 +55,7 @@ const RepairSchema = new mongoose.Schema({
         type:String,
         default:'public'
     },
-    removed:{
+    removed:{//soft delete
         type:Boolean,
         default:false,
     },
