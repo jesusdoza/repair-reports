@@ -47,6 +47,10 @@ const RepairSchema = new mongoose.Schema({
         type:String,
         default:'public'
     },
+    visibility:{
+        default:'public',
+        type:String,
+    },
     createdBy:{//asigned serverside
         type:String,
         default:'public'
