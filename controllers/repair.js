@@ -1,4 +1,3 @@
-// const dataBase = require('../modules/database.js'); //database interface
 // const mongoose = require('mongoose');
 const Repair = require('../models/Repair')
 const User = require('../models/User')
@@ -40,15 +39,18 @@ module.exports.deletePost = async (req, res)=>{
 //add repair to database
 module.exports.addRepair = async (req, res)=>{
         try {
+           let  groupId= req.body.groupId ? req.body.groupId : req.user.username
+
+
             let entry = {
                 procedureArr: req.body.procedureArr,
                 searchtags: req.body.searchtags,
                 title: req.body.title,
                 boardType: req.body.boardType,
                 engineMake: req.body.engineMake,
-                createdBy:req.user.username,
+                createdBy:req.user._id,//user user id instead
                 removed:false,
-                group:req.user.username
+                group:groupId //user group id instead
 
             }
             console.log(req.body)
@@ -105,7 +107,7 @@ module.exports.getNewestRepairs = async (req, res)=>{
         //retrieve certain number of repairs that have not been removed
         const results = await Repair.find({removed:{$ne:true}}).sort({_id:-1}).limit(numRepairs);
         console.log( `number of repairs returned`,results.length)
-        
+        console.log('repairs are: ',results)
         res.render('latest.ejs',{
             title:'Latest Repairs',
             repairs:results,
@@ -138,18 +140,36 @@ module.exports.getRepair = async (req, res)=>{
 
 /// render single repair 
 module.exports.getRepairPage = async (req, res)=>{
-  
-    try{
-        // get paremeter from url
-       const repairId = req.params.id
-    //    const repairObj = await dataBase.findRepair(repairId)//! use model
-       const repairObj = await Repair.findOne({_id:repairId}).lean() /// swap to mongoose
+    const repairId = req.params.id
+    let repairObj ={};
+    let createdByUser='';
+    let foundUser={};
 
-       res.render('repairinfo.ejs',{title:'Repair Information',repair:repairObj,user:req.user})
+    try { //find repair report
+       repairObj = await Repair.findOne({_id:repairId}).lean() 
+    } catch (error) {
+        res.status(400).json({message:`ID: ${req.params.repairId}  NOT FOUND`, error:err.message})
     }
-    catch(err){
-       res.status(400).json({message:`ID: ${request.params.repairId}  NOT FOUND`, error:err.message})
-   }
+
+    
+    try {//find user that created report
+        foundUser =await User.findById({_id:repairObj.createdBy})
+        createdByUser = foundUser.username
+        
+    } catch (error) {
+        console.error('user not found')
+        createdByUser = repairObj.createdBy
+    }
+
+
+    // render page
+    res.render('repairinfo.ejs',{
+        title:'Repair Information',
+        repair:repairObj,user:req.user,
+        createdBy:createdByUser,
+        allowedDelete:(repairObj.createdBy === req.user._id)
+    })
+   
 
 
 }
