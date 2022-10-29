@@ -159,6 +159,7 @@ module.exports.getRepairPage = async (req, res)=>{
         
     } catch (error) {
         console.error('user not found')
+        console.log('found user is: ',foundUser)
         createdByUser = repairObj.createdBy
     }
 
