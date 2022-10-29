@@ -7,11 +7,12 @@ module.exports.getForm=async (req, res)=>{
 
     const foundUser = await User.findById(req.user._id).lean()
     console.log(foundUser)
+    const userGroups = [...foundUser.groups,'public']
 
     res.render('repairform.ejs',{
         title:"Repair Submission",
         user:req.user,
-        groups:[]
+        groups:userGroups,
     });
 },
 

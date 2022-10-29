@@ -51,7 +51,7 @@ module.exports.addRepair = async (req, res)=>{
                 createdBy:req.user._id,//user user id instead
                 removed:false,
                 group:groupId //user group id instead
-
+                //! test if group is actually assigned
             }
             console.log(req.body)
             // console.log(`post at /repairform`,entry)
@@ -103,9 +103,10 @@ module.exports.getNewestRepairs = async (req, res)=>{
         console.log(`controller repair.getNewestRepairs`)
         console.log( `number of repairs requested`,req.params.num)
         const numRepairs = req.params.num ? req.params.num : 8;
+        const userGroups = [...req.user.groups,'public']
 
         //retrieve certain number of repairs that have not been removed
-        const results = await Repair.find({removed:{$ne:true}}).sort({_id:-1}).limit(numRepairs);
+        const results = await Repair.find({removed:{$ne:true},group:{$in:userGroups}}).sort({_id:-1}).limit(numRepairs);
         console.log( `number of repairs returned`,results.length)
         console.log('repairs are: ',results)
         res.render('latest.ejs',{
