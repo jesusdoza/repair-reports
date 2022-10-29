@@ -9,7 +9,7 @@ const MemberSchema = new mongoose.Schema({
     type:String,
     required:true, 
    },
-   role:{
+   role:{// 1 - read , 2 - read write , 3 - read, write, soft delete
     type:String,
     default:'1',
    }
@@ -29,7 +29,7 @@ const GroupSchema = new mongoose.Schema({
         type:String,
         immutable:true,
     },
-    partsManufacturer:{
+    partsManufacturer:{ // to organize repairs by subgroups to choose from when submitting repairs
         type:[String],
         default:['public'],
     },
