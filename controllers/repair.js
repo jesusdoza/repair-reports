@@ -51,7 +51,7 @@ module.exports.addRepair = async (req, res)=>{
                 createdBy:req.user._id,//user user id instead
                 removed:false,
                 group:groupId //user group id instead
-                //! test if group is actually assigned
+                //! test if group is actually assigne
             }
             console.log(req.body)
             // console.log(`post at /repairform`,entry)
