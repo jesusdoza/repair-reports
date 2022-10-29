@@ -28,7 +28,11 @@ const GroupSchema = new mongoose.Schema({
     createdBy:{
         type:String,
         immutable:true,
-    }
+    },
+    partsManufacturer:{
+        type:[String],
+        default:['public'],
+    },
 },
 
 )
