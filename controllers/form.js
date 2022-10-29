@@ -1,12 +1,18 @@
 const signature = require('../modules/signuploadform')
 const router =  require('express').Router()
 const User = require('../models/User')
+const mongoose = require('mongoose')
 
 
 module.exports.getForm=async (req, res)=>{
 
-    const foundUser = await User.findById(req.user._id).lean()
-    console.log(foundUser)
+    const foundUser = await User.findById(req.user._id)
+    console.log("found user from database", foundUser)
+    
+    if(!foundUser.groups){//correction if user was an old version without groups
+        foundUser.groups = [foundUser.username]
+        await foundUser.save()
+    }
     const userGroups = [...foundUser.groups,'public']
 
     res.render('repairform.ejs',{

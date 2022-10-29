@@ -15,13 +15,16 @@
               <%='public'.toUpperCase()%> 
             </span>
           </li>
-        <% groups.forEach(group => { %>
+          <%# if user is old will not have groups and will fail to render %> 
+        <% if(groups){%>
+        <%groups.forEach(group => { %>
           <li class="m-5">
             <span class="btn btn-wide ">
               <%=group.toUpperCase()%> 
             </span>
           </li>
         <% }) %>
+        <% } %> 
            
            
          </ul>
