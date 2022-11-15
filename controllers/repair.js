@@ -14,12 +14,15 @@ module.exports.testPost = async (req, res)=>{
     }
 }
 
+//soft delete
 module.exports.deletePost = async (req, res)=>{
     try {
         const user = await User.findOne({username:req.user.username})
         const report = await Repair.findById({_id:req.params.id})
     
-        if(user.role === 'admin' || report.createdBy === user.username ){
+        // if(user.role === 'admin' || report.createdBy === user.username ){
+        if(user.role === 'admin' || user._id.equals(report.createdBy) ){
+
             report.removed = true;
             await report.save()
             // res.send({message:'user is admin or creator',rep:report})
@@ -180,11 +183,15 @@ module.exports.getRepairPage = async (req, res)=>{
 
     console.log(repairObj)
     // render page
+
+    console.log(`created by compare` ,repairObj.createdBy,' : ',req.user._id )
     res.render('repairinfo.ejs',{
         title:'Repair Information',
         repair:repairObj,user:req.user,
         createdBy:createdByUser,
-        allowedDelete:(repairObj.createdBy === req.user._id)
+        // allowedEdit:(repairObj.createdBy == req.user._id)
+        allowedEdit:(req.user._id.equals(repairObj.createdBy))
+
     })
    
 
