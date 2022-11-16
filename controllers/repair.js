@@ -163,7 +163,8 @@ module.exports.getRepairPage = async (req, res)=>{
     let repairObj ={};
     let createdByUser='';
     let foundUser={};
-    let requestingUser={}
+    let requestingUser={};
+    let toolsAllowed=false;
 
     try { //find repair report
        repairObj = await Repair.findOne({_id:repairId}).lean() 
@@ -176,6 +177,7 @@ module.exports.getRepairPage = async (req, res)=>{
     try {//find user that created report from user id on report
         
         //!need to abstract the ID to username action
+
         console.log(`repair obj`,repairObj)
 
         //! some entry are old using string newer ones use ID
@@ -189,6 +191,7 @@ module.exports.getRepairPage = async (req, res)=>{
         createdByUser = foundUser.username // get the username string for report render
 
         requestingUser = await User.findOne({_id:req.user._id})//user requesting
+
         
     } catch (err) {
         res.status(400).json({message:`Failed to find report ID:${repairId}`, error:err.message})
@@ -204,7 +207,7 @@ module.exports.getRepairPage = async (req, res)=>{
     // console.log(`req user`, requestingUser)
     
     
-    let toolsAllowed = (req.user._id.equals(repairObj.createdBy) ||repairObj.createdBy === req.user.username || requestingUser.role === 'admin') //! need admin check
+    toolsAllowed = (req.user._id.equals(repairObj.createdBy) ||repairObj.createdBy === req.user.username || requestingUser.role === 'admin') //! need admin check
     console.log(req.user)
     
     /// render page
@@ -215,6 +218,7 @@ module.exports.getRepairPage = async (req, res)=>{
         // allowedEdit:(repairObj.createdBy == req.user._id)
         //!need to abstract check for modify tools
         allowedEdit:toolsAllowed
+
 
     })
    
