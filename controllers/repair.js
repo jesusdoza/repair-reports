@@ -163,6 +163,7 @@ module.exports.getRepairPage = async (req, res)=>{
     let repairObj ={};
     let createdByUser='';
     let foundUser={};
+    let requestingUser={}
 
     try { //find repair report
        repairObj = await Repair.findOne({_id:repairId}).lean() 
@@ -171,26 +172,35 @@ module.exports.getRepairPage = async (req, res)=>{
     }
 
     
-    try {//find user that created report
-        foundUser =await User.findById({_id:repairObj.createdBy})
-        createdByUser = foundUser.username
+    try {//find user that created report from user id on report
+        
+        //!need to abstract the ID to username action
+        foundUser =await User.findById({_id:repairObj.createdBy}) //find by ID
+        createdByUser = foundUser.username // get the username string for report render
+
+        requestingUser = await User.findById({_id:req.user._id})
         
     } catch (error) {
         console.error('user not found')
         console.log('found user is: ',foundUser)
-        createdByUser = repairObj.createdBy
+        
     }
 
-    console.log(repairObj)
-    // render page
-
-    console.log(`created by compare` ,repairObj.createdBy,' : ',req.user._id )
+    
+    // console.log(repairObj)
+    // console.log(`created by compare` ,repairObj.createdBy,' : ',req.user._id )
+    // console.log(foundUser)
+    // console.log(`req user`, requestingUser)
+    // console.log(req.user)
+    
+    /// render page
     res.render('repairinfo.ejs',{
         title:'Repair Information',
         repair:repairObj,user:req.user,
         createdBy:createdByUser,
         // allowedEdit:(repairObj.createdBy == req.user._id)
-        allowedEdit:(req.user._id.equals(repairObj.createdBy))
+        //!need to abstract check for modify tools
+        allowedEdit:(req.user._id.equals(repairObj.createdBy) || requestingUser.role === 'admin') //! need admin check
 
     })
    
