@@ -181,8 +181,7 @@ module.exports.getRepairPage = async (req, res)=>{
         requestingUser = await User.findById({_id:req.user._id})
         
     } catch (error) {
-        console.error('user not found')
-        console.log('found user is: ',foundUser)
+        res.status(400).json({message:`Failed to find report ID:${repairId}`, error:err.message})
         
     }
 
