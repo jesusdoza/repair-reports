@@ -147,12 +147,10 @@ module.exports.getRepair = async (req, res) => {
     console.log(`getting repair JSON`, repairObj);
     res.status(200).json(repairObj);
   } catch (err) {
-    res
-      .status(400)
-      .json({
-        message: `ID: ${request.params.repairId}  NOT FOUND`,
-        error: err,
-      });
+    res.status(400).json({
+      message: `ID: ${request.params.repairId}  NOT FOUND`,
+      error: err,
+    });
   }
 };
 
@@ -176,29 +174,26 @@ module.exports.getRepairPage = async (req, res) => {
   }
 
   try {
-      //! need to abstract the ID to username action
-      //! some entry are old using string newer ones use ID
-      
+    //! need to abstract the ID to username action
+    //! some entry are old using string newer ones use ID
     //find user that created report from user id on report
     // new entrys use userID for createdBy field
-    if (repairObj.createdBy.length > 10) { 
-      foundUser = await User.findOne({ _id:repairObj.createdBy }); 
-    } 
+    //older entrys might not have created by feild
+    if (repairObj.createdBy && repairObj.createdBy.length > 10) {
+      foundUser = await User.findOne({ _id: repairObj.createdBy });
+    }
     //older entry using string of username for createdBy field
-    else {
-      foundUser = await User.findOne({ username: repairObj.createdBy }); 
+    else if (repairObj.createdBy) {
+      foundUser = await User.findOne({ username: repairObj.createdBy });
     }
 
-    createdByUser = foundUser.username; // get the username string for report render
+    createdByUser = foundUser.username || "public default"; // get the username string for report render
     requestingUser = await User.findOne({ _id: req.user._id }); //user requesting
-
   } catch (err) {
-    res
-      .status(400)
-      .json({
-        message: `Failed to find report ID:${repairId}`,
-        error: err.message,
-      });
+    res.status(400).json({
+      message: `Failed to find report ID:${repairId}`,
+      error: err.message,
+    });
     return;
   }
 
@@ -207,14 +202,14 @@ module.exports.getRepairPage = async (req, res) => {
   toolsAllowed =
     req.user._id.equals(repairObj.createdBy) ||
     repairObj.createdBy === req.user.username ||
-    requestingUser.role === "admin"; 
+    requestingUser.role === "admin";
 
   /// render page
   res.render("repairinfo.ejs", {
     title: "Repair Information",
     repair: repairObj,
     user: req.user,
-    createdBy: createdByUser,
+    createdBy: createdByUser, //possible not user found
     allowedEdit: toolsAllowed,
   });
 };
@@ -222,13 +217,11 @@ module.exports.getRepairPage = async (req, res) => {
 //render searchpage
 module.exports.getSearchPage = async (req, res) => {
   try {
-
     res.render("search-page.ejs", { title: "Search Records", user: req.user });
   } catch (err) {
-    res.status(400)
-      .json({
-        message: `ID: ${request.params.repairId}  NOT FOUND`,
-        error: err.message,
-      });
+    res.status(400).json({
+      message: `ID: ${request.params.repairId}  NOT FOUND`,
+      error: err.message,
+    });
   }
 };
