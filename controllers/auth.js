@@ -17,6 +17,7 @@ exports.getLogin = (req, res) => {
 exports.postLogin = (req, res, next) => {
   const validationErrors = [];
   const returnTo = req.session.returnTo;
+  req.session.returnTo = null;
 
   if (!validator.isEmail(req.body.email))
     validationErrors.push({ msg: "Please enter a valid email address." });
@@ -45,7 +46,7 @@ exports.postLogin = (req, res, next) => {
       if (err) {
         return next(err);
       }
-      console.log("sucess login");
+      // console.log("sucess login");
       req.flash("success", { msg: "Success! You are logged in." });
       res.redirect(returnTo || "/repair");
     });
