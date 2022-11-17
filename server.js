@@ -19,7 +19,7 @@ const app = express();
 const PORT = 8000;
 
 app.set("view engine", "ejs");
-// app.use(flash());
+app.use(flash());
 app.use(require("./middleware/httpsRedirect").httpsRedirect);
 app.use(cors());
 app.use(express.json());

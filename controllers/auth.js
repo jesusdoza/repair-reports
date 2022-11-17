@@ -5,7 +5,6 @@ const User = require("../models/User"); //new user gets put in user collection
 
 /// get login
 exports.getLogin = (req, res) => {
-  // todo
   if (req.user) {
     return res.redirect("/repair"); // already authenticated send user to
   }
@@ -14,10 +13,11 @@ exports.getLogin = (req, res) => {
   });
 };
 
-///login post
+///POST LOGIN
 exports.postLogin = (req, res, next) => {
   const validationErrors = [];
-  console.log(req.body);
+  const returnTo = req.session.returnTo;
+
   if (!validator.isEmail(req.body.email))
     validationErrors.push({ msg: "Please enter a valid email address." });
   if (validator.isEmpty(req.body.password))
@@ -47,7 +47,7 @@ exports.postLogin = (req, res, next) => {
       }
       console.log("sucess login");
       req.flash("success", { msg: "Success! You are logged in." });
-      res.redirect(req.session.returnTo || "/repair");
+      res.redirect(returnTo || "/repair");
     });
   })(req, res, next);
 };
