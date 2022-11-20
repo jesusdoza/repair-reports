@@ -36,9 +36,6 @@ Cypress.Commands.add("click_mobile_link", (link) => {
   cy.get("[data-test='mobile-nav']").click();
   cy.get(`[data-test='mobile-menu'] li [ href='${link}']`).click();
   //if not logged in should direct to login
-  cy.location().should((loc) => {
-    expect(loc.href).to.eq("http://localhost:8000/login");
-  });
 });
 
 Cypress.Commands.add("mobile_login", (username, pass) => {
