@@ -4,7 +4,7 @@ const User = require("../models/User");
 
 module.exports.testPost = async (req, res) => {
   try {
-    console.log(req.session.passport);
+    // console.log(req.session.passport);
 
     res.render("test");
   } catch (error) {}
@@ -24,7 +24,7 @@ module.exports.deletePost = async (req, res) => {
 
       res.redirect("/repair/");
     } else {
-      console.log("user not allowed");
+      // console.log("user not allowed");
       throw new Error(`user: ${user.username} not allowed`);
     }
   } catch (err) {
@@ -37,8 +37,8 @@ module.exports.deletePost = async (req, res) => {
 
 //add repair to database
 module.exports.addRepair = async (req, res) => {
-  console.log("request for add repair", req.body);
-  console.log("***********************************");
+  // console.log("request for add repair", req.body);
+  // console.log("***********************************");
   try {
     let groupId = req.body.group ? req.body.group : req.user.username;
 
@@ -53,11 +53,11 @@ module.exports.addRepair = async (req, res) => {
       group: groupId, //user group id instead
       //! test if group is actually assigne
     };
-    console.log(req.body);
+    // console.log(req.body);
     // console.log(`post at /repairform`,entry)
 
     let result = await Repair.create(entry);
-    console.log(`done uploading at server result`, result);
+    // console.log(`done uploading at server result`, result);
 
     const repLink = `/repair/${result._id}`; //add link to repair
 
@@ -73,7 +73,7 @@ module.exports.addRepair = async (req, res) => {
 //retrieve repairs matching query
 module.exports.searchRepairs = async (req, res) => {
   try {
-    console.log(`repairsController.searchRepairs`, req.query);
+    // console.log(`repairsController.searchRepairs`, req.query);
     const searchStr = req.query.searchPhrase;
     const results = await Repair.aggregate([
       {
@@ -103,8 +103,8 @@ module.exports.searchRepairs = async (req, res) => {
 //get a number of newest repairs
 module.exports.getNewestRepairs = async (req, res) => {
   try {
-    console.log(`controller repair.getNewestRepairs`);
-    console.log(`number of repairs requested`, req.params.num);
+    // console.log(`controller repair.getNewestRepairs`);
+    // console.log(`number of repairs requested`, req.params.num);
     const numRepairs = req.params.num ? req.params.num : 8;
     const userGroups = [...req.user.groups, "public"];
 
@@ -125,8 +125,8 @@ module.exports.getNewestRepairs = async (req, res) => {
       .sort({ _id: -1 })
       .limit(numRepairs);
 
-    console.log(`number of repairs returned`, results.length);
-    console.log("repairs are: ", results);
+    // console.log(`number of repairs returned`, results.length);
+    // console.log("repairs are: ", results);
     res.render("latest.ejs", {
       title: "Latest Repairs",
       repairs: results,
@@ -144,15 +144,13 @@ module.exports.getRepair = async (req, res) => {
     const repairId = req.params.id;
     const repairObj = await Repair.findOne({ _id: repairId }).lean(); /// swap to mongoose
 
-    console.log(`getting repair JSON`, repairObj);
+    // console.log(`getting repair JSON`, repairObj);
     res.status(200).json(repairObj);
   } catch (err) {
-    res
-      .status(400)
-      .json({
-        message: `ID: ${request.params.repairId}  NOT FOUND`,
-        error: err,
-      });
+    res.status(400).json({
+      message: `ID: ${request.params.repairId}  NOT FOUND`,
+      error: err,
+    });
   }
 };
 
@@ -176,29 +174,26 @@ module.exports.getRepairPage = async (req, res) => {
   }
 
   try {
-      //! need to abstract the ID to username action
-      //! some entry are old using string newer ones use ID
-      
+    //! need to abstract the ID to username action
+    //! some entry are old using string newer ones use ID
     //find user that created report from user id on report
     // new entrys use userID for createdBy field
-    if (repairObj.createdBy.length > 10) { 
-      foundUser = await User.findOne({ _id:repairObj.createdBy }); 
-    } 
+    //older entrys might not have created by feild
+    if (repairObj.createdBy && repairObj.createdBy.length > 10) {
+      foundUser = await User.findOne({ _id: repairObj.createdBy });
+    }
     //older entry using string of username for createdBy field
-    else {
-      foundUser = await User.findOne({ username: repairObj.createdBy }); 
+    else if (repairObj.createdBy) {
+      foundUser = await User.findOne({ username: repairObj.createdBy });
     }
 
-    createdByUser = foundUser.username; // get the username string for report render
+    createdByUser = foundUser.username || "public default"; // get the username string for report render
     requestingUser = await User.findOne({ _id: req.user._id }); //user requesting
-
   } catch (err) {
-    res
-      .status(400)
-      .json({
-        message: `Failed to find report ID:${repairId}`,
-        error: err.message,
-      });
+    res.status(400).json({
+      message: `Failed to find report ID:${repairId}`,
+      error: err.message,
+    });
     return;
   }
 
@@ -207,14 +202,14 @@ module.exports.getRepairPage = async (req, res) => {
   toolsAllowed =
     req.user._id.equals(repairObj.createdBy) ||
     repairObj.createdBy === req.user.username ||
-    requestingUser.role === "admin"; 
+    requestingUser.role === "admin";
 
   /// render page
   res.render("repairinfo.ejs", {
     title: "Repair Information",
     repair: repairObj,
     user: req.user,
-    createdBy: createdByUser,
+    createdBy: createdByUser, //possible not user found
     allowedEdit: toolsAllowed,
   });
 };
@@ -222,13 +217,11 @@ module.exports.getRepairPage = async (req, res) => {
 //render searchpage
 module.exports.getSearchPage = async (req, res) => {
   try {
-
     res.render("search-page.ejs", { title: "Search Records", user: req.user });
   } catch (err) {
-    res.status(400)
-      .json({
-        message: `ID: ${request.params.repairId}  NOT FOUND`,
-        error: err.message,
-      });
+    res.status(400).json({
+      message: `ID: ${request.params.repairId}  NOT FOUND`,
+      error: err.message,
+    });
   }
 };
