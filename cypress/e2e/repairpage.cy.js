@@ -12,8 +12,6 @@ describe("/repair route", () => {
       cy.mobile_login(testUsername, testUserPW);
 
       cy.get("[data-test='entry'] a").each((entry) => {
-        // entryLinks.push(entry);
-        // console.log("entrys are ", entry[0].href);
         cy.visit(entry[0].href);
       });
     });
