@@ -145,34 +145,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 });
 
-// todo HERE 11-22-22
-///create Procedure Array
-async function createProcedureArr() {
-  const allProcedureElements = Array.from(
-    document.querySelectorAll(".procedure")
-  );
-  const signResponse = await fetch("/signform"); //fetch signature from server
-  const signData = await signResponse.json(); //convert to json
-
-  //start uploading each procedures respective images
-  const procedurePromises = allProcedureElements.map(async (proc, index) => {
-    let images = await uploadImages(proc, signData);
-    const procedure = new Procedure();
-
-    procedure.images = images.links; // add images urls Array
-    procedure.thumbs = images.thumbs; // smaller images links
-    procedure.procedureNum = index; //identifying sequence number
-    procedure.imagesIdArr = images.imagesIdArr;
-    procedure.instructions = proc.querySelector(".instructions").value; //instructions for this procedure
-
-    return procedure;
-  });
-
-  const procArr = await Promise.all(procedurePromises);
-
-  return procArr;
-}
-
 ///SUBMIT FORM EVENT
 //  form.addEventListener("submit",async (event) => event.preventDefault());// for testing what happens after submit
 form.addEventListener("submit", async (event) => {
@@ -238,6 +210,33 @@ form.addEventListener("submit", async (event) => {
 // ==========================================================================
 // FUNCTIONS
 // ==========================================================================
+// todo HERE 11-22-22
+///create Procedure Array
+async function createProcedureArr() {
+  const allProcedureElements = Array.from(
+    document.querySelectorAll(".procedure")
+  );
+  const signResponse = await fetch("/signform"); //fetch signature from server
+  const signData = await signResponse.json(); //convert to json
+
+  //start uploading each procedures respective images
+  const procedurePromises = allProcedureElements.map(async (proc, index) => {
+    let images = await uploadImages(proc, signData);
+    const procedure = new Procedure();
+
+    procedure.images = images.links; // add images urls Array
+    procedure.thumbs = images.thumbs; // smaller images links
+    procedure.procedureNum = index; //identifying sequence number
+    procedure.imagesIdArr = images.imagesIdArr;
+    procedure.instructions = proc.querySelector(".instructions").value; //instructions for this procedure
+
+    return procedure;
+  });
+
+  const procArr = await Promise.all(procedurePromises);
+
+  return procArr;
+}
 
 function removeProcedure(event) {
   console.log(`deleting procedure`);
