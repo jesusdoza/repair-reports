@@ -124,8 +124,7 @@ exports.postSignup = async (req, res, next) => {
         });
         return res.redirect("../signup");
       }
-
-      user.save(async (err, createdUser) => {
+      const result = await user.save(async (err, createdUser) => {
         //save the new user model to create a new user in our users collection
         if (err) {
           return next(err);
