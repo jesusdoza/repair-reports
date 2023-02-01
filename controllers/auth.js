@@ -103,7 +103,7 @@ exports.postSignup = async (req, res, next) => {
     console.log(`signup body`, req.body);
     const validationErrors = [];
     if (!validator.isEmail(req.body.email))
-        validationErrors.push({ msg: "Please enter a valid email address." });
+        validationErrors.push("Please enter a valid email address.");
     if (!validator.isLength(req.body.password, { min: 8 }))
         validationErrors.push("password must be atleast 8 characters");
     if (req.body.password !== req.body.confirmPassword)
