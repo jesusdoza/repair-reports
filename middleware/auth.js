@@ -7,7 +7,7 @@ module.exports = {
         } else {
             req.session.returnTo = req.originalUrl;
             // console.log("session output", req.session.returnTo);
-            req.flash("errors", "please log in to perform action");
+            req.flash("errors", ["please log in to perform action"]);
             res.redirect("/login");
         }
     },

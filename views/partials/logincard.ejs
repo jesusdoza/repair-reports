@@ -3,8 +3,12 @@
 <div class="container login-container">
     <div>
         <% if (locals.messages.errors) { %>
-            <%= messages.errors %>
+            <% for( let index=0; index < locals.messages.errors.length; index++ ) { %>
+                <h4>
+                    <%= locals.messages.errors[index] %>
+                </h4>
                 <% } %>
+                    <% } %>
     </div>
     <div class="card  light-blue lighten-5">
         <div class="card-content">

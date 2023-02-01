@@ -29,6 +29,7 @@ module.exports = function (passport) {
                         if (isMatch) {
                             return done(null, user);
                         }
+
                         return done(null, false, {
                             msg: "Invalid email or password.",
                         });
@@ -39,6 +40,8 @@ module.exports = function (passport) {
     );
 
     passport.serializeUser((user, done) => {
+        console.log("user at serializer", user);
+        console.log("done at serializer", done);
         done(null, user.id);
     });
 

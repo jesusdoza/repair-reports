@@ -21,17 +21,17 @@ exports.postLogin = (req, res, next) => {
 
     if (!validator.isEmail(req.body.email)) {
         console.log("invalid email");
-        validationErrors.push({ msg: "Please enter a valid email address." });
+        validationErrors.push("Please enter a valid email address.");
     }
     if (validator.isEmpty(req.body.password)) {
         console.log("empty password");
 
-        validationErrors.push({ msg: "Password cannot be blank." });
+        validationErrors.push("Password cannot be blank.");
     }
 
     if (validationErrors.length) {
         console.log("setting errors in flash");
-        req.flash("errors", "invalid email or username");
+        req.flash("errors", validationErrors);
         // console.log("req flash is", locals.messages);
         return res.redirect("/login");
     }
@@ -44,13 +44,20 @@ exports.postLogin = (req, res, next) => {
             console.error("authen failed");
             return next(err);
         }
+        if (info) {
+            console.log("**********info", info);
+            req.flash("errors", ["Not authorized check credentials"]);
+            res.redirect("/login");
+            return;
+        }
         if (!user) {
-            req.flash("errors", "credentials bad");
+            req.flash("errors", ["Not authorized check credentials"]);
             console.error("no user found");
             res.redirect("/login");
         }
         req.logIn(user, (err) => {
             if (err) {
+                req.flash("errors", ["Not authorized check credentials"]);
                 return next(err);
             }
             // console.log("sucess login");
@@ -98,14 +105,12 @@ exports.postSignup = async (req, res, next) => {
     if (!validator.isEmail(req.body.email))
         validationErrors.push({ msg: "Please enter a valid email address." });
     if (!validator.isLength(req.body.password, { min: 8 }))
-        validationErrors.push({
-            msg: "Password must be at least 8 characters long",
-        });
+        validationErrors.push("password must be atleast 8 characters");
     if (req.body.password !== req.body.confirmPassword)
-        validationErrors.push({ msg: "Passwords do not match" });
+        validationErrors.push("Passwords do not match");
 
     if (validationErrors.length) {
-        req.flash("errors", "invalid email or username");
+        req.flash("errors", validationErrors);
         return res.redirect("../signup");
     }
     req.body.email = validator.normalizeEmail(req.body.email, {
@@ -126,7 +131,7 @@ exports.postSignup = async (req, res, next) => {
                 return next(err);
             }
             if (existingUser) {
-                req.flash("errors", "email already in use");
+                req.flash("errors", ["email already in use"]);
                 return res.redirect("../signup");
             }
             const result = await user.save(async (err, createdUser) => {
