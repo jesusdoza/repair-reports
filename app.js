@@ -10,11 +10,11 @@ const MongoStore = require("connect-mongo");
 const mongooseDb = require("./config/dbM");
 
 require("dotenv").config({ path: "./config/.env" }); // to use with enviroment variables initializes enviroment vars
-
 require("./config/passport")(passport);
 
 const app = express();
 const PORT = 8000;
+const cookieMaxAge = 15 * 60 * 1000;
 
 app.set("view engine", "ejs");
 app.use(flash());
@@ -28,12 +28,15 @@ app.use(express.static("public"));
 // Sessions
 app.use(
     session({
-        secret: "keyboard cat",
+        secret: process.env.session_secret,
         resave: false,
         saveUninitialized: false,
         store: MongoStore.create({
             mongoUrl: process.env.connect_string,
         }),
+        cookie: {
+            maxAge: cookieMaxAge,
+        },
     })
 );
 
