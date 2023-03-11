@@ -3501,10 +3501,6 @@ html {
   margin-left: 50%;
 }
 
-.visible {
-  visibility: visible;
-}
-
 .invisible {
   visibility: hidden;
 }
@@ -4231,12 +4227,6 @@ media queries
 .hover\:bg-indigo-700:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(67 56 202 / var(--tw-bg-opacity));
-}
-
-@media not all and (min-width: 1024px) {
-  .max-lg\:invisible {
-    visibility: hidden;
-  }
 }
 
 @media (min-width: 640px) {

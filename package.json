@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon server.js",
     "start": "node server.js",
-    "test": "npx cypress run"
+    "test": "npx cypress run",
+    "tailwind": "npx tailwindcss -i ./public/stylesheets/main.css -o ./public/stylesheets/style.css --watch"
   },
   "author": "",
   "license": "ISC",
