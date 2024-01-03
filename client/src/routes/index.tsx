@@ -1,22 +1,21 @@
 import { createBrowserRouter } from "react-router-dom";
 import { Layout } from "../Layout";
-import App from "../components/App/App";
-
+import LatestRepairs from "../pages/LatestRepairs";
 export const routes = createBrowserRouter([
   {
     index: true,
     path: "/",
     element: (
       <Layout>
-        <App />
+        <LatestRepairs />
       </Layout>
     ),
   },
   {
-    path: "/tabels",
+    path: "/dashboard",
     element: (
       <Layout>
-        <h1>tables</h1>
+        <h1>dashboard</h1>
       </Layout>
     ),
   },
@@ -25,6 +24,14 @@ export const routes = createBrowserRouter([
     element: (
       <Layout>
         <h1>profile</h1>
+      </Layout>
+    ),
+  },
+  {
+    path: "/repairform",
+    element: (
+      <Layout>
+        <h1>create report</h1>
       </Layout>
     ),
   },
