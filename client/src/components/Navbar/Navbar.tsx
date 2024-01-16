@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function Navbar() {
   return (
     <>
@@ -10,13 +12,19 @@ export default function Navbar() {
 
         <ul className=" flex menu menu-horizontal gap-1">
           <li>
-            <a href="/dashboard">Dashboard</a>
+            <Link to={"/dashboard"}>
+              <span>Dashboard</span>
+            </Link>
           </li>
           <li>
-            <a href="/repair">Latest Reports</a>
+            <Link to={"/"}>
+              <span>Latest Reports</span>
+            </Link>
           </li>
           <li>
-            <a href="/repairform">Create Report</a>
+            <Link to={"/repairform"}>
+              <span>Create Report</span>
+            </Link>
           </li>
           <li className="form-control">
             <input
@@ -42,16 +50,18 @@ export default function Navbar() {
               tabIndex={0}
               className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
               <li>
-                <a className="justify-between">
-                  Profile
-                  <span className="badge">New</span>
-                </a>
+                <Link to={"/profile"}>
+                  <span className="justify-between">
+                    Profile
+                    <span className="badge">New</span>
+                  </span>
+                </Link>
               </li>
               <li>
-                <a>Settings</a>
+                <Link to={"#"}>Settings</Link>
               </li>
               <li>
-                <a>Logout</a>
+                <Link to={"#"}>Logout</Link>
               </li>
             </ul>
           </li>

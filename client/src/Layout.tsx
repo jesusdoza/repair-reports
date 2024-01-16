@@ -3,7 +3,6 @@
 import React from "react";
 
 import Navbar from "./components/Navbar/Navbar.tsx";
-import { Link } from "react-router-dom";
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>

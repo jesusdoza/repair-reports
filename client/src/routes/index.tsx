@@ -1,13 +1,16 @@
 import { createBrowserRouter } from "react-router-dom";
 import { Layout } from "../Layout";
-import LatestRepairs from "../pages/LatestRepairs";
+import LatestRepairsPage from "../pages/LatestRepairsPage";
+import ProfilePage from "../pages/ProfilePage";
+import RepairFormPage from "../pages/RepairFormPage";
+import DashboardPage from "../pages/DashboardPage";
 export const routes = createBrowserRouter([
   {
     index: true,
     path: "/",
     element: (
       <Layout>
-        <LatestRepairs />
+        <LatestRepairsPage />
       </Layout>
     ),
   },
@@ -15,7 +18,7 @@ export const routes = createBrowserRouter([
     path: "/dashboard",
     element: (
       <Layout>
-        <h1>dashboard</h1>
+        <DashboardPage></DashboardPage>
       </Layout>
     ),
   },
@@ -23,7 +26,7 @@ export const routes = createBrowserRouter([
     path: "/profile",
     element: (
       <Layout>
-        <h1>profile</h1>
+        <ProfilePage></ProfilePage>
       </Layout>
     ),
   },
@@ -31,7 +34,7 @@ export const routes = createBrowserRouter([
     path: "/repairform",
     element: (
       <Layout>
-        <h1>create report</h1>
+        <RepairFormPage></RepairFormPage>
       </Layout>
     ),
   },
