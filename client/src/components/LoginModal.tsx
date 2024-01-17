@@ -3,8 +3,6 @@ import React from "react";
 export default function LoginModal() {
   return (
     <div className="flex justify-center h-96">
-      {/* Open the modal using document.getElementById('ID').showModal() method */}
-
       <div className=" flex justify-center w-full modal-middle">
         <div className="modal-box flex flex-col gap-3">
           <h3 className="font-bold text-lg text-center">Please Login</h3>
@@ -25,7 +23,7 @@ export default function LoginModal() {
                 <span className="label-text">Password:</span>
               </div>
               <input
-                type="text"
+                type="password"
                 placeholder="Password"
                 className="input input-bordered w-full max-w-xs"
               />
