@@ -29,17 +29,17 @@ app.use(express.static("public"));
 // Sessions
 app.use(cookieParser());
 app.use(
-    session({
-        secret: process.env.session_secret,
-        resave: false,
-        saveUninitialized: false,
-        store: MongoStore.create({
-            mongoUrl: process.env.connect_string,
-        }),
-        cookie: {
-            maxAge: cookieMaxAge,
-        },
-    })
+  session({
+    secret: process.env.session_secret,
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.connect_string,
+    }),
+    cookie: {
+      maxAge: cookieMaxAge,
+    },
+  })
 );
 
 app.use(flash());
@@ -60,6 +60,7 @@ const profileRoutes = require("./routes/profile");
 const dashboardRoutes = require("./routes/dashboard.js");
 const groupRoutes = require("./routes/group.js");
 const commentRoutes = require("./routes/comments.js");
+const apiRoutes = require("./routes/api.js");
 
 // =============================================================
 // ROUTES
@@ -72,6 +73,7 @@ app.use("/profile", ensureAuth, profileRoutes);
 app.use("/dashboard", ensureAuth, dashboardRoutes);
 app.use("/group", ensureAuth, groupRoutes);
 app.use("/comments", ensureAuth, commentRoutes);
+app.use("/api", ensureAuth, apiRoutes);
 
 app.use(formRoutes);
 app.use(signformRoutes);
