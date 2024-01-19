@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 export default function LoginModal() {
+  const { login } = useContext(AuthContext);
+
   return (
     <div className="flex justify-center h-96">
       <div className=" flex justify-center w-full modal-middle">
@@ -30,7 +33,13 @@ export default function LoginModal() {
             </label>
           </div>
           <div className="flex flex-row-reverse">
-            <div className="btn">Submit</div>
+            <div
+              onClick={() => {
+                login("bob", "password");
+              }}
+              className="btn">
+              Submit
+            </div>
           </div>
         </div>
       </div>

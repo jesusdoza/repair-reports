@@ -60,7 +60,7 @@ const profileRoutes = require("./routes/profile");
 const dashboardRoutes = require("./routes/dashboard.js");
 const groupRoutes = require("./routes/group.js");
 const commentRoutes = require("./routes/comments.js");
-const apiRoutes = require("./routes/api.js");
+const apiRoutes = require("./routes/api");
 
 // =============================================================
 // ROUTES

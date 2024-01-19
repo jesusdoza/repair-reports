@@ -1,9 +1,22 @@
 import React, { createContext, useEffect, useState } from "react";
 import LoginModal from "../components/LoginModal";
 import axios from "axios";
-type User = { username: string };
 
-export const AuthContext = createContext({});
+const API_URL = import.meta.env.VITE_API_URL;
+
+type User = { username: string };
+export type authContextT = {
+  userToken: string | null;
+  setUserToken: object | null;
+  userInfo: User | null;
+  login: (email: string, password: string) => Promise<void> | (() => void);
+};
+export const AuthContext = createContext<authContextT>({
+  userToken: null,
+  setUserToken: null,
+  userInfo: null,
+  login: (email: string, password: string) => Promise.resolve(),
+});
 
 export const AuthContextProvider = ({
   children,
@@ -27,9 +40,10 @@ export const AuthContextProvider = ({
   // };
   const login = async (email: string, password: string) => {
     console.log("logging request sent");
-    axios.post(import.meta.env.VITE_API_URL, {
-      email: "email here",
-      password: "this is password",
+    console.log(API_URL);
+    axios.post(`${API_URL}login/api`, {
+      email,
+      password,
     });
     // setUserToken(null);
   };
@@ -38,7 +52,7 @@ export const AuthContextProvider = ({
 
   // if (!userToken) return <h1>NOT LOGGED IN</h1>;
 
-  const values = { userToken, setUserToken, userInfo };
+  const values: authContextT = { userToken, setUserToken, userInfo, login };
 
   return (
     <AuthContext.Provider value={values}>
