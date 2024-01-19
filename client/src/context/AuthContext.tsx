@@ -1,11 +1,16 @@
 import React, { createContext, useEffect, useState } from "react";
-
+import LoginModal from "../components/LoginModal";
+import axios from "axios";
 type User = { username: string };
 
 export const AuthContext = createContext({});
 
-export const AuthContextProvider = ({ children }) => {
-  const [userToken, setUserToken] = useState<string | null>("logged in");
+export const AuthContextProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  const [userToken, setUserToken] = useState<string | null>("null");
   const [userInfo, setUserInfo] = useState<User | null>(null);
 
   useEffect(() => {
@@ -20,17 +25,24 @@ export const AuthContextProvider = ({ children }) => {
   //   await signOut(auth);
   //   setUserToken(null);
   // };
+  const login = async (email: string, password: string) => {
+    console.log("logging request sent");
+    axios.post(import.meta.env.VITE_API_URL, {
+      email: "email here",
+      password: "this is password",
+    });
+    // setUserToken(null);
+  };
 
   // const auth = getAuth();
 
-  // if (!userToken) return <LoginModal />;
-  if (!userToken) return <h1>NOT LOGGED IN</h1>;
+  // if (!userToken) return <h1>NOT LOGGED IN</h1>;
 
   const values = { userToken, setUserToken, userInfo };
 
   return (
     <AuthContext.Provider value={values}>
-      <>{children}</>
+      {!userToken ? <LoginModal /> : <>{children}</>}
     </AuthContext.Provider>
   );
 };
