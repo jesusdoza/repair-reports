@@ -1,8 +1,10 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 export default function LoginModal() {
   const { login } = useContext(AuthContext);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   return (
     <div className="flex justify-center h-96">
@@ -16,6 +18,9 @@ export default function LoginModal() {
                 <span className="label-text">Username: </span>
               </div>
               <input
+                onChange={(event) => {
+                  setUsername(event.target.value);
+                }}
                 type="text"
                 placeholder="Username"
                 className="input input-bordered "
@@ -26,6 +31,9 @@ export default function LoginModal() {
                 <span className="label-text">Password:</span>
               </div>
               <input
+                onChange={(event) => {
+                  setPassword(event.target.value);
+                }}
                 type="password"
                 placeholder="Password"
                 className="input input-bordered w-full max-w-xs"
@@ -35,7 +43,7 @@ export default function LoginModal() {
           <div className="flex flex-row-reverse">
             <div
               onClick={() => {
-                login("bob", "password");
+                login(username, password);
               }}
               className="btn">
               Submit

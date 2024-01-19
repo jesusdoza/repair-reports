@@ -46,7 +46,7 @@ exports.apiLogin = (req, res, next) => {
     console.log("setting errors in flash");
     req.flash("errors", validationErrors);
     // console.log("req flash is", locals.messages);
-    return res.redirect("/login");
+    // return res.redirect("/login");
   }
   req.body.email = validator.normalizeEmail(req.body.email, {
     gmail_remove_dots: false,
@@ -55,23 +55,26 @@ exports.apiLogin = (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     if (err) {
       console.error("authen failed");
-      return next(err);
+      res.send({ message: "login failed", login: "failed" });
+      return;
     }
     if (info) {
       console.log("**********info", info);
       req.flash("errors", ["Not authorized check credentials"]);
-      res.redirect("/login");
+      res.send({ message: "login failed", login: "failed" });
       return;
     }
     if (!user) {
       req.flash("errors", ["Not authorized check credentials"]);
       console.error("no user found");
-      res.redirect("/login");
+      res.send({ message: "login failed", login: "failed" });
+      return;
     }
     req.logIn(user, (err) => {
       if (err) {
         req.flash("errors", ["Not authorized check credentials"]);
-        return next(err);
+        res.send({ message: "login failed", login: "failed" });
+        return;
       }
 
       const { password, ...t } = user._doc;
