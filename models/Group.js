@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 //user groups schema
+//user is a member of a group
 const MemberSchema = new mongoose.Schema({
   userid: {
     type: String,
@@ -18,6 +19,7 @@ const MemberSchema = new mongoose.Schema({
 });
 
 //parent schema
+//user can be part of one or many groups to view repairs from those groups
 const GroupSchema = new mongoose.Schema({
   name: {
     type: String,

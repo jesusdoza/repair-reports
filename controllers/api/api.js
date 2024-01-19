@@ -1,5 +1,5 @@
-const Repair = require("../models/Repair");
-const User = require("../models/User");
+const Repair = require("../../models/Repair");
+const User = require("../../models/User");
 
 module.exports.testPost = async (req, res) => {
   try {
@@ -145,11 +145,9 @@ module.exports.getRepair = async (req, res) => {
     console.log(`getting repair JSON`, repairObj);
     res.status(200).json(repairObj);
   } catch (err) {
-    res
-      .status(400)
-      .json({
-        message: `ID: ${request.params.repairId}  NOT FOUND`,
-        error: err,
-      });
+    res.status(400).json({
+      message: `ID: ${request.params.repairId}  NOT FOUND`,
+      error: err,
+    });
   }
 };

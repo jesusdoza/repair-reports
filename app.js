@@ -73,7 +73,7 @@ app.use("/profile", ensureAuth, profileRoutes);
 app.use("/dashboard", ensureAuth, dashboardRoutes);
 app.use("/group", ensureAuth, groupRoutes);
 app.use("/comments", ensureAuth, commentRoutes);
-app.use("/api", ensureAuth, apiRoutes);
+app.use("/api", apiRoutes);
 
 app.use(formRoutes);
 app.use(signformRoutes);
