@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
-import LoginModal from "../components/LoginModal";
+import LoginModal from "../components/LoginSignUp/LoginModal";
 import axios from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -41,7 +41,7 @@ export const AuthContextProvider = ({
   const login = async (email: string, password: string) => {
     console.log("email", email);
     console.log("password", password);
-    const response = await axios.post(`${API_URL}login/api`, {
+    const response = await axios.post(`${API_URL}api/login`, {
       email,
       password,
     });

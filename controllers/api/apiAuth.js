@@ -38,6 +38,12 @@ exports.apiLogin = (req, res, next) => {
     req.flash("errors", validationErrors);
     // console.log("req flash is", locals.messages);
     // return res.redirect("/login");
+    res.send({
+      message: "login failed",
+      login: "failed",
+      reason: validationErrors,
+    });
+    return;
   }
   req.body.email = validator.normalizeEmail(req.body.email, {
     gmail_remove_dots: false,

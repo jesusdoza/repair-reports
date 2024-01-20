@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 
-export default function LoginModal() {
+export default function LoginCard() {
   const { login } = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -12,7 +12,7 @@ export default function LoginModal() {
         <div className="modal-box flex flex-col gap-3">
           <h3 className="font-bold text-lg text-center">Please Login</h3>
 
-          <div className="flex gap-2">
+          <div className="flex flex-col gap-2 sm:flex-row">
             <label className="max-w-xs  flex flex-col justify-center">
               <div className="label">
                 <span className="label-text">Username: </span>
