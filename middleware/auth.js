@@ -12,6 +12,7 @@ module.exports = {
     }
   },
   ensureAuthApi: function (req, res, next) {
+    console.log("Cookies: ", req.cookies);
     if (req.isAuthenticated()) {
       console.log("sessions is :", req.session);
       return next();
