@@ -5,10 +5,6 @@ import SignUpCard from "./SignUpCard";
 import LoginCard from "./LoginCard";
 
 export default function LoginModal() {
-  return (
-    <>
-      <LoginCard />
-      <SignUpCard />
-    </>
-  );
+  const [isLogin, setIsLogin] = useState(false);
+  return <>{isLogin ? <LoginCard /> : <SignUpCard />}</>;
 }
