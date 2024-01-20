@@ -6,10 +6,6 @@ export default function LatestRepairs() {
 
   const repairs = useGetLatest();
 
-  useEffect(() => {
-    console.log("repairs", repairs);
-  }, [repairs]);
-
   return (
     <div className="center-block">
       <h1>latest repairs</h1>

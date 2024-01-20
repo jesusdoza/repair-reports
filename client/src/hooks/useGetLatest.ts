@@ -1,13 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import repairApi from "../api/RepairReportsApi";
 
 const useGetLatest = async () => {
   const [repairsData, setRepairsData] = useState([]);
-  const response = await repairApi.getLatestRepairs();
 
-  setRepairsData(response);
+  useEffect(() => {
+    console.log("get data");
+    const getData = async () => {
+      const response = await repairApi.getLatestRepairs();
+      console.log("response", response);
+    };
 
-  return repairsData;
+    getData();
+  }, []);
 };
 
 export default useGetLatest;

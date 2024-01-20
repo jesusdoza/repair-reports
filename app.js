@@ -17,9 +17,14 @@ const app = express();
 const PORT = 8000;
 const cookieMaxAge = 15 * 60 * 1000;
 
+const corsOptions = {
+  origin: "http://localhost:5173", // Replace with your front-end URL
+  credentials: true,
+};
+
 app.set("view engine", "ejs");
 app.use(require("./middleware/httpsRedirect").httpsRedirect);
-app.use(cors());
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); //get body data
@@ -37,6 +42,8 @@ app.use(
       mongoUrl: process.env.connect_string,
     }),
     cookie: {
+      sameSite: "lax",
+      secure: "auto",
       maxAge: cookieMaxAge,
     },
   })

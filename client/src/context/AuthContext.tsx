@@ -50,12 +50,14 @@ export const AuthContextProvider = ({
   //   setUserToken(null);
   // };
   const login = async (email: string, password: string) => {
-    console.log("email", email);
-    console.log("password", password);
-    const response = await axios.post(`${API_URL}api/login`, {
-      email,
-      password,
-    });
+    const response = await axios.post(
+      `${API_URL}api/login`,
+      {
+        email,
+        password,
+      },
+      { withCredentials: true }
+    );
     console.log("response", response.data);
     if (response.data.login === "success") {
       setUserInfo((state) => {
