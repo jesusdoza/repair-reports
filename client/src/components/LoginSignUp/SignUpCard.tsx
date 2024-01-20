@@ -23,12 +23,14 @@ export default function SignUpCard() {
                 return !state;
               });
             }}
-            className="btn-xs btn w-48">
+            className={
+              "btn-xs btn w-48 " + (isLogin ? "bg-blue-700" : "bg-green-600")
+            }>
             {isLogin ? "signup here" : "Login here"}
           </div>
 
-          <h3 className="font-bold text-lg text-center">
-            {isLogin ? "Please Signup" : "Please Login"}
+          <h3 className={"font-bold text-lg text-center"}>
+            {isLogin ? "Please Login" : "Please Signup"}
           </h3>
 
           <div className="flex flex-col align-middle justify-center items-center gap-2">
