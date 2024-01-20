@@ -18,7 +18,7 @@ const PORT = 8000;
 const cookieMaxAge = 15 * 60 * 1000;
 
 const corsOptions = {
-  origin: "http://localhost:5173", // Replace with your front-end URL
+  origin: process.env.client_origin, // Replace with your front-end URL
   credentials: true,
 };
 
@@ -42,8 +42,6 @@ app.use(
       mongoUrl: process.env.connect_string,
     }),
     cookie: {
-      sameSite: "lax",
-      secure: "auto",
       maxAge: cookieMaxAge,
     },
   })
