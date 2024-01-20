@@ -4,18 +4,28 @@ import LoginCard from "../components/LoginSignUp/LoginCard";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-type User = { username: string };
+type User = {
+  username: string;
+  _id: string;
+  role: string;
+  email: string;
+  groups: string[];
+};
 export type authContextT = {
   userToken: string | null;
   setUserToken: object | null;
   userInfo: User | null;
-  login: (email: string, password: string) => Promise<void> | (() => void);
+  login: ((email: string, password: string) => Promise<void>) | null;
+  signUp:
+    | ((email: string, password: string, username: string) => Promise<void>)
+    | null;
 };
 export const AuthContext = createContext<authContextT>({
   userToken: null,
   setUserToken: null,
   userInfo: null,
-  login: (email: string, password: string) => Promise.resolve(),
+  login: null,
+  signUp: null,
 });
 
 export const AuthContextProvider = ({
@@ -24,6 +34,7 @@ export const AuthContextProvider = ({
   children: React.ReactNode;
 }) => {
   const [userToken, setUserToken] = useState<string | null>(null);
+  const [isAuth, setIsAuth] = useState(false);
   const [userInfo, setUserInfo] = useState<User | null>(null);
 
   useEffect(() => {
@@ -46,18 +57,37 @@ export const AuthContextProvider = ({
       password,
     });
     console.log("response", response.data);
-    // setUserToken(null);
+    if (response.data.login === "success") {
+      setUserInfo((state) => {
+        return { ...state, ...response.data.message };
+      });
+      setIsAuth(true);
+      return;
+    }
+
+    setIsAuth(false);
   };
 
-  // const auth = getAuth();
+  const signUp = async (email: string, password: string, username: string) => {
+    const response = await axios.post(`${API_URL}api/signup`, {
+      email,
+      password,
+      username,
+    });
+    console.log("response", response.data);
+  };
 
-  // if (!userToken) return <h1>NOT LOGGED IN</h1>;
-
-  const values: authContextT = { userToken, setUserToken, userInfo, login };
+  const values: authContextT = {
+    userToken,
+    setUserToken,
+    userInfo,
+    login,
+    signUp,
+  };
 
   return (
     <AuthContext.Provider value={values}>
-      {!userToken ? <LoginCard /> : <>{children}</>}
+      {!isAuth ? <LoginCard /> : <>{children}</>}
     </AuthContext.Provider>
   );
 };

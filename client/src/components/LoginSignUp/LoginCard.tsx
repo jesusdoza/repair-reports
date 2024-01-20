@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 
 export default function LoginCard() {
-  const { login } = useContext(AuthContext);
+  const { login, signUp } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -12,13 +12,12 @@ export default function LoginCard() {
   });
 
   const [isLogin, setIsLogin] = useState(true);
-  const [validForm, setValidForm] = useState(false);
   const [validPassword, setValidPassword] = useState(false);
   const [validEmail, setValidEmail] = useState(false);
 
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
+  // useEffect(() => {
+  //   console.log(formData);
+  // }, [formData]);
 
   return (
     <div className="flex justify-center w-full">
@@ -27,9 +26,6 @@ export default function LoginCard() {
           <div
             onClick={() => {
               setIsLogin((state) => {
-                if (!state) {
-                  setValidForm(true);
-                }
                 setFormData({
                   username: "",
                   email: "",
@@ -156,7 +152,10 @@ export default function LoginCard() {
               onClick={() => {
                 //todo validate form
                 if (isLogin) {
-                  login(formData.email, formData.password);
+                  login!(formData.email, formData.password);
+                }
+                if (!isLogin) {
+                  signUp!(formData.email, formData.password, formData.username);
                 }
               }}
               className={

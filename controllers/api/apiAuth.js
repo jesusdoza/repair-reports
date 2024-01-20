@@ -90,7 +90,11 @@ exports.apiSignup = async (req, res, next) => {
 
   if (validationErrors.length) {
     req.flash("errors", validationErrors);
-    return res.redirect("../signup");
+    return res.send({
+      message: "failed to create user",
+      signup: "failed",
+      reason: validationErrors,
+    });
   }
   req.body.email = validator.normalizeEmail(req.body.email, {
     gmail_remove_dots: false,
