@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
-import LoginModal from "../components/LoginSignUp/LoginModal";
 import axios from "axios";
+import LoginCard from "../components/LoginSignUp/LoginCard";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -23,7 +23,7 @@ export const AuthContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [userToken, setUserToken] = useState<string | null>("null");
+  const [userToken, setUserToken] = useState<string | null>(null);
   const [userInfo, setUserInfo] = useState<User | null>(null);
 
   useEffect(() => {
@@ -57,7 +57,7 @@ export const AuthContextProvider = ({
 
   return (
     <AuthContext.Provider value={values}>
-      {!userToken ? <LoginModal /> : <>{children}</>}
+      {!userToken ? <LoginCard /> : <>{children}</>}
     </AuthContext.Provider>
   );
 };
