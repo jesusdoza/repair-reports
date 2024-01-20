@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 
 export default function LoginCard() {
@@ -15,6 +15,10 @@ export default function LoginCard() {
   const [validForm, setValidForm] = useState(false);
   const [validPassword, setValidPassword] = useState(false);
   const [validEmail, setValidEmail] = useState(false);
+
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
 
   return (
     <div className="flex justify-center w-full">
@@ -53,6 +57,7 @@ export default function LoginCard() {
                   <span className="label-text">Username: </span>
                 </div>
                 <input
+                  value={formData.username}
                   onChange={(event) => {
                     setFormData((state) => {
                       return { ...state, username: event.target.value };
@@ -69,6 +74,7 @@ export default function LoginCard() {
                 <span className="label-text">Email: </span>
               </div>
               <input
+                value={formData.email}
                 onChange={(event) => {
                   setFormData((state) => {
                     return { ...state, email: event.target.value };
@@ -86,6 +92,7 @@ export default function LoginCard() {
                   <span className="label-text">Confirm Email: </span>
                 </div>
                 <input
+                  value={formData.confirmEmail}
                   onChange={(event) => {
                     setFormData((state) => {
                       if (event.target.value == formData.email) {
@@ -108,6 +115,7 @@ export default function LoginCard() {
                 <span className="label-text">Password:</span>
               </div>
               <input
+                value={formData.password}
                 onChange={(event) => {
                   setFormData((state) => {
                     return { ...state, password: event.target.value };
@@ -147,12 +155,13 @@ export default function LoginCard() {
             <div
               onClick={() => {
                 //todo validate form
-                if (validForm) {
-                  login(formData.username, formData.password);
+                if (isLogin) {
+                  login(formData.email, formData.password);
                 }
               }}
               className={
-                "btn " + (validPassword && validEmail ? "" : "btn-disabled")
+                "btn " +
+                ((validPassword && validEmail) || isLogin ? "" : "btn-disabled")
               }>
               Submit
             </div>
