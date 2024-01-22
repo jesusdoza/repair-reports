@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import useGetLatest from "../hooks/useGetLatest";
+import RepairList from "../components/RepairList/RepairList";
 
-export default function LatestRepairs() {
+export default function LatestRepairsPage() {
   //todo get latest repairs
 
   const repairs = useGetLatest();
 
   return (
     <div className="center-block">
-      <h1>latest repairs</h1>
+      <RepairList repairList={repairs} />
     </div>
   );
 }

@@ -5,7 +5,7 @@ const getLatestRepairs = async () => {
     withCredentials: true,
   });
 
-  return response.data;
+  return response.data.repairs;
 };
 const searchForRepair = async (text: string) => {};
 const getRepairInfo = async (repairId: string) => {};

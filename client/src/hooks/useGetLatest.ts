@@ -1,18 +1,40 @@
 import { useEffect, useState } from "react";
-import repairApi from "../api/RepairReportsApi";
+import { AxiosError } from "axios";
+import useRepairApi from "./useRepairApi";
 
-const useGetLatest = async () => {
-  const [repairsData, setRepairsData] = useState([]);
+// export type repairDataT = Record<string, string>;
+export type repairDataT = {
+  boardType: string;
+  createdBy: string;
+  engineMake: string;
+  group: string;
+  procedureArr: [];
+  removed: boolean;
+  title: string;
+  visibility: string;
+  _id: string;
+};
 
+const useGetLatest = () => {
+  const [repairsData, setRepairsData] = useState<repairDataT[] | []>([]);
+  const { getLatestRepairs } = useRepairApi();
   useEffect(() => {
-    console.log("get data");
     const getData = async () => {
-      const response = await repairApi.getLatestRepairs();
-      console.log("response", response);
+      try {
+        const response = await getLatestRepairs();
+        setRepairsData(response);
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          console.log("error", error);
+          console.log("error.status", error?.response?.status);
+        }
+      }
     };
 
     getData();
   }, []);
+
+  return repairsData;
 };
 
 export default useGetLatest;
