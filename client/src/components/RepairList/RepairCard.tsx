@@ -1,4 +1,3 @@
-import React from "react";
 import { repairDataT } from "../../hooks/useGetLatest";
 
 export const RepairCard = ({ data }: { data: repairDataT }) => {
