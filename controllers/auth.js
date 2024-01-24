@@ -13,79 +13,83 @@ exports.getLogin = (req, res) => {
   });
 };
 
-exports.apiLogout = (req, res, next) => {
-  req.logout((err) => {
-    if (err) return next(err);
+// exports.apiLogout = (req, res, next) => {
+//   req.logout((err) => {
+//     if (err) return next(err);
 
-    console.log("User has logged out.");
-    req.session.destroy((err) => {
-      if (err)
-        console.log(
-          "Error : Failed to destroy the session during logout.",
-          err
-        );
-      req.user = null;
-      res.redirect("/");
-    });
-  });
-};
+//     console.log("User has logged out.");
+//     req.session.destroy((err) => {
+//       if (err)
+//         console.log(
+//           "Error : Failed to destroy the session during logout.",
+//           err
+//         );
+//       req.user = null;
+//       res.redirect("/");
+//     });
+//   });
+// };
 
-exports.apiLogin = (req, res, next) => {
-  const validationErrors = [];
-  if (!validator.isEmail(req.body.email)) {
-    console.log("invalid email");
-    validationErrors.push("Please enter a valid email address.");
-  }
-  if (validator.isEmpty(req.body.password)) {
-    console.log("empty password");
+// exports.apiLogin = (req, res, next) => {
+//   const validationErrors = [];
+//   if (!validator.isEmail(req.body.email)) {
+//     console.log("invalid email");
+//     validationErrors.push("Please enter a valid email address.");
+//   }
+//   if (validator.isEmpty(req.body.password)) {
+//     console.log("empty password");
 
-    validationErrors.push("Password cannot be blank.");
-  }
+//     validationErrors.push("Password cannot be blank.");
+//   }
 
-  if (validationErrors.length) {
-    console.log("setting errors in flash");
-    req.flash("errors", validationErrors);
-    // console.log("req flash is", locals.messages);
-    // return res.redirect("/login");
-  }
-  req.body.email = validator.normalizeEmail(req.body.email, {
-    gmail_remove_dots: false,
-  });
+//   if (validationErrors.length) {
+//     console.log("setting errors in flash");
+//     req.flash("errors", validationErrors);
+//     // console.log("req flash is", locals.messages);
+//     // return res.redirect("/login");
+//   }
+//   req.body.email = validator.normalizeEmail(req.body.email, {
+//     gmail_remove_dots: false,
+//   });
 
-  passport.authenticate("local", (err, user, info) => {
-    if (err) {
-      console.error("authen failed");
-      res.send({ message: "login failed", login: "failed" });
-      return;
-    }
-    if (info) {
-      console.log("**********info", info);
-      req.flash("errors", ["Not authorized check credentials"]);
-      res.send({ message: "login failed", login: "failed" });
-      return;
-    }
-    if (!user) {
-      req.flash("errors", ["Not authorized check credentials"]);
-      console.error("no user found");
-      res.send({ message: "login failed", login: "failed" });
-      return;
-    }
-    req.logIn(user, (err) => {
-      if (err) {
-        req.flash("errors", ["Not authorized check credentials"]);
-        res.send({ message: "login failed", login: "failed" });
-        return;
-      }
+//   passport.authenticate("local", (err, user, info) => {
+//     if (err) {
+//       console.error("authen failed");
+//       res.send({ message: "login failed", login: "failed" });
+//       return;
+//     }
+//     if (info) {
+//       console.log("**********info", info);
+//       req.flash("errors", ["Not authorized check credentials"]);
+//       res.send({ message: "login failed", login: "failed" });
+//       return;
+//     }
+//     if (!user) {
+//       req.flash("errors", ["Not authorized check credentials"]);
+//       console.error("no user found");
+//       res.send({ message: "login failed", login: "failed" });
+//       return;
+//     }
+//     req.logIn(user, (err) => {
+//       if (err) {
+//         req.flash("errors", ["Not authorized check credentials"]);
+//         res.send({ message: "login failed", login: "failed" });
+//         return;
+//       }
 
-      const { password, ...t } = user._doc;
-      // console.log("sucess login");
-      // req.flash("success", { msg: "Success! You are logged in." });
-      res.send({ message: t, login: "success" });
-    });
-  })(req, res, next);
-};
+//       //strip the password from the user document
+//       const { password, ...cleanUserData } = user._doc;
+//       console.log("req.sessions at api login", req.sessions);
+//       // console.log("sucess login");
+//       // req.flash("success", { msg: "Success! You are logged in." });
+
+//       res.send({ message: cleanUserData, login: "success" });
+//     });
+//   })(req, res, next);
+// };
 
 ///POST LOGIN
+
 exports.postLogin = (req, res, next) => {
   const validationErrors = [];
   const returnTo = req.session.returnTo;
@@ -132,7 +136,7 @@ exports.postLogin = (req, res, next) => {
         req.flash("errors", ["Not authorized check credentials"]);
         return next(err);
       }
-      // console.log("sucess login");
+      console.log("sucess login post");
       // req.flash("success", { msg: "Success! You are logged in." });
       res.redirect(returnTo || "/repair");
     });

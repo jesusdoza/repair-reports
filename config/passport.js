@@ -37,7 +37,7 @@ module.exports = function (passport) {
   );
 
   passport.serializeUser((user, done) => {
-    console.log("user at serializer", user);
+    // console.log("user at serializer", user);
     // console.log("done at serializer", done);
     done(null, user.id);
   });

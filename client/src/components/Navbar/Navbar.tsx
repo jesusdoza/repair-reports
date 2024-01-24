@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import useAuthContext from "../../hooks/useAuthContext";
 
 export default function Navbar() {
+  const { logout } = useAuthContext();
   return (
     <>
       <div className="navbar bg-base-100 gap-3">
@@ -61,7 +63,11 @@ export default function Navbar() {
                 <Link to={"#"}>Settings</Link>
               </li>
               <li>
-                <Link to={"#"}>Logout</Link>
+                <Link
+                  onClick={() => logout && logout()}
+                  to={"#"}>
+                  Logout
+                </Link>
               </li>
             </ul>
           </li>

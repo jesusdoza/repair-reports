@@ -74,10 +74,14 @@ exports.apiLogin = (req, res, next) => {
         return;
       }
 
-      const { password, ...t } = user._doc;
-      // console.log("sucess login");
-      // req.flash("success", { msg: "Success! You are logged in." });
-      res.send({ message: t, login: "success" });
+      //clean
+      const { password, ...cleanUser } = user._doc;
+
+      res.send({
+        user: cleanUser,
+        loginExpires: req.session.cookie._expires,
+        login: "success",
+      });
     });
   })(req, res, next);
 };

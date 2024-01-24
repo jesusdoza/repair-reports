@@ -16,6 +16,7 @@ export type authContextT = {
   setUserToken: object | null;
   userInfo: User | null;
   login: ((email: string, password: string) => Promise<void>) | null;
+  logout: (() => Promise<void>) | null;
   signUp:
     | ((email: string, password: string, username: string) => Promise<void>)
     | null;
@@ -26,6 +27,7 @@ export const AuthContext = createContext<authContextT>({
   userInfo: null,
   login: null,
   signUp: null,
+  logout: null,
 });
 
 export const AuthContextProvider = ({
@@ -44,11 +46,15 @@ export const AuthContextProvider = ({
     ]);
   }, [userToken, userInfo]);
 
-  // const logout = async () => {
-  //   console.log("google auth signout");
-  //   await signOut(auth);
-  //   setUserToken(null);
-  // };
+  const logout = async () => {
+    console.log("logout");
+    const response = await axios.get(`${API_URL}api/logout`, {
+      withCredentials: true,
+    });
+    setUserToken(null);
+    setIsAuth(false);
+    console.log("response", response);
+  };
   const login = async (email: string, password: string) => {
     const response = await axios.post(
       `${API_URL}api/login`,
@@ -84,6 +90,7 @@ export const AuthContextProvider = ({
     setUserToken,
     userInfo,
     login,
+    logout,
     signUp,
   };
 
