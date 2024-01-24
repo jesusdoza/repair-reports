@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import useAuthContext from "../../hooks/useAuthContext";
+import Search from "./Search";
 
 export default function Navbar() {
   const { logout } = useAuthContext();
@@ -29,11 +30,12 @@ export default function Navbar() {
             </Link>
           </li>
           <li className="form-control">
-            <input
+            {/* <input
               type="text"
               placeholder="Search"
               className="input input-bordered w-24 md:w-auto"
-            />
+            /> */}
+            <Search></Search>
           </li>
 
           <li className="dropdown dropdown-end">

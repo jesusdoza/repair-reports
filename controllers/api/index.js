@@ -89,8 +89,8 @@ module.exports.addRepair = async (req, res) => {
 //retrieve repairs matching query
 module.exports.searchRepairs = async (req, res) => {
   try {
-    console.log(`repairsController.searchRepairs`, req.query);
-    const searchStr = req.query.searchPhrase;
+    console.log(`repairsController.searchRepairs`, req.body);
+    const searchStr = req.body.searchPhrase;
     const results = await Repair.aggregate([
       {
         $search: {
