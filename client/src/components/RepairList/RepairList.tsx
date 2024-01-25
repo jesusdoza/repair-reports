@@ -1,4 +1,3 @@
-import React from "react";
 import { repairDataT } from "../../hooks/useGetLatest";
 import { RepairCard } from "./RepairCard";
 interface latestRepairsProps {

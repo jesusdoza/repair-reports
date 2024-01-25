@@ -19,7 +19,9 @@ const searchForRepair = async (phrase: string) => {
   return response.data;
 };
 
-const getRepairById = async (repairId: string) => {};
+const getRepairById = async (repairId: string) => {
+  console.log("repairId", repairId);
+};
 
 export default {
   getLatestRepairs,

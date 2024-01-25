@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { repairDataT } from "../hooks/useGetLatest";
+// import { repairDataT } from "../hooks/useGetLatest";
 
 // type props = { data: repairDataT };
 

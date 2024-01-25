@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import useGetLatest from "../hooks/useGetLatest";
 import RepairList from "../components/RepairList/RepairList";
 
