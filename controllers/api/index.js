@@ -91,6 +91,7 @@ module.exports.searchRepairs = async (req, res) => {
   try {
     console.log(`repairsController.searchRepairs`, req.body);
     const searchStr = req.body.searchPhrase;
+    const limit = Number(req.body.limit) || 10;
     const results = await Repair.aggregate([
       {
         $search: {
@@ -103,7 +104,7 @@ module.exports.searchRepairs = async (req, res) => {
           },
         },
       },
-    ]);
+    ]).limit(limit);
     res.json({ repairs: results });
   } catch (error) {
     res
