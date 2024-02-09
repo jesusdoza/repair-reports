@@ -4,6 +4,7 @@ const getLatestRepairs = async () => {
   // const response = await axios.get(`http://localhost:8000/api/repairs`, {
   const response = await axios.get(`${API_URL}/api/repairs`, {
     withCredentials: true,
+    params: { num: 1 },
   });
 
   return response.data.repairs;

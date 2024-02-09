@@ -118,8 +118,9 @@ module.exports.getNewestRepairs = async (req, res) => {
   try {
     console.log(`controller repair.getNewestRepairs`);
     console.log(`number of repairs requested`, req.params.num);
-    const numRepairs = req.params.num ? req.params.num : 8;
+    const numRepairs = req.query.num ? req.query.num : 8;
 
+    console.log("req.params", req.query.num);
     //retrieve certain number of repairs that have not been removed
     const results = await Repair.find({ removed: { $ne: true } })
       .sort({ _id: -1 })

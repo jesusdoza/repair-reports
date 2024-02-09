@@ -2,13 +2,20 @@ import { useEffect, useState } from "react";
 import { AxiosError } from "axios";
 import useRepairApi from "./useRepairApi";
 
+export type ProcedureT = {
+  images: string[];
+  imagesIdArr: string[];
+  instructions: string;
+  procedureNum: number;
+  thumbs: string[];
+};
 // export type repairDataT = Record<string, string>;
 export type repairDataT = {
   boardType: string;
   createdBy: string;
   engineMake: string;
   group: string;
-  procedureArr: [];
+  procedureArr: ProcedureT[];
   removed: boolean;
   title: string;
   visibility: string;
