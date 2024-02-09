@@ -22,13 +22,13 @@ export type repairDataT = {
   _id: string;
 };
 
-const useGetLatest = () => {
+const useGetLatest = (limit: number) => {
   const [repairsData, setRepairsData] = useState<repairDataT[] | []>([]);
   const { getLatestRepairs } = useRepairApi();
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await getLatestRepairs();
+        const response = await getLatestRepairs(limit);
         setRepairsData(response);
       } catch (error) {
         if (error instanceof AxiosError) {

@@ -1,10 +1,10 @@
 import axios from "axios";
 const API_URL = import.meta.env.VITE_API_URL;
-const getLatestRepairs = async () => {
+const getLatestRepairs = async (limit) => {
   // const response = await axios.get(`http://localhost:8000/api/repairs`, {
   const response = await axios.get(`${API_URL}/api/repairs`, {
     withCredentials: true,
-    params: { num: 1 },
+    params: { num: limit },
   });
 
   return response.data.repairs;

@@ -7,11 +7,13 @@ interface latestRepairsProps {
 export default function RepairList({ repairList }: latestRepairsProps) {
   const repairs = repairList.map((data) => {
     return (
-      <RepairCard
-        key={Math.random() * 514}
-        data={data}
-      />
+      <li className="w-1/4">
+        <RepairCard
+          key={Math.random() * 514}
+          data={data}
+        />
+      </li>
     );
   });
-  return <div>{repairs}</div>;
+  return <ul className="flex flex-wrap gap-3 justify-center ">{repairs}</ul>;
 }
