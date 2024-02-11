@@ -2,6 +2,9 @@ import { useParams } from "react-router-dom";
 // import { repairDataT } from "../hooks/useGetLatest";
 import { useLocation } from "react-router-dom";
 import { repairDataT } from "../hooks/useGetLatest";
+import ProcedureList from "../components/ProcedureList/ProcedureList";
+import EditTools from "../components/EditTools/EditTools";
+
 export const RepairInfoPage = () => {
   const { repair_id } = useParams();
   const { state: data }: { state: repairDataT } = useLocation();
@@ -10,7 +13,7 @@ export const RepairInfoPage = () => {
   return (
     <section>
       <legend className=" border-4 rounded-lg p-2 border-gray-600">
-        <h1 className=" text-4xl">{data.title}</h1>
+        <h1 className=" text-4xl">{data.title ? data.title : ""}</h1>
         <h3>repair info</h3>
         <div>
           <span>Repair Id:</span>
@@ -34,9 +37,12 @@ export const RepairInfoPage = () => {
         </div>
       </legend>
       <section>
-        <span>Repair procedures</span>
+        <h3 className="text-xl">Repair procedures</h3>
+        <ProcedureList list={data.procedureArr} />
       </section>
-      <section>repair edit tools</section>
+      <section>
+        <EditTools />
+      </section>
       <section>
         <span>comments section</span>
       </section>
