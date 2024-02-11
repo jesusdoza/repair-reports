@@ -64,10 +64,10 @@ export const AuthContextProvider = ({
       },
       { withCredentials: true }
     );
-    console.log("response", response.data);
+    console.log("response", response.data.user);
     if (response.data.login === "success") {
       setUserInfo((state) => {
-        return { ...state, ...response.data.message };
+        return { ...state, ...response.data.user };
       });
       setIsAuth(true);
       return;

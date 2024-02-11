@@ -5,11 +5,14 @@ import { repairDataT } from "../hooks/useGetLatest";
 import ProcedureList from "../components/ProcedureList/ProcedureList";
 import EditTools from "../components/EditTools/EditTools";
 import Comments from "../components/Comments/Comments";
+import useAuthContext from "../hooks/useAuthContext";
 
 export const RepairInfoPage = () => {
   const { repair_id } = useParams();
   const { state: data }: { state: repairDataT } = useLocation();
   console.log("data at repair info page", data);
+  const { userInfo } = useAuthContext();
+  const userId = userInfo?._id;
 
   return (
     <section>
@@ -41,9 +44,8 @@ export const RepairInfoPage = () => {
         <h3 className="text-xl">Repair procedures</h3>
         <ProcedureList list={data.procedureArr} />
       </section>
-      <section>
-        <EditTools />
-      </section>
+      {/* if user id matches created by field user can use edit tools */}
+      <section>{userId == data.createdBy && <EditTools />}</section>
       <section>
         <Comments />
       </section>

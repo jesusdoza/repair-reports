@@ -14,15 +14,13 @@ export default function ProcedureList({ list }: { list: ProcedureT[] }) {
 function ProcedureCard(proc: ProcedureT) {
   const images = proc.images.map((url) => {
     return (
-      <li>
-        <div
-          key={url}
-          className="carousel-item">
-          <img
-            src={url}
-            className="rounded-box"
-          />
-        </div>
+      <li
+        key={url}
+        className="carousel-item w-3/4">
+        <img
+          src={url}
+          className="rounded-box"
+        />
       </li>
     );
   });
