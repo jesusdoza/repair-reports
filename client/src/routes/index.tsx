@@ -47,4 +47,12 @@ export const routes = createBrowserRouter([
       </Layout>
     ),
   },
+  {
+    path: "*",
+    element: (
+      <Layout>
+        <h1>default</h1>
+      </Layout>
+    ),
+  },
 ]);

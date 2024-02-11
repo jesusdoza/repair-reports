@@ -55,7 +55,9 @@ export const AuthContextProvider = ({
     setIsAuth(false);
     console.log("response", response);
   };
+
   const login = async (email: string, password: string) => {
+    console.log(" `${API_URL}/api/login`", `${API_URL}/api/login`);
     const response = await axios.post(
       `${API_URL}/api/login`,
       {
@@ -64,7 +66,7 @@ export const AuthContextProvider = ({
       },
       { withCredentials: true }
     );
-    console.log("response", response.data.user);
+    // console.log("response", response.data.user);
     if (response.data.login === "success") {
       setUserInfo((state) => {
         return { ...state, ...response.data.user };

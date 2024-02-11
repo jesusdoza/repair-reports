@@ -1,4 +1,3 @@
-import { useParams } from "react-router-dom";
 // import { repairDataT } from "../hooks/useGetLatest";
 import { useLocation } from "react-router-dom";
 import { repairDataT } from "../hooks/useGetLatest";
@@ -8,7 +7,7 @@ import Comments from "../components/Comments/Comments";
 import useAuthContext from "../hooks/useAuthContext";
 
 export const RepairInfoPage = () => {
-  const { repair_id } = useParams();
+  // const { repair_id } = useParams();
   const { state: data }: { state: repairDataT } = useLocation();
   console.log("data at repair info page", data);
   const { userInfo } = useAuthContext();
