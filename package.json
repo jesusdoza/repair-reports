@@ -4,8 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "build-front": "cd client && npm run build",
-    "client-install": "cd client/ && npm install",
+    "build-front": "cd ./client/ && npm run build",
+    "client-install": "cd ./client/ && npm install",
     "dev": "concurrently 'npm:devserver' 'npm:tailwind'",
     "devserver": "nodemon server.js",
     "start": "node server.js",
