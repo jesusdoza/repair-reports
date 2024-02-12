@@ -66,9 +66,11 @@ const dashboardRoutes = require("./routes/dashboard.js");
 const groupRoutes = require("./routes/group.js");
 const commentRoutes = require("./routes/comments.js");
 const apiRoutes = require("./routes/api");
+const reactRoutes = require("./routes/react");
 
 // =============================================================
 // ROUTES
+app.use("/react", reactRoutes);
 app.use("/", homeRoutes);
 app.use("/login", loginRoutes);
 app.use("/logout", logoutRoutes);

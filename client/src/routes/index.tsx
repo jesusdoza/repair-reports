@@ -48,10 +48,10 @@ export const routes = createBrowserRouter([
     ),
   },
   {
-    path: "*",
+    path: "/react",
     element: (
       <Layout>
-        <h1>default</h1>
+        <LatestRepairsPage />
       </Layout>
     ),
   },
