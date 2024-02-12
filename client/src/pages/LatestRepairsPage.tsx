@@ -1,5 +1,6 @@
 import useGetLatest from "../hooks/useGetLatest";
 import RepairList from "../components/RepairList/RepairList";
+import React from "react";
 
 export default function LatestRepairsPage() {
   //todo get latest repairs

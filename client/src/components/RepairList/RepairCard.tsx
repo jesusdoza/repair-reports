@@ -1,6 +1,7 @@
 import { repairDataT } from "../../hooks/useGetLatest";
 import { Link } from "react-router-dom";
 import noImagePlaceholder from "../../assets/no-image.png";
+import React from 'react'
 
 export const RepairCard = ({ data }: { data: repairDataT }) => {
   console.log("data", data);

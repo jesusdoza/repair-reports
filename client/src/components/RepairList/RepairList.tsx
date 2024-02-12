@@ -1,4 +1,5 @@
 import { repairDataT } from "../../hooks/useGetLatest";
+import React from "react";
 import { RepairCard } from "./RepairCard";
 interface latestRepairsProps {
   repairList: repairDataT[];
