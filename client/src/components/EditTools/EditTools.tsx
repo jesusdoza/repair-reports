@@ -1,5 +1,3 @@
-import React from "react";
-
-export default function EditTools() {
+export default function EditTools(): React.ReactNode {
   return <div>EditTools</div>;
 }

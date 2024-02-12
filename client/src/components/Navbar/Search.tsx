@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import useRepairApi from "../../hooks/useRepairApi";
 
-export default function Search() {
+export default function Search(): React.ReactNode {
   const { searchForRepair } = useRepairApi();
 
   const [search, setSearch] = useState("");

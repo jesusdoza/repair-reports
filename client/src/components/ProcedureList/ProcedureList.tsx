@@ -1,7 +1,10 @@
 import { ProcedureT } from "../../hooks/useGetLatest";
-import React from "react";
 
-export default function ProcedureList({ list }: { list: ProcedureT[] }) {
+export default function ProcedureList({
+  list,
+}: {
+  list: ProcedureT[];
+}): React.ReactNode {
   const cards = list.map((proc) => {
     return ProcedureCard(proc);
   });

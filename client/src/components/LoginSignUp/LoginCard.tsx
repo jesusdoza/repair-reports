@@ -1,9 +1,7 @@
-import React from "react";
-
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 
-export default function LoginCard() {
+export default function LoginCard(): React.ReactNode {
   const { login, signUp } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     username: "",

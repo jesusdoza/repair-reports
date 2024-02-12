@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
 import useAuthContext from "../../hooks/useAuthContext";
 import Search from "./Search";
-import React from "react";
 
-export default function Navbar() {
+export default function Navbar(): React.ReactNode {
   const { logout } = useAuthContext();
   return (
     <>

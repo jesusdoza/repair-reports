@@ -34,7 +34,7 @@ export const AuthContextProvider = ({
   children,
 }: {
   children: React.ReactNode;
-}) => {
+}): React.ReactNode => {
   const [userToken, setUserToken] = useState<string | null>(null);
   const [isAuth, setIsAuth] = useState(false);
   const [userInfo, setUserInfo] = useState<User | null>(null);

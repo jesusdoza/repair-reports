@@ -1,11 +1,12 @@
 import { repairDataT } from "../../hooks/useGetLatest";
-import React from "react";
 import { RepairCard } from "./RepairCard";
 interface latestRepairsProps {
   repairList: repairDataT[];
 }
 
-export default function RepairList({ repairList }: latestRepairsProps) {
+export default function RepairList({
+  repairList,
+}: latestRepairsProps): React.ReactNode {
   const repairs = repairList.map((data) => {
     return (
       <li className="w-1/4">
