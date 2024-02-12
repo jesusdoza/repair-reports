@@ -8,7 +8,7 @@ import EditTools from "../components/EditTools/EditTools";
 import Comments from "../components/Comments/Comments";
 import useAuthContext from "../hooks/useAuthContext";
 
-export const RepairInfoPage = () => {
+export const RepairInfoPage = (): React.ReactNode => {
   // const { repair_id } = useParams();
   const { state: data }: { state: repairDataT } = useLocation();
   console.log("data at repair info page", data);

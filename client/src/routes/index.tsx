@@ -19,7 +19,7 @@ export const routes = createBrowserRouter([
     path: "/dashboard",
     element: (
       <Layout>
-        <DashboardPage></DashboardPage>
+        <DashboardPage />
       </Layout>
     ),
   },
@@ -27,7 +27,7 @@ export const routes = createBrowserRouter([
     path: "/profile",
     element: (
       <Layout>
-        <ProfilePage></ProfilePage>
+        <ProfilePage />
       </Layout>
     ),
   },
@@ -35,7 +35,7 @@ export const routes = createBrowserRouter([
     path: "/repairform",
     element: (
       <Layout>
-        <RepairFormPage></RepairFormPage>
+        <RepairFormPage />
       </Layout>
     ),
   },
