@@ -5,14 +5,14 @@
   "main": "server.js",
   "scripts": {
     "build-front": "cd ./client/ && npm run build",
-    "client-install": "cd ./client/ && npm install",
+    "client-install": "cd ./client/ && npm install && npm run build",
     "dev": "concurrently 'npm:devserver' 'npm:tailwind'",
     "devserver": "nodemon server.js",
     "start": "node server.js",
     "build": "npm run build-front",
     "test": "npx cypress run",
     "tailwind": "npx tailwindcss -i ./public/stylesheets/main.css -o ./public/stylesheets/style.css --watch",
-    "install": "npm run client-install && npm run build "
+    "install": "npm run client-install"
   },
   "author": "",
   "license": "ISC",
