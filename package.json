@@ -6,10 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "back-install": "cd ./backend/ && npm install",
-    "client-install": "cd ./client/ && npm install && npm run build",
+    "client-install": "cd ./client/ && npm install",
     "build-client": "cd ./client/ && npm run build",
     "start": "cd ./backend/ && npm run start",
-    "install": "npm run copy-env && concurrently 'npm:back-install' 'npm:client-install'",
+    "install": "npm run copy-env && concurrently 'npm:back-install' 'npm:client-install' && npm run build-client",
     "dev": "cd ./backend/ && npm run dev",
     "copy-env": "node copyfile.js"
   },
