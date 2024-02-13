@@ -1,6 +1,12 @@
 const router = require("express").Router();
 const reactController = require("../../controllers/react");
 
-router.get("*", reactController.serveApp);
+const path = require("path");
+
+//! NOT USED
+router.get("*", (req, res) => {
+  // res.send({ serveApp: "serve app" });
+  res.sendFile(path.resolve("../../public/react/index.html"));
+});
 
 module.exports = router;
