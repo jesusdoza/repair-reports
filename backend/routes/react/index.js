@@ -2,6 +2,7 @@ const router = require("express").Router();
 const reactController = require("../../controllers/react");
 
 const path = require("path");
+const fs = require("fs");
 
 router.get("*", (req, res) => {
   const directoryPath = "../backend/public"; // Replace this with your directory path
