@@ -12,12 +12,9 @@
   "dependencies": {
     "@heroicons/react": "^2.1.1",
     "axios": "^1.6.5",
-    "build": "^0.1.4",
-    "npm": "^10.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.20.1",
-    "run": "^1.5.0"
+    "react-router-dom": "^6.20.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.55",
