@@ -4,7 +4,8 @@ const reactController = require("../../controllers/react");
 const path = require("path");
 const fs = require("fs");
 
-router.get("*", (req, res) => {
+router.get("/", (req, res) => {
+  console.log("getting page for react");
   const directoryPath = "../backend/public"; // Replace this with your directory path
 
   // Read the contents of the directory
