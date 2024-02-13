@@ -6,7 +6,11 @@ const path = require("path");
 //! NOT USED
 router.get("*", (req, res) => {
   // res.send({ serveApp: "serve app" });
-  res.sendFile(path.resolve("../../public/react/index.html"));
+  console.log(
+    '(path.resolve("/public/react/index.html")',
+    path.resolve("/public/react/index.html")
+  );
+  res.sendFile(path.resolve("/public/react/index.html"));
 });
 
 module.exports = router;
