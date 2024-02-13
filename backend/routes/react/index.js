@@ -4,13 +4,7 @@ const reactController = require("../../controllers/react");
 const path = require("path");
 
 router.get("*", (req, res) => {
-  // res.send({ serveApp: "serve app" });
-  // console.log(
-  //   '(path.resolve("./public/react/index.html")',
-  //   path.resolve("./public/react/index.html")
-  // );
-  // res.sendFile(path.resolve("./public/react/index.html"));
-  res.render("react.ejs");
+  res.sendFile(path.resolve("./public/images/no-image.png"));
 });
 
 module.exports = router;
