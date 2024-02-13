@@ -9,7 +9,7 @@
     "client-install": "cd ./client/ && npm install",
     "build-client": "cd ./client/ && npm run build",
     "start": "cd ./backend/ && npm run start",
-    "install": "concurrently 'npm:back-install' 'npm:client-install' && npm run build-client",
+    "install": "npm run back-install && npm run client-install && npm run build-client",
     "dev": "cd ./backend/ && npm run dev"
   },
   "author": "",

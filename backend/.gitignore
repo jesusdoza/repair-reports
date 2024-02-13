@@ -3,5 +3,5 @@ secrets.js
 *.env
 cypress/videos/
 .vscode/
-public/react
+
 
