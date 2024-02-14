@@ -46,7 +46,14 @@ export const RepairInfoPage = (): React.ReactNode => {
         <ProcedureList list={data.procedureArr} />
       </section>
       {/* if user id matches created by field user can use edit tools */}
-      <section>{userId == data.createdBy && <EditTools />}</section>
+      <section>
+        {userId == data.createdBy && (
+          <EditTools
+            data={data}
+            editPageUrl={`/repair/edit/${data._id}`}
+          />
+        )}
+      </section>
       <section>
         <Comments />
       </section>
