@@ -1,25 +1,43 @@
-import React, { Dispatch } from "react";
+import React, { useState } from "react";
 import { ProcedureT } from "../../hooks/useGetLatest";
-import { DispatchType } from "./changeProcedure";
-export default function ProcedureEditCard({
+import { DispatchType } from "../../hooks/useUpdateProcedures";
+
+export default function ProcedureForm({
   proc,
-  updateFn,
+  reducer,
 }: {
   proc: ProcedureT;
-  updateFn: Dispatch<{ type: DispatchType; payload: object }>;
+  reducer: DispatchType;
 }) {
-  const images = proc.images.map((url) => {
-    return EditImageCard(url);
+  const [imageUrls, setImageUrls] = useState(proc.images);
+
+  const images = imageUrls.map((url, index) => {
+    //update image array at index based on map index
+    const setUrl = (newUrl: string) => {
+      setImageUrls((state) => {
+        const newState = [...state];
+        newState[index] = newUrl; //update at current index
+        return newState;
+      });
+    };
+
+    return (
+      <div>
+        <EditImageCard
+          url={url}
+          setUrl={setUrl}
+        />
+        <input
+          type="file"
+          accept="image/*"
+        />
+      </div>
+    );
   });
+
   return (
     <li>
-      <h1
-        onClick={() => {
-          updateFn({ type: "test dispatch", payload: { testpayload: "test" } });
-        }}
-        className="text-xl">
-        procedure num is : {proc.procedureNum}
-      </h1>
+      <h1 className="text-xl">procedure num is : {proc.procedureNum}</h1>
       <ul className=" flex flex-col justify-center align-middle items-center gap-2 w-full p-4  bg-neutral rounded-box">
         {images}
       </ul>
@@ -38,8 +56,13 @@ export default function ProcedureEditCard({
   );
 }
 
-function EditImageCard(url: string) {
-  //todo upload image hook
+function EditImageCard({
+  url,
+  setUrl,
+}: {
+  url: string;
+  setUrl: (newUrl: string) => void;
+}) {
   return (
     <li
       key={url}
@@ -59,7 +82,21 @@ function EditImageCard(url: string) {
             value={url}
           />
         </label>
+        <label
+          htmlFor=""
+          className="">
+          <h3>Upload new image</h3>
+        </label>
       </div>
     </li>
   );
 }
+
+// function previewImage(event) {
+//   //   const uploadnum = event.target.closest(".uploads").dataset.totalfiles;
+//   const currentUpload = event.target.closest(".imageuploaded");
+//   const image = currentUpload.querySelector("img");
+//   image.src = URL.createObjectURL(event.target.files[0]);
+//   image.alt = "image preview";
+//   image.classList.add("img-mini");
+// }

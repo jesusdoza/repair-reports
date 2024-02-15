@@ -1,5 +1,5 @@
 import { ProcedureT } from "../../hooks/useGetLatest";
-import ProcedureEditCard from "./EditProcedureCard";
+import ProcedureForm from "./EditProcedureCard";
 import useUpdateProcedures from "../../hooks/useUpdateProcedures";
 
 export default function EditProcedureList({
@@ -8,12 +8,13 @@ export default function EditProcedureList({
   list: ProcedureT[];
 }): React.ReactNode {
   //
+  //state holding all procedures on an array
   const { currentList, dispatch } = useUpdateProcedures(list);
 
   const procedures = currentList.map((proc) => {
     return (
-      <ProcedureEditCard
-        updateFn={dispatch}
+      <ProcedureForm
+        reducer={dispatch}
         proc={proc}
       />
     );
