@@ -3,7 +3,7 @@ import { ProcedureT } from "../../hooks/useGetLatest";
 import { DispatchType } from "../../hooks/useUpdateProcedures";
 import { EditImageCard } from "./EditImageCard";
 
-export default function ProcedureForm({
+export default function EditProcedureForm({
   proc,
   reducer,
 }: {
@@ -18,20 +18,27 @@ export default function ProcedureForm({
 
   return (
     <li>
-      <h1 className="text-xl">procedure num is : {proc.procedureNum}</h1>
-      <ul className=" flex flex-col justify-center align-middle items-center gap-2 w-full p-4  bg-neutral rounded-box">
-        {imageCards}
-      </ul>
       <section>
-        <div
-          onClick={() => addNewImage(setImageUrls)}
-          className="btn">
-          add new image
-        </div>
+        <h1 className="text-xl">procedure num is : {proc.procedureNum}</h1>
+        <ul className=" flex flex-col justify-center align-middle items-center gap-2 w-full p-4  bg-neutral rounded-box">
+          {imageCards}
+        </ul>
+        {/* add another image to this list of images and use placeholder url in meantime */}
+        <section>
+          <div>
+            <span>upload another image</span>
+            <input
+              type="file"
+              accept="image/*"
+              id="newImage"
+            />
+          </div>
+        </section>
       </section>
+
+      {/* INSTRUCTIONS */}
       <section className="">
         <h3 className="text-lg text-gray">Instructions: </h3>
-
         <textarea
           className="w-3/4 "
           defaultValue={proc.instructions}
