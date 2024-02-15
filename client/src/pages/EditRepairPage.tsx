@@ -2,7 +2,7 @@ import { useLocation } from "react-router-dom";
 import { repairDataT } from "../hooks/useGetLatest";
 import ProcedureList from "../components/ProcedureList/ProcedureList";
 import { useEffect, useState } from "react";
-import EditProcedureList from "../components/EditTools/EditProcedureList";
+import EditProcedureList from "../components/RepairEdit/EditProcedureList";
 
 export default function EditRepairPage() {
   const { state: data }: { state: repairDataT } = useLocation();

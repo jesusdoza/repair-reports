@@ -28,8 +28,12 @@ export function EditImageCard({
         </label>
         <label
           htmlFor=""
-          className="">
-          <h3>Upload new image</h3>
+          className="text-black border-2 border-s-violet-100">
+          <h3>Replace image</h3>
+          <input
+            type="file"
+            accept="image/*"
+          />
         </label>
       </div>
     </li>
