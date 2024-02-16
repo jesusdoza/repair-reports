@@ -1,6 +1,6 @@
 import React, { Dispatch, useState } from "react";
 import { ProcedureT } from "../../hooks/useGetLatest";
-import { DispatchType } from "../../hooks/useUpdateProcedures";
+import { updateProcDispT } from "../../hooks/useUpdateProcedures";
 import { EditImageCard } from "./EditImageCard";
 
 export default function EditProcedureForm({
@@ -8,13 +8,18 @@ export default function EditProcedureForm({
   reducer,
 }: {
   proc: ProcedureT;
-  reducer: Dispatch<{ type: DispatchType; payload: object }>;
+  reducer: updateProcDispT;
 }) {
   //
   const [imageUrls, setImageUrls] = useState(proc.images);
 
   //
   const imageCards = createEditImageCards(imageUrls, setImageUrls);
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    e.preventDefault();
+    console.log("event.target.value", e.target.value);
+  };
 
   return (
     <li>
@@ -40,6 +45,7 @@ export default function EditProcedureForm({
       <section className="">
         <h3 className="text-lg text-gray">Instructions: </h3>
         <textarea
+          onChange={handleChange}
           className="w-3/4 "
           defaultValue={proc.instructions}
           name=""

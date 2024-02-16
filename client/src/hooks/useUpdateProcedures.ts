@@ -7,6 +7,13 @@ export default function useUpdateProcedures(procedureList: ProcedureT[]) {
   return { currentList, dispatch };
 }
 
+export type updateProcDispT = React.Dispatch<{
+  type: DispatchType;
+  payload: {
+    index: number;
+  };
+}>;
+
 export enum DispatchType {
   UPDATE_IMAGE,
   ADD_IMAGE,

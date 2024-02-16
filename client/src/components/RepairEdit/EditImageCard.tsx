@@ -8,7 +8,7 @@ export function EditImageCard({
   setUrl: (newUrl: string) => void;
 }) {
   return (
-    <li
+    <div
       key={url}
       className="w-3/4 bg-green-400">
       <div className="flex flex-col">
@@ -36,6 +36,6 @@ export function EditImageCard({
           />
         </label>
       </div>
-    </li>
+    </div>
   );
 }
