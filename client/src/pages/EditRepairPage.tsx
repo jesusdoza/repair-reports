@@ -1,21 +1,37 @@
 import { useLocation } from "react-router-dom";
 import { repairDataT } from "../hooks/useGetLatest";
-import { FormEventHandler, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import EditProcedureList from "../components/RepairEdit/EditProcedureList";
 import { AvailableEnginesSelect } from "../components/AvailableOptions/AvailableEngines";
 
 export default function EditRepairPage() {
   const { state: data }: { state: repairDataT } = useLocation();
-  const [newData, setNewData] = useState(data);
+
+  //duplicate state incase user wants to revert to original
+  const [updatedData, setUpdatedData] = useState(data);
+
+  //delegate proceduresArr to substate
+  const [newProceds, setNewProceds] = useState(updatedData.procedureArr);
 
   useEffect(() => {
-    console.log("new data", newData);
-  }, [newData]);
+    // console.log("new data", updatedData);
+    // console.log("central procedures state @EditRepairPage", newProceds);
+    setUpdatedData((state) => {
+      return { ...state, procedureArr: newProceds };
+    });
+  }, [newProceds]);
+
+  useEffect(() => {
+    console.log("updatedData : ", updatedData);
+  }, [updatedData]);
 
   const handleUpdate = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formdata = event.currentTarget;
     console.log("formdata", formdata);
+    console.log("updating state original State: ", data);
+    //todo update data at api with new data
+    console.log("updating state new State: ", updatedData);
   };
 
   return (
@@ -27,32 +43,39 @@ export default function EditRepairPage() {
           id="title"
           name="title"
           type="text"
-          defaultValue={newData.title ? newData.title : ""}
+          defaultValue={updatedData.title ? updatedData.title : ""}
         />
         <h3>repair info</h3>
         <div>
           <span>Repair Id:</span>
-          <div className="badge badge-neutral"> {newData._id}</div>
+          <div className="badge badge-neutral"> {updatedData._id}</div>
         </div>
         <div>
           <span>created by user:</span>
-          <div className="badge badge-neutral"> {newData.createdBy}</div>
+          <div className="badge badge-neutral"> {updatedData.createdBy}</div>
         </div>
-        <AvailableEnginesSelect defaultValue={newData.engineMake} />
+        <AvailableEnginesSelect defaultValue={updatedData.engineMake} />
         <div>
           <span>user group:</span>
-          <div className="badge badge-neutral"> {newData.group}</div>
+          <div className="badge badge-neutral"> {updatedData.group}</div>
         </div>
         <div>
           <span>board type:</span>
-          <div className="badge badge-neutral"> {newData.boardType}</div>
+          <div className="badge badge-neutral"> {updatedData.boardType}</div>
         </div>
       </legend>
       <section>
         <h3 className="text-xl">Repair procedures</h3>
-        <EditProcedureList list={newData.procedureArr} />
+        <EditProcedureList
+          updateFn={setNewProceds}
+          list={newProceds}
+        />
       </section>
-      <button className="btn">Update</button>
+      <button
+        type="submit"
+        className="btn">
+        Update
+      </button>
     </form>
   );
 }

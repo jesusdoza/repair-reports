@@ -28,6 +28,7 @@ function changeProcedures(
   state: ProcedureT[],
   action: { type: DispatchType; payload: ChangeProcPayloadT }
 ) {
+  let newState = state;
   switch (action.type) {
     case DispatchType.ADD_IMAGE:
       break;
@@ -36,29 +37,29 @@ function changeProcedures(
     case DispatchType.UPDATE_IMAGE:
       break;
     case DispatchType.UPDATE_INTRUC:
-      updateInstruction(state, action.payload);
+      newState = updateInstruction(state, action.payload);
       break;
 
     default:
       break;
   }
 
-  return state;
+  return newState;
 }
 
 function updateInstruction(
   state: ProcedureT[],
   payload: ChangeProcPayloadT
 ): ProcedureT[] {
-  console.log("state", state);
-  console.log("payload", payload);
+  // console.log("state", state);
+  // console.log("payload", payload);
   const newState = state.map((proc: ProcedureT, index) => {
     if (payload.index == index) {
       return { ...proc, instructions: payload.instructions } as ProcedureT;
     }
     return proc;
   });
-  console.log("newState", newState);
+  // console.log("newState", newState);
 
   return newState;
 }
