@@ -6,22 +6,26 @@ import { EditImageCard } from "./EditImageCard";
 export default function EditProcedureForm({
   proc,
   reducer,
+  index,
 }: {
   proc: ProcedureT;
   reducer: updateProcDispT;
+  index: number;
 }) {
   //
   const [imageUrls, setImageUrls] = useState(proc.images);
 
+  //coarse index to number to be used as reference of updating state array of the proceduresArray
+  index = Number(index);
   //
   const imageCards = createEditImageCards(imageUrls, setImageUrls);
 
   const handleInstructChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     e.preventDefault();
-    console.log("event.target.value", e.target.value);
+    // console.log("event.target.value", e.target.value);
     reducer({
       type: DispatchType.UPDATE_INTRUC,
-      payload: { index: 1, instructions: e.target.value },
+      payload: { index, instructions: e.target.value },
     });
   };
 

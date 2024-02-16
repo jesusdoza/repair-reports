@@ -2,9 +2,12 @@ import { useReducer } from "react";
 import { ProcedureT } from "./useGetLatest";
 
 export default function useUpdateProcedures(procedureList: ProcedureT[]) {
-  const [currentList, dispatch] = useReducer(changeProcedures, procedureList);
+  const [currentListState, dispatch] = useReducer(
+    changeProcedures,
+    procedureList
+  );
 
-  return { currentList, dispatch };
+  return { currentListState, dispatch };
 }
 
 export type updateProcDispT = React.Dispatch<{
@@ -40,22 +43,22 @@ function changeProcedures(
       break;
   }
 
-  console.log("state", state);
-  console.log("action", action);
-
   return state;
 }
 
 function updateInstruction(
   state: ProcedureT[],
-  payload: { intructions?: string; index?: number }
+  payload: ChangeProcPayloadT
 ): ProcedureT[] {
+  console.log("state", state);
+  console.log("payload", payload);
   const newState = state.map((proc: ProcedureT, index) => {
     if (payload.index == index) {
-      return { ...proc, instructions: payload.intructions } as ProcedureT;
+      return { ...proc, instructions: payload.instructions } as ProcedureT;
     }
     return proc;
   });
+  console.log("newState", newState);
 
   return newState;
 }
