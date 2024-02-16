@@ -1,8 +1,12 @@
 import { useLocation } from "react-router-dom";
 import { repairDataT } from "../hooks/useGetLatest";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import EditProcedureList from "../components/RepairEdit/EditProcedureList";
 import { AvailableEnginesSelect } from "../components/AvailableOptions/AvailableEngines";
+import axios from "axios";
+import useRepairApi from "../hooks/useRepairApi";
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function EditRepairPage() {
   const { state: data }: { state: repairDataT } = useLocation();
@@ -12,6 +16,8 @@ export default function EditRepairPage() {
 
   //delegate proceduresArr to substate
   const [newProceds, setNewProceds] = useState(updatedData.procedureArr);
+
+  const { getUploadSignature, updateRepair } = useRepairApi();
 
   useEffect(() => {
     // console.log("new data", updatedData);
@@ -25,13 +31,19 @@ export default function EditRepairPage() {
     console.log("updatedData : ", updatedData);
   }, [updatedData]);
 
-  const handleUpdate = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleUpdate = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formdata = event.currentTarget;
-    console.log("formdata", formdata);
-    console.log("updating state original State: ", data);
-    //todo update data at api with new data
-    console.log("updating state new State: ", updatedData);
+    const signature = await getUploadSignature();
+    console.log("signature", signature);
+
+    // const res = await updateRepair(updatedData, signature);
+    // console.log("res update repair", res);
+
+    // const formdata = event.currentTarget;
+    // console.log("formdata", formdata);
+    // console.log("updating state original State: ", data);
+    // //todo update data at api with new data
+    // console.log("updating state new State: ", updatedData);
   };
 
   return (
@@ -39,6 +51,12 @@ export default function EditRepairPage() {
       <legend className=" border-4 rounded-lg p-2 border-gray-600">
         <span className=" text-4xl">Title:</span>
         <input
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
+            console.log("e", e.target.value);
+            setUpdatedData((state) => {
+              return { ...state, title: e.target.value };
+            });
+          }}
           className="text-4xl"
           id="title"
           name="title"

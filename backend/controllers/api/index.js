@@ -153,3 +153,37 @@ module.exports.getRepair = async (req, res) => {
     });
   }
 };
+
+module.exports.updateRepair = async (req, res) => {
+  try {
+    // let reapir = {
+    //   procedureArr: req.body.procedureArr,
+    //   searchtags: req.body.searchtags,
+    //   title: req.body.title,
+    //   boardType: req.body.boardType,
+    //   engineMake: req.body.engineMake,
+    //   createdBy: req.user.username,
+    //   removed: false,
+    // };
+    console.log(req.body);
+    // console.log(`post at /repairform`,entry)
+
+    // let result = await Repair.create(entry);
+    // console.log(`done uploading at server result`, result);
+
+    // const repLink = `/repair/${result._id}`; //add link to repair
+
+    // // console.log(`server response to send`,result)
+    // res.send({
+    //   message: "repair added successfully",
+    //   result: entry,
+    //   link: repLink,
+    // });
+
+    res.send({ message: "repair update" });
+  } catch (error) {
+    res
+      .status(400)
+      .json({ message: "failed to save repair", error: error.message });
+  }
+};
