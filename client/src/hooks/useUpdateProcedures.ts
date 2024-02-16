@@ -13,12 +13,42 @@ export enum DispatchType {
   UPDATE_INTRUC,
   ADD_PROCEDURE,
 }
+
 function changeProcedures(
   state: ProcedureT[],
-  action: { type: DispatchType; payload: object }
+  action: { type: DispatchType; payload: { index: number } }
 ) {
+  switch (action.type) {
+    case DispatchType.ADD_IMAGE:
+      break;
+    case DispatchType.ADD_PROCEDURE:
+      break;
+    case DispatchType.UPDATE_IMAGE:
+      break;
+    case DispatchType.UPDATE_INTRUC:
+      updateInstruction(state, action.payload);
+      break;
+
+    default:
+      break;
+  }
+
   console.log("state", state);
   console.log("action", action);
 
   return state;
+}
+
+function updateInstruction(
+  state: ProcedureT[],
+  payload: { intructions?: string; index?: number }
+): ProcedureT[] {
+  const newState = state.map((proc: ProcedureT, index) => {
+    if (payload.index == index) {
+      return { ...proc, instructions: payload.intructions } as ProcedureT;
+    }
+    return proc;
+  });
+
+  return newState;
 }
