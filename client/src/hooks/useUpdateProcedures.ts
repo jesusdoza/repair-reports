@@ -9,9 +9,7 @@ export default function useUpdateProcedures(procedureList: ProcedureT[]) {
 
 export type updateProcDispT = React.Dispatch<{
   type: DispatchType;
-  payload: {
-    index: number;
-  };
+  payload: ChangeProcPayloadT;
 }>;
 
 export enum DispatchType {
@@ -21,9 +19,11 @@ export enum DispatchType {
   ADD_PROCEDURE,
 }
 
+export type ChangeProcPayloadT = { index: number; instructions?: string };
+
 function changeProcedures(
   state: ProcedureT[],
-  action: { type: DispatchType; payload: { index: number } }
+  action: { type: DispatchType; payload: ChangeProcPayloadT }
 ) {
   switch (action.type) {
     case DispatchType.ADD_IMAGE:

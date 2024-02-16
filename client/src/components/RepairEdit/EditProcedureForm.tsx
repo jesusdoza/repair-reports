@@ -1,6 +1,6 @@
-import React, { Dispatch, useState } from "react";
+import React, { useState } from "react";
 import { ProcedureT } from "../../hooks/useGetLatest";
-import { updateProcDispT } from "../../hooks/useUpdateProcedures";
+import { DispatchType, updateProcDispT } from "../../hooks/useUpdateProcedures";
 import { EditImageCard } from "./EditImageCard";
 
 export default function EditProcedureForm({
@@ -16,9 +16,13 @@ export default function EditProcedureForm({
   //
   const imageCards = createEditImageCards(imageUrls, setImageUrls);
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleInstructChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     e.preventDefault();
     console.log("event.target.value", e.target.value);
+    reducer({
+      type: DispatchType.UPDATE_INTRUC,
+      payload: { index: 1, instructions: e.target.value },
+    });
   };
 
   return (
@@ -45,7 +49,7 @@ export default function EditProcedureForm({
       <section className="">
         <h3 className="text-lg text-gray">Instructions: </h3>
         <textarea
-          onChange={handleChange}
+          onChange={handleInstructChange}
           className="w-3/4 "
           defaultValue={proc.instructions}
           name=""
@@ -57,13 +61,13 @@ export default function EditProcedureForm({
   );
 }
 
-function addNewImage(
-  setImageUrls: React.Dispatch<React.SetStateAction<string[]>>
-) {
-  setImageUrls((state) => [...state, "#"]);
+// function addNewImage(
+//   setImageUrls: React.Dispatch<React.SetStateAction<string[]>>
+// ) {
+//   setImageUrls((state) => [...state, "#"]);
 
-  return;
-}
+//   return;
+// }
 
 function createEditImageCards(
   imageUrls: string[],
