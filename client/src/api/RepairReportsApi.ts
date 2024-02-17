@@ -41,19 +41,41 @@ const getUploadSignature = async () => {
 };
 
 const updateRepair = async (repair: repairDataT) => {
-  const response = await axios.put(
-    `${API_URL}/api/repairs`,
-    { repair },
-    {
-      withCredentials: true,
+  let signature = undefined;
+  try {
+    signature = await getUploadSignature();
+  } catch (err: unknown) {
+    if (err instanceof Error && err?.message) {
+      throw new Error(`signature error : ${err?.message}`);
     }
-  );
-  return response.data;
+
+    throw new Error(`unspecified signature error`);
+  }
+
+  console.log("signature", signature);
+  console.log("repair @updateRepair ", repair);
+
+  try {
+    const response = await axios.put(
+      `${API_URL}/api/repairs`,
+      { repairData: repair },
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  } catch (err) {
+    if (err instanceof Error && err?.message) {
+      throw new Error(`PUT error ${API_URL}/api/repairs : ${err?.message}`);
+    }
+
+    throw new Error(`unspecified PUT error ${API_URL}/api/repairs`);
+  }
 };
 
 export default {
   updateRepair,
-  getUploadSignature,
+
   getLatestRepairs,
   searchForRepair,
   getRepairById,

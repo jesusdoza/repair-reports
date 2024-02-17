@@ -155,35 +155,34 @@ module.exports.getRepair = async (req, res) => {
 };
 
 module.exports.updateRepair = async (req, res) => {
+  let updateResponse;
   try {
-    // let reapir = {
-    //   procedureArr: req.body.procedureArr,
-    //   searchtags: req.body.searchtags,
-    //   title: req.body.title,
-    //   boardType: req.body.boardType,
-    //   engineMake: req.body.engineMake,
-    //   createdBy: req.user.username,
-    //   removed: false,
-    // };
-    console.log(req.body);
-    // console.log(`post at /repairform`,entry)
+    const updatedDoc = req.body.repairData;
+    const filter = { _id: updatedDoc._id };
+    updatedDoc.boardType = updatedDoc.boardType.toUpperCase();
 
-    // let result = await Repair.create(entry);
-    // console.log(`done uploading at server result`, result);
+    console.log("repair data", updatedDoc);
+    console.log("filter", filter);
 
-    // const repLink = `/repair/${result._id}`; //add link to repair
+    try {
+      updateResponse = await Repair.findOneAndUpdate(filter, updatedDoc, {
+        returnOriginal: false,
+      });
+    } catch (err) {
+      res.status(400).json({
+        message: `ID: ${updatedDoc._id}  NOT FOUND for edit`,
+        error: err?.message,
+      });
+      return;
+    }
 
-    // // console.log(`server response to send`,result)
-    // res.send({
-    //   message: "repair added successfully",
-    //   result: entry,
-    //   link: repLink,
-    // });
-
-    res.send({ message: "repair update" });
-  } catch (error) {
     res
-      .status(400)
-      .json({ message: "failed to save repair", error: error.message });
+      .status(200)
+      .json({ message: "repair update", status: "success", updatedDoc });
+  } catch (error) {
+    res.status(400).json({
+      message: `failed to update document: ${updatedDoc._id}`,
+      error: error.message,
+    });
   }
 };

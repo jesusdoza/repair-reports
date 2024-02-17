@@ -3,41 +3,42 @@ import { repairDataT } from "../hooks/useGetLatest";
 import { ChangeEvent, useEffect, useState } from "react";
 import EditProcedureList from "../components/RepairEdit/EditProcedureList";
 import { AvailableEnginesSelect } from "../components/AvailableOptions/AvailableEngines";
-import axios from "axios";
+// import axios from "axios";
 import useRepairApi from "../hooks/useRepairApi";
-
-const API_URL = import.meta.env.VITE_API_URL;
 
 export default function EditRepairPage() {
   const { state: data }: { state: repairDataT } = useLocation();
 
   //duplicate state incase user wants to revert to original
+
   const [updatedData, setUpdatedData] = useState(data);
 
   //delegate proceduresArr to substate
   const [newProceds, setNewProceds] = useState(updatedData.procedureArr);
 
-  const { getUploadSignature, updateRepair } = useRepairApi();
+  const { updateRepair } = useRepairApi();
 
   useEffect(() => {
     // console.log("new data", updatedData);
     // console.log("central procedures state @EditRepairPage", newProceds);
+
+    //bring in substate for procedureArr back into the main state
     setUpdatedData((state) => {
       return { ...state, procedureArr: newProceds };
     });
   }, [newProceds]);
 
-  useEffect(() => {
-    console.log("updatedData : ", updatedData);
-  }, [updatedData]);
+  // useEffect(() => {
+  //   console.log("updatedData : ", updatedData);
+  // }, [updatedData]);
 
   const handleUpdate = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const signature = await getUploadSignature();
-    console.log("signature", signature);
 
-    // const res = await updateRepair(updatedData, signature);
-    // console.log("res update repair", res);
+    console.log("updatedData", updatedData);
+
+    const res = await updateRepair(updatedData);
+    console.log("res update repair", res);
 
     // const formdata = event.currentTarget;
     // console.log("formdata", formdata);
@@ -86,7 +87,7 @@ export default function EditRepairPage() {
         <h3 className="text-xl">Repair procedures</h3>
         <EditProcedureList
           updateFn={setNewProceds}
-          list={newProceds}
+          list={updatedData.procedureArr}
         />
       </section>
       <button
