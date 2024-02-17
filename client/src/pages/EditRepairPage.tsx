@@ -37,14 +37,12 @@ export default function EditRepairPage() {
 
     console.log("updatedData", updatedData);
 
-    const res = await updateRepair(updatedData);
-    console.log("res update repair", res);
-
-    // const formdata = event.currentTarget;
-    // console.log("formdata", formdata);
-    // console.log("updating state original State: ", data);
-    // //todo update data at api with new data
-    // console.log("updating state new State: ", updatedData);
+    try {
+      const res = await updateRepair(updatedData);
+      console.log("res update repair", res);
+    } catch (error) {
+      console.log("error handleUpdate @EditRepairPage ", error);
+    }
   };
 
   return (

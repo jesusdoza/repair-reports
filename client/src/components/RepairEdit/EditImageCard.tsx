@@ -1,3 +1,4 @@
+// @ts-expect-error 'react is used'
 import React from "react";
 
 export function EditImageCard({
@@ -7,6 +8,7 @@ export function EditImageCard({
   url: string;
   setUrl: (newUrl: string) => void;
 }) {
+  console.log("setUrl", setUrl);
   return (
     <div
       key={url}
