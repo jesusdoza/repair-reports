@@ -4,5 +4,7 @@ secrets.js
 cypress/videos/
 .vscode/
 public/
+git ignore
+style.css
 
 
