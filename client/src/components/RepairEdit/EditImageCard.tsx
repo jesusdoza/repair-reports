@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import useUploadImage from "../../hooks/useUploadImage";
+import { CameraPreview } from "./CameraPreview";
 
 export function EditImageCard({
   url,
@@ -160,20 +161,5 @@ export function EditImageCard({
         </label>
       </div>
     </div>
-  );
-}
-
-function CameraPreview({
-  videoRef,
-}: {
-  videoRef: React.RefObject<HTMLVideoElement>;
-}) {
-  return (
-    <video
-      className="h-full w-full"
-      ref={videoRef}
-      style={{ display: "block", maxWidth: "100%" }}
-      autoPlay
-    />
   );
 }
