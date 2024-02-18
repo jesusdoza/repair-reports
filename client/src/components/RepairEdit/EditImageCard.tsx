@@ -47,17 +47,16 @@ export function EditImageCard({
     if (file) {
       const reader = new FileReader();
 
+      setImageToUpload(file);
+
       //registering callback when event onloadend happens
       reader.onloadend = async () => {
         //event will trigger and reader.result will have data:URL
         setImagePreview(reader.result);
       };
 
-      //read the file data
+      //read the file data and trigger onloadend event
       reader.readAsDataURL(file);
-
-      //set file data to upload
-      setImageToUpload(file);
     }
   };
 

@@ -25,7 +25,7 @@ export default function useUploadImage() {
 
     console.log("formData");
     for (const entry of formData.entries()) {
-      console.log("entry", entry);
+      console.log(entry);
     }
     //   const response = await fetch(url, {
     //     method: "POST",
