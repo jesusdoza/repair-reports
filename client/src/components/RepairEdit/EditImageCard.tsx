@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import useUploadImage from "../../hooks/useUploadImage";
 
 export function EditImageCard({
   url,
@@ -7,6 +8,9 @@ export function EditImageCard({
   url: string;
   setUrl: (newUrl: string) => void; //external state setter to manipulate url prop
 }) {
+  setUrl; //!temp usage
+
+  const upload = useUploadImage();
   //will show image of what has been captured by camera or url, or empty
   const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>(
     url
@@ -23,6 +27,14 @@ export function EditImageCard({
   //ref used to interact with node that is rendered to dom and get its current properties
   //will hold <video> tag reference
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handleUpload = async (folder: string) => {
+    if (imageToUpload) {
+      await upload(imageToUpload, folder);
+      return;
+    }
+    console.log("no upload image");
+  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     //check input element for files
@@ -85,7 +97,6 @@ export function EditImageCard({
       const fileFromBlob = new File([blobData], "image.jpg");
 
       setImageToUpload(fileFromBlob);
-
       //once image is captured set preview and close camera
       setImagePreview(dataUrl);
       setActiveCamera(false);
@@ -137,6 +148,14 @@ export function EditImageCard({
               accept="image/*"
               onChange={handleFileChange}
             />
+          </div>
+
+          <div
+            onClick={() => {
+              handleUpload("testfolder");
+            }}
+            className="btn">
+            handleUpload
           </div>
         </label>
       </div>

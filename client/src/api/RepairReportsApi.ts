@@ -7,6 +7,7 @@ type signatureT = {
   cloudname: string;
   signature: string;
   timestamp: number;
+  folder: string;
 };
 
 const getLatestRepairs = async (limit: string | number) => {
@@ -33,26 +34,18 @@ const getRepairById = async (repairId: string) => {
   console.log("repairId", repairId);
 };
 
-const getUploadSignature = async () => {
+//todo what folder to upload images to needs to be in signature
+const getUploadSignature = async (folder: string) => {
   const response = await axios.get(`${API_URL}/api/signform`, {
     withCredentials: true,
+    data: {
+      folder,
+    },
   });
   return response.data as signatureT;
 };
 
 const updateRepair = async (repair: repairDataT) => {
-  let signature = undefined;
-  try {
-    signature = await getUploadSignature();
-  } catch (err: unknown) {
-    if (err instanceof Error && err?.message) {
-      throw new Error(`signature error : ${err?.message}`);
-    }
-
-    throw new Error(`unspecified signature error`);
-  }
-
-  console.log("signature", signature);
   console.log("repair @updateRepair ", repair);
 
   try {
@@ -75,7 +68,7 @@ const updateRepair = async (repair: repairDataT) => {
 
 export default {
   updateRepair,
-
+  getUploadSignature,
   getLatestRepairs,
   searchForRepair,
   getRepairById,
