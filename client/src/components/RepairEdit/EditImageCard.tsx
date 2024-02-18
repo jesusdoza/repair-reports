@@ -11,7 +11,7 @@ export function EditImageCard({
 }) {
   setUrl; //!temp usage
 
-  const upload = useUploadImage();
+  const uploadImage = useUploadImage();
   //will show image of what has been captured by camera or url, or empty
   const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>(
     url
@@ -31,7 +31,7 @@ export function EditImageCard({
 
   const handleUpload = async (folder: string) => {
     if (imageToUpload) {
-      await upload(imageToUpload, folder);
+      await uploadImage(imageToUpload, folder);
       return;
     }
     console.log("no upload image");
