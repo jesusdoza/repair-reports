@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 export function EditImageCard({
   url,
@@ -14,18 +14,37 @@ export function EditImageCard({
 
   const [activeCamera, setActiveCamera] = useState(false);
 
+  const [imageToUpload, setImageToUpload] = useState<File | null>(null);
+
+  useEffect(() => {
+    console.log("imageToUpload", imageToUpload);
+  }, [imageToUpload]);
+
   //ref used to interact with node that is rendered to dom and get its current properties
   //will hold <video> tag reference
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //check input element for files
     const file = event.target.files && event.target.files[0];
+
+    //turn off camera incase its on
+    setActiveCamera(false);
+
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = () => {
+
+      //registering callback when event onloadend happens
+      reader.onloadend = async () => {
+        //event will trigger and reader.result will have data:URL
         setImagePreview(reader.result);
       };
+
+      //read the file data
       reader.readAsDataURL(file);
+
+      //set file data to upload
+      setImageToUpload(file);
     }
   };
 
@@ -47,8 +66,6 @@ export function EditImageCard({
   };
 
   const captureFrame = () => {
-    //
-
     //create a canvas to view camera stream
     const canvas = document.createElement("canvas");
 
@@ -60,6 +77,7 @@ export function EditImageCard({
 
       //grab current view displayed on canvas from camera
       const dataUrl = canvas.toDataURL("image/png");
+      canvas.toBlob;
 
       //once image is captured set preview and close camera
       setImagePreview(dataUrl);
@@ -70,16 +88,17 @@ export function EditImageCard({
   return (
     <div
       key={url}
-      className="w-3/4 bg-green-100">
-      <div className="flex flex-col w-[500px]">
-        <div className=" h-[400px] w-full">
+      className=" bg-green-100">
+      <div className="flex flex-col  max-w-[500px] ">
+        <div className=" h-[500px] w-full flex justify-center items-center ">
           {imagePreview && !activeCamera ? (
             <img
+              className="w-full "
               src={imagePreview.toString()}
               alt="Preview"
-              style={{ maxWidth: "100%" }}
             />
           ) : null}
+
           {activeCamera && (
             <section className=" flex flex-col border-solid h-full border-emerald-600 border-8 ">
               <div className="h-3/4">
@@ -105,11 +124,13 @@ export function EditImageCard({
             onClick={openCamera}>
             Use camera
           </div>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-          />
+          <div>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+            />
+          </div>
         </label>
       </div>
     </div>
