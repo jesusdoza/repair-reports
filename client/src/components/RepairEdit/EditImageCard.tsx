@@ -65,7 +65,7 @@ export function EditImageCard({
     }
   };
 
-  const captureFrame = () => {
+  const captureFrame = async () => {
     //create a canvas to view camera stream
     const canvas = document.createElement("canvas");
 
@@ -73,11 +73,18 @@ export function EditImageCard({
     if (videoRef.current) {
       canvas.width = videoRef.current.videoWidth;
       canvas.height = videoRef.current.videoHeight;
+
+      //grab current from from canvas
       canvas.getContext("2d")?.drawImage(videoRef.current, 0, 0);
 
       //grab current view displayed on canvas from camera
       const dataUrl = canvas.toDataURL("image/png");
-      canvas.toBlob;
+
+      const blobData = await fetch(dataUrl).then((res) => res.blob());
+
+      const fileFromBlob = new File([blobData], "image.jpg");
+
+      setImageToUpload(fileFromBlob);
 
       //once image is captured set preview and close camera
       setImagePreview(dataUrl);
