@@ -1,6 +1,8 @@
 // import React from "react";
 
+import { Form } from "react-router-dom";
 import useRepairApi from "./useRepairApi";
+import { signatureT } from "../api/RepairReportsApi";
 
 export default function useUploadImage() {
   const { getUploadSignature } = useRepairApi();
@@ -10,20 +12,20 @@ export default function useUploadImage() {
 
     const url =
       "https://api.cloudinary.com/v1_1/" + signData.cloudname + "/auto/upload";
-    const formData = new FormData();
+    // const formData = new FormData();
+    const formData = await createForm({ imageFile, signData });
 
     url; //! temp usage
 
     //upload all images that need it
     ///new image requires upload
 
-    formData.append("file", imageFile);
-    formData.append("api_key", signData.apikey);
-    formData.append("timestamp", String(signData.timestamp));
-    formData.append("signature", signData.signature);
-    formData.append("folder", signData.folder); //put this file in folder named cata
+    // formData.append("file", imageFile);
+    // formData.append("api_key", signData.apikey);
+    // formData.append("timestamp", String(signData.timestamp));
+    // formData.append("signature", signData.signature);
+    // formData.append("folder", signData.folder); //put this file in folder named cata
 
-    console.log("formData");
     for (const entry of formData.entries()) {
       console.log(entry);
     }
@@ -85,3 +87,21 @@ export default function useUploadImage() {
 
 //   return files; //return array of image objects
 // }
+
+async function createForm({
+  imageFile,
+  signData,
+}: {
+  imageFile: File;
+  signData: signatureT;
+}) {
+  const formData = new FormData();
+
+  formData.append("file", imageFile);
+  formData.append("api_key", signData.apikey);
+  formData.append("timestamp", String(signData.timestamp));
+  formData.append("signature", signData.signature);
+  formData.append("folder", signData.folder); //put this file in folder named cata
+
+  return formData;
+}

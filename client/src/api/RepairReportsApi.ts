@@ -2,7 +2,7 @@ import axios from "axios";
 import { repairDataT } from "../hooks/useGetLatest";
 const API_URL = import.meta.env.VITE_API_URL;
 
-type signatureT = {
+export type signatureT = {
   apikey: string;
   cloudname: string;
   signature: string;
