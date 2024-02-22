@@ -6,5 +6,6 @@ cypress/videos/
 public/
 git ignore
 style.css
+compose.yaml
 
 

@@ -31,7 +31,8 @@ export function EditImageCard({
 
   const handleUpload = async (folder: string) => {
     if (imageToUpload) {
-      await uploadImage(imageToUpload, folder);
+      const response = await uploadImage(imageToUpload, folder);
+      console.log("response from image upload: ", response);
       return;
     }
     console.log("no upload image");
@@ -39,15 +40,15 @@ export function EditImageCard({
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     //check input element for files
-    const file = event.target.files && event.target.files[0];
+    const imageFile = event.target.files && event.target.files[0];
 
     //turn off camera incase its on
     setActiveCamera(false);
 
-    if (file) {
+    if (imageFile) {
       const reader = new FileReader();
 
-      setImageToUpload(file);
+      setImageToUpload(imageFile);
 
       //registering callback when event onloadend happens
       reader.onloadend = async () => {
@@ -56,7 +57,7 @@ export function EditImageCard({
       };
 
       //read the file data and trigger onloadend event
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(imageFile);
     }
   };
 
@@ -94,9 +95,9 @@ export function EditImageCard({
 
       const blobData = await fetch(dataUrl).then((res) => res.blob());
 
-      const fileFromBlob = new File([blobData], "image.jpg");
+      const imageFileFromBlob = new File([blobData], "image.jpg");
 
-      setImageToUpload(fileFromBlob);
+      setImageToUpload(imageFileFromBlob);
       //once image is captured set preview and close camera
       setImagePreview(dataUrl);
       setActiveCamera(false);
@@ -106,7 +107,7 @@ export function EditImageCard({
   return (
     <div
       key={url}
-      className=" bg-green-100">
+      className="">
       <div className="flex flex-col  max-w-[500px] ">
         <div className=" h-[500px] w-full flex justify-center items-center ">
           {imagePreview && !activeCamera ? (

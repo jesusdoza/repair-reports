@@ -38,7 +38,7 @@ const getRepairById = async (repairId: string) => {
 const getUploadSignature = async (folder: string) => {
   const response = await axios.get(`${API_URL}/api/signform`, {
     withCredentials: true,
-    data: {
+    params: {
       folder,
     },
   });
