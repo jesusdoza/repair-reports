@@ -8,13 +8,11 @@ export default function useUploadImage() {
 
   return async function uploadImage(imageFile: File, folder: string) {
     const signData = await getUploadSignature(folder);
-    console.log("signData", signData);
+    // console.log("signData", signData);
 
     const url =
       "https://api.cloudinary.com/v1_1/" + signData.cloudname + "/auto/upload";
     const formData = await createForm({ imageFile, signData });
-
-    // url; //! temp usage
 
     //upload all images that need it
     ///new image requires upload
@@ -35,7 +33,6 @@ export default function useUploadImage() {
       body: formData,
     }).then((data) => data.json());
 
-    console.log("response from image cloud upload", response);
     return response;
 
     //   //array of responses after upload
