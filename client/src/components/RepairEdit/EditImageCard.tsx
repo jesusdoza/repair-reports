@@ -9,16 +9,16 @@ export function EditImageCard({
   url: string;
   setUrl: (newUrl: string) => void; //external state setter to manipulate url prop
 }) {
-  setUrl; //!temp usage
-
   const uploadImage = useUploadImage();
   //will show image of what has been captured by camera or url, or empty
   const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>(
     url
   );
 
+  //is camera active
   const [activeCamera, setActiveCamera] = useState(false);
 
+  //new image to upload
   const [imageToUpload, setImageToUpload] = useState<File | null>(null);
 
   useEffect(() => {
@@ -33,6 +33,7 @@ export function EditImageCard({
     if (imageToUpload) {
       const response = await uploadImage(imageToUpload, folder);
       console.log("response from image upload: ", response);
+      setUrl(response.url);
       return;
     }
     console.log("no upload image");
@@ -109,7 +110,7 @@ export function EditImageCard({
       key={url}
       className="">
       <div className="flex flex-col  max-w-[500px] ">
-        <div className=" h-[500px] w-full flex justify-center items-center ">
+        <div className="  w-full flex flex-col justify-center items-center ">
           {imagePreview && !activeCamera ? (
             <img
               className="w-full "
@@ -119,7 +120,7 @@ export function EditImageCard({
           ) : null}
 
           {activeCamera && (
-            <section className=" flex flex-col border-solid h-full border-emerald-600 border-8 ">
+            <section className=" w-full flex flex-col border-solid h-full border-8 ">
               <div className="h-3/4">
                 <CameraPreview videoRef={videoRef} />
               </div>
@@ -131,6 +132,17 @@ export function EditImageCard({
               </div>
             </section>
           )}
+          <section className="p-3">
+            <h4 className="">
+              Update link manually or use the edit tools to upload new image
+            </h4>
+
+            <textarea
+              wrap="true"
+              defaultValue={url}
+              cols={40}
+            />
+          </section>
         </div>
 
         <label
