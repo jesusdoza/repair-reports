@@ -22,21 +22,27 @@ export default function EditRepairPage() {
   useEffect(() => {
     //bring in substate for procedureArr back into the main state
     setUpdatedData((state) => {
+      console.log("updated state of updatedData", {
+        ...state,
+        procedureArr: newProceds,
+      });
       return { ...state, procedureArr: newProceds };
     });
   }, [newProceds]);
 
-  const handleUpdate = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    console.log("updatedData", updatedData);
+    console.log("updatedData", updatedData.procedureArr);
 
-    try {
-      const res = await updateRepair(updatedData);
-      console.log("res update repair", res);
-    } catch (error) {
-      console.log("error handleUpdate @EditRepairPage ", error);
-    }
+    //todo
+    //! stopped here does backend accept new shape of data?
+    // try {
+    //   const res = await updateRepair(updatedData);
+    //   console.log("res update repair", res);
+    // } catch (error) {
+    //   console.log("error handleUpdate @EditRepairPage ", error);
+    // }
   };
 
   const availableGroups = [
@@ -67,7 +73,7 @@ export default function EditRepairPage() {
   return (
     <form
       className="w-full"
-      onSubmit={handleUpdate}>
+      onSubmit={handleSubmit}>
       <legend className=" gap-4 flex flex-col border-4 rounded-lg p-2 border-gray-600">
         <span className=" text-4xl">Title:</span>
         <div>

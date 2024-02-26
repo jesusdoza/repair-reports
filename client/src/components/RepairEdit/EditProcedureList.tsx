@@ -16,7 +16,7 @@ export default function EditProcedureList({
 
   useEffect(() => {
     // console.log("currentListState", currentListState);
-    updateFn(currentListState); //!not called yet
+    updateFn(currentListState);
   }, [currentListState]);
 
   const procedures = currentListState.map((proc, index) => {

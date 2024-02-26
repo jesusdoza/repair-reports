@@ -14,19 +14,6 @@ export default function useUploadImage() {
       "https://api.cloudinary.com/v1_1/" + signData.cloudname + "/auto/upload";
     const formData = await createForm({ imageFile, signData });
 
-    //upload all images that need it
-    ///new image requires upload
-
-    // formData.append("file", imageFile);
-    // formData.append("api_key", signData.apikey);
-    // formData.append("timestamp", String(signData.timestamp));
-    // formData.append("signature", signData.signature);
-    // formData.append("folder", signData.folder); //put this file in folder named cata
-
-    // for (const entry of formData.entries()) {
-    //   console.log(entry);
-    // }
-
     //upload to cloudinary
     const response = await fetch(url, {
       method: "POST",

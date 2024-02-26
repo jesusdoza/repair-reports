@@ -12,20 +12,20 @@ export default function EditProcedureForm({
   reducer: updateProcDispT;
   index: number;
 }) {
-  //
+  //! use reducer and remove this state state will become const and update as necessary
   const [imageUrls, setImageUrls] = useState(proc.images);
 
   //coarse index to number to be used as reference of updating state array of the proceduresArray
   index = Number(index);
-  //
-  const imageCards = createEditImageCards(imageUrls, setImageUrls);
+
+  const imageCards = createEditImageCards(imageUrls, setImageUrls, reducer);
 
   const handleInstructChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     e.preventDefault();
     // console.log("event.target.value", e.target.value);
     reducer({
       type: DispatchType.UPDATE_INTRUC,
-      payload: { index, instructions: e.target.value },
+      payload: { procIndex: index, instructions: e.target.value },
     });
   };
 
@@ -73,16 +73,35 @@ export default function EditProcedureForm({
 //   return;
 // }
 
+//cards for images to be edited
+/*
+argumetns
+imageUrls
+setImageUrls
+reducer
+*/
+
+//! use only the reducer here not set state redundant
 function createEditImageCards(
   imageUrls: string[],
-  setImageUrls: React.Dispatch<React.SetStateAction<string[]>>
+  setImageUrls: React.Dispatch<React.SetStateAction<string[]>>,
+  reducer: updateProcDispT
 ) {
+  //
   const imageCards = imageUrls.map((url, index) => {
+    // setting up the function so component doesnt need to know what index it is in array
     //update image array at index based on map index
     const setUrl = (newUrl: string) => {
       setImageUrls((state) => {
         const newState = [...state];
         newState[index] = newUrl; //update at current index
+
+        reducer({
+          type: DispatchType.UPDATE_IMAGES,
+          payload: { imagesUrls: newState, procIndex: index },
+        });
+
+        //update global state
         return newState;
       });
     };

@@ -21,22 +21,29 @@ export function EditImageCard({
   //new image to upload
   const [imageToUpload, setImageToUpload] = useState<File | null>(null);
 
-  useEffect(() => {
-    console.log("imageToUpload", imageToUpload);
-  }, [imageToUpload]);
+  // useEffect(() => {
+  //   console.log("imageToUpload", imageToUpload);
+  // }, [imageToUpload]);
 
   //ref used to interact with node that is rendered to dom and get its current properties
   //will hold <video> tag reference
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const handleUpload = async (folder: string) => {
+  const handleImageUpload = async (folder: string) => {
+    //todo allow upload state to keep from doing requests over and over
     if (imageToUpload) {
-      const response = await uploadImage(imageToUpload, folder);
-      console.log("response from image upload: ", response);
-      setUrl(response.url);
-      return;
+      try {
+        const response = await uploadImage(imageToUpload, folder);
+        // console.log("response from image upload: ", response);
+        setUrl(response.url); //update with new url
+        return;
+      } catch (error) {
+        console.log("error uploading", error);
+        //todo set alert of failed upload
+        return;
+      }
     }
-    console.log("no upload image");
+    alert("no image to upload");
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -138,6 +145,10 @@ export function EditImageCard({
             </h4>
 
             <textarea
+              onChange={(event) => {
+                const text = event.target.value;
+                setUrl(text);
+              }}
               wrap="true"
               defaultValue={url}
               cols={40}
@@ -165,10 +176,10 @@ export function EditImageCard({
 
           <div
             onClick={() => {
-              handleUpload("testfolder");
+              handleImageUpload("testfolder");
             }}
             className="btn">
-            handleUpload
+            Upload Image
           </div>
         </label>
       </div>
