@@ -33,8 +33,9 @@ export enum DispatchType {
 export type ChangeProcPayloadT = {
   procIndex: number;
   instructions?: string;
-  imagesUrls?: string[];
-  imageObjs?: imageObjT[];
+  newImageUrl?: string;
+  newImageIndex?: number;
+  newImageObj?: imageObjT;
 };
 
 function changeProcedures(
@@ -48,7 +49,7 @@ function changeProcedures(
     case DispatchType.ADD_PROCEDURE:
       break;
     case DispatchType.UPDATE_IMAGES:
-      newState = updateImages(state, action.payload);
+      newState = updateImage(state, action.payload);
       break;
     case DispatchType.UPDATE_INTRUC:
       newState = updateInstruction(state, action.payload);
@@ -78,25 +79,32 @@ function updateInstruction(
   return newState;
 }
 
-function updateImages(state: ProcedureT[], payload: ChangeProcPayloadT) {
+function updateImage(state: ProcedureT[], payload: ChangeProcPayloadT) {
   console.log("payload", payload);
+
+  if (!payload.newImageUrl || typeof payload.newImageIndex != "number") {
+    console.log("no index to update image@useUpdateProcedures.updateImage");
+    return state;
+  }
+
+  const procIndex = payload.procIndex;
+  const targetProc = state[procIndex];
+  const imageIndexToUpdate = payload.newImageIndex;
+
+  const newImageUrl = payload.newImageUrl;
+  // const newImageObj = payload?.newImageObj;
+
+  //update legacy image urls property
+  targetProc.images[imageIndexToUpdate] = newImageUrl;
 
   //update state
   const newState = state.map((proc: ProcedureT, index) => {
-    if (payload.procIndex == index) {
-      return {
-        ...proc,
-        images: payload.imagesUrls,
-        imageObjs: payload?.imageObjs && [],
-      } as ProcedureT;
+    if (procIndex == index) {
+      return targetProc;
     }
     return proc;
   });
-  // console.log("DispatchType.UPDATE_IMAGES", action);
-  // console.log("state", state);
-  // const newstate = { ...state, images: action.imagesUrls };
   console.log("new state", newState);
 
   return state;
-  // return { ...state, images: action.imagesUrls };
 }

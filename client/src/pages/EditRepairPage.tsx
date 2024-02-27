@@ -35,14 +35,12 @@ export default function EditRepairPage() {
 
     console.log("updatedData", updatedData.procedureArr);
 
-    //todo
-    //! stopped here does backend accept new shape of data?
-    // try {
-    //   const res = await updateRepair(updatedData);
-    //   console.log("res update repair", res);
-    // } catch (error) {
-    //   console.log("error handleUpdate @EditRepairPage ", error);
-    // }
+    try {
+      const res = await updateRepair(updatedData);
+      console.log("res update repair", res);
+    } catch (error) {
+      console.log("error handleUpdate @EditRepairPage ", error);
+    }
   };
 
   const availableGroups = [
@@ -60,6 +58,7 @@ export default function EditRepairPage() {
     },
     { label: "public", value: "public" },
   ];
+
   const availableEngines = [
     {
       label: `original: ${updatedData.engineMake}`,
@@ -79,7 +78,7 @@ export default function EditRepairPage() {
         <div>
           <input
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
-              console.log("e", e.target.value);
+              // console.log("e", e.target.value);
               setUpdatedData((state) => {
                 return { ...state, title: e.target.value };
               });
