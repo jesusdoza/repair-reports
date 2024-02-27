@@ -8,7 +8,7 @@ export default function EditProcedureList({
   updateFn,
 }: {
   list: ProcedureT[];
-  updateFn: React.Dispatch<React.SetStateAction<ProcedureT[]>>;
+  updateFn: (newProcedures: ProcedureT[]) => void;
 }): React.ReactNode {
   //
   //state holding all procedures on an array central state

@@ -3,14 +3,14 @@ import { ProcedureT, imageObjT } from "./useGetLatest";
 
 const LOC = "@useRepairFormState ";
 
-const proc:ProcedureT={
-    images: [],
-    imageObjs?:  [],
-    imagesIdArr: [],
-    instructions: '',
-    procedureNum: 0,
-    thumbs:[]
-}
+const proc: ProcedureT = {
+  images: [],
+  imageObjs: [],
+  imagesIdArr: [],
+  instructions: "",
+  procedureNum: 0,
+  thumbs: [],
+};
 
 const newRepairState = {
   boardType: "other",
@@ -20,15 +20,15 @@ const newRepairState = {
   title: "New Repair",
 };
 
-export type NewRepairT = typeof newRepairState;
+export type RepairFormT = typeof newRepairState;
 
 export default function useRepairFormState() {
-  const [currentListState, dispatch] = useReducer(
+  const [currentFormState, formDispatch] = useReducer(
     updateFormData,
     newRepairState
   );
 
-  return { currentListState, dispatch };
+  return { state: currentFormState, dispatch: formDispatch };
 }
 
 export type updateProcDispT = React.Dispatch<{
@@ -41,6 +41,9 @@ export enum DispatchType {
   ADD_IMAGE,
   UPDATE_INTRUC,
   ADD_PROCEDURE,
+  REMOVE_PROCEDURE,
+  UPDATE_PROCEDURES,
+  UPDATE_FIELD,
 }
 
 // export type imageObjT = {
@@ -52,22 +55,30 @@ export enum DispatchType {
 // };
 
 export type ChangeFormPayloadT = {
-  procIndex: number;
+  procIndex?: number;
   instructions?: string;
   newImageUrl?: string;
   newImageIndex?: number;
   newImageObj?: imageObjT;
+  allProcedures?: ProcedureT[];
+  formField?: Record<string, string>;
 };
 
 function updateFormData(
-  state: NewRepairT,
+  state: RepairFormT,
   action: { type: DispatchType; payload: ChangeFormPayloadT }
 ) {
   let newState = state;
   switch (action.type) {
     case DispatchType.ADD_IMAGE:
       break;
+    case DispatchType.UPDATE_FIELD:
+      newState = updateField(state, action.payload);
+      break;
     case DispatchType.ADD_PROCEDURE:
+      break;
+    case DispatchType.UPDATE_PROCEDURES:
+      newState = updateProcedures(state, action.payload);
       break;
     case DispatchType.UPDATE_IMAGES:
       newState = updateImage(state, action.payload);
@@ -83,10 +94,20 @@ function updateFormData(
   return newState;
 }
 
+function updateField(state: RepairFormT, payload: ChangeFormPayloadT) {
+  return { ...state, ...payload.formField };
+}
+
+function updateProcedures(state: RepairFormT, payload: ChangeFormPayloadT) {
+  const { allProcedures } = payload;
+
+  return { ...state, ProcedureArr: allProcedures } as RepairFormT;
+}
+
 function updateInstruction(
-  state: NewRepairT,
+  state: RepairFormT,
   payload: ChangeFormPayloadT
-):NewRepairT {
+): RepairFormT {
   // console.log("state", state);
   // console.log("payload", payload);
   const newProcedures = state.procedureArr.map((proc: ProcedureT, index) => {
@@ -97,14 +118,19 @@ function updateInstruction(
   });
   // console.log("newState", newState);
 
-  return {...state, procedureArr:newProcedures};
+  return { ...state, procedureArr: newProcedures };
 }
 
-function updateImage(state: NewRepairT, payload: ChangeFormPayloadT) {
+///UPDATE IMAGE action
+function updateImage(state: RepairFormT, payload: ChangeFormPayloadT) {
   console.log(`${LOC} form payload`, payload);
 
   //have new image to update
-  if (!payload.newImageUrl || typeof payload.newImageIndex != "number") {
+  if (
+    !payload.newImageUrl ||
+    typeof payload.newImageIndex != "number" ||
+    !(payload?.procIndex && payload.procIndex > 0)
+  ) {
     console.log("no index to update image@useUpdateProcedures.updateImage");
     return state;
   }
@@ -127,13 +153,13 @@ function updateImage(state: NewRepairT, payload: ChangeFormPayloadT) {
   targetProc.images[imageIndexToUpdate] = newImageUrl;
 
   //update state
-//   const newState = state.map((proc: ProcedureT, index) => {
+  //update the image in specified index of procedureArr
+  const newProcedures = state.procedureArr.map((proc: ProcedureT, index) => {
     if (procIndex == index) {
       return targetProc;
     }
     return proc;
   });
-//   console.log("new state", newState);
 
-  return state;
+  return { ...state, procedureArr: newProcedures } as RepairFormT;
 }
