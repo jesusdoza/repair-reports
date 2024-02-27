@@ -9,12 +9,10 @@ type selectionT = {
 
 export default function AvailableOptions({
   options,
-  name,
   title,
   callback,
 }: {
   options: selectionT[];
-  name: string;
   title: string;
   callback?: (engineSelected: string) => void;
 }) {
@@ -50,15 +48,5 @@ export default function AvailableOptions({
         {selections}
       </select> */}
     </div>
-  );
-}
-
-function createOption({ value, label }: selectionT) {
-  return (
-    <option
-      id={value + "id"}
-      value={value}>
-      {label}
-    </option>
   );
 }

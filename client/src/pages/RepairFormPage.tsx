@@ -5,41 +5,14 @@ import EditProcedureList from "../components/RepairEdit/EditProcedureList";
 // import useRepairApi from "../hooks/useRepairApi";
 import useRepairFormState, { DispatchType } from "../hooks/useRepairFormState";
 
-const startingProcedure = {
-  images: [],
-  imageObjs: [],
-  imagesIdArr: [],
-  instructions: "",
-  procedureNum: 0,
-  thumbs: [],
-};
-
-const newRepairState = {
-  boardType: "other",
-  engineMake: "other",
-  group: "public",
-  procedureArr: [startingProcedure],
-  title: "New Repair",
-};
-
-export type NewRepairT = typeof newRepairState;
+const LOC = "@RepairFormPage.tsx";
 
 export default function RepairFormPage(): React.ReactNode {
-  // const { state: data }: { state: repairDataT } = useLocation();
-
-  //duplicate state incase user wants to revert to original
-
-  // const [updatedData, setUpdatedData] = useState<NewRepairT>(newRepairState);
   const { state: currentFormState, dispatch: formDispatch } =
     useRepairFormState();
 
-  //delegate proceduresArr to substate
-  // const [newProceds, setNewProceds] = useState(updatedData.procedureArr);
-
-  // const { createRepair } = useRepairApi();
-
   useEffect(() => {
-    console.log("currentFormState useEffect ln41", currentFormState);
+    console.log(`currentFormState useEffect ln41 ${LOC}`, currentFormState);
   }, [currentFormState]);
 
   // useEffect(() => {
@@ -72,7 +45,11 @@ export default function RepairFormPage(): React.ReactNode {
       label: `original: ${currentFormState.boardType}`,
       value: currentFormState.group,
     },
-    { label: "public", value: "public" },
+    { label: "Cat 70 pin", value: "cat70" },
+    { label: "Cat 40 pin", value: "cat40" },
+    { label: "DDEC 2", value: "DDEC2" },
+    { label: "DDEC 3", value: "DDEC3" },
+    { label: "DDEC 4", value: "DDEC4" },
   ];
 
   const availableEngines = [
@@ -95,6 +72,7 @@ export default function RepairFormPage(): React.ReactNode {
           <input
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               console.log("e", e.target.value);
+              // formDispatch({ type: DispatchType.UPDATE_INTRUC });
               // setUpdatedData((state) => {
               //   return { ...state, title: e.target.value };
               // });
@@ -110,27 +88,36 @@ export default function RepairFormPage(): React.ReactNode {
         <div>
           <AvailableOptions
             title="Visibility group"
-            name="group"
             options={availableGroups}
+            callback={(group: string) => {
+              formDispatch({
+                type: DispatchType.UPDATE_FIELD,
+                payload: { formField: { group } },
+              });
+            }}
           />
         </div>
         <div>
           <AvailableOptions
             title="Board Type"
-            name="boardType"
             options={availableBoardTypes}
+            callback={(boardType: string) => {
+              formDispatch({
+                type: DispatchType.UPDATE_FIELD,
+                payload: { formField: { boardType } },
+              });
+            }}
           />
         </div>
         <div>
           <AvailableOptions
-            callback={(engine: string) => {
+            callback={(engineMake: string) => {
               formDispatch({
                 type: DispatchType.UPDATE_FIELD,
-                payload: { formField: { engineMake: engine } },
+                payload: { formField: { engineMake } },
               });
             }}
             title="Engine make"
-            name="engine"
             options={availableEngines}
           />
         </div>
@@ -146,12 +133,22 @@ export default function RepairFormPage(): React.ReactNode {
           }}
           list={currentFormState.procedureArr}
         />
+        {/* edit procedure list section */}
+        <section className="p-3">
+          <h3>Edit Procedure list</h3>
+          <div>
+            <button className="btn">add procedure</button>
+          </div>
+        </section>
       </section>
-      <button
-        type="submit"
-        className="btn">
-        Update
-      </button>
+      {/* submit section */}
+      <section className="p-3">
+        <button
+          type="submit"
+          className="btn">
+          Update
+        </button>
+      </section>
     </form>
   );
 }

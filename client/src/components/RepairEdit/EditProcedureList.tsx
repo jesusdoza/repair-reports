@@ -12,6 +12,7 @@ export default function EditProcedureList({
 }): React.ReactNode {
   //
   //state holding all procedures on an array central state
+  //! sub reducer for procedure list not bringing changes up to main level
   const { currentListState, dispatch } = useUpdateProcedures(list);
 
   useEffect(() => {

@@ -18,6 +18,7 @@ export default function EditProcedureForm({
   //coarse index to number to be used as reference of updating state array of the proceduresArray
   const PROCEDURE_INDEX = Number(index);
 
+  console.log("proc", proc);
   const imageCards = createEditImageCards({
     imageUrls: proc.images,
     reducer: reducer,
@@ -92,6 +93,7 @@ function createEditImageCards({
   //
   const imageCards = imageUrls.map((url, index) => {
     // setting up the function so component doesnt need to know what index it is in array
+    // console.log("url", url);
     const updateUrl = (newUrl: string) => {
       //update image array at index based on map index
       reducer({

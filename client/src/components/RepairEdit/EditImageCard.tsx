@@ -9,6 +9,7 @@ export function EditImageCard({
   url: string;
   setUrl: (newUrl: string) => void; //external state setter to manipulate url prop
 }) {
+  // console.log("url @ EditImageCard", url);
   const uploadImage = useUploadImage();
   //will show image of what has been captured by camera or url, or empty
   const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>(

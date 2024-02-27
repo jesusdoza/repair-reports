@@ -4,7 +4,7 @@ import { ProcedureT, imageObjT } from "./useGetLatest";
 const LOC = "@useRepairFormState ";
 
 const proc: ProcedureT = {
-  images: [],
+  images: ["#"],
   imageObjs: [],
   imagesIdArr: [],
   instructions: "",
@@ -101,7 +101,7 @@ function updateField(state: RepairFormT, payload: ChangeFormPayloadT) {
 function updateProcedures(state: RepairFormT, payload: ChangeFormPayloadT) {
   const { allProcedures } = payload;
 
-  return { ...state, ProcedureArr: allProcedures } as RepairFormT;
+  return { ...state, procedureArr: allProcedures } as RepairFormT;
 }
 
 function updateInstruction(
