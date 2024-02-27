@@ -66,7 +66,10 @@ const updateRepair = async (repair: repairDataT) => {
   }
 };
 
+const createRepair = () => {};
+
 export default {
+  createRepair,
   updateRepair,
   getUploadSignature,
   getLatestRepairs,
