@@ -2,7 +2,6 @@ import { useLocation } from "react-router-dom";
 import { repairDataT } from "../hooks/useGetLatest";
 import { ChangeEvent, useEffect, useState } from "react";
 import EditProcedureList from "../components/RepairEdit/EditProcedureList";
-import { AvailableEnginesSelect } from "../components/AvailableOptions/AvailableEngines";
 // import axios from "axios";
 import useRepairApi from "../hooks/useRepairApi";
 import AvailableOptions from "../components/AvailableOptions/AvailableOptions";
@@ -20,14 +19,11 @@ export default function EditRepairPage() {
   const { updateRepair } = useRepairApi();
 
   useEffect(() => {
-    //bring in substate for procedureArr back into the main state
-    setUpdatedData((state) => {
-      console.log("updated state of updatedData", {
-        ...state,
-        procedureArr: newProceds,
-      });
-      return { ...state, procedureArr: newProceds };
-    });
+    console.log("updatedData", updatedData);
+  }, [updatedData]);
+
+  useEffect(() => {
+    updateState({ procedureArr: newProceds }, setUpdatedData);
   }, [newProceds]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -116,6 +112,14 @@ export default function EditRepairPage() {
         </div>
         <div>
           <AvailableOptions
+            callback={(engine: string) => {
+              updateState({ engineMake: engine }, setUpdatedData);
+
+              // updateEngine({
+              //   engineSelected: engine,
+              //   setState: setUpdatedData,
+              // });
+            }}
             title="Engine make"
             name="engine"
             options={availableEngines}
@@ -136,4 +140,13 @@ export default function EditRepairPage() {
       </button>
     </form>
   );
+}
+
+function updateState(
+  fieldUpdate: object,
+  setState: React.Dispatch<React.SetStateAction<repairDataT>>
+) {
+  setState((state) => {
+    return { ...state, ...fieldUpdate };
+  });
 }
