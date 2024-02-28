@@ -67,22 +67,26 @@ export default function RepairFormPage(): React.ReactNode {
       className="w-full"
       onSubmit={handleSubmit}>
       <legend className=" gap-4 flex flex-col border-4 rounded-lg p-2 border-gray-600">
-        <span className=" text-4xl">Title:</span>
-        <div>
-          <input
-            onChange={(e: ChangeEvent<HTMLInputElement>) => {
-              console.log("e", e.target.value);
-              // formDispatch({ type: DispatchType.UPDATE_INTRUC });
-              // setUpdatedData((state) => {
-              //   return { ...state, title: e.target.value };
-              // });
-            }}
-            className="text-2xl w-full"
-            id="title"
-            name="title"
-            type="text"
-            defaultValue={currentFormState.title}
-          />
+        <div className="flex w-full justify-around items-center align-middle">
+          <div className="flex-1 flex justify-end">
+            <span className="w-1/2 text-4xl">Title:</span>
+          </div>
+          <div className="flex-1 flex justify-start">
+            <input
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                console.log("e", e.target.value);
+                // formDispatch({ type: DispatchType.UPDATE_INTRUC });
+                // setUpdatedData((state) => {
+                //   return { ...state, title: e.target.value };
+                // });
+              }}
+              className="text-2xl w-1/2"
+              id="title"
+              name="title"
+              type="text"
+              defaultValue={currentFormState.title}
+            />
+          </div>
         </div>
 
         <div>
@@ -122,6 +126,7 @@ export default function RepairFormPage(): React.ReactNode {
           />
         </div>
       </legend>
+
       <section>
         <h3 className="text-xl">Repair procedures</h3>
         <EditProcedureList

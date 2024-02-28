@@ -1,7 +1,8 @@
 import { ProcedureT } from "../../hooks/useGetLatest";
 import EditProcedureForm from "./EditProcedureForm";
-import useUpdateProcedures from "../../hooks/useUpdateProcedures";
+import useProcedureListState from "../../hooks/useUpdateProceduresState";
 import React, { useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 export default function EditProcedureList({
   list,
@@ -12,27 +13,29 @@ export default function EditProcedureList({
 }): React.ReactNode {
   //
   //state holding all procedures on an array central state
-  //! sub reducer for procedure list not bringing changes up to main level
-  const { currentListState, dispatch } = useUpdateProcedures(list);
+  const { currentListState, dispatch } = useProcedureListState(list);
+  // const currentListState = list;
 
   useEffect(() => {
-    // console.log("currentListState", currentListState);
+    console.log("currentListState", currentListState);
     updateFn(currentListState);
   }, [currentListState]);
 
   const procedures = currentListState.map((proc, index) => {
     return (
-      <EditProcedureForm
-        reducer={dispatch}
-        proc={proc}
-        index={index}
-      />
+      <li key={uuidv4()}>
+        <EditProcedureForm
+          reducer={dispatch}
+          proc={proc}
+          index={index}
+        />
+      </li>
     );
   });
 
   return (
     <div>
-      <ul>{procedures}</ul>
+      <ul className="">{procedures}</ul>
     </div>
   );
 }

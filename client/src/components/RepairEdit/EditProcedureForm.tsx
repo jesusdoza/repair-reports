@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ProcedureT } from "../../hooks/useGetLatest";
-import { DispatchType, updateProcDispT } from "../../hooks/useUpdateProcedures";
+import {
+  DispatchType,
+  updateProcDispT,
+} from "../../hooks/useUpdateProceduresState";
 import { EditImageCard } from "./EditImageCard";
+import { v4 as uuidv4 } from "uuid";
 
 export default function EditProcedureForm({
   proc,
@@ -12,44 +16,58 @@ export default function EditProcedureForm({
   reducer: updateProcDispT;
   index: number;
 }) {
-  //! use reducer and remove this state state will become const and update as necessary
-  // const [imageUrls, setImageUrls] = useState(proc.images);
-
-  //coarse index to number to be used as reference of updating state array of the proceduresArray
+  //index to number to be used as reference of updating state array of the proceduresArray
   const PROCEDURE_INDEX = Number(index);
 
-  console.log("proc", proc);
+  const [images, setImages] = useState(proc.images);
+
+  // useEffect(() => {
+  //   reducer({
+  //     type: DispatchType.CHANG_IMAGE_LIST,
+  //     payload: { procIndex: index, newImageOrder: images },
+  //   });
+  // }, [images]);
+
+  // console.log("proc", proc);
+  // const imageCards = createEditImageCards({
+  //   imageUrls: proc.images,
+  //   reducer: reducer,
+  //   procIndex: PROCEDURE_INDEX,
+  // });
+
   const imageCards = createEditImageCards({
-    imageUrls: proc.images,
+    imageUrls: images,
     reducer: reducer,
     procIndex: PROCEDURE_INDEX,
   });
 
-  const handleInstructChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    e.preventDefault();
-    // console.log("event.target.value", e.target.value);
-    reducer({
-      type: DispatchType.UPDATE_INTRUC,
-      payload: { procIndex: PROCEDURE_INDEX, instructions: e.target.value },
-    });
-  };
-
   return (
-    <li>
+    <div className="bg-blue-900 p-3 card">
       <section>
         <h1 className="text-xl">procedure num is : {proc.procedureNum}</h1>
-        <ul className=" flex flex-col justify-center align-middle items-center gap-2 w-full p-4  bg-neutral rounded-box">
+        <ul className=" w-full flex flex-wrap justify-center align-middle items-center gap-2 p-4  bg-neutral rounded-box">
           {imageCards}
         </ul>
         {/* add another image to this list of images and use placeholder url in meantime */}
         <section>
           <div>
             <span>upload another image</span>
-            <input
-              type="file"
-              accept="image/*"
-              id="newImage"
-            />
+            <div
+              onClick={() => {
+                setImages((state) => {
+                  reducer({
+                    type: DispatchType.CHANG_IMAGE_LIST,
+                    payload: {
+                      procIndex: index,
+                      newImageOrder: [...state, "#empty"],
+                    },
+                  });
+                  return [...state, "#empty"];
+                });
+              }}
+              className="text-xl btn btn-active btn-accent hover:bg-green-300">
+              +
+            </div>
           </div>
         </section>
       </section>
@@ -58,7 +76,9 @@ export default function EditProcedureForm({
       <section className="">
         <h3 className="text-lg text-gray">Instructions: </h3>
         <textarea
-          onChange={handleInstructChange}
+          onChange={(e) => {
+            handleInstructChange(e, reducer, PROCEDURE_INDEX);
+          }}
           className="w-3/4 "
           defaultValue={proc.instructions}
           name=""
@@ -66,7 +86,7 @@ export default function EditProcedureForm({
           cols={30}
           rows={10}></textarea>
       </section>
-    </li>
+    </div>
   );
 }
 
@@ -78,8 +98,6 @@ export default function EditProcedureForm({
 //   return;
 // }
 
-// imageUrls:proc.images, reducer:reducer, procIndex:PROCEDURE_INDEX
-//! use only the reducer here not set state redundant
 function createEditImageCards({
   procIndex,
   reducer,
@@ -87,17 +105,17 @@ function createEditImageCards({
 }: {
   imageUrls: string[];
   procIndex: number;
-  // setImageUrls: React.Dispatch<React.SetStateAction<string[]>>,
   reducer: updateProcDispT;
 }) {
   //
+
   const imageCards = imageUrls.map((url, index) => {
     // setting up the function so component doesnt need to know what index it is in array
     // console.log("url", url);
     const updateUrl = (newUrl: string) => {
       //update image array at index based on map index
       reducer({
-        type: DispatchType.UPDATE_IMAGES,
+        type: DispatchType.UPDATE_IMAGE,
         payload: {
           newImageUrl: newUrl,
           procIndex: procIndex,
@@ -107,7 +125,9 @@ function createEditImageCards({
     };
 
     return (
-      <li key={url}>
+      <li
+        className="w-1/3 card bg-slate-700 p-2"
+        key={uuidv4()}>
         <EditImageCard
           url={url}
           setUrl={updateUrl}
@@ -117,4 +137,17 @@ function createEditImageCards({
   });
 
   return imageCards;
+}
+
+function handleInstructChange(
+  e: React.ChangeEvent<HTMLTextAreaElement>,
+  reducer: updateProcDispT,
+  procIndex: number
+) {
+  e.preventDefault();
+  // console.log("event.target.value", e.target.value);
+  reducer({
+    type: DispatchType.UPDATE_INTRUC,
+    payload: { procIndex: procIndex, instructions: e.target.value },
+  });
 }

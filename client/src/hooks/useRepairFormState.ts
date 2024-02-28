@@ -71,6 +71,8 @@ function updateFormData(
   let newState = state;
   switch (action.type) {
     case DispatchType.ADD_IMAGE:
+      // console.log("addemptyimagecard1");
+      // newState = addEmptyImageToProcedure(state, action.payload);
       break;
     case DispatchType.UPDATE_FIELD:
       newState = updateField(state, action.payload);
@@ -88,6 +90,8 @@ function updateFormData(
       break;
 
     default:
+      console.log("no action available for ", action.type);
+
       break;
   }
 
@@ -161,5 +165,21 @@ function updateImage(state: RepairFormT, payload: ChangeFormPayloadT) {
     return proc;
   });
 
+  return { ...state, procedureArr: newProcedures } as RepairFormT;
+}
+
+function addEmptyImageToProcedure(
+  state: RepairFormT,
+  payload: ChangeFormPayloadT
+) {
+  console.log("add new empty image");
+
+  const newProcedures = state.procedureArr.map((proc, index) => {
+    if (index == payload.procIndex) {
+      return { ...proc, images: [...proc.images, "#Empty"] };
+    } else {
+      return proc;
+    }
+  });
   return { ...state, procedureArr: newProcedures } as RepairFormT;
 }
