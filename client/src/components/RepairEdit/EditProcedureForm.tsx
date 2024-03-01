@@ -6,6 +6,7 @@ import {
 } from "../../hooks/useUpdateProceduresState";
 import { EditImageCard } from "./EditImageCard";
 import { v4 as uuidv4 } from "uuid";
+import { useDebouncedCallback } from "use-debounce";
 
 export default function EditProcedureForm({
   proc,
@@ -19,27 +20,13 @@ export default function EditProcedureForm({
   //index to number to be used as reference of updating state array of the proceduresArray
   const PROCEDURE_INDEX = Number(index);
 
-  const [images, setImages] = useState(proc.images);
-
-  // useEffect(() => {
-  //   reducer({
-  //     type: DispatchType.CHANG_IMAGE_LIST,
-  //     payload: { procIndex: index, newImageOrder: images },
-  //   });
-  // }, [images]);
-
-  // console.log("proc", proc);
-  // const imageCards = createEditImageCards({
-  //   imageUrls: proc.images,
-  //   reducer: reducer,
-  //   procIndex: PROCEDURE_INDEX,
-  // });
-
   const imageCards = createEditImageCards({
-    imageUrls: images,
+    imageUrls: proc.images,
     reducer: reducer,
     procIndex: PROCEDURE_INDEX,
   });
+
+  const handleInstructChange = useDebouncedCallback(updateIntructions, 500);
 
   return (
     <div className="bg-blue-900 p-3 card">
@@ -51,18 +38,15 @@ export default function EditProcedureForm({
         {/* add another image to this list of images and use placeholder url in meantime */}
         <section>
           <div>
-            <span>upload another image</span>
+            <span>Add another image</span>
             <div
               onClick={() => {
-                setImages((state) => {
-                  reducer({
-                    type: DispatchType.CHANG_IMAGE_LIST,
-                    payload: {
-                      procIndex: index,
-                      newImageOrder: [...state, "#empty"],
-                    },
-                  });
-                  return [...state, "#empty"];
+                reducer({
+                  type: DispatchType.CHANG_IMAGE_LIST,
+                  payload: {
+                    procIndex: index,
+                    newImageOrder: [...proc.images, "#empty"],
+                  },
                 });
               }}
               className="text-xl btn btn-active btn-accent hover:bg-green-300">
@@ -77,7 +61,8 @@ export default function EditProcedureForm({
         <h3 className="text-lg text-gray">Instructions: </h3>
         <textarea
           onChange={(e) => {
-            handleInstructChange(e, reducer, PROCEDURE_INDEX);
+            e.preventDefault();
+            handleInstructChange(e.target.value, reducer, PROCEDURE_INDEX);
           }}
           className="w-3/4 "
           defaultValue={proc.instructions}
@@ -90,14 +75,6 @@ export default function EditProcedureForm({
   );
 }
 
-// function addNewImage(
-//   setImageUrls: React.Dispatch<React.SetStateAction<string[]>>
-// ) {
-//   setImageUrls((state) => [...state, "#"]);
-
-//   return;
-// }
-
 function createEditImageCards({
   procIndex,
   reducer,
@@ -107,13 +84,9 @@ function createEditImageCards({
   procIndex: number;
   reducer: updateProcDispT;
 }) {
-  //
-
   const imageCards = imageUrls.map((url, index) => {
-    // setting up the function so component doesnt need to know what index it is in array
-    // console.log("url", url);
+    // high order function to update url
     const updateUrl = (newUrl: string) => {
-      //update image array at index based on map index
       reducer({
         type: DispatchType.UPDATE_IMAGE,
         payload: {
@@ -139,15 +112,15 @@ function createEditImageCards({
   return imageCards;
 }
 
-function handleInstructChange(
-  e: React.ChangeEvent<HTMLTextAreaElement>,
+function updateIntructions(
+  text: string,
   reducer: updateProcDispT,
   procIndex: number
 ) {
-  e.preventDefault();
+  text;
   // console.log("event.target.value", e.target.value);
   reducer({
     type: DispatchType.UPDATE_INTRUC,
-    payload: { procIndex: procIndex, instructions: e.target.value },
+    payload: { procIndex: procIndex, instructions: text },
   });
 }

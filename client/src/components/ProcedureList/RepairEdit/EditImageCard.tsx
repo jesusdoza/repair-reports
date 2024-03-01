@@ -1,14 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
-import useUploadImage from "../../hooks/useUploadImage";
+import useUploadImage from "../../../hooks/useUploadImage";
 import { CameraPreview } from "./CameraPreview";
-import { useDebouncedCallback } from "use-debounce";
 
 export function EditImageCard({
   url,
-  setUrl,
+  setFormImageUrl,
 }: {
   url: string;
-  setUrl: (newUrl: string) => void; //external state setter to manipulate url prop
+  setFormImageUrl: (newUrl: string) => void; //external state setter to manipulate url prop
 }) {
   const uploadImage = useUploadImage();
   //will show image of what has been captured by camera or url, or empty
@@ -22,6 +21,12 @@ export function EditImageCard({
   //new image to upload
   const [imageToUpload, setImageToUpload] = useState<File | null>(null);
 
+  const [imageUrl, setImageUrl] = useState(url);
+
+  // useEffect(() => {
+  //   console.log("imageToUpload", imageToUpload);
+  // }, [imageToUpload]);
+
   //ref used to interact with node that is rendered to dom and get its current properties
   //will hold <video> tag reference
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -32,7 +37,8 @@ export function EditImageCard({
       try {
         const response = await uploadImage(imageToUpload, folder);
         // console.log("response from image upload: ", response);
-        setUrl(response.url); //update with new url
+        // setImageUrl(response.url); //update with new url
+        // setFormImageUrl(response.url);
         return;
       } catch (error) {
         console.log("error uploading", error);
@@ -65,17 +71,6 @@ export function EditImageCard({
       reader.readAsDataURL(imageFile);
     }
   };
-
-  const handleUrlUpdate = useDebouncedCallback(
-    (text) => {
-      // console.log(letter);
-      setUrl(text);
-    },
-    500,
-    {
-      trailing: true,
-    }
-  );
 
   const openCamera = async () => {
     setActiveCamera((state) => !state);
@@ -155,8 +150,8 @@ export function EditImageCard({
             <textarea
               onChange={(event) => {
                 const text = event.target.value;
-
-                handleUrlUpdate(text);
+                setImageUrl(text);
+                setFormImageUrl(text);
               }}
               wrap="true"
               defaultValue={url}

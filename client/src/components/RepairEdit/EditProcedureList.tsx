@@ -1,6 +1,9 @@
 import { ProcedureT } from "../../hooks/useGetLatest";
 import EditProcedureForm from "./EditProcedureForm";
-import useProcedureListState from "../../hooks/useUpdateProceduresState";
+import useProcedureListState, {
+  ChangeProcPayloadT,
+  DispatchType,
+} from "../../hooks/useUpdateProceduresState";
 import React, { useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 
@@ -12,9 +15,17 @@ export default function EditProcedureList({
   updateFn: (newProcedures: ProcedureT[]) => void;
 }): React.ReactNode {
   //
+
   //state holding all procedures on an array central state
-  const { currentListState, dispatch } = useProcedureListState(list);
-  // const currentListState = list;
+  const { currentListState, dispatch: updateProcedureList } =
+    useProcedureListState(list);
+
+  // const updateProcedureList = useDebouncedCallback(
+  //   (update: { type: DispatchType; payload: ChangeProcPayloadT }) => {
+  //     dispatch(update);
+  //   },
+  //   1000
+  // );
 
   useEffect(() => {
     console.log("currentListState", currentListState);
@@ -25,7 +36,7 @@ export default function EditProcedureList({
     return (
       <li key={uuidv4()}>
         <EditProcedureForm
-          reducer={dispatch}
+          reducer={updateProcedureList}
           proc={proc}
           index={index}
         />

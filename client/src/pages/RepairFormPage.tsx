@@ -4,6 +4,9 @@ import EditProcedureList from "../components/RepairEdit/EditProcedureList";
 // import { repairDataT } from "../hooks/useGetLatest";
 // import useRepairApi from "../hooks/useRepairApi";
 import useRepairFormState, { DispatchType } from "../hooks/useRepairFormState";
+import { ProcedureT } from "../hooks/useGetLatest";
+
+import { useDebouncedCallback } from "use-debounce";
 
 const LOC = "@RepairFormPage.tsx";
 
@@ -11,19 +14,18 @@ export default function RepairFormPage(): React.ReactNode {
   const { state: currentFormState, dispatch: formDispatch } =
     useRepairFormState();
 
+  // const formDispatch = useDebouncedCallback(dispatch, 1000);
+
   useEffect(() => {
     console.log(`currentFormState useEffect ln41 ${LOC}`, currentFormState);
   }, [currentFormState]);
 
-  // useEffect(() => {
-  //   updateState({ procedureArr: newProceds }, setUpdatedData);
-  // }, [newProceds]);
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    console.log("currentFormState submit", currentFormState);
+    // console.log("currentFormState submit", currentFormState);
 
+    //! NOT USING DATABASE YET
     try {
       // const res = await updateRepair(updatedData);
       // console.log("res update repair", res);
