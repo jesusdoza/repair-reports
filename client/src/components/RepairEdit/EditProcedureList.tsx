@@ -1,24 +1,30 @@
 import { ProcedureT } from "../../hooks/useGetLatest";
 import EditProcedureForm from "./EditProcedureForm";
-import useProcedureListState, {
-  ChangeProcPayloadT,
-  DispatchType,
-} from "../../hooks/useUpdateProceduresState";
-import React, { useEffect } from "react";
+
+import React from "react";
 import { v4 as uuidv4 } from "uuid";
+import {
+  ChangeFormPayloadT,
+  DispatchType,
+} from "../../hooks/useRepairFormState";
 
 export default function EditProcedureList({
   list,
-  updateFn,
+  formDispatch: formDispatch,
 }: {
   list: ProcedureT[];
-  updateFn: (newProcedures: ProcedureT[]) => void;
+  formDispatch: React.Dispatch<{
+    type: DispatchType;
+    payload: ChangeFormPayloadT;
+  }>;
 }): React.ReactNode {
   //
 
+  console.log("list", list);
+
   //state holding all procedures on an array central state
-  const { currentListState, dispatch: updateProcedureList } =
-    useProcedureListState(list);
+  // const { currentListState, dispatch: updateProcedureList } =
+  //   useProcedureListState(list);
 
   // const updateProcedureList = useDebouncedCallback(
   //   (update: { type: DispatchType; payload: ChangeProcPayloadT }) => {
@@ -27,16 +33,16 @@ export default function EditProcedureList({
   //   1000
   // );
 
-  useEffect(() => {
-    console.log("currentListState", currentListState);
-    updateFn(currentListState);
-  }, [currentListState]);
+  // useEffect(() => {
+  //   console.log("currentListState", currentListState);
+  //   updateFn(currentListState);
+  // }, [currentListState]);
 
-  const procedures = currentListState.map((proc, index) => {
+  const procedures = list.map((proc, index) => {
     return (
       <li key={uuidv4()}>
         <EditProcedureForm
-          reducer={updateProcedureList}
+          formDispatch={formDispatch}
           proc={proc}
           index={index}
         />

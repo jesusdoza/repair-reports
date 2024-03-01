@@ -7,6 +7,8 @@ export default function useProcedureListState(procedureList: ProcedureT[]) {
     procedureList
   );
 
+  console.log("procedureList", procedureList);
+
   return { currentListState, dispatch };
 }
 

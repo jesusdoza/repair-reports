@@ -28,7 +28,7 @@ export default function useRepairFormState() {
     newRepairState
   );
 
-  return { state: currentFormState, dispatch: formDispatch };
+  return { newRepairState, state: currentFormState, dispatch: formDispatch };
 }
 
 export type updateProcDispT = React.Dispatch<{
@@ -78,6 +78,7 @@ function updateFormData(
       newState = updateField(state, action.payload);
       break;
     case DispatchType.ADD_PROCEDURE:
+      newState = addProcedure(state, action.payload);
       break;
     case DispatchType.UPDATE_PROCEDURES:
       newState = updateProcedures(state, action.payload);
@@ -96,6 +97,27 @@ function updateFormData(
   }
 
   return newState;
+}
+
+function addProcedure(state: RepairFormT, payload: ChangeFormPayloadT) {
+  const newProcedures = [];
+
+  const procIndex =
+    typeof payload.procIndex == "number" && payload.procIndex >= 0
+      ? payload.procIndex
+      : 0;
+
+  for (let i = 0; i < state.procedureArr.length; i++) {
+    if (i == procIndex - 1) {
+      newProcedures.push(state.procedureArr[i]);
+      newProcedures.push(proc);
+      continue;
+    }
+
+    newProcedures.push(state.procedureArr[i]);
+  }
+
+  return { ...state, procedureArr: newProcedures };
 }
 
 function updateField(state: RepairFormT, payload: ChangeFormPayloadT) {

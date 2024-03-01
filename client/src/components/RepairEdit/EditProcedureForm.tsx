@@ -1,20 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { ProcedureT } from "../../hooks/useGetLatest";
-import {
-  DispatchType,
-  updateProcDispT,
-} from "../../hooks/useUpdateProceduresState";
+
 import { EditImageCard } from "./EditImageCard";
 import { v4 as uuidv4 } from "uuid";
 import { useDebouncedCallback } from "use-debounce";
+import {
+  ChangeFormPayloadT,
+  DispatchType,
+} from "../../hooks/useRepairFormState";
 
 export default function EditProcedureForm({
   proc,
-  reducer,
+  formDispatch,
   index,
 }: {
   proc: ProcedureT;
-  reducer: updateProcDispT;
+  formDispatch: React.Dispatch<{
+    type: DispatchType;
+    payload: ChangeFormPayloadT;
+  }>;
   index: number;
 }) {
   //index to number to be used as reference of updating state array of the proceduresArray
@@ -22,7 +26,7 @@ export default function EditProcedureForm({
 
   const imageCards = createEditImageCards({
     imageUrls: proc.images,
-    reducer: reducer,
+    reducer: formDispatch,
     procIndex: PROCEDURE_INDEX,
   });
 
@@ -41,7 +45,7 @@ export default function EditProcedureForm({
             <span>Add another image</span>
             <div
               onClick={() => {
-                reducer({
+                formDispatch({
                   type: DispatchType.CHANG_IMAGE_LIST,
                   payload: {
                     procIndex: index,
@@ -62,7 +66,7 @@ export default function EditProcedureForm({
         <textarea
           onChange={(e) => {
             e.preventDefault();
-            handleInstructChange(e.target.value, reducer, PROCEDURE_INDEX);
+            handleInstructChange(e.target.value, formDispatch, PROCEDURE_INDEX);
           }}
           className="w-3/4 "
           defaultValue={proc.instructions}

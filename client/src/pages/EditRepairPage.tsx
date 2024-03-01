@@ -129,7 +129,7 @@ export default function EditRepairPage() {
       <section>
         <h3 className="text-xl">Repair procedures</h3>
         <EditProcedureList
-          updateFn={setNewProceds}
+          formDispatch={setNewProceds}
           list={updatedData.procedureArr}
         />
       </section>

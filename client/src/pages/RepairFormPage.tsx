@@ -3,7 +3,10 @@ import AvailableOptions from "../components/AvailableOptions/AvailableOptions";
 import EditProcedureList from "../components/RepairEdit/EditProcedureList";
 // import { repairDataT } from "../hooks/useGetLatest";
 // import useRepairApi from "../hooks/useRepairApi";
-import useRepairFormState, { DispatchType } from "../hooks/useRepairFormState";
+import useRepairFormState, {
+  ChangeFormPayloadT,
+  DispatchType,
+} from "../hooks/useRepairFormState";
 import { ProcedureT } from "../hooks/useGetLatest";
 
 import { useDebouncedCallback } from "use-debounce";
@@ -13,8 +16,6 @@ const LOC = "@RepairFormPage.tsx";
 export default function RepairFormPage(): React.ReactNode {
   const { state: currentFormState, dispatch: formDispatch } =
     useRepairFormState();
-
-  // const formDispatch = useDebouncedCallback(dispatch, 1000);
 
   useEffect(() => {
     console.log(`currentFormState useEffect ln41 ${LOC}`, currentFormState);
@@ -132,19 +133,29 @@ export default function RepairFormPage(): React.ReactNode {
       <section>
         <h3 className="text-xl">Repair procedures</h3>
         <EditProcedureList
-          updateFn={(newProcList) => {
-            formDispatch({
-              type: DispatchType.UPDATE_PROCEDURES,
-              payload: { allProcedures: newProcList },
-            });
-          }}
+          // updateFn={(newProcList) => {
+          //   formDispatch({
+          //     type: DispatchType.UPDATE_PROCEDURES,
+          //     payload: { allProcedures: newProcList },
+          //   });
+          // }}
+          formDispatch={formDispatch}
           list={currentFormState.procedureArr}
         />
         {/* edit procedure list section */}
-        <section className="p-3">
+        <section className="p-3 flex flex-col items-center">
           <h3>Edit Procedure list</h3>
           <div>
-            <button className="btn">add procedure</button>
+            <div
+              onClick={() => {
+                addProcedureAtIndex({
+                  index: currentFormState.procedureArr.length,
+                  reducer: formDispatch,
+                });
+              }}
+              className="btn">
+              add procedure here
+            </div>
           </div>
         </section>
       </section>
@@ -158,4 +169,17 @@ export default function RepairFormPage(): React.ReactNode {
       </section>
     </form>
   );
+}
+
+function addProcedureAtIndex({
+  index,
+  reducer,
+}: {
+  index: number;
+  reducer: React.Dispatch<{
+    type: DispatchType;
+    payload: ChangeFormPayloadT;
+  }>;
+}) {
+  reducer({ type: DispatchType.ADD_PROCEDURE, payload: { procIndex: index } });
 }
