@@ -1,30 +1,22 @@
-import React, { ChangeEvent, useEffect } from "react";
+import React, { ChangeEvent, useContext, useState } from "react";
 import AvailableOptions from "../components/AvailableOptions/AvailableOptions";
-import EditProcedureList from "../components/RepairEdit/EditProcedureList";
-// import { repairDataT } from "../hooks/useGetLatest";
-// import useRepairApi from "../hooks/useRepairApi";
-import useRepairFormState, {
-  ChangeFormPayloadT,
-  DispatchType,
-} from "../hooks/useRepairFormState";
-import { ProcedureT } from "../hooks/useGetLatest";
-
-import { useDebouncedCallback } from "use-debounce";
+// import EditProcedureList from "../components/RepairEdit/EditProcedureList";
+import { RepairFormContext } from "../context/RepairFormContext";
+import { ProcedureT, RepairDispatchTypeEnum } from "../../types";
+// import { ProcedureT, RepairDispatchTypeEnum } from "../../types";
 
 const LOC = "@RepairFormPage.tsx";
 
 export default function RepairFormPage(): React.ReactNode {
-  const { state: currentFormState, dispatch: formDispatch } =
-    useRepairFormState();
+  const { newRepairObj, newProcedure, formDispatch } =
+    useContext(RepairFormContext);
 
-  useEffect(() => {
-    console.log(`currentFormState useEffect ln41 ${LOC}`, currentFormState);
-  }, [currentFormState]);
+  const [currentProcedureList, setProcedureList] = useState(
+    newRepairObj.procedureArr
+  );
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    // console.log("currentFormState submit", currentFormState);
 
     //! NOT USING DATABASE YET
     try {
@@ -37,16 +29,16 @@ export default function RepairFormPage(): React.ReactNode {
 
   const availableGroups = [
     {
-      label: `original: ${currentFormState.group}`,
-      value: currentFormState.group,
+      label: `original: ${newRepairObj.group}`,
+      value: newRepairObj.group,
     },
     { label: "public", value: "public" },
   ];
 
   const availableBoardTypes = [
     {
-      label: `original: ${currentFormState.boardType}`,
-      value: currentFormState.group,
+      label: `original: ${newRepairObj.boardType}`,
+      value: newRepairObj.group,
     },
     { label: "Cat 70 pin", value: "cat70" },
     { label: "Cat 40 pin", value: "cat40" },
@@ -57,8 +49,8 @@ export default function RepairFormPage(): React.ReactNode {
 
   const availableEngines = [
     {
-      label: `original: ${currentFormState.engineMake}`,
-      value: currentFormState.engineMake,
+      label: `original: ${newRepairObj.engineMake}`,
+      value: newRepairObj.engineMake,
     },
     { label: "Caterpillar", value: "cat" },
     { label: "Cummins", value: "cummins" },
@@ -78,16 +70,17 @@ export default function RepairFormPage(): React.ReactNode {
             <input
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 console.log("e", e.target.value);
-                // formDispatch({ type: DispatchType.UPDATE_INTRUC });
-                // setUpdatedData((state) => {
-                //   return { ...state, title: e.target.value };
-                // });
+
+                formDispatch({
+                  type: RepairDispatchTypeEnum.UPDATE_FIELD,
+                  payload: { formField: { instructions: e.target.value } },
+                });
               }}
               className="text-2xl w-1/2"
               id="title"
               name="title"
               type="text"
-              defaultValue={currentFormState.title}
+              defaultValue={newRepairObj.title}
             />
           </div>
         </div>
@@ -96,24 +89,24 @@ export default function RepairFormPage(): React.ReactNode {
           <AvailableOptions
             title="Visibility group"
             options={availableGroups}
-            callback={(group: string) => {
-              formDispatch({
-                type: DispatchType.UPDATE_FIELD,
-                payload: { formField: { group } },
-              });
-            }}
+            // callback={(group: string) => {
+            //   formDispatch({
+            //     type: DispatchType.UPDATE_FIELD,
+            //     payload: { formField: { group } },
+            //   });
+            // }}
           />
         </div>
         <div>
           <AvailableOptions
             title="Board Type"
             options={availableBoardTypes}
-            callback={(boardType: string) => {
-              formDispatch({
-                type: DispatchType.UPDATE_FIELD,
-                payload: { formField: { boardType } },
-              });
-            }}
+            // callback={(boardType: string) => {
+            //   formDispatch({
+            //     type: DispatchType.UPDATE_FIELD,
+            //     payload: { formField: { boardType } },
+            //   });
+            // }}
           />
         </div>
         <div>
@@ -132,26 +125,22 @@ export default function RepairFormPage(): React.ReactNode {
 
       <section>
         <h3 className="text-xl">Repair procedures</h3>
-        <EditProcedureList
-          // updateFn={(newProcList) => {
-          //   formDispatch({
-          //     type: DispatchType.UPDATE_PROCEDURES,
-          //     payload: { allProcedures: newProcList },
-          //   });
-          // }}
-          formDispatch={formDispatch}
-          list={currentFormState.procedureArr}
-        />
-        {/* edit procedure list section */}
+        {/* <EditProcedureList
+        formDispatch={formDispatch}
+         list={currentProcedureList}
+        /> */}
         <section className="p-3 flex flex-col items-center">
           <h3>Edit Procedure list</h3>
           <div>
             <div
               onClick={() => {
-                addProcedureAtIndex({
-                  index: currentFormState.procedureArr.length,
-                  reducer: formDispatch,
+                const newList = addProcedureAtIndex({
+                  index: currentProcedureList.length,
+                  list: currentProcedureList,
+                  newItem: newProcedure,
                 });
+
+                setProcedureList(newList);
               }}
               className="btn">
               add procedure here
@@ -173,13 +162,27 @@ export default function RepairFormPage(): React.ReactNode {
 
 function addProcedureAtIndex({
   index,
-  reducer,
+  list,
+  newItem,
 }: {
   index: number;
-  reducer: React.Dispatch<{
-    type: DispatchType;
-    payload: ChangeFormPayloadT;
-  }>;
+  list: ProcedureT[];
+  newItem: ProcedureT;
 }) {
-  reducer({ type: DispatchType.ADD_PROCEDURE, payload: { procIndex: index } });
+  const newList = [];
+
+  for (let i = 0; i < list.length; i++) {
+    const item = list[i];
+    // console.log(" newItem", newItem);
+
+    if (index - 1 == i) {
+      newList.push(newItem);
+    }
+
+    newList.push(item);
+  }
+
+  console.log("newList", newList);
+
+  return newList;
 }

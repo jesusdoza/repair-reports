@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useDebouncedCallback } from "use-debounce";
 import {
   ChangeFormPayloadT,
-  DispatchType,
+  RepairDispatchTypeT,
 } from "../../hooks/useRepairFormState";
 
 export default function EditProcedureForm({
@@ -16,7 +16,7 @@ export default function EditProcedureForm({
 }: {
   proc: ProcedureT;
   formDispatch: React.Dispatch<{
-    type: DispatchType;
+    type: RepairDispatchTypeT;
     payload: ChangeFormPayloadT;
   }>;
   index: number;
@@ -46,7 +46,7 @@ export default function EditProcedureForm({
             <div
               onClick={() => {
                 formDispatch({
-                  type: DispatchType.CHANG_IMAGE_LIST,
+                  type: RepairDispatchTypeT.CHANG_IMAGE_LIST,
                   payload: {
                     procIndex: index,
                     newImageOrder: [...proc.images, "#empty"],
@@ -92,7 +92,7 @@ function createEditImageCards({
     // high order function to update url
     const updateUrl = (newUrl: string) => {
       reducer({
-        type: DispatchType.UPDATE_IMAGE,
+        type: RepairDispatchTypeT.UPDATE_IMAGE,
         payload: {
           newImageUrl: newUrl,
           procIndex: procIndex,
@@ -124,7 +124,7 @@ function updateIntructions(
   text;
   // console.log("event.target.value", e.target.value);
   reducer({
-    type: DispatchType.UPDATE_INTRUC,
+    type: RepairDispatchTypeT.UPDATE_INTRUC,
     payload: { procIndex: procIndex, instructions: text },
   });
 }

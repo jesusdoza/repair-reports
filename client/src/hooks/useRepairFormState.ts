@@ -1,9 +1,8 @@
 import { useReducer } from "react";
-import { ProcedureT, imageObjT } from "./useGetLatest";
-
+import { ProcedureT, RepairDispatchTypeEnum } from "../../types";
 const LOC = "@useRepairFormState ";
 
-const proc: ProcedureT = {
+export const newProcedure: ProcedureT = {
   images: ["#"],
   imageObjs: [],
   imagesIdArr: [],
@@ -12,39 +11,39 @@ const proc: ProcedureT = {
   thumbs: [],
 };
 
-const newRepairState = {
+export const newRepairObj = {
   boardType: "other",
   engineMake: "other",
   group: "public",
-  procedureArr: [proc],
+  procedureArr: [newProcedure],
   title: "New Repair",
 };
 
-export type RepairFormT = typeof newRepairState;
+export type RepairFormT = typeof newRepairObj;
 
 export default function useRepairFormState() {
   const [currentFormState, formDispatch] = useReducer(
-    updateFormData,
-    newRepairState
+    updateFormDataReducer,
+    newRepairObj
   );
 
-  return { newRepairState, state: currentFormState, dispatch: formDispatch };
+  return { newRepairObj, currentFormState, formDispatch };
 }
 
-export type updateProcDispT = React.Dispatch<{
-  type: DispatchType;
-  payload: ChangeFormPayloadT;
-}>;
+// export type RepairFormDispatchT = React.Dispatch<{
+//   type: DispatchType;
+//   payload: ChangeFormPayloadT;
+// }>;
 
-export enum DispatchType {
-  UPDATE_IMAGES,
-  ADD_IMAGE,
-  UPDATE_INTRUC,
-  ADD_PROCEDURE,
-  REMOVE_PROCEDURE,
-  UPDATE_PROCEDURES,
-  UPDATE_FIELD,
-}
+// export enum RepairDispatchTypeT {
+//   UPDATE_IMAGES,
+//   ADD_IMAGE,
+//   UPDATE_INTRUC,
+//   ADD_PROCEDURE,
+//   REMOVE_PROCEDURE,
+//   UPDATE_PROCEDURES,
+//   UPDATE_FIELD,
+// }
 
 // export type imageObjT = {
 //   imageUrl: string;
@@ -54,39 +53,40 @@ export enum DispatchType {
 //   folder: string;
 // };
 
-export type ChangeFormPayloadT = {
-  procIndex?: number;
-  instructions?: string;
-  newImageUrl?: string;
-  newImageIndex?: number;
-  newImageObj?: imageObjT;
-  allProcedures?: ProcedureT[];
-  formField?: Record<string, string>;
-};
+// export type ChangeFormPayloadT = {
+//   procIndex?: number;
+//   instructions?: string;
+//   newImageUrl?: string;
+//   newImageIndex?: number;
+//   newImageObj?: ImageObjT;
+//   allProcedures?: ProcedureT[];
 
-function updateFormData(
+//   formField?: Record<string, string>;
+// };
+
+function updateFormDataReducer(
   state: RepairFormT,
-  action: { type: DispatchType; payload: ChangeFormPayloadT }
+  action: { type: RepairDispatchTypeEnum; payload: ChangeFormPayloadT }
 ) {
   let newState = state;
   switch (action.type) {
-    case DispatchType.ADD_IMAGE:
+    case RepairDispatchTypeEnum.ADD_IMAGE:
       // console.log("addemptyimagecard1");
       // newState = addEmptyImageToProcedure(state, action.payload);
       break;
-    case DispatchType.UPDATE_FIELD:
+    case RepairDispatchTypeEnum.UPDATE_FIELD:
       newState = updateField(state, action.payload);
       break;
-    case DispatchType.ADD_PROCEDURE:
+    case RepairDispatchTypeEnum.ADD_PROCEDURE:
       newState = addProcedure(state, action.payload);
       break;
-    case DispatchType.UPDATE_PROCEDURES:
+    case RepairDispatchTypeEnum.UPDATE_PROCEDURES:
       newState = updateProcedures(state, action.payload);
       break;
-    case DispatchType.UPDATE_IMAGES:
+    case RepairDispatchTypeEnum.UPDATE_IMAGES:
       newState = updateImage(state, action.payload);
       break;
-    case DispatchType.UPDATE_INTRUC:
+    case RepairDispatchTypeEnum.UPDATE_INTRUC:
       newState = updateInstruction(state, action.payload);
       break;
 
@@ -110,7 +110,7 @@ function addProcedure(state: RepairFormT, payload: ChangeFormPayloadT) {
   for (let i = 0; i < state.procedureArr.length; i++) {
     if (i == procIndex - 1) {
       newProcedures.push(state.procedureArr[i]);
-      newProcedures.push(proc);
+      newProcedures.push(newProcedure);
       continue;
     }
 

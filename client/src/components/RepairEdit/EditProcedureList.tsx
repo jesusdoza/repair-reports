@@ -1,26 +1,11 @@
-import { ProcedureT } from "../../hooks/useGetLatest";
+// import { ProcedureT } from "../../hooks/useGetLatest";
 import EditProcedureForm from "./EditProcedureForm";
 
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
-import {
-  ChangeFormPayloadT,
-  DispatchType,
-} from "../../hooks/useRepairFormState";
 
-export default function EditProcedureList({
-  list,
-  formDispatch: formDispatch,
-}: {
-  list: ProcedureT[];
-  formDispatch: React.Dispatch<{
-    type: DispatchType;
-    payload: ChangeFormPayloadT;
-  }>;
-}): React.ReactNode {
+export default function EditProcedureList(): React.ReactNode {
   //
-
-  console.log("list", list);
 
   //state holding all procedures on an array central state
   // const { currentListState, dispatch: updateProcedureList } =
@@ -41,11 +26,11 @@ export default function EditProcedureList({
   const procedures = list.map((proc, index) => {
     return (
       <li key={uuidv4()}>
-        <EditProcedureForm
+        {/* <EditProcedureForm
           formDispatch={formDispatch}
           proc={proc}
           index={index}
-        />
+        /> */}
       </li>
     );
   });
