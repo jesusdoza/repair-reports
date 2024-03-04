@@ -1,5 +1,9 @@
 import { useReducer } from "react";
-import { ProcedureT, RepairDispatchTypeEnum } from "../../types";
+import {
+  ChangeFormPayloadT,
+  ProcedureT,
+  RepairDispatchTypeEnum as RepairDispatchType,
+} from "../../types";
 const LOC = "@useRepairFormState ";
 
 export const newProcedure: ProcedureT = {
@@ -66,27 +70,27 @@ export default function useRepairFormState() {
 
 function updateFormDataReducer(
   state: RepairFormT,
-  action: { type: RepairDispatchTypeEnum; payload: ChangeFormPayloadT }
+  action: { type: RepairDispatchType; payload: ChangeFormPayloadT }
 ) {
   let newState = state;
   switch (action.type) {
-    case RepairDispatchTypeEnum.ADD_IMAGE:
+    case RepairDispatchType.ADD_IMAGE:
       // console.log("addemptyimagecard1");
       // newState = addEmptyImageToProcedure(state, action.payload);
       break;
-    case RepairDispatchTypeEnum.UPDATE_FIELD:
+    case RepairDispatchType.UPDATE_FIELD:
       newState = updateField(state, action.payload);
       break;
-    case RepairDispatchTypeEnum.ADD_PROCEDURE:
+    case RepairDispatchType.ADD_PROCEDURE:
       newState = addProcedure(state, action.payload);
       break;
-    case RepairDispatchTypeEnum.UPDATE_PROCEDURES:
+    case RepairDispatchType.UPDATE_PROCEDURES:
       newState = updateProcedures(state, action.payload);
       break;
-    case RepairDispatchTypeEnum.UPDATE_IMAGES:
+    case RepairDispatchType.UPDATE_IMAGES:
       newState = updateImage(state, action.payload);
       break;
-    case RepairDispatchTypeEnum.UPDATE_INTRUC:
+    case RepairDispatchType.UPDATE_INTRUC:
       newState = updateInstruction(state, action.payload);
       break;
 
@@ -108,9 +112,9 @@ function addProcedure(state: RepairFormT, payload: ChangeFormPayloadT) {
       : 0;
 
   for (let i = 0; i < state.procedureArr.length; i++) {
-    if (i == procIndex - 1) {
-      newProcedures.push(state.procedureArr[i]);
+    if (i == procIndex) {
       newProcedures.push(newProcedure);
+      newProcedures.push(state.procedureArr[i]);
       continue;
     }
 

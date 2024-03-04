@@ -15,9 +15,9 @@ export default function RepairFormPage(): React.ReactNode {
     console.log("currentFormState", currentFormState);
   }, [currentFormState]);
 
-  const [currentProcedureList, setProcedureList] = useState(
-    newRepairObj.procedureArr
-  );
+  // const [currentProcedureList, setProcedureList] = useState(
+  //   newRepairObj.procedureArr
+  // );
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -73,7 +73,7 @@ export default function RepairFormPage(): React.ReactNode {
           <div className="flex-1 flex justify-start">
             <input
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                console.log("e", e.target.value);
+                // console.log("e", e.target.value);
 
                 formDispatch({
                   type: RepairDispatchTypeEnum.UPDATE_FIELD,
@@ -138,13 +138,12 @@ export default function RepairFormPage(): React.ReactNode {
           <div>
             <div
               onClick={() => {
-                const newList = addProcedureAtIndex({
-                  index: currentProcedureList.length,
-                  list: currentProcedureList,
-                  newItem: newProcedure,
-                });
-
-                setProcedureList(newList);
+                // const newList = addProcedureAtIndex({
+                //   index: currentProcedureList.length,
+                //   list: currentProcedureList,
+                //   newItem: newProcedure,
+                // });
+                // setProcedureList(newList);
               }}
               className="btn">
               add procedure here
@@ -162,31 +161,4 @@ export default function RepairFormPage(): React.ReactNode {
       </section>
     </form>
   );
-}
-
-function addProcedureAtIndex({
-  index,
-  list,
-  newItem,
-}: {
-  index: number;
-  list: ProcedureT[];
-  newItem: ProcedureT;
-}) {
-  const newList = [];
-
-  for (let i = 0; i < list.length; i++) {
-    const item = list[i];
-    // console.log(" newItem", newItem);
-
-    if (index - 1 == i) {
-      newList.push(newItem);
-    }
-
-    newList.push(item);
-  }
-
-  console.log("newList", newList);
-
-  return newList;
 }

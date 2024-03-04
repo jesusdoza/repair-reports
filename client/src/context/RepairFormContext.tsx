@@ -31,9 +31,9 @@ export const RepairFormContextProvider = ({
   //! but not referenced by them to prevent rerender
   //! each child will have its own state and mirror it to the state when changed
 
-  useEffect(() => {
-    console.log("currentFormState @RepairFormContext", currentFormState);
-  }, [currentFormState]);
+  // useEffect(() => {
+  //   console.log("currentFormState @RepairFormContext", currentFormState);
+  // }, [currentFormState]);
 
   const values: RepairFormContextT = {
     currentFormState,
