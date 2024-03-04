@@ -1,6 +1,6 @@
-import React, { ChangeEvent, useContext, useState } from "react";
+import React, { ChangeEvent, useContext, useState, useEffect } from "react";
 import AvailableOptions from "../components/AvailableOptions/AvailableOptions";
-// import EditProcedureList from "../components/RepairEdit/EditProcedureList";
+import EditProcedureList from "../components/RepairEdit/EditProcedureList";
 import { RepairFormContext } from "../context/RepairFormContext";
 import { ProcedureT, RepairDispatchTypeEnum } from "../../types";
 // import { ProcedureT, RepairDispatchTypeEnum } from "../../types";
@@ -8,8 +8,12 @@ import { ProcedureT, RepairDispatchTypeEnum } from "../../types";
 const LOC = "@RepairFormPage.tsx";
 
 export default function RepairFormPage(): React.ReactNode {
-  const { newRepairObj, newProcedure, formDispatch } =
+  const { newRepairObj, newProcedure, formDispatch, currentFormState } =
     useContext(RepairFormContext);
+
+  useEffect(() => {
+    console.log("currentFormState", currentFormState);
+  }, [currentFormState]);
 
   const [currentProcedureList, setProcedureList] = useState(
     newRepairObj.procedureArr
@@ -73,7 +77,7 @@ export default function RepairFormPage(): React.ReactNode {
 
                 formDispatch({
                   type: RepairDispatchTypeEnum.UPDATE_FIELD,
-                  payload: { formField: { instructions: e.target.value } },
+                  payload: { formField: { title: e.target.value } },
                 });
               }}
               className="text-2xl w-1/2"
@@ -89,31 +93,31 @@ export default function RepairFormPage(): React.ReactNode {
           <AvailableOptions
             title="Visibility group"
             options={availableGroups}
-            // callback={(group: string) => {
-            //   formDispatch({
-            //     type: DispatchType.UPDATE_FIELD,
-            //     payload: { formField: { group } },
-            //   });
-            // }}
+            callback={(group: string) => {
+              formDispatch({
+                type: RepairDispatchTypeEnum.UPDATE_FIELD,
+                payload: { formField: { group } },
+              });
+            }}
           />
         </div>
         <div>
           <AvailableOptions
             title="Board Type"
             options={availableBoardTypes}
-            // callback={(boardType: string) => {
-            //   formDispatch({
-            //     type: DispatchType.UPDATE_FIELD,
-            //     payload: { formField: { boardType } },
-            //   });
-            // }}
+            callback={(boardType: string) => {
+              formDispatch({
+                type: RepairDispatchTypeEnum.UPDATE_FIELD,
+                payload: { formField: { boardType } },
+              });
+            }}
           />
         </div>
         <div>
           <AvailableOptions
             callback={(engineMake: string) => {
               formDispatch({
-                type: DispatchType.UPDATE_FIELD,
+                type: RepairDispatchTypeEnum.UPDATE_FIELD,
                 payload: { formField: { engineMake } },
               });
             }}
@@ -125,10 +129,10 @@ export default function RepairFormPage(): React.ReactNode {
 
       <section>
         <h3 className="text-xl">Repair procedures</h3>
-        {/* <EditProcedureList
-        formDispatch={formDispatch}
-         list={currentProcedureList}
-        /> */}
+        <EditProcedureList
+        // formDispatch={formDispatch}
+        // list={currentProcedureList}
+        />
         <section className="p-3 flex flex-col items-center">
           <h3>Edit Procedure list</h3>
           <div>

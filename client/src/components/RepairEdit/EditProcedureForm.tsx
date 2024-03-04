@@ -4,21 +4,17 @@ import { ProcedureT } from "../../hooks/useGetLatest";
 import { EditImageCard } from "./EditImageCard";
 import { v4 as uuidv4 } from "uuid";
 import { useDebouncedCallback } from "use-debounce";
-import {
-  ChangeFormPayloadT,
-  RepairDispatchTypeT,
-} from "../../hooks/useRepairFormState";
 
-export default function EditProcedureForm({
+export default function EditProcedureCard({
   proc,
-  formDispatch,
+  // formDispatch,
   index,
 }: {
   proc: ProcedureT;
-  formDispatch: React.Dispatch<{
-    type: RepairDispatchTypeT;
-    payload: ChangeFormPayloadT;
-  }>;
+  // formDispatch: React.Dispatch<{
+  //   type: RepairDispatchTypeT;
+  //   payload: ChangeFormPayloadT;
+  // }>;
   index: number;
 }) {
   //index to number to be used as reference of updating state array of the proceduresArray
@@ -26,11 +22,10 @@ export default function EditProcedureForm({
 
   const imageCards = createEditImageCards({
     imageUrls: proc.images,
-    reducer: formDispatch,
     procIndex: PROCEDURE_INDEX,
   });
 
-  const handleInstructChange = useDebouncedCallback(updateIntructions, 500);
+  // const handleInstructChange = useDebouncedCallback(updateIntructions, 500);
 
   return (
     <div className="bg-blue-900 p-3 card">
@@ -44,15 +39,15 @@ export default function EditProcedureForm({
           <div>
             <span>Add another image</span>
             <div
-              onClick={() => {
-                formDispatch({
-                  type: RepairDispatchTypeT.CHANG_IMAGE_LIST,
-                  payload: {
-                    procIndex: index,
-                    newImageOrder: [...proc.images, "#empty"],
-                  },
-                });
-              }}
+              // onClick={() => {
+              //   formDispatch({
+              //     type: RepairDispatchTypeT.CHANG_IMAGE_LIST,
+              //     payload: {
+              //       procIndex: index,
+              //       newImageOrder: [...proc.images, "#empty"],
+              //     },
+              //   });
+              // }}
               className="text-xl btn btn-active btn-accent hover:bg-green-300">
               +
             </div>
@@ -66,7 +61,7 @@ export default function EditProcedureForm({
         <textarea
           onChange={(e) => {
             e.preventDefault();
-            handleInstructChange(e.target.value, formDispatch, PROCEDURE_INDEX);
+            // handleInstructChange(e.target.value, formDispatch, PROCEDURE_INDEX);
           }}
           className="w-3/4 "
           defaultValue={proc.instructions}
@@ -81,25 +76,23 @@ export default function EditProcedureForm({
 
 function createEditImageCards({
   procIndex,
-  reducer,
   imageUrls,
 }: {
   imageUrls: string[];
   procIndex: number;
-  reducer: updateProcDispT;
 }) {
   const imageCards = imageUrls.map((url, index) => {
     // high order function to update url
-    const updateUrl = (newUrl: string) => {
-      reducer({
-        type: RepairDispatchTypeT.UPDATE_IMAGE,
-        payload: {
-          newImageUrl: newUrl,
-          procIndex: procIndex,
-          newImageIndex: index,
-        },
-      });
-    };
+    // const updateUrl = (newUrl: string) => {
+    //   reducer({
+    //     type: RepairDispatchTypeT.UPDATE_IMAGE,
+    //     payload: {
+    //       newImageUrl: newUrl,
+    //       procIndex: procIndex,
+    //       newImageIndex: index,
+    //     },
+    //   });
+    // };
 
     return (
       <li
@@ -107,7 +100,7 @@ function createEditImageCards({
         key={uuidv4()}>
         <EditImageCard
           url={url}
-          setUrl={updateUrl}
+          setUrl={() => {}}
         />
       </li>
     );

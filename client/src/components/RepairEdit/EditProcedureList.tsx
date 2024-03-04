@@ -1,12 +1,15 @@
 // import { ProcedureT } from "../../hooks/useGetLatest";
-import EditProcedureForm from "./EditProcedureForm";
+import EditProcedureCard from "./EditProcedureForm";
 
-import React from "react";
+import React, { useContext } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { RepairFormContext } from "../../context/RepairFormContext";
 
 export default function EditProcedureList(): React.ReactNode {
   //
 
+  const { currentFormState } = useContext(RepairFormContext);
+  const list = currentFormState.procedureArr;
   //state holding all procedures on an array central state
   // const { currentListState, dispatch: updateProcedureList } =
   //   useProcedureListState(list);
@@ -26,11 +29,10 @@ export default function EditProcedureList(): React.ReactNode {
   const procedures = list.map((proc, index) => {
     return (
       <li key={uuidv4()}>
-        {/* <EditProcedureForm
-          formDispatch={formDispatch}
+        <EditProcedureCard
           proc={proc}
           index={index}
-        /> */}
+        />
       </li>
     );
   });
