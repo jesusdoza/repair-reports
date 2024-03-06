@@ -38,15 +38,24 @@ export type ChangeFormPayloadT = {
   formField?: Record<string, string>;
 };
 
-export enum RepairFormDispatchType {
-  UPDATE_IMAGES,
-  ADD_IMAGE,
-  UPDATE_INTRUC,
-  ADD_PROCEDURE,
-  REMOVE_PROCEDURE,
-  UPDATE_PROCEDURES,
-  UPDATE_FIELD,
-}
+// export enum RepairFormDispatchType {
+//   UPDATE_IMAGES,
+//   ADD_IMAGE,
+//   UPDATE_INTRUC,
+//   ADD_PROCEDURE,
+//   REMOVE_PROCEDURE,
+//   UPDATE_PROCEDURES,
+//   UPDATE_FIELD,
+// }
+export type RepairFormDispatchType =
+  | "UPDATE_IMAGES"
+  | "ADD_IMAGE"
+  | "UPDATE_INTRUC"
+  | "ADD_PROCEDURE"
+  | "REMOVE_PROCEDURE"
+  | "UPDATE_PROCEDURES"
+  | "UPDATE_FIELD";
+
 export type RepairFormDispatchT = React.Dispatch<{
   type: RepairFormDispatchType;
   payload: ChangeFormPayloadT;

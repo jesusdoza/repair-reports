@@ -2,7 +2,7 @@ import { useReducer } from "react";
 import {
   ChangeFormPayloadT,
   ProcedureT,
-  RepairFormDispatchType as RepairFormDispatchType,
+  RepairFormDispatchType,
 } from "../../types";
 const LOC = "@useRepairFormState ";
 
@@ -74,23 +74,23 @@ function updateFormDataReducer(
 ) {
   let newState = state;
   switch (action.type) {
-    case RepairFormDispatchType.ADD_IMAGE:
+    case "ADD_IMAGE":
       // console.log("addemptyimagecard1");
       // newState = addEmptyImageToProcedure(state, action.payload);
       break;
-    case RepairFormDispatchType.UPDATE_FIELD:
+    case "UPDATE_FIELD":
       newState = updateField(state, action.payload);
       break;
-    case RepairFormDispatchType.ADD_PROCEDURE:
+    case "ADD_PROCEDURE":
       newState = addProcedure(state, action.payload);
       break;
-    case RepairFormDispatchType.UPDATE_PROCEDURES:
+    case "UPDATE_PROCEDURES":
       newState = updateProcedures(state, action.payload);
       break;
-    case RepairFormDispatchType.UPDATE_IMAGES:
+    case "UPDATE_IMAGES":
       newState = updateImage(state, action.payload);
       break;
-    case RepairFormDispatchType.UPDATE_INTRUC:
+    case "UPDATE_INTRUC":
       newState = updateInstruction(state, action.payload);
       break;
 
@@ -139,7 +139,7 @@ function updateInstruction(
   payload: ChangeFormPayloadT
 ): RepairFormT {
   // console.log("state", state);
-  // console.log("payload", payload);
+  console.log("payload", payload);
   const newProcedures = state.procedureArr.map((proc: ProcedureT, index) => {
     if (payload.procIndex == index) {
       return { ...proc, instructions: payload.instructions } as ProcedureT;

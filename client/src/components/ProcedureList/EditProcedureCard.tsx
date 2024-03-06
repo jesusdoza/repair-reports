@@ -1,11 +1,11 @@
 import React, { useEffect, useContext, useState } from "react";
-import {
-  DispatchType,
-  updateProcDispT,
-} from "../../hooks/useProceduresListState";
+// import {
+//   DispatchType,
+//   updateProcDispT,
+// } from "../../hooks/useProceduresListState";
 import { EditImageCard } from "../ImageCard/EditImageCard";
 import { v4 as uuidv4 } from "uuid";
-import { ProcedureT } from "../../../types";
+import { ProcedureT, RepairFormDispatchType } from "../../../types";
 import { RepairFormContext } from "../../context/RepairFormContext";
 
 export default function EditProcedureCard({
@@ -79,13 +79,14 @@ export default function EditProcedureCard({
         <textarea
           onChange={(e) => {
             e.preventDefault();
-            setInstructions(() => {
-              return e.target.value;
-              reducer({
-                type: DispatchType.CHANG_IMAGE_LIST,
-                payload: { procIndex: index, newImageOrder: images },
-              });
+            console.log("e", e);
+            formDispatch({
+              type: "UPDATE_INTRUC",
+              payload: { procIndex: index, instructions: e.target.value },
             });
+            // setInstructions(() => {
+            //   return e.target.value;
+            // });
           }}
           className="w-3/4 m-auto"
           defaultValue={instructions}
@@ -93,13 +94,13 @@ export default function EditProcedureCard({
           id="instructions"
           cols={30}
           rows={10}></textarea>
-        <div
+        {/* <div
           className="btn"
           onClick={() => {
             handleInstructChange(instructions, reducer, PROCEDURE_INDEX);
           }}>
           update
-        </div>
+        </div> */}
       </section>
     </div>
   );

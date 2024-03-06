@@ -1,8 +1,8 @@
 import React, { ChangeEvent, useContext, useState, useEffect } from "react";
 import AvailableOptions from "../components/AvailableOptions/AvailableOptions";
-import EditProcedureList from "../components/RepairEditOLD/EditProcedureList";
+import EditProcedureList from "../components/ProcedureList/EditProcedureList";
 import { RepairFormContext } from "../context/RepairFormContext";
-import { ProcedureT, RepairFormDispatchType } from "../../types";
+// import { ProcedureT, RepairFormDispatchType } from "../../types";
 // import { ProcedureT, RepairDispatchTypeEnum } from "../../types";
 
 const LOC = "@RepairFormPage.tsx";
@@ -76,7 +76,7 @@ export default function RepairFormPage(): React.ReactNode {
                 // console.log("e", e.target.value);
 
                 formDispatch({
-                  type: RepairFormDispatchType.UPDATE_FIELD,
+                  type: "UPDATE_FIELD",
                   payload: { formField: { title: e.target.value } },
                 });
               }}

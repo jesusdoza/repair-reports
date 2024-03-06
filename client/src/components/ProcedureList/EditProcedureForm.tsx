@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { ProcedureT } from "../../hooks/useGetLatest";
 
-import { EditImageCard } from "./EditImageCard";
+import { EditImageCard } from "../ImageCard/EditImageCard";
 import { v4 as uuidv4 } from "uuid";
 import { useDebouncedCallback } from "use-debounce";
+import { ProcedureT } from "../../../types";
 
 export default function EditProcedureCard({
   proc,
@@ -93,7 +93,7 @@ function createEditImageCards({
         key={uuidv4()}>
         <EditImageCard
           url={url}
-          setUrl={() => {}}
+          setFormImageUrl={() => {}}
         />
       </li>
     );
@@ -102,15 +102,15 @@ function createEditImageCards({
   return imageCards;
 }
 
-function updateIntructions(
-  text: string,
-  reducer: updateProcDispT,
-  procIndex: number
-) {
-  text;
-  // console.log("event.target.value", e.target.value);
-  reducer({
-    type: RepairDispatchTypeT.UPDATE_INTRUC,
-    payload: { procIndex: procIndex, instructions: text },
-  });
-}
+// function updateIntructions(
+//   text: string,
+//   reducer: updateProcDispT,
+//   procIndex: number
+// ) {
+//   text;
+//   // console.log("event.target.value", e.target.value);
+//   reducer({
+//     type: RepairDispatchTypeT.UPDATE_INTRUC,
+//     payload: { procIndex: procIndex, instructions: text },
+//   });
+// }

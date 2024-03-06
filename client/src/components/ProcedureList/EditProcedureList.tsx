@@ -1,52 +1,101 @@
-import EditProcedureCard from "./EditProcedureCard";
-import useProcedureListState, {
-  DispatchType,
-} from "../../hooks/useProceduresListState";
-import React, { useEffect } from "react";
+// import { ProcedureT } from "../../hooks/useGetLatest";
+import EditProcedureCard from "./EditProcedureForm";
+
+import React, { useContext, useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { ProcedureT } from "../../../types";
+import { RepairFormContext } from "../../context/RepairFormContext";
+// import { RepairFormDispatchType } from "../../../types";
 
-export default function EditProcedureList({
-  list,
-  updateFn,
-}: {
-  list: ProcedureT[];
-  updateFn: (newProcedures: ProcedureT[]) => void;
-}): React.ReactNode {
+export default function EditProcedureList(): React.ReactNode {
   //
+
+  const { currentFormState, formDispatch } = useContext(RepairFormContext);
+  // const [list, setList] = useState(currentFormState.procedureArr);
+  const list = currentFormState.procedureArr;
+
   //state holding all procedures on an array central state
-  const { currentListState, dispatch } = useProcedureListState(list);
+  // const { currentListState, dispatch: updateProcedureList } =
+  //   useProcedureListState(list);
 
-  useEffect(() => {
-    console.log("currentListState", currentListState);
-    updateFn(currentListState);
-  }, [currentListState]);
+  // const updateProcedureList = useDebouncedCallback(
+  //   (update: { type: DispatchType; payload: ChangeProcPayloadT }) => {
+  //     dispatch(update);
+  //   },
+  //   1000
+  // );
 
-  const procedures = list.map((proc, index) => {
-    return (
-      <li key={uuidv4()}>
-        <EditProcedureCard
-          proc={proc}
-          index={index}
-        />
-        <section className="p-3 flex flex-col justify-center items-center">
+  // useEffect(() => {
+  //   console.log("currentListState", currentListState);
+  //   updateFn(currentListState);
+  // }, [currentListState]);
+
+  const procedures = useMemo(() => {
+    return list.map((proc, index) => {
+      console.log("rebuild proc list ", list.length);
+
+      return (
+        <li key={uuidv4()}>
+          <EditProcedureCard
+            proc={proc}
+            index={index}
+          />
+
           <div
             onClick={() => {
-              dispatch({
-                type: DispatchType.ADD_NEW_PROCEDURE,
-                payload: { procIndex: index + 1 },
+              formDispatch({
+                type: "ADD_PROCEDURE",
+                payload: { procIndex: index },
               });
-            }}>
-            <div className="btn">+ Add Procedure Here</div>
+            }}
+            className="btn">
+            Add new Procedure here
           </div>
-        </section>
-      </li>
-    );
-  });
+        </li>
+      );
+    });
+  }, [list]);
 
   return (
     <div>
+      <div
+        onClick={() => {
+          // console.log("add at front");
+          formDispatch({
+            type: "ADD_PROCEDURE",
+            payload: { procIndex: 0 },
+          });
+        }}
+        className="btn">
+        Add new Procedure at begining
+      </div>
       <ul className="">{procedures}</ul>
     </div>
   );
 }
+
+// function addProcedureAtIndex({
+//   index,
+//   list,
+//   newItem,
+// }: {
+//   index: number;
+//   list: ProcedureT[];
+//   newItem: ProcedureT;
+// }) {
+//   const newList = [];
+
+//   for (let i = 0; i < list.length; i++) {
+//     const item = list[i];
+//     // console.log(" newItem", newItem);
+
+//     if (index - 1 == i) {
+//       newList.push(newItem);
+//     }
+
+//     newList.push(item);
+//   }
+
+//   console.log("newList", newList);
+
+//   return newList;
+// }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import useUploadImage from "../../hooks/useUploadImage";
 import { CameraPreview } from "./CameraPreview";
 
