@@ -38,7 +38,7 @@ export function EditImageCard({
         const response = await uploadImage(imageToUpload, folder);
         // console.log("response from image upload: ", response);
         // setImageUrl(response.url); //update with new url
-        // setFormImageUrl(response.url);
+        setFormImageUrl(response.url);
         return;
       } catch (error) {
         console.log("error uploading", error);
