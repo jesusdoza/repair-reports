@@ -7,7 +7,7 @@ import {
 const LOC = "@useRepairFormState ";
 
 export const newImageObj = {
-  imageUrl: "#",
+  imageUrl: "#empty",
   imageThumb: "#",
   caption: "",
   imageId: "",
@@ -175,9 +175,9 @@ function updateImage(state: RepairFormT, payload: ChangeFormPayloadT) {
   //update legacy image urls property
   targetProc.images[imageIndexToUpdate] = newImageUrl;
 
-  //update image objs
+  //update image objs url only
   targetProc.imageObjs[imageIndexToUpdate] = {
-    ...newImageObj,
+    ...imageObjs[imageIndexToUpdate],
     imageUrl: newImageUrl,
   };
 
