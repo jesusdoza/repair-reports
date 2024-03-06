@@ -5,7 +5,7 @@ import { RepairFormContext } from "../context/RepairFormContext";
 // import { ProcedureT, RepairFormDispatchType } from "../../types";
 // import { ProcedureT, RepairDispatchTypeEnum } from "../../types";
 
-const LOC = "@RepairFormPage.tsx";
+// const LOC = "@RepairFormPage.tsx";
 
 export default function RepairFormPage(): React.ReactNode {
   const { newRepairObj, newProcedure, formDispatch, currentFormState } =
@@ -95,7 +95,7 @@ export default function RepairFormPage(): React.ReactNode {
             options={availableGroups}
             callback={(group: string) => {
               formDispatch({
-                type: RepairFormDispatchType.UPDATE_FIELD,
+                type: "UPDATE_FIELD",
                 payload: { formField: { group } },
               });
             }}
@@ -107,7 +107,7 @@ export default function RepairFormPage(): React.ReactNode {
             options={availableBoardTypes}
             callback={(boardType: string) => {
               formDispatch({
-                type: RepairFormDispatchType.UPDATE_FIELD,
+                type: "UPDATE_FIELD",
                 payload: { formField: { boardType } },
               });
             }}
@@ -117,7 +117,7 @@ export default function RepairFormPage(): React.ReactNode {
           <AvailableOptions
             callback={(engineMake: string) => {
               formDispatch({
-                type: RepairFormDispatchType.UPDATE_FIELD,
+                type: "UPDATE_FIELD",
                 payload: { formField: { engineMake } },
               });
             }}
@@ -129,27 +129,7 @@ export default function RepairFormPage(): React.ReactNode {
 
       <section>
         <h3 className="text-xl">Repair procedures</h3>
-        <EditProcedureList
-        // formDispatch={formDispatch}
-        // list={currentProcedureList}
-        />
-        <section className="p-3 flex flex-col items-center">
-          <h3>Edit Procedure list</h3>
-          <div>
-            <div
-              onClick={() => {
-                // const newList = addProcedureAtIndex({
-                //   index: currentProcedureList.length,
-                //   list: currentProcedureList,
-                //   newItem: newProcedure,
-                // });
-                // setProcedureList(newList);
-              }}
-              className="btn">
-              add procedure here
-            </div>
-          </div>
-        </section>
+        <EditProcedureList />
       </section>
       {/* submit section */}
       <section className="p-3">

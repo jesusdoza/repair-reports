@@ -8,7 +8,7 @@ export type ImageObjT = {
 
 export type ProcedureT = {
   images: string[];
-  imageObjs?: ImageObjT[];
+  imageObjs: ImageObjT[];
   imagesIdArr: string[];
   instructions: string;
   procedureNum: number;

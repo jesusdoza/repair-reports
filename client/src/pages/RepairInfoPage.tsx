@@ -3,7 +3,7 @@ import React from "react";
 
 import { useLocation } from "react-router-dom";
 import ProcedureList from "../components/ProcedureList/ProcedureList";
-import EditTools from "../components/RepairEditOLD/EditTools";
+import EditTools from "../components/ProcedureList/EditTools";
 import Comments from "../components/Comments/Comments";
 import useAuthContext from "../hooks/useAuthContext";
 import { RepairDataT } from "../../types";

@@ -6,9 +6,17 @@ import {
 } from "../../types";
 const LOC = "@useRepairFormState ";
 
+export const newImageObj = {
+  imageUrl: "#",
+  imageThumb: "#",
+  caption: "",
+  imageId: "",
+  folder: "testFolder",
+};
+
 export const newProcedure: ProcedureT = {
   images: ["#"],
-  imageObjs: [],
+  imageObjs: [newImageObj],
   imagesIdArr: [],
   instructions: "",
   procedureNum: 0,
@@ -34,40 +42,6 @@ export default function useRepairFormState() {
   return { newRepairObj, currentFormState, formDispatch };
 }
 
-// export type RepairFormDispatchT = React.Dispatch<{
-//   type: DispatchType;
-//   payload: ChangeFormPayloadT;
-// }>;
-
-// export enum RepairDispatchTypeT {
-//   UPDATE_IMAGES,
-//   ADD_IMAGE,
-//   UPDATE_INTRUC,
-//   ADD_PROCEDURE,
-//   REMOVE_PROCEDURE,
-//   UPDATE_PROCEDURES,
-//   UPDATE_FIELD,
-// }
-
-// export type imageObjT = {
-//   imageUrl: string;
-//   imageThumb: string;
-//   caption: string;
-//   imageId: string;
-//   folder: string;
-// };
-
-// export type ChangeFormPayloadT = {
-//   procIndex?: number;
-//   instructions?: string;
-//   newImageUrl?: string;
-//   newImageIndex?: number;
-//   newImageObj?: ImageObjT;
-//   allProcedures?: ProcedureT[];
-
-//   formField?: Record<string, string>;
-// };
-
 function updateFormDataReducer(
   state: RepairFormT,
   action: { type: RepairFormDispatchType; payload: ChangeFormPayloadT }
@@ -75,8 +49,8 @@ function updateFormDataReducer(
   let newState = state;
   switch (action.type) {
     case "ADD_IMAGE":
-      // console.log("addemptyimagecard1");
-      // newState = addEmptyImageToProcedure(state, action.payload);
+      console.log("addemptyimagecard1");
+      newState = addEmptyImageToProcedure(state, action.payload);
       break;
     case "UPDATE_FIELD":
       newState = updateField(state, action.payload);
@@ -104,24 +78,34 @@ function updateFormDataReducer(
 }
 
 function addProcedure(state: RepairFormT, payload: ChangeFormPayloadT) {
-  const newProcedures = [];
+  const updatedProcedures = [];
+  const oldProcedures = state.procedureArr;
 
   const procIndex =
     typeof payload.procIndex == "number" && payload.procIndex >= 0
       ? payload.procIndex
       : 0;
 
-  for (let i = 0; i < state.procedureArr.length; i++) {
+  //add to begining
+  if (procIndex == 0) {
+    return { ...state, procedureArr: [newProcedure, ...oldProcedures] };
+  }
+
+  if (procIndex >= oldProcedures.length - 1) {
+    return { ...state, procedureArr: [...oldProcedures, newProcedure] };
+  }
+
+  for (let i = 0; i < oldProcedures.length; i++) {
     if (i == procIndex) {
-      newProcedures.push(newProcedure);
-      newProcedures.push(state.procedureArr[i]);
+      updatedProcedures.push(newProcedure);
+      updatedProcedures.push(oldProcedures[i]);
       continue;
     }
 
-    newProcedures.push(state.procedureArr[i]);
+    updatedProcedures.push(oldProcedures[i]);
   }
 
-  return { ...state, procedureArr: newProcedures };
+  return { ...state, procedureArr: updatedProcedures };
 }
 
 function updateField(state: RepairFormT, payload: ChangeFormPayloadT) {
@@ -152,20 +136,29 @@ function updateInstruction(
 }
 
 ///UPDATE IMAGE action
+//!working on here
 function updateImage(state: RepairFormT, payload: ChangeFormPayloadT) {
   console.log(`${LOC} form payload`, payload);
 
-  //have new image to update
-  if (
-    !payload.newImageUrl ||
-    typeof payload.newImageIndex != "number" ||
-    !(payload?.procIndex && payload.procIndex > 0)
-  ) {
+  //does image exists, have an index to update at, and index is valid if not then do nothing
+  if (!payload.newImageUrl || typeof payload.newImageIndex != "number") {
     console.log("no index to update image@useUpdateProcedures.updateImage");
     return state;
   }
 
+  if (typeof payload.procIndex != "number") {
+    console.log("no procedure index to update image at");
+    console.log("!payload.procIndex", !payload.procIndex);
+    console.log(
+      'typeof payload.procIndex != "number"',
+      typeof payload.procIndex != "number"
+    );
+    return state;
+  }
+
+  //get images if any from procedure
   const images = state.procedureArr[payload.procIndex]?.images;
+  const imageObjs = state.procedureArr[payload.procIndex]?.imageObjs;
 
   //image might be in array remove from database and insert new
   if (Array.isArray(images) && images.length > payload.newImageIndex) {
@@ -182,8 +175,14 @@ function updateImage(state: RepairFormT, payload: ChangeFormPayloadT) {
   //update legacy image urls property
   targetProc.images[imageIndexToUpdate] = newImageUrl;
 
+  //update image objs
+  targetProc.imageObjs[imageIndexToUpdate] = {
+    ...newImageObj,
+    imageUrl: newImageUrl,
+  };
+
   //update state
-  //update the image in specified index of procedureArr
+  //update procedure in array procedureArr
   const newProcedures = state.procedureArr.map((proc: ProcedureT, index) => {
     if (procIndex == index) {
       return targetProc;
@@ -198,11 +197,17 @@ function addEmptyImageToProcedure(
   state: RepairFormT,
   payload: ChangeFormPayloadT
 ) {
-  console.log("add new empty image");
+  // console.log("add new empty image");
 
   const newProcedures = state.procedureArr.map((proc, index) => {
     if (index == payload.procIndex) {
-      return { ...proc, images: [...proc.images, "#Empty"] };
+      return {
+        ...proc,
+        images: [...proc.images, "#Empty"],
+        imageObjs: proc.imageObjs
+          ? [...proc.imageObjs, newImageObj]
+          : [newImageObj],
+      };
     } else {
       return proc;
     }
