@@ -1,19 +1,19 @@
-export type ImageObjT = {
+export interface ImageObjT {
   imageUrl: string;
-  imageThumb: string;
-  caption: string;
+  imageThumb?: string;
+  caption?: string;
   imageId: string;
   folder: string;
-};
+}
 
-export type ProcedureT = {
+export interface ProcedureT {
   images: string[];
   imageObjs: ImageObjT[];
   imagesIdArr: string[];
   instructions: string;
   procedureNum: number;
   thumbs: string[];
-};
+}
 
 export type RepairDataT = {
   boardType: string;

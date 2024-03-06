@@ -1,19 +1,18 @@
-import React, { ChangeEvent, useContext, useState, useEffect } from "react";
+import React, { ChangeEvent } from "react";
 import AvailableOptions from "../components/AvailableOptions/AvailableOptions";
 import EditProcedureList from "../components/ProcedureList/EditProcedureList";
-import { RepairFormContext } from "../context/RepairFormContext";
-// import { ProcedureT, RepairFormDispatchType } from "../../types";
-// import { ProcedureT, RepairDispatchTypeEnum } from "../../types";
+// import { RepairFormContext } from "../context/RepairFormContext";
+import useRepairFormState from "../hooks/useRepairFormState";
 
 // const LOC = "@RepairFormPage.tsx";
 
 export default function RepairFormPage(): React.ReactNode {
-  const { newRepairObj, newProcedure, formDispatch, currentFormState } =
-    useContext(RepairFormContext);
+  // const { formDispatch, currentFormState } = useContext(RepairFormContext);
 
-  useEffect(() => {
-    console.log("currentFormState", currentFormState);
-  }, [currentFormState]);
+  const { currentFormState, formDispatch } = useRepairFormState();
+  // useEffect(() => {
+  //   console.log("currentFormState", currentFormState);
+  // }, [currentFormState]);
 
   // const [currentProcedureList, setProcedureList] = useState(
   //   newRepairObj.procedureArr
@@ -22,6 +21,7 @@ export default function RepairFormPage(): React.ReactNode {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    console.log("currentFormState", currentFormState);
     //! NOT USING DATABASE YET
     try {
       // const res = await updateRepair(updatedData);
@@ -33,16 +33,16 @@ export default function RepairFormPage(): React.ReactNode {
 
   const availableGroups = [
     {
-      label: `original: ${newRepairObj.group}`,
-      value: newRepairObj.group,
+      label: `original: ${currentFormState.group}`,
+      value: currentFormState.group,
     },
     { label: "public", value: "public" },
   ];
 
   const availableBoardTypes = [
     {
-      label: `original: ${newRepairObj.boardType}`,
-      value: newRepairObj.group,
+      label: `original: ${currentFormState.boardType}`,
+      value: currentFormState.group,
     },
     { label: "Cat 70 pin", value: "cat70" },
     { label: "Cat 40 pin", value: "cat40" },
@@ -53,8 +53,8 @@ export default function RepairFormPage(): React.ReactNode {
 
   const availableEngines = [
     {
-      label: `original: ${newRepairObj.engineMake}`,
-      value: newRepairObj.engineMake,
+      label: `original: ${currentFormState.engineMake}`,
+      value: currentFormState.engineMake,
     },
     { label: "Caterpillar", value: "cat" },
     { label: "Cummins", value: "cummins" },
@@ -65,10 +65,10 @@ export default function RepairFormPage(): React.ReactNode {
     <form
       className="w-full"
       onSubmit={handleSubmit}>
-      <legend className=" gap-4 flex flex-col border-4 rounded-lg p-2 border-gray-600">
-        <div className="flex w-full justify-around items-center align-middle">
+      <legend className=" gap-4 flex flex-col rounded-lg p-2 border-gray-600 w-full">
+        <div className="flex flex-col w-full justify-around items-center align-middle ">
           <div className="flex-1 flex justify-end">
-            <span className="w-1/2 text-4xl">Title:</span>
+            <span className="text-4xl w-full text-right">Title:</span>
           </div>
           <div className="flex-1 flex justify-start">
             <input
@@ -80,16 +80,16 @@ export default function RepairFormPage(): React.ReactNode {
                   payload: { formField: { title: e.target.value } },
                 });
               }}
-              className="text-2xl w-1/2"
+              className="text-2xl w-full"
               id="title"
               name="title"
               type="text"
-              defaultValue={newRepairObj.title}
+              defaultValue={currentFormState.title}
             />
           </div>
         </div>
 
-        <div>
+        <div className="">
           <AvailableOptions
             title="Visibility group"
             options={availableGroups}
@@ -129,7 +129,10 @@ export default function RepairFormPage(): React.ReactNode {
 
       <section>
         <h3 className="text-xl">Repair procedures</h3>
-        <EditProcedureList />
+        <EditProcedureList
+          formDispatch={formDispatch}
+          procedureList={currentFormState.procedureArr}
+        />
       </section>
       {/* submit section */}
       <section className="p-3">

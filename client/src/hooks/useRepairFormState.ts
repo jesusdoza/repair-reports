@@ -3,43 +3,53 @@ import {
   ChangeFormPayloadT,
   ProcedureT,
   RepairFormDispatchType,
+  ImageObjT,
 } from "../../types";
 const LOC = "@useRepairFormState ";
 
-export const newImageObj = {
-  imageUrl: "#",
-  imageThumb: "#",
-  caption: "",
-  imageId: "",
-  folder: "testFolder",
-};
+class ImageObj implements ImageObjT {
+  public imageUrl = "";
+  public imageThumb = "";
+  public caption = "";
+  public imageId = "";
+  public folder = "testFolder";
+  constructor() {}
+}
 
-export const newProcedure: ProcedureT = {
-  images: ["#"],
-  imageObjs: [newImageObj],
-  imagesIdArr: [],
-  instructions: "",
-  procedureNum: 0,
-  thumbs: [],
-};
+export class Procedure implements ProcedureT {
+  public images = [""];
+  public imageObjs: ImageObjT[] = [new ImageObj()];
+  public imagesIdArr = [];
+  public instructions = "";
+  public procedureNum = 0;
+  public thumbs = [];
 
-export const newRepairObj = {
-  boardType: "other",
-  engineMake: "other",
-  group: "public",
-  procedureArr: [newProcedure],
-  title: "New Repair",
-};
+  constructor() {}
+}
 
-export type RepairFormT = typeof newRepairObj;
+export class Repair {
+  public boardType = "other";
+  public engineMake = "other";
+  public group = "public";
+  public procedureArr: ProcedureT[] = [new Procedure()];
+  public title = "New Repair";
+
+  constructor() {}
+}
+
+// export const newProcedure = new Procedure();
+
+export const newRepairForm = new Repair();
+
+export type RepairFormT = typeof newRepairForm;
 
 export default function useRepairFormState() {
   const [currentFormState, formDispatch] = useReducer(
     updateFormDataReducer,
-    newRepairObj
+    new Repair()
   );
 
-  return { newRepairObj, currentFormState, formDispatch };
+  return { currentFormState, formDispatch };
 }
 
 function updateFormDataReducer(
@@ -49,7 +59,6 @@ function updateFormDataReducer(
   let newState = state;
   switch (action.type) {
     case "ADD_IMAGE":
-      console.log("addemptyimagecard1");
       newState = addEmptyImageToProcedure(state, action.payload);
       break;
     case "UPDATE_FIELD":
@@ -70,7 +79,7 @@ function updateFormDataReducer(
 
     default:
       console.log("no action available for ", action.type);
-
+      return state;
       break;
   }
 
@@ -88,16 +97,19 @@ function addProcedure(state: RepairFormT, payload: ChangeFormPayloadT) {
 
   //add to begining
   if (procIndex == 0) {
-    return { ...state, procedureArr: [newProcedure, ...oldProcedures] };
+    return {
+      ...state,
+      procedureArr: [new Procedure(), ...oldProcedures],
+    };
   }
 
   if (procIndex >= oldProcedures.length - 1) {
-    return { ...state, procedureArr: [...oldProcedures, newProcedure] };
+    return { ...state, procedureArr: [...oldProcedures, new Procedure()] };
   }
 
   for (let i = 0; i < oldProcedures.length; i++) {
     if (i == procIndex) {
-      updatedProcedures.push(newProcedure);
+      updatedProcedures.push(new Procedure());
       updatedProcedures.push(oldProcedures[i]);
       continue;
     }
@@ -122,91 +134,103 @@ function updateInstruction(
   state: RepairFormT,
   payload: ChangeFormPayloadT
 ): RepairFormT {
-  // console.log("state", state);
-  console.log("payload", payload);
-  const newProcedures = state.procedureArr.map((proc: ProcedureT, index) => {
-    if (payload.procIndex == index) {
-      return { ...proc, instructions: payload.instructions } as ProcedureT;
-    }
-    return proc;
-  });
-  // console.log("newState", newState);
+  const data = state;
+  const index = payload.procIndex ? payload.procIndex : 0;
+  data.procedureArr[index].instructions = payload?.instructions
+    ? payload.instructions
+    : "";
+  // const newProcedures = state.procedureArr.map((proc: ProcedureT, index) => {
+  //   if (payload.procIndex == index) {
+  //     return { ...proc, instructions: payload.instructions } as ProcedureT;
+  //   }
+  //   return proc;
+  // });
 
-  return { ...state, procedureArr: newProcedures };
+  // return { ...state, procedureArr: newProcedures };
+  return data;
 }
 
 ///UPDATE IMAGE action
-//!working on here
+//!working on here cant the newImage url is undefined** works but check again
 function updateImage(state: RepairFormT, payload: ChangeFormPayloadT) {
-  console.log(`${LOC} form payload`, payload);
+  const { procIndex, newImageIndex, newImageObj } = payload;
 
   //does image exists, have an index to update at, and index is valid if not then do nothing
-  if (!payload.newImageUrl || typeof payload.newImageIndex != "number") {
-    console.log("no index to update image@useUpdateProcedures.updateImage");
+  if (
+    typeof newImageIndex != "number" ||
+    newImageIndex < 0 ||
+    !newImageObj ||
+    !newImageObj?.imageUrl
+  ) {
+    console.log("payload", payload);
+    console.log(
+      "no index to update or url to update with image @useUpdateProcedures.updateImage"
+    );
+
     return state;
   }
 
-  if (typeof payload.procIndex != "number") {
+  if (typeof procIndex != "number") {
     console.log("no procedure index to update image at");
     console.log("!payload.procIndex", !payload.procIndex);
     console.log(
       'typeof payload.procIndex != "number"',
-      typeof payload.procIndex != "number"
+      typeof procIndex != "number"
     );
     return state;
   }
 
   //get images if any from procedure
-  const images = state.procedureArr[payload.procIndex]?.images;
-  const imageObjs = state.procedureArr[payload.procIndex]?.imageObjs;
+  const images = state.procedureArr[procIndex]?.images;
+  // const imageObjs = state.procedureArr[procIndex]?.imageObjs;
 
   //image might be in array remove from database and insert new
-  if (Array.isArray(images) && images.length > payload.newImageIndex) {
+  if (Array.isArray(images) && images.length > newImageIndex) {
     //todo remove image
   }
 
-  const procIndex = payload.procIndex;
+  // const procIndex = payload.procIndex;
   const targetProc = state.procedureArr[procIndex];
-  const imageIndexToUpdate = payload.newImageIndex;
-
-  const newImageUrl = payload.newImageUrl;
-  // const newImageObj = payload?.newImageObj;
+  const imageIndexToUpdate = newImageIndex;
 
   //update legacy image urls property
-  targetProc.images[imageIndexToUpdate] = newImageUrl;
+  targetProc.images[imageIndexToUpdate] = newImageObj.imageUrl;
 
-  //update image objs
-  targetProc.imageObjs[imageIndexToUpdate] = {
-    ...newImageObj,
-    imageUrl: newImageUrl,
-  };
+  //update image objs with what was in payload
+  // targetProc.imageObjs[imageIndexToUpdate] = {
+  //   ...imageObjs[imageIndexToUpdate],
+  //   ...newImageObj,
+  // };
+  targetProc.imageObjs[imageIndexToUpdate].imageUrl = newImageObj.imageUrl;
 
   //update state
   //update procedure in array procedureArr
-  const newProcedures = state.procedureArr.map((proc: ProcedureT, index) => {
-    if (procIndex == index) {
-      return targetProc;
-    }
-    return proc;
-  });
+  // const newProcedures = state.procedureArr.map((proc: ProcedureT, index) => {
+  //   if (procIndex == index) {
+  //     console.log("targetProc updated with image url", targetProc);
+  //     return targetProc;
+  //   }
+  //   return proc;
+  // });
 
-  return { ...state, procedureArr: newProcedures } as RepairFormT;
+  return state as RepairFormT;
+  // return { ...state, procedureArr: newProcedures } as RepairFormT;
 }
 
 function addEmptyImageToProcedure(
   state: RepairFormT,
   payload: ChangeFormPayloadT
 ) {
-  // console.log("add new empty image");
+  const { procIndex } = payload;
 
   const newProcedures = state.procedureArr.map((proc, index) => {
-    if (index == payload.procIndex) {
+    if (index == procIndex) {
+      //case images must be updated on image array and imageObj array
+      //imageObjs[] will be initialized if one undefined
       return {
         ...proc,
-        images: [...proc.images, "#Empty"],
-        imageObjs: proc.imageObjs
-          ? [...proc.imageObjs, newImageObj]
-          : [newImageObj],
+        images: [...proc.images, ""],
+        imageObjs: [...proc.imageObjs, new ImageObj()],
       };
     } else {
       return proc;
