@@ -136,13 +136,16 @@ function updateInstruction(
 }
 
 ///UPDATE IMAGE action
-//!working on here
+//!working on here cant the newImage url is undefined
 function updateImage(state: RepairFormT, payload: ChangeFormPayloadT) {
   console.log(`${LOC} form payload`, payload);
 
   //does image exists, have an index to update at, and index is valid if not then do nothing
   if (!payload.newImageUrl || typeof payload.newImageIndex != "number") {
-    console.log("no index to update image@useUpdateProcedures.updateImage");
+    console.log(
+      "no index to update or url to update with image@useUpdateProcedures.updateImage"
+    );
+
     return state;
   }
 
@@ -170,15 +173,15 @@ function updateImage(state: RepairFormT, payload: ChangeFormPayloadT) {
   const imageIndexToUpdate = payload.newImageIndex;
 
   const newImageUrl = payload.newImageUrl;
-  // const newImageObj = payload?.newImageObj;
+  const newImageObj = payload?.newImageObj;
 
   //update legacy image urls property
   targetProc.images[imageIndexToUpdate] = newImageUrl;
 
-  //update image objs url only
+  //update image objs with what was in payload
   targetProc.imageObjs[imageIndexToUpdate] = {
     ...imageObjs[imageIndexToUpdate],
-    imageUrl: newImageUrl,
+    ...newImageObj,
   };
 
   //update state

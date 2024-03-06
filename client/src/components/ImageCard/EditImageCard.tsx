@@ -1,13 +1,14 @@
 import React, { useState, useRef } from "react";
 import useUploadImage from "../../hooks/useUploadImage";
 import { CameraPreview } from "./CameraPreview";
+import { ImageObjT } from "../../../types";
 
 export function EditImageCard({
   url,
   setFormImageUrl,
 }: {
   url: string;
-  setFormImageUrl: (newUrl: string) => void; //external state setter to manipulate url prop
+  setFormImageUrl: (imageObj: ImageObjT) => void; //external state setter to manipulate url prop
 }) {
   const uploadImage = useUploadImage();
   //will show image of what has been captured by camera or url, or empty
@@ -37,8 +38,14 @@ export function EditImageCard({
       try {
         const response = await uploadImage(imageToUpload, folder);
         // console.log("response from image upload: ", response);
-        // setImageUrl(response.url); //update with new url
-        setFormImageUrl(response.url);
+
+        const imageObj: ImageObjT = {
+          imageUrl: response.url,
+          imageId: response.public_id,
+          folder: response.folder,
+        };
+
+        setFormImageUrl(imageObj);
         return;
       } catch (error) {
         console.log("error uploading", error);

@@ -4,7 +4,7 @@ import { RepairFormContext } from "../../context/RepairFormContext";
 import { EditImageCard } from "../ImageCard/EditImageCard";
 import { v4 as uuidv4 } from "uuid";
 import { useDebouncedCallback } from "use-debounce";
-import { ProcedureT, RepairFormDispatchT } from "../../../types";
+import { ImageObjT, ProcedureT, RepairFormDispatchT } from "../../../types";
 
 export default function EditProcedureCard({
   proc,
@@ -90,11 +90,14 @@ function createEditImageCards({
 }) {
   const imageCards = imageUrls.map((url, index) => {
     // high order function to update url
-    const setFormImageUrl = (newUrl: string) => {
+    const setFormImageUrl = ({ imageUrl, imageId, folder }: ImageObjT) => {
+      console.log("imageUrl", imageUrl);
+
       dispatch({
         type: "UPDATE_IMAGES",
         payload: {
-          newImageUrl: newUrl,
+          newImageUrl: imageUrl,
+          newImageObj: { imageUrl, imageId, folder },
           procIndex: procIndex,
           newImageIndex: index,
         },

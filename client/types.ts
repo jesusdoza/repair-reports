@@ -1,7 +1,7 @@
 export type ImageObjT = {
   imageUrl: string;
-  imageThumb: string;
-  caption: string;
+  imageThumb?: string;
+  caption?: string;
   imageId: string;
   folder: string;
 };
