@@ -1,8 +1,8 @@
 import React, { ChangeEvent, useContext, useState, useEffect } from "react";
 import AvailableOptions from "../components/AvailableOptions/AvailableOptions";
-import EditProcedureList from "../components/RepairEdit/EditProcedureList";
+import EditProcedureList from "../components/RepairEditOLD/EditProcedureList";
 import { RepairFormContext } from "../context/RepairFormContext";
-import { ProcedureT, RepairDispatchTypeEnum } from "../../types";
+import { ProcedureT, RepairFormDispatchType } from "../../types";
 // import { ProcedureT, RepairDispatchTypeEnum } from "../../types";
 
 const LOC = "@RepairFormPage.tsx";
@@ -76,7 +76,7 @@ export default function RepairFormPage(): React.ReactNode {
                 // console.log("e", e.target.value);
 
                 formDispatch({
-                  type: RepairDispatchTypeEnum.UPDATE_FIELD,
+                  type: RepairFormDispatchType.UPDATE_FIELD,
                   payload: { formField: { title: e.target.value } },
                 });
               }}
@@ -95,7 +95,7 @@ export default function RepairFormPage(): React.ReactNode {
             options={availableGroups}
             callback={(group: string) => {
               formDispatch({
-                type: RepairDispatchTypeEnum.UPDATE_FIELD,
+                type: RepairFormDispatchType.UPDATE_FIELD,
                 payload: { formField: { group } },
               });
             }}
@@ -107,7 +107,7 @@ export default function RepairFormPage(): React.ReactNode {
             options={availableBoardTypes}
             callback={(boardType: string) => {
               formDispatch({
-                type: RepairDispatchTypeEnum.UPDATE_FIELD,
+                type: RepairFormDispatchType.UPDATE_FIELD,
                 payload: { formField: { boardType } },
               });
             }}
@@ -117,7 +117,7 @@ export default function RepairFormPage(): React.ReactNode {
           <AvailableOptions
             callback={(engineMake: string) => {
               formDispatch({
-                type: RepairDispatchTypeEnum.UPDATE_FIELD,
+                type: RepairFormDispatchType.UPDATE_FIELD,
                 payload: { formField: { engineMake } },
               });
             }}

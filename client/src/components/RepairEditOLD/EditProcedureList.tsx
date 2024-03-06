@@ -1,10 +1,10 @@
 // import { ProcedureT } from "../../hooks/useGetLatest";
 import EditProcedureCard from "./EditProcedureForm";
 
-import React, { useContext, useState, useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { RepairFormContext } from "../../context/RepairFormContext";
-import { RepairDispatchTypeEnum } from "../../../types";
+import { RepairFormDispatchType } from "../../../types";
 
 export default function EditProcedureList(): React.ReactNode {
   //
@@ -40,7 +40,16 @@ export default function EditProcedureList(): React.ReactNode {
             index={index}
           />
 
-          <div className="btn">Add new Procedure here</div>
+          <div
+            onClick={() => {
+              formDispatch({
+                type: RepairFormDispatchType.ADD_PROCEDURE,
+                payload: { procIndex: index },
+              });
+            }}
+            className="btn">
+            Add new Procedure here
+          </div>
         </li>
       );
     });
@@ -52,7 +61,7 @@ export default function EditProcedureList(): React.ReactNode {
         onClick={() => {
           // console.log("add at front");
           formDispatch({
-            type: RepairDispatchTypeEnum.ADD_PROCEDURE,
+            type: RepairFormDispatchType.ADD_PROCEDURE,
             payload: { procIndex: 0 },
           });
         }}

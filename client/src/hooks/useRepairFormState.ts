@@ -2,7 +2,7 @@ import { useReducer } from "react";
 import {
   ChangeFormPayloadT,
   ProcedureT,
-  RepairDispatchTypeEnum as RepairDispatchType,
+  RepairFormDispatchType as RepairFormDispatchType,
 } from "../../types";
 const LOC = "@useRepairFormState ";
 
@@ -70,27 +70,27 @@ export default function useRepairFormState() {
 
 function updateFormDataReducer(
   state: RepairFormT,
-  action: { type: RepairDispatchType; payload: ChangeFormPayloadT }
+  action: { type: RepairFormDispatchType; payload: ChangeFormPayloadT }
 ) {
   let newState = state;
   switch (action.type) {
-    case RepairDispatchType.ADD_IMAGE:
+    case RepairFormDispatchType.ADD_IMAGE:
       // console.log("addemptyimagecard1");
       // newState = addEmptyImageToProcedure(state, action.payload);
       break;
-    case RepairDispatchType.UPDATE_FIELD:
+    case RepairFormDispatchType.UPDATE_FIELD:
       newState = updateField(state, action.payload);
       break;
-    case RepairDispatchType.ADD_PROCEDURE:
+    case RepairFormDispatchType.ADD_PROCEDURE:
       newState = addProcedure(state, action.payload);
       break;
-    case RepairDispatchType.UPDATE_PROCEDURES:
+    case RepairFormDispatchType.UPDATE_PROCEDURES:
       newState = updateProcedures(state, action.payload);
       break;
-    case RepairDispatchType.UPDATE_IMAGES:
+    case RepairFormDispatchType.UPDATE_IMAGES:
       newState = updateImage(state, action.payload);
       break;
-    case RepairDispatchType.UPDATE_INTRUC:
+    case RepairFormDispatchType.UPDATE_INTRUC:
       newState = updateInstruction(state, action.payload);
       break;
 

@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { repairDataT } from "../../../hooks/useGetLatest";
+import { repairDataT } from "../../hooks/useGetLatest";
 type editToolsPropsT = {
   editPageUrl: string;
   data: repairDataT;

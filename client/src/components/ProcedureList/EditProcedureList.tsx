@@ -1,10 +1,10 @@
-import { ProcedureT } from "../../../hooks/useGetLatest";
 import EditProcedureCard from "./EditProcedureCard";
 import useProcedureListState, {
   DispatchType,
-} from "../../../hooks/useProceduresLisetState";
+} from "../../hooks/useProceduresListState";
 import React, { useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { ProcedureT } from "../../../types";
 
 export default function EditProcedureList({
   list,
@@ -26,7 +26,6 @@ export default function EditProcedureList({
     return (
       <li key={uuidv4()}>
         <EditProcedureCard
-          reducer={dispatch}
           proc={proc}
           index={index}
         />

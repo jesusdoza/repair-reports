@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { repairDataT } from "../hooks/useGetLatest";
 import { ChangeEvent, useEffect, useState } from "react";
-import EditProcedureList from "../components/RepairEdit/EditProcedureList";
+import EditProcedureList from "../components/RepairEditOLD/EditProcedureList";
 // import axios from "axios";
 import useRepairApi from "../hooks/useRepairApi";
 import AvailableOptions from "../components/AvailableOptions/AvailableOptions";

@@ -1,19 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { ProcedureT } from "../../../hooks/useGetLatest";
+import React, { useEffect, useContext, useState } from "react";
 import {
   DispatchType,
   updateProcDispT,
-} from "../../../hooks/useProceduresLisetState";
-import { EditImageCard } from "./EditImageCard";
+} from "../../hooks/useProceduresListState";
+import { EditImageCard } from "../ImageCard/EditImageCard";
 import { v4 as uuidv4 } from "uuid";
+import { ProcedureT } from "../../../types";
+import { RepairFormContext } from "../../context/RepairFormContext";
 
 export default function EditProcedureCard({
   proc,
-  reducer,
   index,
 }: {
   proc: ProcedureT;
-  reducer: updateProcDispT;
   index: number;
 }) {
   //index to number to be used as reference of updating state array of the proceduresArray
@@ -22,6 +21,7 @@ export default function EditProcedureCard({
   const [images, setImages] = useState(proc.images);
   const [instructions, setInstructions] = useState(proc.instructions);
 
+  const { formDispatch } = useContext(RepairFormContext);
   // useEffect(() => {
   //   reducer({
   //     type: DispatchType.CHANG_IMAGE_LIST,
@@ -38,7 +38,7 @@ export default function EditProcedureCard({
 
   const imageCards = createEditImageCards({
     imageUrls: images,
-    reducer: reducer,
+    reducer: () => {},
     procIndex: PROCEDURE_INDEX,
   });
 
@@ -58,13 +58,7 @@ export default function EditProcedureCard({
             <div
               onClick={() => {
                 setImages((state) => {
-                  reducer({
-                    type: DispatchType.CHANG_IMAGE_LIST,
-                    payload: {
-                      procIndex: index,
-                      newImageOrder: [...state, "#empty"],
-                    },
-                  });
+                  //! update context state
                   return [...state, "#empty"];
                 });
               }}

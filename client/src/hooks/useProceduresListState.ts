@@ -7,8 +7,6 @@ export default function useProcedureListState(procedureList: ProcedureT[]) {
     procedureList
   );
 
-  console.log("procedureList", procedureList);
-
   return { currentListState, dispatch };
 }
 
@@ -52,6 +50,7 @@ function changeProcedures(
       // newState = state;
       break;
     case DispatchType.ADD_NEW_PROCEDURE:
+      newState = addProcedureAtIndex(state, action.payload);
       break;
     case DispatchType.UPDATE_IMAGE:
       newState = updateImage(state, action.payload);
@@ -135,4 +134,53 @@ function changeImageList(state: ProcedureT[], payload: ChangeProcPayloadT) {
   });
 
   return newState as ProcedureT[];
+}
+
+//! not adding new procedure
+function addProcedureAtIndex(state: ProcedureT[], payload: ChangeProcPayloadT) {
+  const procIndex = payload.procIndex < 0 ? 0 : payload.procIndex;
+  const newProc = new Procedure({ procedureNum: procIndex });
+
+  let newState = [...state];
+  if (procIndex > state.length - 1) {
+    newState = [...newState, newProc];
+    return newState;
+  }
+
+  // for (let i = 0; i < state.length; i++) {
+  //   if (i == procIndex) {
+  //     newState.push(newProc);
+  //     newState.push(state[i]);
+  //     continue;
+  //   }
+
+  //   newState.push(state[i]);
+  // }
+
+  console.log("newState", newState);
+  return newState;
+}
+
+class Procedure implements ProcedureT {
+  public images = ["#"];
+  public imageObjs: imageObjT[] = [new ProcedureImageObj("#")];
+  public imagesIdArr = [];
+  public instructions = "";
+  public procedureNum = 0;
+  public thumbs = ["#"];
+  constructor({ procedureNum }: { procedureNum?: number }) {
+    this.procedureNum =
+      typeof procedureNum == "number" && procedureNum >= 0 ? procedureNum : 0;
+  }
+}
+
+class ProcedureImageObj implements imageObjT {
+  public imageUrl = "#";
+  public imageThumb = "#";
+  public caption = "";
+  public imageId = "#";
+  public folder = "test";
+  constructor(url: string) {
+    this.imageUrl = url;
+  }
 }

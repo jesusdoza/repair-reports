@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import useUploadImage from "../../../hooks/useUploadImage";
+import useUploadImage from "../../hooks/useUploadImage";
 import { CameraPreview } from "./CameraPreview";
 
 export function EditImageCard({

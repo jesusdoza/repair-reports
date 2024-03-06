@@ -7,14 +7,9 @@ import { useDebouncedCallback } from "use-debounce";
 
 export default function EditProcedureCard({
   proc,
-  // formDispatch,
   index,
 }: {
   proc: ProcedureT;
-  // formDispatch: React.Dispatch<{
-  //   type: RepairDispatchTypeT;
-  //   payload: ChangeFormPayloadT;
-  // }>;
   index: number;
 }) {
   //index to number to be used as reference of updating state array of the proceduresArray
@@ -25,12 +20,10 @@ export default function EditProcedureCard({
     procIndex: PROCEDURE_INDEX,
   });
 
-  // const handleInstructChange = useDebouncedCallback(updateIntructions, 500);
-
   return (
     <div className="bg-blue-900 p-3 card">
       <section>
-        <h1 className="text-xl">procedure num is : {proc.procedureNum}</h1>
+        <h1 className="text-xl">procedure num is : {PROCEDURE_INDEX}</h1>
         <ul className=" w-full flex flex-wrap justify-center align-middle items-center gap-2 p-4  bg-neutral rounded-box">
           {imageCards}
         </ul>
