@@ -118,16 +118,3 @@ function createEditImageCards({
 
   return imageCards;
 }
-
-// function updateIntructions(
-//   text: string,
-//   reducer: updateProcDispT,
-//   procIndex: number
-// ) {
-//   text;
-//   // console.log("event.target.value", e.target.value);
-//   reducer({
-//     type: RepairDispatchTypeT.UPDATE_INTRUC,
-//     payload: { procIndex: procIndex, instructions: text },
-//   });
-// }
