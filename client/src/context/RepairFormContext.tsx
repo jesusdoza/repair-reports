@@ -1,23 +1,18 @@
 import React, { createContext } from "react";
 import useRepairFormState, {
   RepairFormT,
-  newRepairObj,
-  newProcedure,
+  Repair,
 } from "../hooks/useRepairFormState";
-import { ProcedureT, RepairFormDispatchT } from "../../types";
+import { RepairFormDispatchT } from "../../types";
 
 interface RepairFormContextT {
   currentFormState: RepairFormT;
   formDispatch: RepairFormDispatchT;
-  newRepairObj: RepairFormT;
-  newProcedure: ProcedureT;
 }
 
 export const RepairFormContext = createContext<RepairFormContextT>({
-  currentFormState: newRepairObj,
+  currentFormState: new Repair(),
   formDispatch: () => {},
-  newRepairObj,
-  newProcedure,
 });
 
 export const RepairFormContextProvider = ({
@@ -25,7 +20,7 @@ export const RepairFormContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const { currentFormState, formDispatch, newRepairObj } = useRepairFormState();
+  const { currentFormState, formDispatch } = useRepairFormState();
 
   //! have the current form state be updated by children
   //! but not referenced by them to prevent rerender
@@ -38,8 +33,6 @@ export const RepairFormContextProvider = ({
   const values: RepairFormContextT = {
     currentFormState,
     formDispatch,
-    newRepairObj,
-    newProcedure,
   };
 
   return (

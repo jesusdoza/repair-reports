@@ -9,8 +9,7 @@ import { RepairFormContext } from "../../context/RepairFormContext";
 export default function EditProcedureList(): React.ReactNode {
   //
 
-  const { currentFormState, formDispatch, newProcedure } =
-    useContext(RepairFormContext);
+  const { currentFormState, formDispatch } = useContext(RepairFormContext);
 
   // const [list, setList] = useState(currentFormState.procedureArr);
   const list = currentFormState.procedureArr;

@@ -1,8 +1,16 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import useUploadImage from "../../hooks/useUploadImage";
 import { CameraPreview } from "./CameraPreview";
 import { ImageObjT } from "../../../types";
 import { useDebouncedCallback } from "use-debounce";
+import { v4 as uuidv4 } from "uuid";
+
+enum UploadStatus {
+  SUCCESS,
+  UPLOADING,
+  ERROR,
+  IDLE,
+}
 
 export function EditImageCard({
   url,
@@ -12,6 +20,7 @@ export function EditImageCard({
   setFormImageUrl: (imageObj: ImageObjT) => void; //external state setter to manipulate url prop
 }) {
   const uploadImage = useUploadImage();
+
   //will show image of what has been captured by camera or url, or empty
   const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>(
     url
@@ -20,16 +29,18 @@ export function EditImageCard({
   //is camera active
   const [activeCamera, setActiveCamera] = useState(false);
 
+  //todo handle upload status for user
+  const [imageUploadStatus, setImageUploadStatus] = useState<UploadStatus>(
+    UploadStatus.IDLE
+  );
+
+  const [uploadProgress, setUploadProgress] = useState(10);
+
   //new image to upload
-  const [imageToUpload, setImageToUpload] = useState<File | null>(null);
+  const [imageToUpload, setImageToUpload] = useState<File | string>(url);
 
-  const [imageUrl, setImageUrl] = useState(url);
-
-  // useEffect(() => {
-  //   console.log("imageToUpload", imageToUpload);
-  // }, [imageToUpload]);
-
-  const handleUrlChange = useDebouncedCallback((urlText: string) => {
+  const handleUrlChange = useDebouncedCallback((urlText: string | null) => {
+    if (!urlText) return;
     setFormImageUrl({
       folder: "testFolder",
       imageId: urlText,
@@ -41,29 +52,37 @@ export function EditImageCard({
   //will hold <video> tag reference
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const handleImageUpload = async (folder: string) => {
+  const handleImageUpload = useDebouncedCallback(async (folder: string) => {
     //todo allow upload state to keep from doing requests over and over
-    if (imageToUpload) {
-      try {
-        const response = await uploadImage(imageToUpload, folder);
-        // console.log("response from image upload: ", response);
-
-        const imageObj: ImageObjT = {
-          imageUrl: response.url,
-          imageId: response.public_id,
-          folder: response.folder,
-        };
-
-        setFormImageUrl(imageObj);
-        return;
-      } catch (error) {
-        console.log("error uploading", error);
-        //todo set alert of failed upload
-        return;
-      }
+    setImageUploadStatus(UploadStatus.UPLOADING);
+    console.log("typeof imageToUpload", typeof imageToUpload);
+    console.log("typeof imageToUpload", Boolean(imageToUpload));
+    console.log("typeof imageToUpload", imageToUpload);
+    if (
+      (typeof imageToUpload == "string" && imageToUpload.length > 6) ||
+      typeof imageToUpload == "object"
+    ) {
+      console.log("uploading !!!!!");
+      // try {
+      //   const response = await uploadImage(imageToUpload, folder);
+      //   // console.log("response from image upload: ", response);
+      //   const imageObj: ImageObjT = {
+      //     imageUrl: response.url,
+      //     imageId: response.public_id,
+      //     folder: response.folder,
+      //   };
+      //   setFormImageUrl(imageObj);
+      //   setImageUploadStatus(UploadStatus.SUCCESS);
+      //   return;
+      // } catch (error) {
+      //   console.log("error uploading", error);
+      //   setImageUploadStatus(UploadStatus.ERROR);
+      //   //todo set alert of failed upload
+      return;
+      // }
     }
     alert("no image to upload");
-  };
+  }, 1000);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     //check input element for files
@@ -81,6 +100,7 @@ export function EditImageCard({
       reader.onloadend = async () => {
         //event will trigger and reader.result will have data:URL
         setImagePreview(reader.result);
+        handleUrlChange(reader.result);
       };
 
       //read the file data and trigger onloadend event
@@ -128,69 +148,127 @@ export function EditImageCard({
       //once image is captured set preview and close camera
       setImagePreview(dataUrl);
       setActiveCamera(false);
+      handleUrlChange(dataUrl);
     }
   };
 
   return (
     <div
-      key={url}
-      className="">
-      <div className="flex flex-col  max-w-[500px] ">
-        <div className="  w-full flex flex-col justify-center items-center ">
-          {imagePreview && !activeCamera ? (
-            <img
-              className="w-full "
-              src={imagePreview.toString()}
-              alt="Preview"
-            />
-          ) : null}
+      key={uuidv4()}
+      className="h-[500px]">
+      {/* alerts and status */}
+      <section className=" flex flex-col items-center h-1/6">
+        {imageUploadStatus == UploadStatus.UPLOADING ||
+          (true && (
+            <div className="">
+              <span className="loading loading-spinner text-accent"></span>
+              <progress
+                className="progress progress-accent w-56"
+                value={uploadProgress}
+                max="100"></progress>
+            </div>
+          ))}
+        {imageUploadStatus == UploadStatus.SUCCESS ||
+          (true && (
+            <div
+              role="alert"
+              className="alert alert-success">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="stroke-current shrink-0 h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <span>Your Image was uploaded!</span>
+            </div>
+          ))}
+        {imageUploadStatus == UploadStatus.ERROR ||
+          (true && (
+            <div
+              role="alert"
+              className="alert alert-error">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="stroke-current shrink-0 h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <span>Error! Upload Failed</span>
+            </div>
+          ))}
+      </section>
 
-          {activeCamera && (
-            <section className=" w-full flex flex-col border-solid h-full border-8 ">
-              <div className="h-3/4">
-                <CameraPreview videoRef={videoRef} />
-              </div>
+      {/* image preview or camera preview */}
+      <div className="flex flex-col max-w-[500px] h-5/6">
+        {/* camera of image preview */}
+        <div className="w-full flex flex-col justify-center items-center h-5/6">
+          <div className="h-4/6">
+            {imagePreview && !activeCamera ? (
+              <section className="w-full flex flex-col  h-full">
+                <img
+                  className=" h-full"
+                  src={imagePreview.toString()}
+                  alt="Preview"
+                />
+              </section>
+            ) : null}
 
-              <div
-                className="btn h-1/4"
-                onClick={captureFrame}>
-                capture
-              </div>
-            </section>
-          )}
-          <section className="p-3">
-            <h4 className="">
-              Update link manually or use the edit tools to upload new image
-            </h4>
+            {activeCamera && (
+              <section className=" flex flex-col border-solid border-2 border-cyan-400 h-full">
+                <div className="w-full h-5/6">
+                  <CameraPreview videoRef={videoRef} />
+                </div>
 
-            <textarea
+                <div
+                  className="btn h-1/6"
+                  onClick={captureFrame}>
+                  capture
+                </div>
+              </section>
+            )}
+          </div>
+          <section className="flex w-full h-2/6 ">
+            <label htmlFor="">
+              Image URL
+              <textarea
+                onChange={(event) => {
+                  const text = event.target.value;
+                  handleUrlChange(text);
+                }}
+                wrap="true"
+                defaultValue={url}
+                cols={30}
+                className="textarea textarea-bordered w-full"
+                placeholder="URL"></textarea>
+            </label>
+
+            {/* <textarea
               onChange={(event) => {
                 const text = event.target.value;
-                // setImageUrl(text);
                 handleUrlChange(text);
-                // setFormImageUrl({
-                //   folder: "testFolder",
-                //   imageId: text,
-                //   imageUrl: text,
-                // });
               }}
               wrap="true"
               defaultValue={url}
               cols={30}
-            />
+            /> */}
           </section>
         </div>
 
-        <label
-          htmlFor=""
-          className="text-black border-2 border-s-violet-100">
+        <div className="text-black border-2 border-s-violet-100 h-1/6">
           <h3 className=" bg-gray-700">Edit Tools</h3>
 
-          <div
-            className="btn"
-            onClick={openCamera}>
-            Use camera
-          </div>
           <div>
             <input
               type="file"
@@ -200,13 +278,19 @@ export function EditImageCard({
           </div>
 
           <div
+            className="btn btn-sm"
+            onClick={openCamera}>
+            Use camera
+          </div>
+
+          <div
             onClick={() => {
               handleImageUpload("testfolder");
             }}
-            className="btn">
-            Upload Image
+            className="btn btn-sm">
+            Manual Upload Image
           </div>
-        </label>
+        </div>
       </div>
     </div>
   );

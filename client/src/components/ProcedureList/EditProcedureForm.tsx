@@ -91,7 +91,7 @@ function createEditImageCards({
   const imageCards = imageUrls.map((url, index) => {
     // high order function to update url
     const updateImageUrl = ({ imageUrl, imageId, folder }: ImageObjT) => {
-      console.log("imageUrl", imageUrl);
+      // console.log("imageUrl", imageUrl);
 
       dispatch({
         type: "UPDATE_IMAGES",

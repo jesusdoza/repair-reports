@@ -8,8 +8,7 @@ import { RepairFormContext } from "../context/RepairFormContext";
 // const LOC = "@RepairFormPage.tsx";
 
 export default function RepairFormPage(): React.ReactNode {
-  const { newRepairObj, newProcedure, formDispatch, currentFormState } =
-    useContext(RepairFormContext);
+  const { formDispatch, currentFormState } = useContext(RepairFormContext);
 
   useEffect(() => {
     console.log("currentFormState", currentFormState);
@@ -33,16 +32,16 @@ export default function RepairFormPage(): React.ReactNode {
 
   const availableGroups = [
     {
-      label: `original: ${newRepairObj.group}`,
-      value: newRepairObj.group,
+      label: `original: ${currentFormState.group}`,
+      value: currentFormState.group,
     },
     { label: "public", value: "public" },
   ];
 
   const availableBoardTypes = [
     {
-      label: `original: ${newRepairObj.boardType}`,
-      value: newRepairObj.group,
+      label: `original: ${currentFormState.boardType}`,
+      value: currentFormState.group,
     },
     { label: "Cat 70 pin", value: "cat70" },
     { label: "Cat 40 pin", value: "cat40" },
@@ -53,8 +52,8 @@ export default function RepairFormPage(): React.ReactNode {
 
   const availableEngines = [
     {
-      label: `original: ${newRepairObj.engineMake}`,
-      value: newRepairObj.engineMake,
+      label: `original: ${currentFormState.engineMake}`,
+      value: currentFormState.engineMake,
     },
     { label: "Caterpillar", value: "cat" },
     { label: "Cummins", value: "cummins" },
@@ -84,7 +83,7 @@ export default function RepairFormPage(): React.ReactNode {
               id="title"
               name="title"
               type="text"
-              defaultValue={newRepairObj.title}
+              defaultValue={currentFormState.title}
             />
           </div>
         </div>

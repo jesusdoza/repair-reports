@@ -3,43 +3,53 @@ import {
   ChangeFormPayloadT,
   ProcedureT,
   RepairFormDispatchType,
+  ImageObjT,
 } from "../../types";
 const LOC = "@useRepairFormState ";
 
-export const newImageObj = {
-  imageUrl: "#empty",
-  imageThumb: "#",
-  caption: "",
-  imageId: "",
-  folder: "testFolder",
-};
+class ImageObj implements ImageObjT {
+  public imageUrl = "";
+  public imageThumb = "";
+  public caption = "";
+  public imageId = "";
+  public folder = "testFolder";
+  constructor() {}
+}
 
-export const newProcedure: ProcedureT = {
-  images: ["#"],
-  imageObjs: [newImageObj],
-  imagesIdArr: [],
-  instructions: "",
-  procedureNum: 0,
-  thumbs: [],
-};
+export class Procedure implements ProcedureT {
+  public images = [""];
+  public imageObjs: ImageObjT[] = [new ImageObj()];
+  public imagesIdArr = [];
+  public instructions = "";
+  public procedureNum = 0;
+  public thumbs = [];
 
-export const newRepairObj = {
-  boardType: "other",
-  engineMake: "other",
-  group: "public",
-  procedureArr: [newProcedure],
-  title: "New Repair",
-};
+  constructor() {}
+}
 
-export type RepairFormT = typeof newRepairObj;
+export class Repair {
+  public boardType = "other";
+  public engineMake = "other";
+  public group = "public";
+  public procedureArr: ProcedureT[] = [new Procedure()];
+  public title = "New Repair";
+
+  constructor() {}
+}
+
+// export const newProcedure = new Procedure();
+
+export const newRepairForm = new Repair();
+
+export type RepairFormT = typeof newRepairForm;
 
 export default function useRepairFormState() {
   const [currentFormState, formDispatch] = useReducer(
     updateFormDataReducer,
-    newRepairObj
+    new Repair()
   );
 
-  return { newRepairObj, currentFormState, formDispatch };
+  return { currentFormState, formDispatch };
 }
 
 function updateFormDataReducer(
@@ -88,16 +98,19 @@ function addProcedure(state: RepairFormT, payload: ChangeFormPayloadT) {
 
   //add to begining
   if (procIndex == 0) {
-    return { ...state, procedureArr: [newProcedure, ...oldProcedures] };
+    return {
+      ...state,
+      procedureArr: [new Procedure(), ...oldProcedures],
+    };
   }
 
   if (procIndex >= oldProcedures.length - 1) {
-    return { ...state, procedureArr: [...oldProcedures, newProcedure] };
+    return { ...state, procedureArr: [...oldProcedures, new Procedure()] };
   }
 
   for (let i = 0; i < oldProcedures.length; i++) {
     if (i == procIndex) {
-      updatedProcedures.push(newProcedure);
+      updatedProcedures.push(new Procedure());
       updatedProcedures.push(oldProcedures[i]);
       continue;
     }
@@ -205,12 +218,12 @@ function addEmptyImageToProcedure(
 
   const newProcedures = state.procedureArr.map((proc, index) => {
     if (index == payload.procIndex) {
+      //case images must be updated on image array and imageObj array
+      //imageObjs[] will be initialized if one undefined
       return {
         ...proc,
         images: [...proc.images, "#Empty"],
-        imageObjs: proc.imageObjs
-          ? [...proc.imageObjs, newImageObj]
-          : [newImageObj],
+        imageObjs: [...proc.imageObjs, new ImageObj()],
       };
     } else {
       return proc;
