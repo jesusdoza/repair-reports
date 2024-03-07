@@ -109,6 +109,7 @@ function createEditImageCards({
         className="w-1/3 card bg-slate-700 p-2"
         key={uuidv4()}>
         <EditImageCard
+          key={uuidv4()}
           url={url}
           setFormImageUrl={updateImageUrl}
         />

@@ -61,13 +61,15 @@ export function EditImageCard({
 
   const handleImageUpload = useDebouncedCallback(async (folder: string) => {
     setImageUploadStatus(UploadStatus.UPLOADING);
-    console.log("typeof imageToUpload", typeof imageToUpload);
-    console.log("typeof imageToUpload", Boolean(imageToUpload));
-    console.log("typeof imageToUpload", imageToUpload);
+    setUploadProgress(30);
+    // console.log("typeof imageToUpload", typeof imageToUpload);
+    // console.log("typeof imageToUpload", Boolean(imageToUpload));
+    // console.log("typeof imageToUpload", imageToUpload);
     if (
       (typeof imageToUpload == "string" && imageToUpload.length > 6) ||
       typeof imageToUpload == "object"
     ) {
+      setUploadProgress(50);
       try {
         const response = await uploadImage(imageToUpload, folder);
         // console.log("response from image upload: ", response);
@@ -76,7 +78,9 @@ export function EditImageCard({
           imageId: response.public_id,
           folder: response.folder,
         };
+        setUploadProgress(70);
         setFormImageUrl(imageObj);
+        setUploadProgress(100);
         setImageUploadStatus(UploadStatus.SUCCESS);
         return;
       } catch (error) {
@@ -86,10 +90,13 @@ export function EditImageCard({
         return;
       }
     }
+
     alert("no image to upload");
   }, 1000);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     //check input element for files
     const imageFile = event.target.files && event.target.files[0];
 
@@ -105,7 +112,9 @@ export function EditImageCard({
       reader.onloadend = async () => {
         //event will trigger and reader.result will have data:URL
         setImagePreview(reader.result);
+
         handleUrlChange(reader.result);
+        // await handleImageUpload("testfolder");
       };
 
       //read the file data and trigger onloadend event
@@ -163,56 +172,53 @@ export function EditImageCard({
       className="h-[500px]">
       {/* alerts and status */}
       <section className=" flex flex-col items-center h-1/6">
-        {imageUploadStatus == UploadStatus.UPLOADING ||
-          (true && (
-            <div className="">
-              <span className="loading loading-spinner text-accent"></span>
-              <progress
-                className="progress progress-accent w-56"
-                value={uploadProgress}
-                max="100"></progress>
-            </div>
-          ))}
-        {imageUploadStatus == UploadStatus.SUCCESS ||
-          (true && (
-            <div
-              role="alert"
-              className="alert alert-success">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="stroke-current shrink-0 h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-              <span>Your Image was uploaded!</span>
-            </div>
-          ))}
-        {imageUploadStatus == UploadStatus.ERROR ||
-          (true && (
-            <div
-              role="alert"
-              className="alert alert-error">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="stroke-current shrink-0 h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-              <span>Error! Upload Failed</span>
-            </div>
-          ))}
+        {imageUploadStatus == UploadStatus.UPLOADING && (
+          <div className="">
+            <span className="loading loading-spinner text-accent"></span>
+            <progress
+              className="progress progress-accent w-56"
+              value={uploadProgress}
+              max="100"></progress>
+          </div>
+        )}
+        {imageUploadStatus == UploadStatus.SUCCESS && (
+          <div
+            role="alert"
+            className="alert alert-success">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="stroke-current shrink-0 h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span>Your Image was uploaded!</span>
+          </div>
+        )}
+        {imageUploadStatus == UploadStatus.ERROR && (
+          <div
+            role="alert"
+            className="alert alert-error">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="stroke-current shrink-0 h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span>Error! Upload Failed</span>
+          </div>
+        )}
       </section>
 
       {/* image preview or camera preview */}
@@ -258,16 +264,6 @@ export function EditImageCard({
                 className="textarea textarea-bordered w-full"
                 placeholder="URL"></textarea>
             </label>
-
-            {/* <textarea
-              onChange={(event) => {
-                const text = event.target.value;
-                handleUrlChange(text);
-              }}
-              wrap="true"
-              defaultValue={url}
-              cols={30}
-            /> */}
           </section>
         </div>
 

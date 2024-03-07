@@ -6,7 +6,7 @@ import { signatureT } from "../api/RepairReportsApi";
 export default function useUploadImage() {
   const { getUploadSignature } = useRepairApi();
 
-  return async function uploadImage(imageFile: File, folder: string) {
+  return async function uploadImage(imageFile: File | string, folder: string) {
     const signData = await getUploadSignature(folder);
     // console.log("signData", signData);
 
@@ -78,7 +78,7 @@ async function createForm({
   imageFile,
   signData,
 }: {
-  imageFile: File;
+  imageFile: File | string;
   signData: signatureT;
 }) {
   const formData = new FormData();
