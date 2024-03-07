@@ -39,21 +39,27 @@ export function EditImageCard({
   //new image to upload
   const [imageToUpload, setImageToUpload] = useState<File | string>(url);
 
-  const handleUrlChange = useDebouncedCallback((urlText: string | null) => {
-    if (!urlText) return;
-    setFormImageUrl({
-      folder: "testFolder",
-      imageId: urlText,
-      imageUrl: urlText,
-    });
-  }, 300);
+  const handleUrlChange = useDebouncedCallback(
+    (urlText: string | null | ArrayBuffer) => {
+      if (typeof urlText != "string") {
+        alert("image url is not in text form");
+        return;
+      }
+
+      setFormImageUrl({
+        folder: "testFolder",
+        imageId: urlText,
+        imageUrl: urlText,
+      });
+    },
+    300
+  );
 
   //ref used to interact with node that is rendered to dom and get its current properties
   //will hold <video> tag reference
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const handleImageUpload = useDebouncedCallback(async (folder: string) => {
-    //todo allow upload state to keep from doing requests over and over
     setImageUploadStatus(UploadStatus.UPLOADING);
     console.log("typeof imageToUpload", typeof imageToUpload);
     console.log("typeof imageToUpload", Boolean(imageToUpload));
@@ -62,24 +68,23 @@ export function EditImageCard({
       (typeof imageToUpload == "string" && imageToUpload.length > 6) ||
       typeof imageToUpload == "object"
     ) {
-      console.log("uploading !!!!!");
-      // try {
-      //   const response = await uploadImage(imageToUpload, folder);
-      //   // console.log("response from image upload: ", response);
-      //   const imageObj: ImageObjT = {
-      //     imageUrl: response.url,
-      //     imageId: response.public_id,
-      //     folder: response.folder,
-      //   };
-      //   setFormImageUrl(imageObj);
-      //   setImageUploadStatus(UploadStatus.SUCCESS);
-      //   return;
-      // } catch (error) {
-      //   console.log("error uploading", error);
-      //   setImageUploadStatus(UploadStatus.ERROR);
-      //   //todo set alert of failed upload
-      return;
-      // }
+      try {
+        const response = await uploadImage(imageToUpload, folder);
+        // console.log("response from image upload: ", response);
+        const imageObj: ImageObjT = {
+          imageUrl: response.url,
+          imageId: response.public_id,
+          folder: response.folder,
+        };
+        setFormImageUrl(imageObj);
+        setImageUploadStatus(UploadStatus.SUCCESS);
+        return;
+      } catch (error) {
+        console.log("error uploading", error);
+        setImageUploadStatus(UploadStatus.ERROR);
+        //todo set alert of failed upload
+        return;
+      }
     }
     alert("no image to upload");
   }, 1000);
