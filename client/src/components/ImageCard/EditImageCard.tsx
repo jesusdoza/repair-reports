@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import useUploadImage from "../../hooks/useUploadImage";
 import { CameraPreview } from "./CameraPreview";
 import { ImageObjT } from "../../../types";
+import { useDebouncedCallback } from "use-debounce";
 
 export function EditImageCard({
   url,
@@ -27,6 +28,14 @@ export function EditImageCard({
   // useEffect(() => {
   //   console.log("imageToUpload", imageToUpload);
   // }, [imageToUpload]);
+
+  const handleUrlChange = useDebouncedCallback((urlText: string) => {
+    setFormImageUrl({
+      folder: "testFolder",
+      imageId: urlText,
+      imageUrl: urlText,
+    });
+  }, 300);
 
   //ref used to interact with node that is rendered to dom and get its current properties
   //will hold <video> tag reference
@@ -157,8 +166,13 @@ export function EditImageCard({
             <textarea
               onChange={(event) => {
                 const text = event.target.value;
-                setImageUrl(text);
-                setFormImageUrl(text);
+                // setImageUrl(text);
+                handleUrlChange(text);
+                // setFormImageUrl({
+                //   folder: "testFolder",
+                //   imageId: text,
+                //   imageUrl: text,
+                // });
               }}
               wrap="true"
               defaultValue={url}

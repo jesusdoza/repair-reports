@@ -90,7 +90,7 @@ function createEditImageCards({
 }) {
   const imageCards = imageUrls.map((url, index) => {
     // high order function to update url
-    const setFormImageUrl = ({ imageUrl, imageId, folder }: ImageObjT) => {
+    const updateImageUrl = ({ imageUrl, imageId, folder }: ImageObjT) => {
       console.log("imageUrl", imageUrl);
 
       dispatch({
@@ -110,7 +110,7 @@ function createEditImageCards({
         key={uuidv4()}>
         <EditImageCard
           url={url}
-          setFormImageUrl={setFormImageUrl}
+          setFormImageUrl={updateImageUrl}
         />
       </li>
     );

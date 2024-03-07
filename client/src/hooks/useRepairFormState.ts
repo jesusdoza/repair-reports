@@ -136,7 +136,7 @@ function updateInstruction(
 }
 
 ///UPDATE IMAGE action
-//!working on here cant the newImage url is undefined
+//!working on here cant the newImage url is undefined** works but check again
 function updateImage(state: RepairFormT, payload: ChangeFormPayloadT) {
   console.log(`${LOC} form payload`, payload);
 
@@ -188,6 +188,7 @@ function updateImage(state: RepairFormT, payload: ChangeFormPayloadT) {
   //update procedure in array procedureArr
   const newProcedures = state.procedureArr.map((proc: ProcedureT, index) => {
     if (procIndex == index) {
+      console.log("targetProc updated with image url", targetProc);
       return targetProc;
     }
     return proc;
