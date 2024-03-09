@@ -35,6 +35,12 @@ export default function EditProcedureList({
         payload: { procIndex: index },
       });
     };
+    const editImage = () => {
+      formDispatch({
+        type: "UPDATE_IMAGES",
+        payload: { procIndex: index },
+      });
+    };
 
     //object with update functions for editProcedureCard component
     const updateProcedure = { instructions, addImage };

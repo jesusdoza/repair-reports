@@ -16,6 +16,7 @@ export default function EditProcedureCard({
   updateProcedure: {
     instructions: (text: string) => void;
     addImage: () => void;
+    editImage: (index: number) => void;
   };
 }) {
   //index to number to be used as reference of updating state array of the proceduresArray

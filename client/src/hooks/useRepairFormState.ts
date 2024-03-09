@@ -159,9 +159,10 @@ function updateInstruction(
 //!working on here cant the newImage url is undefined** works but check again
 function updateImage(state: RepairFormT, payload: ChangeFormPayloadT) {
   console.log(`${LOC} form payload`, payload);
+  const { procIndex, newImageUrl, newImageIndex, newImageObj } = payload;
 
   //does image exists, have an index to update at, and index is valid if not then do nothing
-  if (!payload.newImageUrl || typeof payload.newImageIndex != "number") {
+  if (!newImageUrl || typeof newImageIndex != "number") {
     console.log(
       "no index to update or url to update with image@useUpdateProcedures.updateImage"
     );
@@ -169,31 +170,28 @@ function updateImage(state: RepairFormT, payload: ChangeFormPayloadT) {
     return state;
   }
 
-  if (typeof payload.procIndex != "number") {
+  if (typeof procIndex != "number") {
     console.log("no procedure index to update image at");
     console.log("!payload.procIndex", !payload.procIndex);
     console.log(
       'typeof payload.procIndex != "number"',
-      typeof payload.procIndex != "number"
+      typeof procIndex != "number"
     );
     return state;
   }
 
   //get images if any from procedure
-  const images = state.procedureArr[payload.procIndex]?.images;
-  const imageObjs = state.procedureArr[payload.procIndex]?.imageObjs;
+  const images = state.procedureArr[procIndex]?.images;
+  const imageObjs = state.procedureArr[procIndex]?.imageObjs;
 
   //image might be in array remove from database and insert new
-  if (Array.isArray(images) && images.length > payload.newImageIndex) {
+  if (Array.isArray(images) && images.length > newImageIndex) {
     //todo remove image
   }
 
-  const procIndex = payload.procIndex;
+  // const procIndex = payload.procIndex;
   const targetProc = state.procedureArr[procIndex];
-  const imageIndexToUpdate = payload.newImageIndex;
-
-  const newImageUrl = payload.newImageUrl;
-  const newImageObj = payload?.newImageObj;
+  const imageIndexToUpdate = newImageIndex;
 
   //update legacy image urls property
   targetProc.images[imageIndexToUpdate] = newImageUrl;
