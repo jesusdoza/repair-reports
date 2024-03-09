@@ -260,11 +260,11 @@ export function EditImageCard({
                   event.preventDefault();
                   const text = event.target.value;
                   handleUrlChange(text);
-                  setImageUrl(text);
+                  // setImageUrl(text);
                 }}
                 wrap="true"
                 defaultValue={imageUrl}
-                // value={imageUrl}
+                // value={url}
                 cols={30}
                 className="textarea textarea-bordered w-full"
                 placeholder="URL"></textarea>
