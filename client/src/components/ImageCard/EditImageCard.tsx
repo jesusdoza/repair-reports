@@ -21,9 +21,11 @@ export function EditImageCard({
 }) {
   const uploadImage = useUploadImage();
 
+  const [imageUrl, setImageUrl] = useState(url);
+
   //will show image of what has been captured by camera or url, or empty
   const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>(
-    url
+    imageUrl
   );
 
   //is camera active
@@ -37,7 +39,7 @@ export function EditImageCard({
   const [uploadProgress, setUploadProgress] = useState(10);
 
   //new image to upload
-  const [imageToUpload, setImageToUpload] = useState<File | string>(url);
+  const [imageToUpload, setImageToUpload] = useState<File | string>(imageUrl);
 
   const handleUrlChange = useDebouncedCallback(
     (urlText: string | null | ArrayBuffer) => {
@@ -255,11 +257,14 @@ export function EditImageCard({
               Image URL
               <textarea
                 onChange={(event) => {
+                  event.preventDefault();
                   const text = event.target.value;
                   handleUrlChange(text);
+                  setImageUrl(text);
                 }}
                 wrap="true"
-                defaultValue={url}
+                defaultValue={imageUrl}
+                // value={imageUrl}
                 cols={30}
                 className="textarea textarea-bordered w-full"
                 placeholder="URL"></textarea>

@@ -159,12 +159,19 @@ function updateInstruction(
 //!working on here cant the newImage url is undefined** works but check again
 function updateImage(state: RepairFormT, payload: ChangeFormPayloadT) {
   console.log(`${LOC} form payload`, payload);
-  const { procIndex, newImageUrl, newImageIndex, newImageObj } = payload;
+
+  const { procIndex, newImageIndex, newImageObj } = payload;
 
   //does image exists, have an index to update at, and index is valid if not then do nothing
-  if (!newImageUrl || typeof newImageIndex != "number") {
+  if (
+    typeof newImageIndex != "number" ||
+    newImageIndex < 0 ||
+    !newImageObj ||
+    !newImageObj?.imageUrl
+  ) {
+    console.log("payload", payload);
     console.log(
-      "no index to update or url to update with image@useUpdateProcedures.updateImage"
+      "no index to update or url to update with image @useUpdateProcedures.updateImage"
     );
 
     return state;
@@ -182,7 +189,7 @@ function updateImage(state: RepairFormT, payload: ChangeFormPayloadT) {
 
   //get images if any from procedure
   const images = state.procedureArr[procIndex]?.images;
-  const imageObjs = state.procedureArr[procIndex]?.imageObjs;
+  // const imageObjs = state.procedureArr[procIndex]?.imageObjs;
 
   //image might be in array remove from database and insert new
   if (Array.isArray(images) && images.length > newImageIndex) {
@@ -194,25 +201,27 @@ function updateImage(state: RepairFormT, payload: ChangeFormPayloadT) {
   const imageIndexToUpdate = newImageIndex;
 
   //update legacy image urls property
-  targetProc.images[imageIndexToUpdate] = newImageUrl;
+  targetProc.images[imageIndexToUpdate] = newImageObj.imageUrl;
 
   //update image objs with what was in payload
-  targetProc.imageObjs[imageIndexToUpdate] = {
-    ...imageObjs[imageIndexToUpdate],
-    ...newImageObj,
-  };
+  // targetProc.imageObjs[imageIndexToUpdate] = {
+  //   ...imageObjs[imageIndexToUpdate],
+  //   ...newImageObj,
+  // };
+  targetProc.imageObjs[imageIndexToUpdate].imageUrl = newImageObj.imageUrl;
 
   //update state
   //update procedure in array procedureArr
-  const newProcedures = state.procedureArr.map((proc: ProcedureT, index) => {
-    if (procIndex == index) {
-      console.log("targetProc updated with image url", targetProc);
-      return targetProc;
-    }
-    return proc;
-  });
+  // const newProcedures = state.procedureArr.map((proc: ProcedureT, index) => {
+  //   if (procIndex == index) {
+  //     console.log("targetProc updated with image url", targetProc);
+  //     return targetProc;
+  //   }
+  //   return proc;
+  // });
 
-  return { ...state, procedureArr: newProcedures } as RepairFormT;
+  return state as RepairFormT;
+  // return { ...state, procedureArr: newProcedures } as RepairFormT;
 }
 
 function addEmptyImageToProcedure(

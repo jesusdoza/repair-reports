@@ -2,7 +2,7 @@ import EditProcedureCard from "./EditProcedureCard";
 
 import React, { useContext, useMemo, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { ProcedureT, RepairFormDispatchT } from "../../../types";
+import { ImageObjT, ProcedureT, RepairFormDispatchT } from "../../../types";
 
 export default function EditProcedureList({
   procedureList,
@@ -35,15 +35,21 @@ export default function EditProcedureList({
         payload: { procIndex: index },
       });
     };
-    const editImage = () => {
+
+    //! working here
+    const editImage = (imageIndex: number, updatedImageObj: ImageObjT) => {
       formDispatch({
         type: "UPDATE_IMAGES",
-        payload: { procIndex: index },
+        payload: {
+          procIndex: index,
+          newImageIndex: imageIndex,
+          newImageObj: updatedImageObj,
+        },
       });
     };
 
     //object with update functions for editProcedureCard component
-    const updateProcedure = { instructions, addImage };
+    const updateProcedure = { instructions, addImage, editImage };
 
     return (
       <li key={uuidv4()}>

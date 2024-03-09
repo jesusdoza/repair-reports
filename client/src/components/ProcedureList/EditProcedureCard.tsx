@@ -1,10 +1,10 @@
-import React, { useContext, useState } from "react";
-import { RepairFormContext } from "../../context/RepairFormContext";
+import React, { useState } from "react";
+// import { RepairFormContext } from "../../context/RepairFormContext";
 
 import { EditImageCard } from "../ImageCard/EditImageCard";
 import { v4 as uuidv4 } from "uuid";
 import { useDebouncedCallback } from "use-debounce";
-import { ImageObjT, ProcedureT, RepairFormDispatchT } from "../../../types";
+import { ImageObjT, ProcedureT } from "../../../types";
 
 export default function EditProcedureCard({
   proc,
@@ -16,20 +16,20 @@ export default function EditProcedureCard({
   updateProcedure: {
     instructions: (text: string) => void;
     addImage: () => void;
-    editImage: (index: number) => void;
+    editImage: (imageIndex: number, updatedImageObj: ImageObjT) => void;
   };
 }) {
   //index to number to be used as reference of updating state array of the proceduresArray
   const PROCEDURE_INDEX = Number(index);
 
-  const { formDispatch } = useContext(RepairFormContext);
+  // const { formDispatch } = useContext(RepairFormContext);
 
   const [instructions, setInstructions] = useState(proc.instructions);
+  const images = proc.images;
 
   const imageCards = createEditImageCards({
-    imageUrls: proc.images,
-    procIndex: PROCEDURE_INDEX,
-    dispatch: formDispatch,
+    imageUrls: images,
+    updateUrl: updateProcedure.editImage,
   });
 
   const handleInstructionsUpdate = useDebouncedCallback((text: string) => {
@@ -80,28 +80,16 @@ export default function EditProcedureCard({
 }
 
 function createEditImageCards({
-  procIndex,
   imageUrls,
-  dispatch,
+  updateUrl,
 }: {
   imageUrls: string[];
-  procIndex: number;
-  dispatch: RepairFormDispatchT;
+  updateUrl: (imageIndex: number, newImageObj: ImageObjT) => void;
 }) {
   const imageCards = imageUrls.map((url, index) => {
     // high order function to update url
     const updateImageUrl = ({ imageUrl, imageId, folder }: ImageObjT) => {
-      // console.log("imageUrl", imageUrl);
-
-      dispatch({
-        type: "UPDATE_IMAGES",
-        payload: {
-          newImageUrl: imageUrl,
-          newImageObj: { imageUrl, imageId, folder },
-          procIndex: procIndex,
-          newImageIndex: index,
-        },
-      });
+      updateUrl(index, { imageUrl, imageId, folder });
     };
 
     return (
