@@ -1,15 +1,15 @@
 import React, { ChangeEvent, useContext, useState, useEffect } from "react";
 import AvailableOptions from "../components/AvailableOptions/AvailableOptions";
 import EditProcedureList from "../components/ProcedureList/EditProcedureList";
-import { RepairFormContext } from "../context/RepairFormContext";
-// import { ProcedureT, RepairFormDispatchType } from "../../types";
-// import { ProcedureT, RepairDispatchTypeEnum } from "../../types";
+// import { RepairFormContext } from "../context/RepairFormContext";
+import useRepairFormState from "../hooks/useRepairFormState";
 
 // const LOC = "@RepairFormPage.tsx";
 
 export default function RepairFormPage(): React.ReactNode {
-  const { formDispatch, currentFormState } = useContext(RepairFormContext);
+  // const { formDispatch, currentFormState } = useContext(RepairFormContext);
 
+  const { currentFormState, formDispatch } = useRepairFormState();
   useEffect(() => {
     console.log("currentFormState", currentFormState);
   }, [currentFormState]);
@@ -128,7 +128,10 @@ export default function RepairFormPage(): React.ReactNode {
 
       <section>
         <h3 className="text-xl">Repair procedures</h3>
-        <EditProcedureList />
+        <EditProcedureList
+          formDispatch={formDispatch}
+          procedureList={currentFormState.procedureArr}
+        />
       </section>
       {/* submit section */}
       <section className="p-3">

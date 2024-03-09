@@ -136,16 +136,23 @@ function updateInstruction(
   payload: ChangeFormPayloadT
 ): RepairFormT {
   // console.log("state", state);
-  console.log("payload", payload);
-  const newProcedures = state.procedureArr.map((proc: ProcedureT, index) => {
-    if (payload.procIndex == index) {
-      return { ...proc, instructions: payload.instructions } as ProcedureT;
-    }
-    return proc;
-  });
-  // console.log("newState", newState);
+  console.log("payload update instruction", payload);
 
-  return { ...state, procedureArr: newProcedures };
+  const data = state;
+  const index = payload.procIndex ? payload.procIndex : 0;
+  data.procedureArr[index].instructions = payload?.instructions
+    ? payload.instructions
+    : "";
+  // const newProcedures = state.procedureArr.map((proc: ProcedureT, index) => {
+  //   if (payload.procIndex == index) {
+  //     return { ...proc, instructions: payload.instructions } as ProcedureT;
+  //   }
+  //   return proc;
+  // });
+
+  // return { ...state, procedureArr: newProcedures };
+  console.log("data", data);
+  return data;
 }
 
 ///UPDATE IMAGE action

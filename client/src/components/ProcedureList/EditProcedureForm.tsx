@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { RepairFormContext } from "../../context/RepairFormContext";
 
 import { EditImageCard } from "../ImageCard/EditImageCard";
@@ -9,15 +9,18 @@ import { ImageObjT, ProcedureT, RepairFormDispatchT } from "../../../types";
 export default function EditProcedureCard({
   proc,
   index,
+  updateProcedure,
 }: {
   proc: ProcedureT;
   index: number;
+  updateProcedure: (text: string) => void;
 }) {
   //index to number to be used as reference of updating state array of the proceduresArray
   const PROCEDURE_INDEX = Number(index);
 
   const { formDispatch } = useContext(RepairFormContext);
 
+  const [instructions, setInstructions] = useState(proc.instructions);
   const imageCards = createEditImageCards({
     imageUrls: proc.images,
     procIndex: PROCEDURE_INDEX,
@@ -25,11 +28,8 @@ export default function EditProcedureCard({
   });
 
   const handleInstructionsUpdate = useDebouncedCallback((text: string) => {
-    formDispatch({
-      type: "UPDATE_INTRUC",
-      payload: { procIndex: index, instructions: text },
-    });
-  }, 500);
+    updateProcedure(text);
+  }, 0);
 
   return (
     <div className="bg-blue-900 p-3 card">
@@ -67,9 +67,10 @@ export default function EditProcedureCard({
             e.preventDefault();
             console.log("e.target.value", e.target.value);
             handleInstructionsUpdate(e.target.value);
+            setInstructions(e.target.value);
           }}
           className="w-3/4 "
-          defaultValue={proc.instructions}
+          value={instructions}
           name=""
           id=""
           cols={30}
