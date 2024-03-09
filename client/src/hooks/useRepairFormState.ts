@@ -80,7 +80,7 @@ function updateFormDataReducer(
 
     default:
       console.log("no action available for ", action.type);
-
+      return state;
       break;
   }
 
@@ -221,10 +221,10 @@ function addEmptyImageToProcedure(
   state: RepairFormT,
   payload: ChangeFormPayloadT
 ) {
-  // console.log("add new empty image");
+  const { procIndex } = payload;
 
   const newProcedures = state.procedureArr.map((proc, index) => {
-    if (index == payload.procIndex) {
+    if (index == procIndex) {
       //case images must be updated on image array and imageObj array
       //imageObjs[] will be initialized if one undefined
       return {

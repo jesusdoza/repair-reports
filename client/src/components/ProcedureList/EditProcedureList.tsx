@@ -1,9 +1,7 @@
-// import { ProcedureT } from "../../hooks/useGetLatest";
-import EditProcedureCard from "./EditProcedureForm";
+import EditProcedureCard from "./EditProcedureCard";
 
 import React, { useContext, useMemo, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-// import useRepairFormState from "../../hooks/useRepairFormState";
 import { ProcedureT, RepairFormDispatchT } from "../../../types";
 
 export default function EditProcedureList({
@@ -25,12 +23,21 @@ export default function EditProcedureList({
   };
 
   const procedures = procedureList.map((proc, index) => {
-    const updateProcedure = (text: string) => {
+    const instructions = (text: string) => {
       formDispatch({
         type: "UPDATE_INTRUC",
         payload: { procIndex: index, instructions: text },
       });
     };
+    const addImage = () => {
+      formDispatch({
+        type: "ADD_IMAGE",
+        payload: { procIndex: index },
+      });
+    };
+
+    //object with update functions for editProcedureCard component
+    const updateProcedure = { instructions, addImage };
 
     return (
       <li key={uuidv4()}>
