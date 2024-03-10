@@ -65,10 +65,10 @@ export default function RepairFormPage(): React.ReactNode {
     <form
       className="w-full"
       onSubmit={handleSubmit}>
-      <legend className=" gap-4 flex flex-col border-4 rounded-lg p-2 border-gray-600">
-        <div className="flex w-full justify-around items-center align-middle">
+      <legend className=" gap-4 flex flex-col rounded-lg p-2 border-gray-600 w-full">
+        <div className="flex flex-col w-full justify-around items-center align-middle ">
           <div className="flex-1 flex justify-end">
-            <span className="w-1/2 text-4xl">Title:</span>
+            <span className="text-4xl w-full text-right">Title:</span>
           </div>
           <div className="flex-1 flex justify-start">
             <input
@@ -80,7 +80,7 @@ export default function RepairFormPage(): React.ReactNode {
                   payload: { formField: { title: e.target.value } },
                 });
               }}
-              className="text-2xl w-1/2"
+              className="text-2xl w-full"
               id="title"
               name="title"
               type="text"
@@ -89,7 +89,7 @@ export default function RepairFormPage(): React.ReactNode {
           </div>
         </div>
 
-        <div>
+        <div className="">
           <AvailableOptions
             title="Visibility group"
             options={availableGroups}

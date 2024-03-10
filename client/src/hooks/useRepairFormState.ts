@@ -236,7 +236,7 @@ function addEmptyImageToProcedure(
       //imageObjs[] will be initialized if one undefined
       return {
         ...proc,
-        images: [...proc.images, "#Empty"],
+        images: [...proc.images, ""],
         imageObjs: [...proc.imageObjs, new ImageObj()],
       };
     } else {

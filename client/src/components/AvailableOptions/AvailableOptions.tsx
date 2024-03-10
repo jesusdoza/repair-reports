@@ -20,13 +20,13 @@ export default function AvailableOptions({
   //   return createOption(item);
   // });
   return (
-    <div className="flex w-full justify-around items-center align-middle">
+    <div className="flex flex-col w-full justify-around items-center align-middle ">
       <div className="flex-1 flex justify-end">
-        <span className="w-1/2 ">{title}</span>
+        <span className="">{title}</span>
       </div>
       <div className="flex-1 flex justify-start">
         <CreatableSelect
-          className="w-1/2 "
+          className=" "
           defaultValue={options[0]}
           isClearable
           onChange={(event) => {

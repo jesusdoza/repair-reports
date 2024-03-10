@@ -13,7 +13,7 @@ enum UploadStatus {
 }
 
 export function EditImageCard({
-  url,
+  url = "",
   setFormImageUrl,
 }: {
   url: string;
@@ -274,10 +274,10 @@ export function EditImageCard({
               Image URL
               <textarea
                 onChange={(event) => {
-                  event.preventDefault();
+                  // event.preventDefault();
                   const text = event.target.value;
+                  setImagePreview(text);
                   handleUrlChange(text);
-                  // setImageUrl(text);
                 }}
                 wrap="true"
                 // defaultValue={url}
@@ -295,7 +295,7 @@ export function EditImageCard({
         </div>
 
         {/* edit tools */}
-        <div className="text-black border-2 border-s-violet-100 ">
+        <div className="text-black border-2 border-s-violet-100 w-full">
           <h3 className=" bg-gray-700">Edit Tools</h3>
 
           <div>

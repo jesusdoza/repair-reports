@@ -59,7 +59,7 @@ export default function EditProcedureCard({
       </section>
 
       {/* INSTRUCTIONS */}
-      <section className="">
+      <section className=" w-full flex flex-col items-center">
         <h3 className="text-lg text-gray">Instructions: </h3>
         <textarea
           onChange={(e) => {
