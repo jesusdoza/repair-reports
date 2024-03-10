@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useContext, useState, useEffect } from "react";
+import React, { ChangeEvent, useEffect } from "react";
 import AvailableOptions from "../components/AvailableOptions/AvailableOptions";
 import EditProcedureList from "../components/ProcedureList/EditProcedureList";
 // import { RepairFormContext } from "../context/RepairFormContext";
@@ -21,6 +21,7 @@ export default function RepairFormPage(): React.ReactNode {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    console.log("currentFormState", currentFormState);
     //! NOT USING DATABASE YET
     try {
       // const res = await updateRepair(updatedData);

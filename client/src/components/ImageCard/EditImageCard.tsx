@@ -21,8 +21,6 @@ export function EditImageCard({
 }) {
   const uploadImage = useUploadImage();
 
-  // const [imageUrl, setImageUrl] = useState(url);
-
   //will show image of what has been captured by camera or url, or empty
   const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>(
     url
@@ -59,14 +57,13 @@ export function EditImageCard({
 
   //ref used to interact with node that is rendered to dom and get its current properties
   //will hold <video> tag reference
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const mediaStreamRef = useRef<MediaStream | null>(null);
 
   const handleImageUpload = useDebouncedCallback(async (folder: string) => {
     setImageUploadStatus(UploadStatus.UPLOADING);
     setUploadProgress(30);
-    // console.log("typeof imageToUpload", typeof imageToUpload);
-    // console.log("typeof imageToUpload", Boolean(imageToUpload));
-    // console.log("typeof imageToUpload", imageToUpload);
+
     if (
       (typeof imageToUpload == "string" && imageToUpload.length > 6) ||
       typeof imageToUpload == "object"
@@ -124,17 +121,34 @@ export function EditImageCard({
     }
   };
 
-  const openCamera = async () => {
-    setActiveCamera((state) => !state);
+  const toggleCamera = async () => {
+    if (activeCamera) {
+      setActiveCamera(false);
+
+      if (mediaStreamRef.current) {
+        console.log("closing cam");
+        mediaStreamRef.current.getTracks().forEach((track) => track.stop());
+        mediaStreamRef.current = null;
+        videoRef.current = null;
+      }
+
+      return;
+    }
+
+    console.log("opening cam");
+    setActiveCamera(true);
     try {
       //get users camera if available
-      const mediaStream = await navigator.mediaDevices.getUserMedia({
+      mediaStreamRef.current = await navigator.mediaDevices.getUserMedia({
         video: true,
       });
+      // const mediaStream = await navigator.mediaDevices.getUserMedia({
+      //   video: true,
+      // });
 
       //if a ref has a node currently set, give it the camera stream
       if (videoRef.current) {
-        videoRef.current.srcObject = mediaStream;
+        videoRef.current.srcObject = mediaStreamRef.current;
       }
     } catch (error) {
       console.error("Error accessing camera:", error);
@@ -263,7 +277,12 @@ export function EditImageCard({
                   // setImageUrl(text);
                 }}
                 wrap="true"
-                defaultValue={url}
+                // defaultValue={url}
+                defaultValue={
+                  typeof imagePreview == "string"
+                    ? imagePreview
+                    : "no image url"
+                }
                 // value={url}
                 cols={30}
                 className="textarea textarea-bordered w-full"
@@ -285,7 +304,7 @@ export function EditImageCard({
 
           <div
             className="btn btn-sm"
-            onClick={openCamera}>
+            onClick={toggleCamera}>
             Use camera
           </div>
 
