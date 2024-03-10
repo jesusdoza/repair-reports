@@ -79,7 +79,7 @@ export default function EditProcedureList({
         className="btn">
         Add new Procedure at begining
       </div>
-      <ul className="">{procedures}</ul>
+      <ul className="w-full">{procedures}</ul>
     </div>
   );
 }

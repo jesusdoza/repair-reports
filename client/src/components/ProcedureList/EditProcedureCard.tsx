@@ -94,7 +94,7 @@ function createEditImageCards({
 
     return (
       <li
-        className="w-1/3 card bg-slate-700 p-2"
+        className="w-full card md:w-1/3 bg-slate-700 p-2"
         key={uuidv4()}>
         <EditImageCard
           key={uuidv4()}

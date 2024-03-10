@@ -185,18 +185,19 @@ export function EditImageCard({
   return (
     <div
       key={uuidv4()}
-      className="h-[500px]">
+      className="">
       {/* alerts and status */}
-      <section className=" flex flex-col items-center h-1/6">
-        {imageUploadStatus == UploadStatus.UPLOADING && (
-          <div className="">
-            <span className="loading loading-spinner text-accent"></span>
-            <progress
-              className="progress progress-accent w-56"
-              value={uploadProgress}
-              max="100"></progress>
-          </div>
-        )}
+      <section className=" flex flex-col items-center h-1/8">
+        {imageUploadStatus == UploadStatus.UPLOADING ||
+          (true && (
+            <div className="">
+              <span className="loading loading-spinner text-accent"></span>
+              <progress
+                className="progress progress-accent w-56"
+                value={uploadProgress}
+                max="100"></progress>
+            </div>
+          ))}
         {imageUploadStatus == UploadStatus.SUCCESS && (
           <div
             role="alert"
@@ -238,7 +239,7 @@ export function EditImageCard({
       </section>
 
       {/* image preview or camera preview */}
-      <div className="flex flex-col max-w-[500px] h-5/6">
+      <div className="flex flex-col max-w-[500px] h-5/6 items-center">
         {/* camera of image preview */}
         <div className="w-full flex flex-col justify-center items-center h-5/6">
           <div className="h-4/6">
@@ -266,8 +267,10 @@ export function EditImageCard({
               </section>
             )}
           </div>
-          <section className="flex w-full h-2/6 ">
-            <label htmlFor="">
+          <section className="flex w-full h-2/6 item-center justify-center ">
+            <label
+              htmlFor=""
+              className="items-center ">
               Image URL
               <textarea
                 onChange={(event) => {
@@ -291,7 +294,8 @@ export function EditImageCard({
           </section>
         </div>
 
-        <div className="text-black border-2 border-s-violet-100 h-1/6">
+        {/* edit tools */}
+        <div className="text-black border-2 border-s-violet-100 ">
           <h3 className=" bg-gray-700">Edit Tools</h3>
 
           <div>
@@ -305,7 +309,7 @@ export function EditImageCard({
           <div
             className="btn btn-sm"
             onClick={toggleCamera}>
-            Use camera
+            {!activeCamera ? "open camera" : "close camera"}
           </div>
 
           <div
