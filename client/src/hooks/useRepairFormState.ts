@@ -17,8 +17,8 @@ class ImageObj implements ImageObjT {
 }
 
 export class Procedure implements ProcedureT {
-  public images = [""];
-  public imageObjs: ImageObjT[] = [new ImageObj()];
+  public images = [];
+  public imageObjs: ImageObjT[] = [];
   public imagesIdArr = [];
   public instructions = "";
   public procedureNum = 0;

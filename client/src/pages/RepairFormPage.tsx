@@ -10,13 +10,6 @@ export default function RepairFormPage(): React.ReactNode {
   // const { formDispatch, currentFormState } = useContext(RepairFormContext);
 
   const { currentFormState, formDispatch } = useRepairFormState();
-  // useEffect(() => {
-  //   console.log("currentFormState", currentFormState);
-  // }, [currentFormState]);
-
-  // const [currentProcedureList, setProcedureList] = useState(
-  //   newRepairObj.procedureArr
-  // );
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
