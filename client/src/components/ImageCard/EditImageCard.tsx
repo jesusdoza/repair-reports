@@ -21,6 +21,27 @@ export function EditImageCard({
 }) {
   const uploadImage = useUploadImage();
 
+  //ref used to interact with node that is rendered to dom and get its current properties
+  //will hold <video> tag reference
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const mediaStreamRef = useRef<MediaStream | null>(null);
+
+  useEffect(() => {
+    if (mediaStreamRef.current) {
+      mediaStreamRef.current.getTracks().forEach((track) => track.stop());
+      mediaStreamRef.current = null;
+      videoRef.current = null;
+    }
+
+    return () => {
+      if (mediaStreamRef.current) {
+        mediaStreamRef.current.getTracks().forEach((track) => track.stop());
+        mediaStreamRef.current = null;
+        videoRef.current = null;
+      }
+    };
+  }, []);
+
   //will show image of what has been captured by camera or url, or empty
   const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>(
     url
@@ -54,11 +75,6 @@ export function EditImageCard({
     },
     300
   );
-
-  //ref used to interact with node that is rendered to dom and get its current properties
-  //will hold <video> tag reference
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const mediaStreamRef = useRef<MediaStream | null>(null);
 
   const handleImageUpload = useDebouncedCallback(async (folder: string) => {
     setImageUploadStatus(UploadStatus.UPLOADING);
@@ -170,9 +186,11 @@ export function EditImageCard({
       const blobData = await fetch(dataUrl).then((res) => res.blob());
 
       const imageFileFromBlob = new File([blobData], "image.jpg");
+      closeCamera();
 
       setImageToUpload(imageFileFromBlob);
       //once image is captured set preview and close camera
+
       setImagePreview(dataUrl);
       setActiveCamera(false);
       handleUrlChange(dataUrl);
@@ -317,4 +335,14 @@ export function EditImageCard({
       </div>
     </div>
   );
+}
+
+function closeCamera() {
+  navigator.mediaDevices
+    .getUserMedia({
+      video: true,
+    })
+    .then((stream: MediaStream) => {
+      stream.getTracks().forEach((track) => track.stop());
+    });
 }
