@@ -59,7 +59,6 @@ function updateFormDataReducer(
   let newState = state;
   switch (action.type) {
     case "ADD_IMAGE":
-      console.log("addemptyimagecard1");
       newState = addEmptyImageToProcedure(state, action.payload);
       break;
     case "UPDATE_FIELD":
@@ -135,9 +134,6 @@ function updateInstruction(
   state: RepairFormT,
   payload: ChangeFormPayloadT
 ): RepairFormT {
-  // console.log("state", state);
-  console.log("payload update instruction", payload);
-
   const data = state;
   const index = payload.procIndex ? payload.procIndex : 0;
   data.procedureArr[index].instructions = payload?.instructions
@@ -151,15 +147,12 @@ function updateInstruction(
   // });
 
   // return { ...state, procedureArr: newProcedures };
-  console.log("data", data);
   return data;
 }
 
 ///UPDATE IMAGE action
 //!working on here cant the newImage url is undefined** works but check again
 function updateImage(state: RepairFormT, payload: ChangeFormPayloadT) {
-  console.log(`${LOC} form payload`, payload);
-
   const { procIndex, newImageIndex, newImageObj } = payload;
 
   //does image exists, have an index to update at, and index is valid if not then do nothing

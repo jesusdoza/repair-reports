@@ -64,7 +64,6 @@ export default function EditProcedureCard({
         <textarea
           onChange={(e) => {
             e.preventDefault();
-            console.log("e.target.value", e.target.value);
             handleInstructionsUpdate(e.target.value);
             setInstructions(e.target.value);
           }}

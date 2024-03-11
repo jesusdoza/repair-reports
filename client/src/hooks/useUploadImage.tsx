@@ -8,7 +8,6 @@ export default function useUploadImage() {
 
   return async function uploadImage(imageFile: File | string, folder: string) {
     const signData = await getUploadSignature(folder);
-    // console.log("signData", signData);
 
     const url =
       "https://api.cloudinary.com/v1_1/" + signData.cloudname + "/auto/upload";

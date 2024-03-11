@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect } from "react";
+import React, { ChangeEvent } from "react";
 import AvailableOptions from "../components/AvailableOptions/AvailableOptions";
 import EditProcedureList from "../components/ProcedureList/EditProcedureList";
 // import { RepairFormContext } from "../context/RepairFormContext";
@@ -10,9 +10,9 @@ export default function RepairFormPage(): React.ReactNode {
   // const { formDispatch, currentFormState } = useContext(RepairFormContext);
 
   const { currentFormState, formDispatch } = useRepairFormState();
-  useEffect(() => {
-    console.log("currentFormState", currentFormState);
-  }, [currentFormState]);
+  // useEffect(() => {
+  //   console.log("currentFormState", currentFormState);
+  // }, [currentFormState]);
 
   // const [currentProcedureList, setProcedureList] = useState(
   //   newRepairObj.procedureArr

@@ -30,8 +30,6 @@ export default function AvailableOptions({
           defaultValue={options[0]}
           isClearable
           onChange={(event) => {
-            console.log("event select", event);
-
             if (callback) callback(event?.value || options[0].value);
           }}
           options={options}

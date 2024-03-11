@@ -71,7 +71,6 @@ export function EditImageCard({
       setUploadProgress(50);
       try {
         const response = await uploadImage(imageToUpload, folder);
-        // console.log("response from image upload: ", response);
         const imageObj: ImageObjT = {
           imageUrl: response.url,
           imageId: response.public_id,
@@ -126,7 +125,6 @@ export function EditImageCard({
       setActiveCamera(false);
 
       if (mediaStreamRef.current) {
-        console.log("closing cam");
         mediaStreamRef.current.getTracks().forEach((track) => track.stop());
         mediaStreamRef.current = null;
         videoRef.current = null;
@@ -135,7 +133,6 @@ export function EditImageCard({
       return;
     }
 
-    console.log("opening cam");
     setActiveCamera(true);
     try {
       //get users camera if available
@@ -267,9 +264,7 @@ export function EditImageCard({
             )}
           </div>
           <section className="flex w-full h-2/6 item-center justify-center ">
-            <label
-              htmlFor=""
-              className="items-center ">
+            <div className="items-center ">
               Image URL
               <textarea
                 onChange={(event) => {
@@ -289,7 +284,7 @@ export function EditImageCard({
                 cols={30}
                 className="textarea textarea-bordered w-full"
                 placeholder="URL"></textarea>
-            </label>
+            </div>
           </section>
         </div>
 
