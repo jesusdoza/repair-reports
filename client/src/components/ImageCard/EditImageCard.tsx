@@ -188,16 +188,15 @@ export function EditImageCard({
       className="">
       {/* alerts and status */}
       <section className=" flex flex-col items-center h-1/8">
-        {imageUploadStatus == UploadStatus.UPLOADING ||
-          (true && (
-            <div className="">
-              <span className="loading loading-spinner text-accent"></span>
-              <progress
-                className="progress progress-accent w-56"
-                value={uploadProgress}
-                max="100"></progress>
-            </div>
-          ))}
+        {imageUploadStatus == UploadStatus.UPLOADING && (
+          <div className="">
+            <span className="loading loading-spinner text-accent"></span>
+            <progress
+              className="progress progress-accent w-56"
+              value={uploadProgress}
+              max="100"></progress>
+          </div>
+        )}
         {imageUploadStatus == UploadStatus.SUCCESS && (
           <div
             role="alert"
