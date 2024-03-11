@@ -282,7 +282,7 @@ export function EditImageCard({
             )}
           </div>
           <section className="flex w-full h-2/6 item-center justify-center ">
-            <div className="items-center ">
+            {/* <div className="items-center ">
               Image URL
               <textarea
                 onChange={(event) => {
@@ -302,7 +302,7 @@ export function EditImageCard({
                 cols={30}
                 className="textarea textarea-bordered w-full"
                 placeholder="URL"></textarea>
-            </div>
+            </div> */}
           </section>
         </div>
 
