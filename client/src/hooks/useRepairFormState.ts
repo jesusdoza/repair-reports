@@ -78,7 +78,7 @@ function updateFormDataReducer(
       break;
 
     default:
-      console.log("no action available for ", action.type);
+      console.log("no action available for ", LOC, action.type);
       return state;
       break;
   }
@@ -134,19 +134,14 @@ function updateInstruction(
   state: RepairFormT,
   payload: ChangeFormPayloadT
 ): RepairFormT {
-  const data = state;
-  const index = payload.procIndex ? payload.procIndex : 0;
-  data.procedureArr[index].instructions = payload?.instructions
-    ? payload.instructions
-    : "";
-  // const newProcedures = state.procedureArr.map((proc: ProcedureT, index) => {
-  //   if (payload.procIndex == index) {
-  //     return { ...proc, instructions: payload.instructions } as ProcedureT;
-  //   }
-  //   return proc;
-  // });
+  const { procIndex, instructions } = payload;
 
-  // return { ...state, procedureArr: newProcedures };
+  const data = state;
+
+  const index = procIndex ? procIndex : 0;
+
+  data.procedureArr[index].instructions = instructions ? instructions : "";
+
   return data;
 }
 

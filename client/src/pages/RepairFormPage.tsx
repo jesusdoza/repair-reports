@@ -1,8 +1,11 @@
 import React, { ChangeEvent } from "react";
-import AvailableOptions from "../components/AvailableOptions/AvailableOptions";
+import AvailableOptions, {
+  OptionT,
+} from "../components/AvailableOptions/AvailableOptions";
+import AvailableOptionsMulti from "../components/AvailableOptions/AvailableOptionsMulti";
 import EditProcedureList from "../components/ProcedureList/EditProcedureList";
-// import { RepairFormContext } from "../context/RepairFormContext";
 import useRepairFormState from "../hooks/useRepairFormState";
+import useRepairApi from "../hooks/useRepairApi";
 
 // const LOC = "@RepairFormPage.tsx";
 
@@ -10,6 +13,7 @@ export default function RepairFormPage(): React.ReactNode {
   // const { formDispatch, currentFormState } = useContext(RepairFormContext);
 
   const { currentFormState, formDispatch } = useRepairFormState();
+  const { postRepair } = useRepairApi();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -17,14 +21,14 @@ export default function RepairFormPage(): React.ReactNode {
     console.log("currentFormState", currentFormState);
     //! NOT USING DATABASE YET
     try {
-      // const res = await updateRepair(updatedData);
-      // console.log("res update repair", res);
+      const res = await postRepair(currentFormState);
+      console.log("res update repair", res);
     } catch (error) {
       console.log("error handleUpdate @EditRepairPage ", error);
     }
   };
 
-  const availableGroups = [
+  const availableGroups: OptionT[] = [
     {
       label: `original: ${currentFormState.group}`,
       value: currentFormState.group,
@@ -32,7 +36,7 @@ export default function RepairFormPage(): React.ReactNode {
     { label: "public", value: "public" },
   ];
 
-  const availableBoardTypes = [
+  const availableBoardTypes: OptionT[] = [
     {
       label: `original: ${currentFormState.boardType}`,
       value: currentFormState.group,
@@ -44,7 +48,7 @@ export default function RepairFormPage(): React.ReactNode {
     { label: "DDEC 4", value: "DDEC4" },
   ];
 
-  const availableEngines = [
+  const availableEngines: OptionT[] = [
     {
       label: `original: ${currentFormState.engineMake}`,
       value: currentFormState.engineMake,
@@ -53,6 +57,7 @@ export default function RepairFormPage(): React.ReactNode {
     { label: "Cummins", value: "cummins" },
     { label: "Detroit", value: "detroit" },
   ];
+  const availableTags: OptionT[] = [];
 
   return (
     <form
@@ -116,6 +121,19 @@ export default function RepairFormPage(): React.ReactNode {
             }}
             title="Engine make"
             options={availableEngines}
+          />
+        </div>
+        <div>
+          {/* //! working on getting searchtags into form state */}
+          <AvailableOptionsMulti
+            callback={(searchTags: string[]) => {
+              formDispatch({
+                type: "UPDATE_SEARCH_TAGS",
+                payload: { searchTags },
+              });
+            }}
+            title="Search tags"
+            options={availableTags}
           />
         </div>
       </legend>

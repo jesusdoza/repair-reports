@@ -7,14 +7,14 @@ export type OptionT = {
   label: string;
 };
 
-export default function AvailableOptions({
+export default function AvailableOptionsMulti({
   options,
   title,
   callback,
 }: {
   options: OptionT[];
   title: string;
-  callback?: (engineSelected: string) => void;
+  callback?: (options: string[]) => void;
 }) {
   return (
     <div className="flex flex-col w-full justify-around items-center align-middle ">
@@ -23,11 +23,13 @@ export default function AvailableOptions({
       </div>
       <div className="flex-1 flex justify-start">
         <CreatableSelect
-          className=" "
+          isMulti
+          className=""
           defaultValue={options[0]}
           isClearable
-          onChange={(event) => {
-            if (callback) callback(event?.value || options[0].value);
+          onChange={(options) => {
+            // if (callback) callback(options);
+            console.log("options from multi select", options);
           }}
           options={options}
         />
