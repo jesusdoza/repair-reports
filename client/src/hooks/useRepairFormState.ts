@@ -33,6 +33,7 @@ export class Repair {
   public group = "public";
   public procedureArr: ProcedureT[] = [new Procedure()];
   public title = "New Repair";
+  public searchTags: string[] = [];
 
   constructor() {}
 }
@@ -76,6 +77,9 @@ function updateFormDataReducer(
     case "UPDATE_INTRUC":
       newState = updateInstruction(state, action.payload);
       break;
+    case "UPDATE_SEARCH_TAGS":
+      newState = updateSearchTags(state, action.payload);
+      break;
 
     default:
       console.log("no action available for ", LOC, action.type);
@@ -84,6 +88,17 @@ function updateFormDataReducer(
   }
 
   return newState;
+}
+
+function updateSearchTags(state: RepairFormT, payload: ChangeFormPayloadT) {
+  console.log("payload", payload.searchTags);
+  const { searchTags } = payload;
+
+  if (!searchTags || searchTags.length <= 0) return state;
+
+  state.searchTags = searchTags ? searchTags : state.searchTags;
+
+  return { ...state };
 }
 
 function addProcedure(state: RepairFormT, payload: ChangeFormPayloadT) {
@@ -191,22 +206,7 @@ function updateImage(state: RepairFormT, payload: ChangeFormPayloadT) {
   //update legacy image urls property
   targetProc.images[imageIndexToUpdate] = newImageObj.imageUrl;
 
-  //update image objs with what was in payload
-  // targetProc.imageObjs[imageIndexToUpdate] = {
-  //   ...imageObjs[imageIndexToUpdate],
-  //   ...newImageObj,
-  // };
   targetProc.imageObjs[imageIndexToUpdate].imageUrl = newImageObj.imageUrl;
-
-  //update state
-  //update procedure in array procedureArr
-  // const newProcedures = state.procedureArr.map((proc: ProcedureT, index) => {
-  //   if (procIndex == index) {
-  //     console.log("targetProc updated with image url", targetProc);
-  //     return targetProc;
-  //   }
-  //   return proc;
-  // });
 
   return state as RepairFormT;
   // return { ...state, procedureArr: newProcedures } as RepairFormT;
