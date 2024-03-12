@@ -57,7 +57,24 @@ export default function RepairFormPage(): React.ReactNode {
     { label: "Cummins", value: "cummins" },
     { label: "Detroit", value: "detroit" },
   ];
-  const availableTags: OptionT[] = [];
+  const availableTags: OptionT[] = [
+    {
+      label: "repair",
+      value: "repair",
+    },
+    {
+      label: "parts",
+      value: "parts",
+    },
+    {
+      label: "diagram",
+      value: "diagram",
+    },
+    {
+      label: "Pin out",
+      value: "pinout",
+    },
+  ];
 
   return (
     <form
