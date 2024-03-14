@@ -11,10 +11,12 @@ export default function AvailableOptionsMulti({
   options,
   title,
   callback,
-}: {
+}: // defaultValue,
+{
   options: OptionT[];
   title: string;
   callback?: (options: string[]) => void;
+  // defaultValue?: OptionT[];
 }) {
   return (
     <div className="flex flex-col w-full justify-around items-center align-middle">
@@ -25,12 +27,13 @@ export default function AvailableOptionsMulti({
         <CreatableSelect
           isMulti
           className=" w-full"
-          defaultValue={options[0]}
+          // defaultValue={defaultValue ? defaultValue : options[0]}
           isClearable
           onChange={(options) => {
             // if (callback) callback(options);
-            const tags = options.map((tagObj) => tagObj.value);
-            console.log("options from multi select", tags);
+            const tags = options.map((tagObj) => {
+              return tagObj.value;
+            });
 
             if (callback) callback(tags);
 

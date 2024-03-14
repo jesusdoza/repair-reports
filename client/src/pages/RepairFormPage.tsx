@@ -21,8 +21,8 @@ export default function RepairFormPage(): React.ReactNode {
     console.log("currentFormState", currentFormState);
     //! NOT USING DATABASE YET
     try {
-      const res = await postRepair(currentFormState);
-      console.log("res update repair", res);
+      // // const res = await postRepair(currentFormState);
+      // console.log("res update repair", res);
     } catch (error) {
       console.log("error handleUpdate @EditRepairPage ", error);
     }
@@ -57,6 +57,8 @@ export default function RepairFormPage(): React.ReactNode {
     { label: "Cummins", value: "cummins" },
     { label: "Detroit", value: "detroit" },
   ];
+
+  //first option is always the default
   const availableTags: OptionT[] = [
     {
       label: "repair",
@@ -149,6 +151,8 @@ export default function RepairFormPage(): React.ReactNode {
                 payload: { searchTags },
               });
             }}
+            // defaultValue={currentFormState.searchTags}
+            // defaultValue={}
             title="Search tags"
             options={availableTags}
           />
@@ -167,7 +171,7 @@ export default function RepairFormPage(): React.ReactNode {
         <button
           type="submit"
           className="btn">
-          Update
+          Create Repair
         </button>
       </section>
     </form>
