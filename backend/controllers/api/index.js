@@ -72,11 +72,9 @@ module.exports.addRepair = async (req, res) => {
     // console.log(`post at /repairform`,entry)
 
     let result = await Repair.create(entry);
-    // console.log(`done uploading at server result`, result);
 
     const repairId = result._id; //add link to repair
 
-    // console.log(`server response to send`,result)
     res.send({
       message: "repair added successfully",
       result: entry,
