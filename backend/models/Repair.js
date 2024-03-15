@@ -47,7 +47,7 @@ const RepairSchema = new mongoose.Schema(
     version: {
       type: String,
       required: true,
-      default: "2",
+      default: "3",
     },
     title: {
       type: String,
@@ -56,6 +56,10 @@ const RepairSchema = new mongoose.Schema(
     boardType: {
       type: String,
       required: true,
+    },
+    searchTags: {
+      type: [String],
+      default: [],
     },
     engineMake: {
       type: String,

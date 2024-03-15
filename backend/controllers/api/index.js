@@ -55,14 +55,17 @@ module.exports.deletePost = async (req, res) => {
 
 //add repair to database
 module.exports.addRepair = async (req, res) => {
+  const { username, title, boardType, engineMake, procedureArr, searchTags } =
+    req.body;
+
   try {
     let entry = {
-      procedureArr: req.body.procedureArr,
-      searchtags: req.body.searchtags,
-      title: req.body.title,
-      boardType: req.body.boardType,
-      engineMake: req.body.engineMake,
-      createdBy: req.user.username,
+      procedureArr,
+      searchTags,
+      title,
+      boardType,
+      engineMake,
+      createdBy: username,
       removed: false,
     };
     console.log(req.body);
