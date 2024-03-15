@@ -2,6 +2,7 @@ import { useReducer } from "react";
 import { ChangeFormPayloadT, RepairFormDispatchType } from "../../types";
 import { Repair } from "../classes/Repair";
 import { ImageObj } from "../classes/ImageObj";
+import { Procedure } from "../classes/Procedure";
 const LOC = "@useRepairFormState ";
 
 // class ImageObj implements ImageObjT {

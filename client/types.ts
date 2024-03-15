@@ -24,6 +24,7 @@ export type RepairDataT = {
   removed: boolean;
   title: string;
   visibility: string;
+  searchTags?: string[];
   _id: string;
 };
 
@@ -70,7 +71,7 @@ export type RepairFormStateDispatchT =
     }
   | {
       type: "ADD_PROCEDURE";
-      payload: { procIndex: number; newImageUrl: string };
+      payload: { procIndex: number };
     }
   | {
       type: "UPDATE_PROCEDURES";
@@ -88,3 +89,15 @@ export type RepairFormStateDispatchT =
       type: "UPDATE_INTRUC";
       payload: { procIndex: number; instructions: string };
     };
+
+export type repairDataT = {
+  boardType: string;
+  createdBy: string;
+  engineMake: string;
+  group: string;
+  procedureArr: ProcedureT[];
+  removed: boolean;
+  title: string;
+  visibility: string;
+  _id: string;
+};

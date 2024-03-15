@@ -15,7 +15,7 @@ export function ProcedureCard({ proc }: { proc: ProcedureT }) {
     );
   });
   return (
-    <li key={uuidv4}>
+    <li key={uuidv4()}>
       <ul className="carousel carousel-center w-full p-4 space-x-4 bg-neutral rounded-box">
         {images}
       </ul>
