@@ -1,40 +1,14 @@
 import { useEffect, useState } from "react";
-import { RepairDataT } from "../../types";
 import { AxiosError } from "axios";
+
+import { RepairDataT } from "../../types";
 import useRepairApi from "./useRepairApi";
-
-// export type imageObjT = {
-//   imageUrl: string;
-//   imageThumb: string;
-//   caption: string;
-//   imageId: string;
-//   folder: string;
-// };
-
-// export type ProcedureT = {
-//   images: string[];
-//   imageObjs?: imageObjT[];
-//   imagesIdArr: string[];
-//   instructions: string;
-//   procedureNum: number;
-//   thumbs: string[];
-// };
-// export type repairDataT = Record<string, string>;
-// export type repairDataT = {
-//   boardType: string;
-//   createdBy: string;
-//   engineMake: string;
-//   group: string;
-//   procedureArr: ProcedureT[];
-//   removed: boolean;
-//   title: string;
-//   visibility: string;
-//   _id: string;
-// };
+import useAuthContext from "./useAuthContext";
 
 const useGetLatest = (limit: number) => {
   const [repairsData, setRepairsData] = useState<RepairDataT[] | []>([]);
   const { getLatestRepairs } = useRepairApi();
+  const { unauthorizedError } = useAuthContext();
   useEffect(() => {
     const getData = async () => {
       try {
@@ -42,8 +16,13 @@ const useGetLatest = (limit: number) => {
         setRepairsData(response);
       } catch (error) {
         if (error instanceof AxiosError) {
-          console.log("error", error);
-          console.log("error.status", error?.response?.status);
+          if (error?.response?.status && error?.response?.status == 401) {
+            console.log("error.status", error?.response?.status);
+            unauthorizedError();
+            return;
+          }
+
+          console.log("unspecified axios error", error);
         }
       }
     };
