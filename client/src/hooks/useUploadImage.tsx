@@ -37,15 +37,8 @@ export default function useUploadImage() {
     const formData = await createForm({ imageFile, signData });
 
     //upload to cloudinary
-    try {
-      const response = axios.post(url, formData);
-      return response;
-    } catch (error) {
-      console.log(
-        "unspecified axios error @useUploadImage sending to cloudinary",
-        error
-      );
-    }
+    const response = axios.post(url, formData);
+    return response;
   };
 }
 
