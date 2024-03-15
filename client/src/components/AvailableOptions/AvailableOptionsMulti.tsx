@@ -34,6 +34,7 @@ export default function AvailableOptionsMulti({
             const tags = options.map((tagObj) => {
               return tagObj.value;
             });
+            console.log("tags", tags);
 
             if (callback) callback(tags);
 

@@ -87,7 +87,7 @@ function updateSearchTags(state: Repair, payload: ChangeFormPayloadT) {
   console.log("payload", payload.searchTags);
   const { searchTags } = payload;
 
-  if (!searchTags || searchTags.length <= 0) return state;
+  if (!searchTags) return state;
 
   state.searchTags = searchTags ? searchTags : state.searchTags;
 
