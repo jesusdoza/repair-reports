@@ -56,10 +56,11 @@ module.exports.deletePost = async (req, res) => {
 //add repair to database
 module.exports.addRepair = async (req, res) => {
   const { username, title, boardType, engineMake, procedureArr, searchTags } =
-    req.body;
+    req.body.repairData;
 
+  console.log("req.body", req.body);
   try {
-    let entry = {
+    const entry = {
       procedureArr,
       searchTags,
       title,
@@ -68,19 +69,18 @@ module.exports.addRepair = async (req, res) => {
       createdBy: username,
       removed: false,
     };
-    console.log(req.body);
     // console.log(`post at /repairform`,entry)
 
     let result = await Repair.create(entry);
-    console.log(`done uploading at server result`, result);
+    // console.log(`done uploading at server result`, result);
 
-    const repLink = `/repair/${result._id}`; //add link to repair
+    const repairId = result._id; //add link to repair
 
     // console.log(`server response to send`,result)
     res.send({
       message: "repair added successfully",
       result: entry,
-      link: repLink,
+      repairId,
     });
   } catch (error) {
     res

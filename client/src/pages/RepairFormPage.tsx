@@ -21,10 +21,10 @@ export default function RepairFormPage(): React.ReactNode {
     console.log("currentFormState", currentFormState);
     //! NOT USING DATABASE YET
     try {
-      // // const res = await postRepair(currentFormState);
-      // console.log("res update repair", res);
+      const res = await postRepair(currentFormState);
+      console.log("res update repair", res);
     } catch (error) {
-      console.log("error handleUpdate @EditRepairPage ", error);
+      console.log("error handleUpdate @RepairPage ", error);
     }
   };
 
