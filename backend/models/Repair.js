@@ -42,6 +42,7 @@ const ProcedureSchema = new mongoose.Schema({
 //   })
 
 //parent schema
+//version 3 has searchTags:string[] to allow for sorting
 const RepairSchema = new mongoose.Schema(
   {
     version: {
