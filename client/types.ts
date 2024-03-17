@@ -102,6 +102,14 @@ export type repairDataT = {
   _id: string;
 };
 
+export type signatureT = {
+  apikey: string;
+  cloudname: string;
+  signature: string;
+  timestamp: number;
+  folder: string;
+};
+
 // export type imageObjT = {
 //   imageUrl: string;
 //   imageThumb: string;
@@ -129,4 +137,5 @@ export type repairDataT = {
 //   title: string;
 //   visibility: string;
 //   _id: string;
+
 // };

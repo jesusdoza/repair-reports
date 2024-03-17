@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
-import useUploadImage from "../../hooks/useUploadImage";
+// import useUploadImage from "../../hooks/useUploadImage";
 import { CameraPreview } from "./CameraPreview";
 import { ImageObjT } from "../../../types";
 import { useDebouncedCallback } from "use-debounce";
 import { v4 as uuidv4 } from "uuid";
+import useImageManager from "../../hooks/useImageManager";
 
 enum UploadStatus {
   SUCCESS,
@@ -19,8 +20,8 @@ export function EditImageCard({
   url: string;
   setFormImageUrl: (imageObj: ImageObjT) => void; //external state setter to manipulate url prop
 }) {
-  const uploadImage = useUploadImage();
-
+  // const uploadImage = useUploadImage();
+  const { deleteImage, uploadImage } = useImageManager();
   //ref used to interact with node that is rendered to dom and get its current properties
   //will hold <video> tag reference
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -115,6 +116,10 @@ export function EditImageCard({
     }
 
     alert("no image to upload");
+  }, 1000);
+
+  const handleImageDelete = useDebouncedCallback(async (url: string) => {
+    deleteImage(url);
   }, 1000);
 
   const handleFileChange = async (
@@ -214,6 +219,21 @@ export function EditImageCard({
     <div
       key={uuidv4()}
       className="">
+      <div className="btn btn-circle  bg-yellow-600 absolute right-0 hover:bg-red-600 hover:scale-125">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="black">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </div>
       {/* alerts and status */}
       <section className=" flex flex-col items-center h-1/8">
         {imageUploadStatus == UploadStatus.UPLOADING && (
