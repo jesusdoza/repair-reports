@@ -5,6 +5,7 @@ import { ImageObjT } from "../../../types";
 import { useDebouncedCallback } from "use-debounce";
 import { v4 as uuidv4 } from "uuid";
 import useImageManager from "../../hooks/useImageManager";
+import { Check } from "lucide-react";
 
 enum UploadStatus {
   SUCCESS,
@@ -50,10 +51,11 @@ export function EditImageCard({
 
   //is camera active
   const [activeCamera, setActiveCamera] = useState(false);
+  const [isUploaded, setIsUploaded] = useState(false);
 
   //todo handle upload status for user
   const [imageUploadStatus, setImageUploadStatus] = useState<UploadStatus>(
-    UploadStatus.IDLE
+    UploadStatus.SUCCESS
   );
 
   const [uploadProgress, setUploadProgress] = useState(10);
@@ -68,6 +70,7 @@ export function EditImageCard({
         return;
       }
 
+      setIsUploaded(false);
       setFormImageUrl({
         folder: "testFolder",
         imageId: urlText,
@@ -106,6 +109,7 @@ export function EditImageCard({
         setFormImageUrl(imageObj);
         setUploadProgress(100);
         setImageUploadStatus(UploadStatus.SUCCESS);
+        setIsUploaded(true);
         return;
       } catch (error) {
         console.log("error uploading", error);
@@ -120,6 +124,7 @@ export function EditImageCard({
 
   const handleImageDelete = useDebouncedCallback(async (url: string) => {
     deleteImage(url);
+    setIsUploaded(false);
   }, 1000);
 
   const handleFileChange = async (
@@ -143,6 +148,7 @@ export function EditImageCard({
 
         handleUrlChange(reader.result);
         // await handleImageUpload("testfolder");
+        setIsUploaded(false);
       };
 
       //read the file data and trigger onloadend event
@@ -212,6 +218,7 @@ export function EditImageCard({
       setImagePreview(dataUrl);
       setActiveCamera(false);
       handleUrlChange(dataUrl);
+      setIsUploaded(false);
     }
   };
 
@@ -219,7 +226,7 @@ export function EditImageCard({
     <div
       key={uuidv4()}
       className="">
-      <div className="btn btn-circle  bg-yellow-600 absolute right-0 hover:bg-red-600 hover:scale-125">
+      <div className="btn btn-circle bg-yellow-600 absolute right-0 hover:bg-red-600 hover:scale-125">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-6 w-6"
@@ -234,6 +241,7 @@ export function EditImageCard({
           />
         </svg>
       </div>
+
       {/* alerts and status */}
       <section className=" flex flex-col items-center h-1/8">
         {imageUploadStatus == UploadStatus.UPLOADING && (
@@ -246,23 +254,26 @@ export function EditImageCard({
           </div>
         )}
         {imageUploadStatus == UploadStatus.SUCCESS && (
-          <div
-            role="alert"
-            className="alert alert-success">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="stroke-current shrink-0 h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            <span>Your Image was uploaded!</span>
+          <div className="badge bg-green-500 text-black absolute left-0">
+            <Check className=" text-slate-800" /> uploaded
           </div>
+          // <div
+          //   role="alert"
+          //   className="alert alert-success">
+          //   <svg
+          //     xmlns="http://www.w3.org/2000/svg"
+          //     className="stroke-current shrink-0 h-6 w-6"
+          //     fill="none"
+          //     viewBox="0 0 24 24">
+          //     <path
+          //       strokeLinecap="round"
+          //       strokeLinejoin="round"
+          //       strokeWidth="2"
+          //       d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+          //     />
+          //   </svg>
+          //   <span>Your Image was uploaded!</span>
+          // </div>
         )}
         {imageUploadStatus == UploadStatus.ERROR && (
           <div
@@ -357,13 +368,15 @@ export function EditImageCard({
             {!activeCamera ? "open camera" : "close camera"}
           </div>
 
-          <div
-            onClick={() => {
-              handleImageUpload("testfolder");
-            }}
-            className="btn btn-sm">
-            Manual Upload Image
-          </div>
+          {!isUploaded && (
+            <div
+              onClick={() => {
+                handleImageUpload("testfolder");
+              }}
+              className="btn btn-sm">
+              Manual Upload Image
+            </div>
+          )}
         </div>
       </div>
     </div>
