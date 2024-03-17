@@ -2,7 +2,7 @@
 import axios, { AxiosError } from "axios";
 
 import useRepairApi from "./useRepairApi";
-import { signatureT } from "../api/RepairReportsApi";
+import { signatureT } from "./useRepairApi";
 import useAuthContext from "./useAuthContext";
 
 export default function useUploadImage() {

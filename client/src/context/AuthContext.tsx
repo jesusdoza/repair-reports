@@ -51,7 +51,7 @@ export const AuthContextProvider = ({
   // }, [userToken, userInfo]);
 
   const logout = async () => {
-    console.log("logout");
+    // console.log("logout");
     const response = await axios.get(`${API_URL}/api/logout`, {
       withCredentials: true,
     });
