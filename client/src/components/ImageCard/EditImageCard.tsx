@@ -4,7 +4,7 @@ import { CameraPreview } from "./CameraPreview";
 import { ImageObjT } from "../../../types";
 import { useDebouncedCallback } from "use-debounce";
 import { v4 as uuidv4 } from "uuid";
-import useImageManager from "../../hooks/useImageManager";
+import useImageDb from "../../hooks/useImageManager";
 import { Check } from "lucide-react";
 
 enum UploadStatus {
@@ -17,12 +17,14 @@ enum UploadStatus {
 export function EditImageCard({
   url = "",
   setFormImageUrl,
+  onRemove,
 }: {
   url: string;
+  onRemove: () => void;
   setFormImageUrl: (imageObj: ImageObjT) => void; //external state setter to manipulate url prop
 }) {
   // const uploadImage = useUploadImage();
-  const { deleteImage, uploadImage } = useImageManager();
+  const { uploadImage } = useImageDb();
   //ref used to interact with node that is rendered to dom and get its current properties
   //will hold <video> tag reference
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -51,9 +53,10 @@ export function EditImageCard({
 
   //is camera active
   const [activeCamera, setActiveCamera] = useState(false);
+
+  //has image been uploaded
   const [isUploaded, setIsUploaded] = useState(false);
 
-  //todo handle upload status for user
   const [imageUploadStatus, setImageUploadStatus] = useState<UploadStatus>(
     UploadStatus.SUCCESS
   );
@@ -71,6 +74,7 @@ export function EditImageCard({
       }
 
       setIsUploaded(false);
+
       setFormImageUrl({
         folder: "testFolder",
         imageId: urlText,
@@ -122,10 +126,14 @@ export function EditImageCard({
     alert("no image to upload");
   }, 1000);
 
-  const handleImageDelete = useDebouncedCallback(async (url: string) => {
-    deleteImage(url);
+  const handleImageDelete = async () => {
+    // deleteImage(url);
+    //delete image if uploaded
+    //delete self from list
+
     setIsUploaded(false);
-  }, 1000);
+    onRemove();
+  };
 
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -226,7 +234,10 @@ export function EditImageCard({
     <div
       key={uuidv4()}
       className="">
-      <div className="btn btn-circle bg-yellow-600 absolute right-0 hover:bg-red-600 hover:scale-125">
+      {/* delete x button */}
+      <div
+        onClick={handleImageDelete}
+        className="btn btn-circle bg-yellow-600 absolute right-0 hover:bg-red-600 hover:scale-125">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-6 w-6"
@@ -244,6 +255,7 @@ export function EditImageCard({
 
       {/* alerts and status */}
       <section className=" flex flex-col items-center h-1/8">
+        {/* upload progress bar */}
         {imageUploadStatus == UploadStatus.UPLOADING && (
           <div className="">
             <span className="loading loading-spinner text-accent"></span>
@@ -253,28 +265,15 @@ export function EditImageCard({
               max="100"></progress>
           </div>
         )}
+
+        {/* uploaded success badge */}
         {imageUploadStatus == UploadStatus.SUCCESS && (
           <div className="badge bg-green-500 text-black absolute left-0">
             <Check className=" text-slate-800" /> uploaded
           </div>
-          // <div
-          //   role="alert"
-          //   className="alert alert-success">
-          //   <svg
-          //     xmlns="http://www.w3.org/2000/svg"
-          //     className="stroke-current shrink-0 h-6 w-6"
-          //     fill="none"
-          //     viewBox="0 0 24 24">
-          //     <path
-          //       strokeLinecap="round"
-          //       strokeLinejoin="round"
-          //       strokeWidth="2"
-          //       d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-          //     />
-          //   </svg>
-          //   <span>Your Image was uploaded!</span>
-          // </div>
         )}
+
+        {/* error alert strip */}
         {imageUploadStatus == UploadStatus.ERROR && (
           <div
             role="alert"
