@@ -18,7 +18,7 @@ export default function EditProcedureCard({
     instructions: (text: string) => void;
     addImage: () => void;
     editImage: (imageIndex: number, updatedImageObj: ImageObjT) => void;
-    removeImage: (imageIndex: number) => void;
+    removeImage: (imageId: string) => void;
   };
 }) {
   //index to number to be used as reference of updating state array of the proceduresArray
@@ -88,17 +88,17 @@ function createEditImageCards({
 }: {
   imageObjs: ImageObjT[];
   updateUrl: (imageIndex: number, newImageObj: ImageObjT) => void;
-  onRemove?: (imageIndex: number) => void;
+  onRemove?: (imageId: string) => void;
 }) {
   const imageCards = imageObjs.map((imageObj, index) => {
-    const { imageUrl } = imageObj;
+    const { imageUrl, imageId } = imageObj;
     // high order function to update url
     const updateImageUrl = ({ imageUrl, imageId, folder }: ImageObjT) => {
       updateUrl(index, { ...new ImageObj(), ...{ imageUrl, imageId, folder } });
     };
 
     const removeImageFromList = () => {
-      if (onRemove) onRemove(index);
+      if (onRemove) onRemove(imageId);
     };
 
     return (

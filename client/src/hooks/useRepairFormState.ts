@@ -179,11 +179,15 @@ function updateImage(state: Repair, payload: ChangeFormPayloadT) {
 function removeImage(state: Repair, payload: ChangeFormPayloadT) {
   const { procIndex, imageIndex, imageId } = payload;
 
+  //todo trying to filter based on imageId which is generated in cosntructor and will
+  //todo replaced when image is uploaded with unique id
+  const targetId = imageId;
+
   //does image exist, have an index to remove at, and index is valid if not then do nothing
-  if (typeof imageIndex != "number") {
+  if (!imageId) {
     console.log("payload", payload);
     console.log(
-      "no index to update or url to update with image @useUpdateProcedures.updateImage"
+      "no index to update or url to update with image @useUpdateProcedures.removeImage"
     );
 
     return state;
@@ -193,36 +197,19 @@ function removeImage(state: Repair, payload: ChangeFormPayloadT) {
     return state;
   }
 
-  //get images if any from procedure
-  const images = state.procedureArr[procIndex]?.images;
-  const imageObjs = state.procedureArr[procIndex]?.imageObjs;
-
-  // const procIndex = payload.procIndex;
   const targetProc = state.procedureArr[procIndex];
-  const imageIndexToRemove = imageIndex;
 
-  //update legacy image urls property
+  //get images if any from procedure
+  // const images = state.procedureArr[procIndex]?.images;
+  const imageObjs = targetProc?.imageObjs;
+  const newImageObjs = imageObjs.filter((item, index) => {
+    console.log("item", item);
 
-  //todo combine into one loop
+    if (item.imageId == targetId) return false;
 
-  const newImages: string[] = [];
-  images.forEach((item, index) => {
-    if (index == imageIndexToRemove) {
-      return;
-    }
-    newImages.push(item);
+    return true;
   });
-
-  targetProc.images = newImages;
-
-  const newImageObjs: ImageObjT[] = [];
-  imageObjs.forEach((item, index) => {
-    if (index == imageIndexToRemove) {
-      return;
-    }
-
-    newImageObjs.push(item);
-  });
+  // const procIndex = payload.procIndex;
 
   targetProc.imageObjs = newImageObjs;
 

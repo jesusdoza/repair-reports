@@ -48,10 +48,10 @@ export default function EditProcedureList({
     };
 
     //! working on this
-    const removeImage = (imageIndex: number) => {
+    const removeImage = (imageId: string) => {
       formDispatch({
         type: "REMOVE_IMAGE",
-        payload: { imageIndex, procIndex: procedureIndex },
+        payload: { imageId, procIndex: procedureIndex },
       });
     };
 
