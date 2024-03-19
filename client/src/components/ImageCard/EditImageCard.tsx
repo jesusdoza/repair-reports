@@ -12,6 +12,7 @@ enum UploadStatus {
   UPLOADING,
   ERROR,
   IDLE,
+  DELETING,
 }
 
 export function EditImageCard({
@@ -23,13 +24,36 @@ export function EditImageCard({
   onRemove: () => void;
   setFormImageUrl: (imageObj: ImageObjT) => void; //external state setter to manipulate url prop
 }) {
-  // const uploadImage = useUploadImage();
-  const { uploadImage } = useImageDb();
-  //ref used to interact with node that is rendered to dom and get its current properties
+  const { uploadImage, deleteImage } = useImageDb();
+
   //will hold <video> tag reference
   const videoRef = useRef<HTMLVideoElement | null>(null);
+
   const mediaStreamRef = useRef<MediaStream | null>(null);
 
+  //is camera active
+  const [activeCamera, setActiveCamera] = useState(false);
+
+  //image has been uploaded and have imageObj or null
+  const [imageUploadedObj, setImageUploadedObj] = useState<null | ImageObjT>(
+    null
+  );
+
+  const [imageUploadStatus, setImageUploadStatus] = useState<UploadStatus>(
+    UploadStatus.SUCCESS
+  );
+
+  const [uploadProgress, setUploadProgress] = useState(10);
+
+  //new image to upload stored locally
+  const [imageToUpload, setImageToUpload] = useState<File | string>(url);
+
+  //image preview of file selected or image captured from camera
+  const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>(
+    url
+  );
+
+  //close camera tracks and turn off video stream on dismount
   useEffect(() => {
     if (mediaStreamRef.current) {
       mediaStreamRef.current.getTracks().forEach((track) => track.stop());
@@ -46,26 +70,6 @@ export function EditImageCard({
     };
   }, []);
 
-  //will show image of what has been captured by camera or url, or empty
-  const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>(
-    url
-  );
-
-  //is camera active
-  const [activeCamera, setActiveCamera] = useState(false);
-
-  //has image been uploaded
-  const [isUploaded, setIsUploaded] = useState(false);
-
-  const [imageUploadStatus, setImageUploadStatus] = useState<UploadStatus>(
-    UploadStatus.SUCCESS
-  );
-
-  const [uploadProgress, setUploadProgress] = useState(10);
-
-  //new image to upload
-  const [imageToUpload, setImageToUpload] = useState<File | string>(url);
-
   const handleUrlChange = useDebouncedCallback(
     (urlText: string | null | ArrayBuffer) => {
       if (typeof urlText != "string") {
@@ -73,7 +77,7 @@ export function EditImageCard({
         return;
       }
 
-      setIsUploaded(false);
+      setImageUploadedObj(null);
 
       setFormImageUrl({
         folder: "testFolder",
@@ -109,11 +113,12 @@ export function EditImageCard({
           imageId: public_id,
           folder: uploadFolder,
         };
+        // setImageObj(imageObj);
         setUploadProgress(70);
         setFormImageUrl(imageObj);
         setUploadProgress(100);
         setImageUploadStatus(UploadStatus.SUCCESS);
-        setIsUploaded(true);
+        setImageUploadedObj(imageObj);
         return;
       } catch (error) {
         console.log("error uploading", error);
@@ -130,8 +135,21 @@ export function EditImageCard({
     // deleteImage(url);
     //delete image if uploaded
     //delete self from list
+    // if(isUploaded)deleteImage() //todo use image object instead to be able to get id
 
-    setIsUploaded(false);
+    // if image has been uploaded delete from database
+    if (imageUploadedObj) {
+      const tempImageObj = { ...imageUploadedObj };
+      try {
+        console.log("deleteImage called", deleteImage);
+        // deleteImage(imageUploadedObj?.imageId);
+        setImageUploadedObj(null);
+      } catch (error) {
+        alert("failed to delete image");
+        setImageUploadedObj(tempImageObj);
+      }
+    }
+
     onRemove();
   };
 
@@ -156,7 +174,7 @@ export function EditImageCard({
 
         handleUrlChange(reader.result);
         // await handleImageUpload("testfolder");
-        setIsUploaded(false);
+        setImageUploadedObj(false);
       };
 
       //read the file data and trigger onloadend event
@@ -221,12 +239,12 @@ export function EditImageCard({
       }
 
       setImageToUpload(imageFileFromBlob);
-      //once image is captured set preview and close camera
 
+      //once image is captured set preview and close camera
       setImagePreview(dataUrl);
       setActiveCamera(false);
       handleUrlChange(dataUrl);
-      setIsUploaded(false);
+      setImageUploadedObj(null);
     }
   };
 
@@ -367,7 +385,7 @@ export function EditImageCard({
             {!activeCamera ? "open camera" : "close camera"}
           </div>
 
-          {!isUploaded && (
+          {!imageUploadedObj && (
             <div
               onClick={() => {
                 handleImageUpload("testfolder");
