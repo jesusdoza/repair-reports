@@ -40,7 +40,7 @@ export function EditImageCard({
   );
 
   const [imageUploadStatus, setImageUploadStatus] = useState<UploadStatus>(
-    UploadStatus.SUCCESS
+    UploadStatus.IDLE
   );
 
   const [uploadProgress, setUploadProgress] = useState(10);
@@ -143,13 +143,14 @@ export function EditImageCard({
       try {
         console.log("deleteImage called", deleteImage);
         // deleteImage(imageUploadedObj?.imageId);
+        throw "test image fail";
         setImageUploadedObj(null);
       } catch (error) {
         alert("failed to delete image");
         setImageUploadedObj(tempImageObj);
+        return;
       }
     }
-
     onRemove();
   };
 
