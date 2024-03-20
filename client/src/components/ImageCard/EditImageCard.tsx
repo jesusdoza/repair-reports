@@ -141,8 +141,9 @@ export function EditImageCard({
     if (imageUploadedObj) {
       const tempImageObj = { ...imageUploadedObj };
       try {
-        console.log("deleteImage called", deleteImage);
-        deleteImage(imageUploadedObj.imageId);
+        // console.log("deleteImage called", deleteImage);
+        const deleteResponse = await deleteImage(imageUploadedObj.imageId);
+        console.log("deleteResponse", deleteResponse);
         setImageUploadedObj(null);
       } catch (error) {
         // reset image obj and do not remove from dom
