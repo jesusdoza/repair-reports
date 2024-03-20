@@ -142,10 +142,10 @@ export function EditImageCard({
       const tempImageObj = { ...imageUploadedObj };
       try {
         console.log("deleteImage called", deleteImage);
-        // deleteImage(imageUploadedObj?.imageId);
-        throw "test image fail";
+        deleteImage(imageUploadedObj.imageId);
         setImageUploadedObj(null);
       } catch (error) {
+        // reset image obj and do not remove from dom
         alert("failed to delete image");
         setImageUploadedObj(tempImageObj);
         return;
