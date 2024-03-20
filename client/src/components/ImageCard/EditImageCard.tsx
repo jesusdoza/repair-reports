@@ -175,8 +175,9 @@ export function EditImageCard({
         setImagePreview(reader.result);
 
         handleUrlChange(reader.result);
-        // await handleImageUpload("testfolder");
-        setImageUploadedObj(false);
+
+        //reset state to not uploaded yet state
+        setImageUploadedObj(null);
       };
 
       //read the file data and trigger onloadend event

@@ -1,9 +1,5 @@
 import { useReducer } from "react";
-import {
-  ChangeFormPayloadT,
-  ImageObjT,
-  RepairFormStateActionT,
-} from "../../types";
+import { ChangeFormPayloadT, RepairFormStateActionT } from "../../types";
 import { Repair } from "../classes/Repair";
 import { ImageObj } from "../classes/ImageObj";
 import { Procedure } from "../classes/Procedure";
@@ -177,7 +173,7 @@ function updateImage(state: Repair, payload: ChangeFormPayloadT) {
 
 //remove image from both images and imageObj arrays
 function removeImage(state: Repair, payload: ChangeFormPayloadT) {
-  const { procIndex, imageIndex, imageId } = payload;
+  const { procIndex, imageId } = payload;
 
   //todo trying to filter based on imageId which is generated in cosntructor and will
   //todo replaced when image is uploaded with unique id
@@ -202,7 +198,7 @@ function removeImage(state: Repair, payload: ChangeFormPayloadT) {
   //get images if any from procedure
   // const images = state.procedureArr[procIndex]?.images;
   const imageObjs = targetProc?.imageObjs;
-  const newImageObjs = imageObjs.filter((item, index) => {
+  const newImageObjs = imageObjs.filter((item) => {
     console.log("item", item);
 
     if (item.imageId == targetId) return false;
