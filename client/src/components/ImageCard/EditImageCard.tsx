@@ -19,10 +19,12 @@ export function EditImageCard({
   url = "",
   setFormImageUrl,
   onRemove,
+  uploadedImageObj = null,
 }: {
   url: string;
   onRemove: () => void;
   setFormImageUrl: (imageObj: ImageObjT) => void; //external state setter to manipulate url prop
+  uploadedImageObj?: ImageObjT | null;
 }) {
   const { uploadImage, deleteImage } = useImageManager();
 
@@ -38,7 +40,7 @@ export function EditImageCard({
   //image has been uploaded and have imageObj or null
   //after image is uploaded store details
   const [imageUploadedObj, setImageUploadedObj] = useState<null | ImageObjT>(
-    null
+    uploadedImageObj
   );
 
   //show status of image action
@@ -137,25 +139,25 @@ export function EditImageCard({
   //todo handle delete of image from database and state
   const handleImageDelete = async () => {
     // if image has been uploaded delete from database
+    console.log("imageUploadedObj to delete", imageUploadedObj);
 
     if (imageUploadedObj) {
       try {
-        console.log("imageUploadedObj", imageUploadedObj);
         const deleteResponse = await deleteImage({
           imageId: imageUploadedObj.imageId,
         });
 
         console.log("deleteResponse", deleteResponse);
 
-        // setImageUploadedObj(null);
+        setImageUploadedObj(null);
+        onRemove();
       } catch (error) {
         // reset image obj and do not remove from dom
         alert("failed to delete image");
-        setImageUploadedObj(imageUploadedObj);
+        // setImageUploadedObj(imageUploadedObj);
         return;
       }
     }
-    onRemove();
   };
 
   const handleFileChange = async (
