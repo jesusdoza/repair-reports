@@ -19,12 +19,10 @@ export function EditImageCard({
   url = "",
   setFormImageUrl,
   onRemove,
-  uploadedImageObj = null,
 }: {
   url: string;
   onRemove: () => void;
   setFormImageUrl: (imageObj: ImageObjT) => void; //external state setter to manipulate url prop
-  uploadedImageObj?: ImageObjT | null;
 }) {
   const { uploadImage, deleteImage } = useImageManager();
 
@@ -40,7 +38,7 @@ export function EditImageCard({
   //image has been uploaded and have imageObj or null
   //after image is uploaded store details
   const [imageUploadedObj, setImageUploadedObj] = useState<null | ImageObjT>(
-    uploadedImageObj
+    null
   );
 
   //show status of image action
