@@ -5,6 +5,8 @@ const repairRouter = require("./repairs");
 const signatureRouter = require("./signature.js");
 const imagesRouter = require("./imagesRouter.js");
 
+// /api/*
+
 router.post("/login", apiAuthController.apiLogin);
 router.get("/logout", apiAuthController.apiLogout);
 router.post("/signup", apiAuthController.apiSignup);
