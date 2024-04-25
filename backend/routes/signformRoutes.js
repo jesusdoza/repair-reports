@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const signature = require("../modules/signuploadform");
+const signature = require("../utilities/signuploadform");
 
 //get signature for upload form
 router.get("/signform", async (request, response) => {

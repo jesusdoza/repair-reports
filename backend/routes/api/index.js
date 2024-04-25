@@ -11,6 +11,6 @@ router.post("/signup", apiAuthController.apiSignup);
 
 router.use("/repairs", ensureAuthApi, repairRouter);
 router.use("/signform", ensureAuthApi, signatureRouter);
-router.use("/images", ensureAuthApi, imagesRouter);
+router.use("/images", imagesRouter);
 
 module.exports = router;

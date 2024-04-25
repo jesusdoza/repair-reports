@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const imagesController = require("../../controllers/api/images.js");
+const imagesController = require("../../controllers/api/imagesController.js");
 
 router.delete("/", imagesController.deleteImage);
 
