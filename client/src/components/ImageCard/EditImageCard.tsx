@@ -149,7 +149,7 @@ export function EditImageCard({
 
         setImageUploadedObj(null);
 
-        // onRemove();   //FIXME uncomment!
+        onRemove();
       } catch (error) {
         // reset image obj and do not remove from dom
         alert("failed to delete image");
