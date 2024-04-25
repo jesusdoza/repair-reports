@@ -4,18 +4,37 @@ const signatureUtility = require("../../utilities/signuploadform");
 const deleteImage = async (req, res) => {
   const { imageId } = req.body;
 
-  const { signature, timestamp } = signatureUtility.signuploadform();
-  console.log("cloudinary.config", cloudinary.config());
+  // const { signature, timestamp } = signatureUtility.signuploadform();
 
-  // const response = await cloudinary.destroy(imageId, { timestamp, signature });
+  try {
+    const response = await cloudinary.uploader.destroy(imageId, {
+      resource_type: "image",
+      // timestamp,
+    });
 
-  //TODO do something with cloud response
-  // console.log("response", response);
+    if (response.result != "ok") {
+      throw Error("not found");
+    }
 
-  res.send({
-    route: "images delete",
-    body: req.body,
-  });
+    res.status(200).send({
+      result: "delete",
+      asset: imageId,
+    });
+  } catch (error) {
+    console.log("error", error);
+
+    if (error?.message == "not found") {
+      res.status(404).send({
+        error: "not found",
+        asset: imageId,
+      });
+      return;
+    }
+
+    res.send({
+      error,
+    });
+  }
 };
 
 module.exports = { deleteImage };
