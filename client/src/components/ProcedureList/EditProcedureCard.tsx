@@ -40,7 +40,7 @@ export default function EditProcedureCard({
   }, 0);
 
   return (
-    <div className=" bg-inherit p-3 card relative">
+    <div className="p-3 card relative border border-solid border-slate-700">
       {/* delete x button */}
       <div
         onClick={() => {
@@ -54,9 +54,21 @@ export default function EditProcedureCard({
         <h1 className="text-xl">procedure num is : {PROCEDURE_INDEX}</h1>
         <ul className=" w-full flex flex-wrap justify-center align-middle items-center gap-2 p-4  bg-neutral rounded-box">
           {imageCards}
+          <section>
+            <div>
+              <span>Add another image</span>
+              <div
+                onClick={() => {
+                  updateProcedure.addImage();
+                }}
+                className="text-xl btn btn-active btn-accent hover:bg-green-300">
+                +
+              </div>
+            </div>
+          </section>
         </ul>
         {/* add another image to this list of images and use placeholder url in meantime */}
-        <section>
+        {/* <section>
           <div>
             <span>Add another image</span>
             <div
@@ -67,7 +79,7 @@ export default function EditProcedureCard({
               +
             </div>
           </div>
-        </section>
+        </section> */}
       </section>
 
       {/* INSTRUCTIONS */}
