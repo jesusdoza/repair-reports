@@ -40,7 +40,16 @@ export default function EditProcedureCard({
   }, 0);
 
   return (
-    <div className="bg-blue-900 p-3 card">
+    <div className="bg-blue-900 p-3 card relative">
+      {/* delete x button */}
+      <div
+        onClick={() => {
+          console.log("delete procedure");
+        }}
+        className="btn bg-yellow-600 absolute right-5 top-5 hover:bg-red-600 hover:scale-125 text-black">
+        Remove procedure
+      </div>
+
       <section>
         <h1 className="text-xl">procedure num is : {PROCEDURE_INDEX}</h1>
         <ul className=" w-full flex flex-wrap justify-center align-middle items-center gap-2 p-4  bg-neutral rounded-box">

@@ -26,7 +26,9 @@ export default function EditProcedureList({
     });
 
     return (
-      <li key={uuidv4()}>
+      <li
+        key={uuidv4()}
+        className=" bg-slate-600">
         <EditProcedureCard
           updateProcedureMethods={updateProcedureMethods}
           proc={procedureData}
@@ -53,7 +55,7 @@ export default function EditProcedureList({
         className="btn">
         Add new Procedure at begining
       </div>
-      <ul className="w-full">{procedures}</ul>
+      <ul className="w-full flex flex-col overflow-hidden">{procedures}</ul>
     </div>
   );
 }
