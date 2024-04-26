@@ -46,7 +46,7 @@ export default function EditProcedureCard({
         onClick={() => {
           console.log("delete procedure");
         }}
-        className="btn bg-yellow-600 absolute right-5 top-5 hover:bg-red-600 hover:scale-125 text-black">
+        className="btn bg-yellow-600 absolute right-5 top-1 z-20 hover:bg-red-600 hover:scale-125 text-black">
         Remove procedure
       </div>
 
