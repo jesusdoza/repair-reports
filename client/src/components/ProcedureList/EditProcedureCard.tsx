@@ -40,7 +40,7 @@ export default function EditProcedureCard({
   }, 0);
 
   return (
-    <div className="bg-blue-900 p-3 card relative">
+    <div className=" bg-inherit p-3 card relative">
       {/* delete x button */}
       <div
         onClick={() => {
