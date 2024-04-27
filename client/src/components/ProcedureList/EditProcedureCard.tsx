@@ -4,17 +4,18 @@ import { useState } from "react";
 import { EditImageCard } from "../ImageCard/EditImageCard";
 import { v4 as uuidv4 } from "uuid";
 import { useDebouncedCallback } from "use-debounce";
-import { ImageObjT, ProcedureT } from "../../../types";
+import { ImageObjT } from "../../../types";
 import { ImageObj } from "../../classes/ImageObj";
+import { Procedure } from "../../classes/Procedure";
 
 export default function EditProcedureCard({
-  proc,
+  procedureData,
   index,
-  updateProcedureMethods: updateProcedure,
+  procedureActions: updateProcedure,
 }: {
-  proc: ProcedureT;
+  procedureData: Procedure;
   index: number;
-  updateProcedureMethods: {
+  procedureActions: {
     instructions: (text: string) => void;
     addImage: () => void;
     editImage: (imageIndex: number, updatedImageObj: ImageObjT) => void;
@@ -23,11 +24,12 @@ export default function EditProcedureCard({
 }) {
   //index to number to be used as reference of updating state array of the proceduresArray
   const PROCEDURE_INDEX = Number(index);
+  const PROCEDURE_ID = procedureData.id;
 
   // const { formDispatch } = useContext(RepairFormContext);
 
-  const [instructions, setInstructions] = useState(proc.instructions);
-  const { imageObjs } = proc;
+  const [instructions, setInstructions] = useState(procedureData.instructions);
+  const { imageObjs } = procedureData;
 
   const imageCards = createEditImageCards({
     imageObjs: imageObjs,
@@ -52,6 +54,7 @@ export default function EditProcedureCard({
 
       <section>
         <h1 className="text-xl">procedure num is : {PROCEDURE_INDEX}</h1>
+        <h1 className="text-xl">procedure ID is : {PROCEDURE_ID}</h1>
         <ul className=" w-full flex flex-wrap justify-center align-middle items-center gap-2 p-4  bg-neutral rounded-box">
           {imageCards}
           <section>
@@ -67,19 +70,6 @@ export default function EditProcedureCard({
             </div>
           </section>
         </ul>
-        {/* add another image to this list of images and use placeholder url in meantime */}
-        {/* <section>
-          <div>
-            <span>Add another image</span>
-            <div
-              onClick={() => {
-                updateProcedure.addImage();
-              }}
-              className="text-xl btn btn-active btn-accent hover:bg-green-300">
-              +
-            </div>
-          </div>
-        </section> */}
       </section>
 
       {/* INSTRUCTIONS */}

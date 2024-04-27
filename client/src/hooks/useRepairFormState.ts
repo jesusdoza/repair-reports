@@ -67,6 +67,7 @@ function updateSearchTags(state: Repair, payload: ChangeFormPayloadT) {
 function addProcedure(state: Repair, payload: ChangeFormPayloadT) {
   const updatedProcedures = [];
   const oldProcedures = state.procedureArr;
+  const newProcedure = new Procedure();
 
   const procIndex =
     typeof payload.procIndex == "number" && payload.procIndex >= 0
@@ -77,18 +78,18 @@ function addProcedure(state: Repair, payload: ChangeFormPayloadT) {
   if (procIndex == 0) {
     return {
       ...state,
-      procedureArr: [new Procedure(), ...oldProcedures],
+      procedureArr: [newProcedure, ...oldProcedures],
     };
   }
 
   //if new index is larger than old array add new instance to end of state
   if (procIndex > oldProcedures.length - 1) {
-    return { ...state, procedureArr: [...oldProcedures, new Procedure()] };
+    return { ...state, procedureArr: [...oldProcedures, newProcedure] };
   }
 
   for (let i = 0; i < oldProcedures.length; i++) {
     if (i == procIndex) {
-      updatedProcedures.push(new Procedure());
+      updatedProcedures.push(newProcedure);
       updatedProcedures.push(oldProcedures[i]);
       continue;
     }

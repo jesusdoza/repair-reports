@@ -2,13 +2,14 @@ import EditProcedureCard from "./EditProcedureCard";
 
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
-import { ImageObjT, ProcedureT, RepairFormDispatchT } from "../../../types";
+import { ImageObjT, RepairFormDispatchT } from "../../../types";
+import { Procedure } from "../../classes/Procedure";
 
 export default function EditProcedureList({
   procedureList,
   formDispatch,
 }: {
-  procedureList: ProcedureT[];
+  procedureList: Procedure[];
   formDispatch: RepairFormDispatchT;
 }): React.ReactNode {
   const addNewProcedure = (index: number) => {
@@ -19,8 +20,8 @@ export default function EditProcedureList({
   };
 
   const procedures = procedureList.map((procedureData, procedureIndex) => {
-    //object with update functions for editProcedureCard component
-    const updateProcedureMethods = generateProcedureMethods({
+    //object with update methods for editProcedureCard component
+    const procedureActions = generateProcedureMethods({
       formDispatch,
       procedureIndex,
     });
@@ -30,8 +31,9 @@ export default function EditProcedureList({
         key={uuidv4()}
         className="">
         <EditProcedureCard
-          updateProcedureMethods={updateProcedureMethods}
-          proc={procedureData}
+          key={procedureData.id}
+          procedureActions={procedureActions}
+          procedureData={procedureData}
           index={procedureIndex}
         />
 
