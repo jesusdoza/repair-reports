@@ -241,9 +241,13 @@ function removeProcedure(state: Repair, payload: ChangeFormPayloadT) {
   const targetId = payload.procedureId;
   const updatedProcedureArr = state.procedureArr.filter((procedure) => {
     if (procedure.id == targetId) {
-      console.log("found procedure to delete", procedure.id == targetId);
-      console.log(procedure.id, " == ", targetId);
+      return false;
     }
+    return true;
   });
-  return state;
+  state.procedureArr = updatedProcedureArr;
+
+  console.log("updatedProcedureArr", updatedProcedureArr);
+  // return updatedProcedureArr;
+  return { ...state };
 }

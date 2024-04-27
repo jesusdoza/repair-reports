@@ -19,6 +19,7 @@ export default function EditProcedureList({
     });
   };
 
+  // const procedures = [];
   const procedures = procedureList.map((procedureData, procedureIndex) => {
     //object with update methods for editProcedureCard component
     const procedureActions = generateProcedureMethods({
