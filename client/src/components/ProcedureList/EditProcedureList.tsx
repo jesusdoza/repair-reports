@@ -24,6 +24,7 @@ export default function EditProcedureList({
     const procedureActions = generateProcedureMethods({
       formDispatch,
       procedureIndex,
+      procedureId: procedureData.id,
     });
 
     return (
@@ -68,9 +69,11 @@ export default function EditProcedureList({
 function generateProcedureMethods({
   procedureIndex,
   formDispatch,
+  procedureId,
 }: {
   procedureIndex: number;
   formDispatch: RepairFormDispatchT;
+  procedureId: string;
 }) {
   const instructions = (text: string) => {
     formDispatch({
@@ -103,10 +106,18 @@ function generateProcedureMethods({
       payload: { imageId, procIndex: procedureIndex },
     });
   };
+  const removeProcedure = () => {
+    //remove current procedure
+    formDispatch({
+      type: "REMOVE_PROCEDURE",
+      payload: { procedureId },
+    });
+  };
   return {
     instructions,
     addImage,
     editImage,
     removeImage,
+    removeProcedure,
   };
 }

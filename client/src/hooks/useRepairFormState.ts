@@ -43,6 +43,9 @@ function updateFormDataReducer(state: Repair, action: RepairFormStateActionT) {
     case "REMOVE_IMAGE":
       newState = removeImage(state, action.payload);
       break;
+    case "REMOVE_PROCEDURE":
+      newState = removeProcedure(state, action.payload);
+      break;
 
     default:
       console.log("no action available for ", LOC, action);
@@ -232,4 +235,15 @@ function addEmptyImageToProcedure(state: Repair, payload: ChangeFormPayloadT) {
     }
   });
   return { ...state, procedureArr: newProcedures } as Repair;
+}
+
+function removeProcedure(state: Repair, payload: ChangeFormPayloadT) {
+  const targetId = payload.procedureId;
+  const updatedProcedureArr = state.procedureArr.filter((procedure) => {
+    if (procedure.id == targetId) {
+      console.log("found procedure to delete", procedure.id == targetId);
+      console.log(procedure.id, " == ", targetId);
+    }
+  });
+  return state;
 }

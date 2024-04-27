@@ -11,7 +11,7 @@ import { Procedure } from "../../classes/Procedure";
 export default function EditProcedureCard({
   procedureData,
   index,
-  procedureActions: updateProcedure,
+  procedureActions,
 }: {
   procedureData: Procedure;
   index: number;
@@ -20,6 +20,7 @@ export default function EditProcedureCard({
     addImage: () => void;
     editImage: (imageIndex: number, updatedImageObj: ImageObjT) => void;
     removeImage: (imageId: string) => void;
+    removeProcedure: () => void;
   };
 }) {
   //index to number to be used as reference of updating state array of the proceduresArray
@@ -33,20 +34,20 @@ export default function EditProcedureCard({
 
   const imageCards = createEditImageCards({
     imageObjs: imageObjs,
-    updateUrl: updateProcedure.editImage,
-    onRemove: updateProcedure.removeImage,
+    updateUrl: procedureActions.editImage,
+    onRemove: procedureActions.removeImage,
   });
 
   const handleInstructionsUpdate = useDebouncedCallback((text: string) => {
-    updateProcedure.instructions(text);
+    procedureActions.instructions(text);
   }, 0);
 
   return (
     <div className="p-3 card relative border border-solid border-slate-700">
-      {/* delete x button */}
+      {/* delete procedure button */}
       <div
         onClick={() => {
-          console.log("delete procedure");
+          procedureActions.removeProcedure();
         }}
         className="btn bg-yellow-600 absolute right-5 top-1 z-20 hover:bg-red-600 hover:scale-125 text-black">
         Remove procedure
@@ -62,7 +63,7 @@ export default function EditProcedureCard({
               <span>Add another image</span>
               <div
                 onClick={() => {
-                  updateProcedure.addImage();
+                  procedureActions.addImage();
                 }}
                 className="text-xl btn btn-active btn-accent hover:bg-green-300">
                 +
