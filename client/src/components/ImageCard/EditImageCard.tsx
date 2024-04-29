@@ -6,24 +6,30 @@ import { useDebouncedCallback } from "use-debounce";
 import { v4 as uuidv4 } from "uuid";
 import useImageManager from "../../hooks/useImageManager";
 import { Check } from "lucide-react";
+import { ImageObj, UploadStatus } from "../../classes/ImageObj";
 
-enum UploadStatus {
-  SUCCESS,
-  UPLOADING,
-  ERROR,
-  IDLE,
-  DELETING,
-}
+// enum UploadStatus {
+//   SUCCESS,
+//   UPLOADING,
+//   ERROR,
+//   IDLE,
+//   DELETING,
+// }
 
 export function EditImageCard({
   url = "",
   setFormImageUrl,
   onRemove,
+  imageData,
 }: {
   url: string;
   onRemove: () => void;
   setFormImageUrl: (imageObj: ImageObjT) => void; //external state setter to manipulate url prop
+  imageData?: ImageObj;
 }) {
+  //
+  //TODO bring in imageObj data
+  console.log("imageData", imageData);
   const { uploadImage, deleteImage } = useImageManager();
 
   //will hold <video> tag reference
@@ -43,7 +49,7 @@ export function EditImageCard({
 
   //show status of image action
   const [imageUploadStatus, setImageUploadStatus] = useState<UploadStatus>(
-    UploadStatus.IDLE
+    imageData?.uploadStatus ? imageData.uploadStatus : "IDLE"
   );
 
   //number to track percentage of image action progress
@@ -92,7 +98,7 @@ export function EditImageCard({
   );
 
   const handleImageUpload = useDebouncedCallback(async (folder: string) => {
-    setImageUploadStatus(UploadStatus.UPLOADING);
+    setImageUploadStatus("UPLOADING");
     setUploadProgress(30);
 
     if (
@@ -121,11 +127,11 @@ export function EditImageCard({
         setFormImageUrl(imageObj);
         setImageUploadedObj(imageObj);
         setUploadProgress(100);
-        setImageUploadStatus(UploadStatus.SUCCESS);
+        setImageUploadStatus("SUCCESS");
         return;
       } catch (error) {
         console.log("error uploading", error);
-        setImageUploadStatus(UploadStatus.ERROR);
+        setImageUploadStatus("ERROR");
         //todo set alert of failed upload
         return;
       }
@@ -140,22 +146,19 @@ export function EditImageCard({
     console.log("imageUploadedObj to delete", imageUploadedObj);
 
     if (imageUploadedObj) {
-      try {
-        const deleteResponse = await deleteImage({
-          imageId: imageUploadedObj.imageId,
-        });
-
-        console.log("deleteResponse", deleteResponse);
-
-        setImageUploadedObj(null);
-
-        onRemove();
-      } catch (error) {
-        // reset image obj and do not remove from dom
-        alert("failed to delete image");
-        // setImageUploadedObj(imageUploadedObj);
-        return;
-      }
+      // try {
+      //   const deleteResponse = await deleteImage({
+      //     imageId: imageUploadedObj.imageId,
+      //   });
+      //   console.log("deleteResponse", deleteResponse);
+      //   setImageUploadedObj(null);
+      //   onRemove();
+      // } catch (error) {
+      //   // reset image obj and do not remove from dom
+      //   alert("failed to delete image");
+      //   // setImageUploadedObj(imageUploadedObj);
+      //   return;
+      // }
     } else {
       onRemove();
     }
@@ -283,7 +286,7 @@ export function EditImageCard({
       {/* alerts and status */}
       <section className=" flex flex-col items-center h-1/8">
         {/* upload progress bar */}
-        {imageUploadStatus == UploadStatus.UPLOADING && (
+        {imageUploadStatus == "UPLOADING" && (
           <div className="">
             <span className="loading loading-spinner text-accent"></span>
             <progress
@@ -294,14 +297,44 @@ export function EditImageCard({
         )}
 
         {/* uploaded success badge */}
-        {imageUploadStatus == UploadStatus.SUCCESS && (
+        {imageUploadStatus == "SUCCESS" && (
           <div className="badge bg-green-500 text-black absolute left-0">
             <Check className=" text-slate-800" /> uploaded
           </div>
         )}
 
+        {/* //! DEBUGING */}
+        {/* <div
+          className="btn"
+          onClick={() => {
+            setImageUploadStatus("SUCCESS");
+            if (imageData) imageData.uploadStatus = "SUCCESS";
+            console.log("imageData", imageData);
+          }}>
+          <h2>success</h2>
+        </div>
+        <div
+          className="btn"
+          onClick={() => {
+            setImageUploadStatus("ERROR");
+            if (imageData) imageData.uploadStatus = "ERROR";
+            console.log("imageData", imageData);
+          }}>
+          <h2>ERROR</h2>
+        </div>
+        <div
+          className="btn"
+          onClick={() => {
+            setImageUploadStatus("IDLE");
+            if (imageData) imageData.uploadStatus = "IDLE";
+            console.log("imageData", imageData);
+          }}>
+          <h2>IDLE</h2>
+        </div> */}
+        {/* //! DEBUGING */}
+
         {/* error alert strip */}
-        {imageUploadStatus == UploadStatus.ERROR && (
+        {imageUploadStatus == "ERROR" && (
           <div
             role="alert"
             className="alert alert-error">

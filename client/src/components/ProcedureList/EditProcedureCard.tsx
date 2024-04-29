@@ -99,7 +99,7 @@ function createEditImageCards({
   imageObjs,
   onRemove = () => {},
 }: {
-  imageObjs: ImageObjT[];
+  imageObjs: ImageObj[];
   updateUrl: (imageIndex: number, newImageObj: ImageObjT) => void;
   onRemove?: (imageId: string) => void;
 }) {
@@ -119,6 +119,7 @@ function createEditImageCards({
         className="w-full card md:w-1/3 bg-slate-700 p-2"
         key={uuidv4()}>
         <EditImageCard
+          imageData={imageObj}
           onRemove={removeImageFromList}
           key={uuidv4()}
           url={imageUrl}
