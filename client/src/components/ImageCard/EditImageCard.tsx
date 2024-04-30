@@ -32,7 +32,7 @@ export function EditImageCard({
   //
   const { uploadImage, deleteImage } = useImageManager();
 
-  const [isDeletable] = useState(url.includes("http"));
+  const [isDeletable, setIsDeletable] = useState(url.includes("http"));
   const [isUploadable, setIsUploadable] = useState(url.includes("data:"));
 
   //will hold <video> tag reference
@@ -132,6 +132,7 @@ export function EditImageCard({
         setUploadProgress(100);
         setImageUploadStatus("SUCCESS");
         setIsUploadable(false);
+        setIsDeletable(true);
         return;
       } catch (error) {
         console.log("error uploading", error);
@@ -149,6 +150,7 @@ export function EditImageCard({
     // if image has been uploaded delete from database
 
     console.log("imageUploadedObj to delete", imageUploadedObj);
+    console.log("isDeletable", isDeletable);
     console.log("id of component to delete ", id);
     if (isDeletable && imageUploadedObj) {
       console.log("both image obj and url true", imageUploadedObj, url);
