@@ -37,6 +37,13 @@ export default function EditProcedureCard({
     updateUrl: procedureActions.editImage,
     onRemove: procedureActions.removeImage,
   });
+  // const [imageCards, setImageCards] = useState(
+  //   createEditImageCards({
+  //     imageObjs: imageObjs,
+  //     updateUrl: procedureActions.editImage,
+  //     onRemove: procedureActions.removeImage,
+  //   })
+  // );
 
   const handleInstructionsUpdate = useDebouncedCallback((text: string) => {
     procedureActions.instructions(text);
@@ -53,6 +60,7 @@ export default function EditProcedureCard({
         Remove procedure
       </div>
 
+      {/* edit image cards */}
       <section>
         <h1 className="text-xl">procedure num is : {PROCEDURE_INDEX}</h1>
         <h1 className="text-xl">procedure ID is : {PROCEDURE_ID}</h1>
@@ -120,6 +128,7 @@ function createEditImageCards({
         key={uuidv4()}>
         <EditImageCard
           imageData={imageObj}
+          id={imageId}
           onRemove={removeImageFromList}
           key={uuidv4()}
           url={imageUrl}

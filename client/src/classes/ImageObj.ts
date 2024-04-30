@@ -6,7 +6,8 @@ export type UploadStatus =
   | "UPLOADING"
   | "ERROR"
   | "IDLE"
-  | "DELETING";
+  | "DELETING"
+  | "NEEDUPLOAD";
 
 export class ImageObj implements ImageObjT {
   public imageUrl = "";
