@@ -32,8 +32,8 @@ export function EditImageCard({
   //
   const { uploadImage, deleteImage } = useImageManager();
 
-  const isDeletable = url.includes("http");
-  let isUploadable = url.includes("data");
+  const [isDeletable] = useState(url.includes("http"));
+  const [isUploadable, setIsUploadable] = useState(url.includes("data:"));
 
   //will hold <video> tag reference
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -131,6 +131,7 @@ export function EditImageCard({
         setImageUploadedObj(imageObj);
         setUploadProgress(100);
         setImageUploadStatus("SUCCESS");
+        setIsUploadable(false);
         return;
       } catch (error) {
         console.log("error uploading", error);
@@ -149,31 +150,30 @@ export function EditImageCard({
 
     console.log("imageUploadedObj to delete", imageUploadedObj);
     console.log("id of component to delete ", id);
-    // if (isDeletable) {
-    //   console.log("both image obj and url true", imageUploadedObj, url);
-    //   //TODO uncomment delete code
-    //   try {
-    //     const deleteResponse = await deleteImage({
-    //       imageId: imageUploadedObj.imageId,
-    //     });
-    //     console.log("deleteResponse", deleteResponse);
-    //     setImageUploadedObj(null);
-    //     if (onRemove) onRemove();
-    //   } catch (error) {
-    //     // reset image obj and do not remove from dom
-    //     alert("failed to delete image");
-    //     // setImageUploadedObj(imageUploadedObj);
-    //     return;
-    //   }
-    // } else {
-    //   if (onRemove) onRemove();
-    // }
+    if (isDeletable && imageUploadedObj) {
+      console.log("both image obj and url true", imageUploadedObj, url);
+      //TODO uncomment delete code
+      try {
+        const deleteResponse = await deleteImage({
+          imageId: imageUploadedObj.imageId,
+        });
+        console.log("deleteResponse", deleteResponse);
+        setImageUploadedObj(null);
+        if (onRemove) onRemove();
+      } catch (error) {
+        // reset image obj and do not remove from dom
+        alert("failed to delete image");
+        // setImageUploadedObj(imageUploadedObj);
+        return;
+      }
+    } else {
+      if (onRemove) onRemove();
+    }
   };
 
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    isUploadable = true;
     //check input element for files
     const imageFile = event.target.files && event.target.files[0];
 
@@ -198,6 +198,7 @@ export function EditImageCard({
 
       //read the file data and trigger onloadend event
       reader.readAsDataURL(imageFile);
+      setIsUploadable(true);
     }
   };
 
@@ -268,7 +269,7 @@ export function EditImageCard({
     <div
       key={uuidv4()}
       className="">
-      <h3>image id :{id}</h3>
+      <h3>image id :{imageUploadedObj?.imageId}</h3>
       {/* delete x button */}
       <div
         onClick={handleImageDelete}
@@ -402,7 +403,7 @@ export function EditImageCard({
             {!activeCamera ? "open camera" : "close camera"}
           </div>
 
-          {isUploadable && !isDeletable && (
+          {isUploadable && (
             <div
               onClick={() => {
                 handleImageUpload("testfolder");
