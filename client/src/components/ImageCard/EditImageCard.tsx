@@ -145,16 +145,11 @@ export function EditImageCard({
     alert("no image to upload");
   }, 1000);
 
-  //TODO handle delete of image from database and state
+  //handle delete of image from database and state
   const handleImageDelete = async () => {
     // if image has been uploaded delete from database
 
-    console.log("imageUploadedObj to delete", imageUploadedObj);
-    console.log("isDeletable", isDeletable);
-    console.log("id of component to delete ", id);
     if (isDeletable && imageUploadedObj) {
-      console.log("both image obj and url true", imageUploadedObj, url);
-      //TODO uncomment delete code
       try {
         const deleteResponse = await deleteImage({
           imageId: imageUploadedObj.imageId,
@@ -300,36 +295,6 @@ export function EditImageCard({
             status={imageUploadStatus}
           />
         </div>
-
-        {/* //! DEBUGING */}
-        {/* <div
-          className="btn w-3"
-          onClick={() => {
-            setImageUploadStatus("SUCCESS");
-          }}>
-          <h2>success</h2>
-        </div>
-        <div
-          className="btn"
-          onClick={() => {
-            setImageUploadStatus("ERROR");
-            if (imageData) imageData.uploadStatus = "ERROR";
-            console.log("imageData", imageData);
-          }}>
-          <h2>ERROR</h2>
-        </div>
-        <div
-          className="btn"
-          onClick={() => {
-            setImageUploadStatus("IDLE");
-            if (imageData) imageData.uploadStatus = "IDLE";
-            console.log("imageData", imageData);
-          }}>
-          <h2>IDLE</h2>
-        </div> */}
-        {/* //! DEBUGING */}
-
-        {/* error alert strip */}
       </section>
 
       {/* image preview or camera preview */}
