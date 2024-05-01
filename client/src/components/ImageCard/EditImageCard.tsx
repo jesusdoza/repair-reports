@@ -29,9 +29,6 @@ export function EditImageCard({
   imageData: ImageObj;
   setFormImageUrl: (imageObj: ImageObjT) => void; //external state setter to manipulate url prop
 }) {
-  //
-  console.log("imageData", imageData);
-
   const { uploadImage, deleteImage } = useImageManager();
 
   const [isDeletable, setIsDeletable] = useState(url.includes("http"));
