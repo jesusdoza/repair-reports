@@ -30,6 +30,8 @@ export function EditImageCard({
   setFormImageUrl: (imageObj: ImageObjT) => void; //external state setter to manipulate url prop
 }) {
   //
+  console.log("imageData", imageData);
+
   const { uploadImage, deleteImage } = useImageManager();
 
   const [isDeletable, setIsDeletable] = useState(url.includes("http"));
@@ -52,7 +54,7 @@ export function EditImageCard({
 
   //show status of image action
   const [imageUploadStatus, setImageUploadStatus] = useState<UploadStatus>(
-    isDeletable ? "SUCCESS" : "IDLE"
+    imageData.uploadStatus
   );
 
   //number to track percentage of image action progress
@@ -100,8 +102,14 @@ export function EditImageCard({
     300
   );
 
+  const handleStatusChange = (status: UploadStatus) => {
+    setImageUploadStatus(status);
+    imageData.uploadStatus = status;
+  };
+
   const handleImageUpload = useDebouncedCallback(async (folder: string) => {
-    setImageUploadStatus("UPLOADING");
+    // setImageUploadStatus("UPLOADING");
+    handleStatusChange("UPLOADING");
     setUploadProgress(30);
 
     if (
@@ -130,13 +138,16 @@ export function EditImageCard({
         setFormImageUrl(imageObj);
         setImageUploadedObj(imageObj);
         setUploadProgress(100);
-        setImageUploadStatus("SUCCESS");
+        // setImageUploadStatus("SUCCESS");
+        handleStatusChange("SUCCESS");
         setIsUploadable(false);
         setIsDeletable(true);
         return;
       } catch (error) {
         console.log("error uploading", error);
-        setImageUploadStatus("ERROR");
+        // setImageUploadStatus("ERROR");
+        handleStatusChange("ERROR");
+
         //todo set alert of failed upload
         return;
       }
@@ -265,8 +276,8 @@ export function EditImageCard({
   return (
     <div
       key={uuidv4()}
-      className="">
-      <h3>image id :{imageUploadedObj?.imageId}</h3>
+      className="relative h-[400px]">
+      {/* <h3>image id :{imageUploadedObj?.imageId}</h3> */}
       {/* delete x button */}
       <div
         onClick={handleImageDelete}
@@ -287,25 +298,63 @@ export function EditImageCard({
       </div>
 
       {/* alerts and status */}
-      <section className=" flex flex-col items-center h-1/8 relative">
+      <section className=" flex flex-col items-center absolute top-0 w-full ">
         {/* upload progress bar */}
-        <div className=" absolute">
+        <div className=" absolute ">
           <UploadStatusBar
             progress={uploadProgress}
             status={imageUploadStatus}
           />
         </div>
       </section>
-
+      {/* //! DEBUG */}
+      {/* <div>
+        <div
+          className="btn"
+          onClick={() => {
+            handleStatusChange("ERROR");
+          }}>
+          error
+        </div>
+        <div
+          className="btn"
+          onClick={() => {
+            handleStatusChange("UPLOADING");
+          }}>
+          UPLOADING
+        </div>
+        <div
+          className="btn"
+          onClick={() => {
+            handleStatusChange("IDLE");
+          }}>
+          idle
+        </div>
+        <div
+          className="btn"
+          onClick={() => {
+            handleStatusChange("SUCCESS");
+          }}>
+          SUCCESS
+        </div>
+        <div
+          className="btn"
+          onClick={() => {
+            handleStatusChange("NEEDUPLOAD");
+          }}>
+          NEEDUPLOAD
+        </div>
+      </div> */}
+      {/* //! DEBUG */}
       {/* image preview or camera preview */}
       <div className="flex flex-col max-w-[500px] h-5/6 items-center">
-        {/* camera of image preview */}
-        <div className="w-full flex flex-col justify-center items-center h-5/6">
+        {/* camera or image preview */}
+        <div className="w-full flex flex-col justify-center items-center h-4/6">
           <div className="h-4/6">
             {imagePreview && !activeCamera ? (
               <section className="w-full flex flex-col  h-full">
                 <img
-                  className=" h-full"
+                  className="h-full"
                   src={imagePreview.toString()}
                   alt="Preview"
                 />
@@ -353,7 +402,7 @@ export function EditImageCard({
         </div>
 
         {/* edit tools */}
-        <div className="text-black border-2 border-s-violet-100 w-full">
+        <div className="text-black border-2 border-s-violet-100 w-full h-2/6">
           <h3 className=" bg-gray-700">Edit Tools</h3>
 
           <div>

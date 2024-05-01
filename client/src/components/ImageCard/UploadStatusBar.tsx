@@ -8,11 +8,11 @@ export default function UploadStatusBar({
   progress: number;
 }) {
   return (
-    <div>
-      <section className=" flex flex-col items-center h-1/8">
+    <div className="">
+      <section className=" flex flex-col items-center">
         {/* upload progress bar */}
         {status == "UPLOADING" && (
-          <div className="">
+          <div className="h-full">
             <span className="loading loading-spinner text-accent"></span>
             <progress
               className="progress progress-accent w-56"
@@ -23,7 +23,7 @@ export default function UploadStatusBar({
 
         {/* uploaded success badge */}
         {status == "SUCCESS" && (
-          <div className="badge bg-green-500 text-black absolute left-0">
+          <div className="badge bg-green-500 text-black absolute left-0 ">
             <Check className=" text-slate-800" /> uploaded
           </div>
         )}
@@ -32,7 +32,7 @@ export default function UploadStatusBar({
         {status == "ERROR" && (
           <div
             role="alert"
-            className="alert alert-error">
+            className="alert alert-error  p-0 px-1">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="stroke-current shrink-0 h-6 w-6"
