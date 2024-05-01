@@ -123,8 +123,6 @@ module.exports.getNewestRepairs = async (req, res) => {
       .sort({ _id: -1 })
       .limit(numRepairs);
 
-    console.log("results", results[0].procedureArr[0]);
-
     res.render("latest.ejs", {
       title: "Latest Repairs",
       repairs: results,
