@@ -35,7 +35,7 @@ export type ChangeFormPayloadT = {
   instructions?: string;
   newImageUrl?: string;
   imageIndex?: number;
-  newImageObj?: ImageObjT;
+  newImageObj?: ImageObj;
   allProcedures?: ProcedureT[];
   formField?: Record<string, string>;
   searchTags?: string[];

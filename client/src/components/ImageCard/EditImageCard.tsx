@@ -19,7 +19,7 @@ import UploadStatusBar from "./UploadStatusBar";
 export function EditImageCard({
   id,
   url = "",
-  setFormImageUrl,
+  setImageData,
   onRemove,
   imageData,
 }: {
@@ -27,7 +27,7 @@ export function EditImageCard({
   url: string;
   onRemove?: () => void;
   imageData: ImageObj;
-  setFormImageUrl: (imageObj: ImageObjT) => void; //external state setter to manipulate url prop
+  setImageData: (imageObj: ImageObjT) => void; //external state setter to manipulate url prop
 }) {
   const { uploadImage, deleteImage } = useImageManager();
 
@@ -90,7 +90,7 @@ export function EditImageCard({
       }
 
       //url changed of image either manually or file changed
-      setFormImageUrl({
+      setImageData({
         folder: "testFolder",
         imageId: imageUploadedObj ? imageUploadedObj.imageId : urlText,
         imageUrl: urlText,
@@ -100,8 +100,8 @@ export function EditImageCard({
   );
 
   const handleStatusChange = (status: UploadStatus) => {
-    setImageUploadStatus(status);
     imageData.uploadStatus = status;
+    setImageUploadStatus(status);
   };
 
   const handleImageUpload = useDebouncedCallback(async (folder: string) => {
@@ -126,13 +126,16 @@ export function EditImageCard({
         const { url, public_id, folder: uploadFolder } = response.data;
         console.log("public_id of image uploaded done", public_id);
 
-        const imageObj: ImageObjT = {
-          imageUrl: url,
-          imageId: public_id,
-          folder: uploadFolder,
-        };
+        const imageObj = new ImageObj();
+        imageObj.imageUrl = url;
+        imageObj.imageId = public_id;
+        imageObj.folder = uploadFolder;
+        imageObj.uploadStatus = imageUploadStatus;
+
+        console.log("imageObj", imageObj);
+
         setUploadProgress(70);
-        setFormImageUrl(imageObj);
+        setImageData(imageObj);
         setImageUploadedObj(imageObj);
         setUploadProgress(100);
         // setImageUploadStatus("SUCCESS");
@@ -305,7 +308,7 @@ export function EditImageCard({
         </div>
       </section>
       {/* //! DEBUG */}
-      {/* <div>
+      <div>
         <div
           className="btn"
           onClick={() => {
@@ -341,7 +344,7 @@ export function EditImageCard({
           }}>
           NEEDUPLOAD
         </div>
-      </div> */}
+      </div>
       {/* //! DEBUG */}
       {/* image preview or camera preview */}
       <div className="flex flex-col max-w-[500px] h-5/6 items-center">

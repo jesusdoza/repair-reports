@@ -129,7 +129,7 @@ function updateInstruction(state: Repair, payload: ChangeFormPayloadT): Repair {
 function updateImage(state: Repair, payload: ChangeFormPayloadT) {
   const { procIndex, imageIndex: newImageIndex, newImageObj } = payload;
 
-  console.log("newImageObj", newImageObj);
+  console.log("update with newImageObj", newImageObj);
   //does image exists, have an index to update at, and index is valid if not then do nothing
   if (
     typeof newImageIndex != "number" ||

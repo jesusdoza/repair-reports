@@ -114,7 +114,9 @@ function createEditImageCards({
   const imageCardComponents = imageObjs.map((imageObj, index) => {
     const { imageUrl, imageId } = imageObj;
     // high order function to update url
-    const updateImageUrl = ({ imageUrl, imageId, folder }: ImageObjT) => {
+
+    //FIXME //! error here we are already passing image class dont need to destruct
+    const updateImageData = ({ imageUrl, imageId, folder }: ImageObjT) => {
       updateUrl(index, { ...new ImageObj(), ...{ imageUrl, imageId, folder } });
     };
 
@@ -132,7 +134,7 @@ function createEditImageCards({
           onRemove={removeImageFromList}
           key={uuidv4()}
           url={imageUrl}
-          setFormImageUrl={updateImageUrl}
+          setImageData={updateImageData}
         />
       </li>
     );
