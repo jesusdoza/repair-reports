@@ -27,10 +27,12 @@ function removeDirectory(dirPath) {
     });
 
     try {
-    } catch (error) {}
-    // Remove the empty directory itself
-    fs.rmdirSync(dirPath);
-    console.log(`Directory ${dirPath} removed successfully.`);
+      // Remove the empty directory itself
+      fs.rmdirSync(dirPath);
+    } catch (error) {
+      console.log(`Directory ${dirPath} failed to remove.`);
+    }
+    // console.log(`Directory ${dirPath} removed successfully.`);
   } else {
     console.log(`Directory ${dirPath} does not exist.`);
   }
