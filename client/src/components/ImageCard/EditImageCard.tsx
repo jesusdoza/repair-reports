@@ -19,7 +19,7 @@ import UploadStatusBar from "./UploadStatusBar";
 export function EditImageCard({
   id,
   url = "",
-  setImageData,
+  updateImageData,
   onRemove,
   imageData,
 }: {
@@ -27,7 +27,7 @@ export function EditImageCard({
   url: string;
   onRemove?: () => void;
   imageData: ImageObj;
-  setImageData: (imageObj: ImageObjT) => void; //external state setter to manipulate url prop
+  updateImageData: (imageObj: ImageObj) => void; //external state setter to manipulate url prop
 }) {
   const { uploadImage, deleteImage } = useImageManager();
 
@@ -90,71 +90,84 @@ export function EditImageCard({
       }
 
       //url changed of image either manually or file changed
-      setImageData({
-        folder: "testFolder",
-        imageId: imageUploadedObj ? imageUploadedObj.imageId : urlText,
-        imageUrl: urlText,
+
+      updateImageData({
+        ...imageData,
+        ...{
+          folder: "testFolder",
+          imageId: imageUploadedObj ? imageUploadedObj.imageId : urlText,
+          imageUrl: urlText,
+        },
       });
     },
     300
   );
 
-  const handleStatusChange = (status: UploadStatus) => {
-    imageData.uploadStatus = status;
+  const handleUploadStatusChange = (status: UploadStatus) => {
+    // imageData.uploadStatus = status;
+    updateImageData({ ...imageData, uploadStatus: status }); //TODO have it found by id then update it in the useformstate hook
     setImageUploadStatus(status);
   };
 
-  const handleImageUpload = useDebouncedCallback(async (folder: string) => {
-    // setImageUploadStatus("UPLOADING");
-    handleStatusChange("UPLOADING");
-    setUploadProgress(30);
+  //FIXME WONT CHANGE STATUS WHEN IN MIDDLE OF UPLOADING
+  const handleImageUpload = useDebouncedCallback(
+    async (
+      folder: string,
+      handleStatusChange: (status: UploadStatus) => void
+    ) => {
+      // setImageUploadStatus("UPLOADING");
+      handleStatusChange("UPLOADING");
+      setUploadProgress(30);
 
-    if (
-      (typeof imageToUpload == "string" && imageToUpload.length > 6) ||
-      typeof imageToUpload == "object"
-    ) {
-      setUploadProgress(50);
-      try {
-        const response = await uploadImage(imageToUpload, folder);
+      // if (
+      //   (typeof imageToUpload == "string" && imageToUpload.length > 6) ||
+      //   typeof imageToUpload == "object"
+      // ) {
+      //   setUploadProgress(50);
+      //   try {
+      //     const response = await uploadImage(imageToUpload, folder);
 
-        // console.log("response image", response);
-        if (!response) {
-          console.log("no response from axios");
-          return;
-        }
+      //     // console.log("response image", response);
+      //     if (!response) {
+      //       console.log("no response from axios");
+      //       return;
+      //     }
 
-        const { url, public_id, folder: uploadFolder } = response.data;
-        console.log("public_id of image uploaded done", public_id);
+      //     const { url, public_id, folder: uploadFolder } = response.data;
+      //     console.log("public_id of image uploaded done", public_id);
 
-        const imageObj = new ImageObj();
-        imageObj.imageUrl = url;
-        imageObj.imageId = public_id;
-        imageObj.folder = uploadFolder;
-        imageObj.uploadStatus = imageUploadStatus;
+      //     const imageObj = new ImageObj();
+      //     imageObj.imageUrl = url;
+      //     imageObj.imageId = public_id;
+      //     imageObj.folder = uploadFolder;
+      //     imageObj.uploadStatus = imageUploadStatus;
 
-        console.log("imageObj", imageObj);
+      //     console.log("imageObj from editimage card", imageObj);
 
-        setUploadProgress(70);
-        setImageData(imageObj);
-        setImageUploadedObj(imageObj);
-        setUploadProgress(100);
-        // setImageUploadStatus("SUCCESS");
-        handleStatusChange("SUCCESS");
-        setIsUploadable(false);
-        setIsDeletable(true);
-        return;
-      } catch (error) {
-        console.log("error uploading", error);
-        // setImageUploadStatus("ERROR");
-        handleStatusChange("ERROR");
+      //     setUploadProgress(70);
+      //     updateImageData(imageObj);
+      //     setImageUploadedObj(imageObj);
+      //     setUploadProgress(100);
+      //     // setImageUploadStatus("SUCCESS");
+      // handleStatusChange("SUCCESS");
+      //     setIsUploadable(false);
+      //     setIsDeletable(true);
+      //     return;
+      //   } catch (error) {
+      //     console.log("error uploading", error);
+      //     // setImageUploadStatus("ERROR");
+      //     handleStatusChange("ERROR");
 
-        //todo set alert of failed upload
-        return;
-      }
-    }
+      //     //todo set alert of failed upload
+      //     return;
+      //   }
+      // }
+      return;
 
-    alert("no image to upload");
-  }, 1000);
+      alert("no image to upload");
+    },
+    1000
+  );
 
   //handle delete of image from database and state
   const handleImageDelete = async () => {
@@ -269,6 +282,7 @@ export function EditImageCard({
       setImagePreview(dataUrl);
       setActiveCamera(false);
       handleUrlChange(dataUrl);
+      setIsUploadable(true);
       setImageUploadedObj(null);
     }
   };
@@ -312,35 +326,35 @@ export function EditImageCard({
         <div
           className="btn"
           onClick={() => {
-            handleStatusChange("ERROR");
+            handleUploadStatusChange("ERROR");
           }}>
           error
         </div>
         <div
           className="btn"
           onClick={() => {
-            handleStatusChange("UPLOADING");
+            handleUploadStatusChange("UPLOADING");
           }}>
           UPLOADING
         </div>
         <div
           className="btn"
           onClick={() => {
-            handleStatusChange("IDLE");
+            handleUploadStatusChange("IDLE");
           }}>
           idle
         </div>
         <div
           className="btn"
           onClick={() => {
-            handleStatusChange("SUCCESS");
+            handleUploadStatusChange("SUCCESS");
           }}>
           SUCCESS
         </div>
         <div
           className="btn"
           onClick={() => {
-            handleStatusChange("NEEDUPLOAD");
+            handleUploadStatusChange("NEEDUPLOAD");
           }}>
           NEEDUPLOAD
         </div>
@@ -422,7 +436,7 @@ export function EditImageCard({
           {isUploadable && (
             <div
               onClick={() => {
-                handleImageUpload("testfolder");
+                handleImageUpload("testfolder", handleUploadStatusChange);
               }}
               className="btn btn-sm">
               Manual Upload Image

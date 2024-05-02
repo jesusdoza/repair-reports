@@ -18,7 +18,7 @@ export default function EditProcedureCard({
   procedureActions: {
     instructions: (text: string) => void;
     addImage: () => void;
-    editImage: (imageIndex: number, updatedImageObj: ImageObjT) => void;
+    editImage: (imageIndex: number, updatedImageObj: ImageObj) => void;
     removeImage: (imageId: string) => void;
     removeProcedure: () => void;
   };
@@ -34,7 +34,7 @@ export default function EditProcedureCard({
 
   const imageCards = createEditImageCards({
     imageObjs: imageObjs,
-    updateUrl: procedureActions.editImage,
+    updateData: procedureActions.editImage,
     onRemove: procedureActions.removeImage,
   });
   // const [imageCards, setImageCards] = useState(
@@ -103,12 +103,12 @@ export default function EditProcedureCard({
 
 //create image card components
 function createEditImageCards({
-  updateUrl,
+  updateData,
   imageObjs,
   onRemove = () => {},
 }: {
   imageObjs: ImageObj[];
-  updateUrl: (imageIndex: number, newImageObj: ImageObjT) => void;
+  updateData: (imageIndex: number, newImageObj: ImageObj) => void;
   onRemove?: (imageId: string) => void;
 }) {
   const imageCardComponents = imageObjs.map((imageObj, index) => {
@@ -116,8 +116,9 @@ function createEditImageCards({
     // high order function to update url
 
     //FIXME //! error here we are already passing image class dont need to destruct
-    const updateImageData = ({ imageUrl, imageId, folder }: ImageObjT) => {
-      updateUrl(index, { ...new ImageObj(), ...{ imageUrl, imageId, folder } });
+    const updateImageData = (newImageData: ImageObj) => {
+      console.log("newImageData@ editprocedure card", newImageData);
+      updateData(index, newImageData);
     };
 
     const removeImageFromList = () => {
@@ -134,7 +135,7 @@ function createEditImageCards({
           onRemove={removeImageFromList}
           key={uuidv4()}
           url={imageUrl}
-          setImageData={updateImageData}
+          updateImageData={updateImageData}
         />
       </li>
     );
