@@ -8,7 +8,7 @@
     "back-install": "cd ./backend/ && npm install",
     "client-install": "cd ./client/ && npm install",
     "build-client": "cd ./client/ && npm run build",
-    "start": " npm run client-cleanup && cd ./backend/ && npm run start",
+    "start": "cd ./backend/ && npm run start",
     "install": "npm run copy-env && concurrently 'npm:back-install' 'npm:client-install' ",
     "build": "npm run build-client && npm run client-cleanup",
     "dev": "concurrently 'npm:dev-backend' 'npm:dev-client'",
