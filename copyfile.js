@@ -34,7 +34,7 @@ function writeEnvFile(filePath) {
 
   // Iterate over environment variables and write them to the file
 
-  const { HOSTED_AT, PATH } = process.env;
+  const { VITE_API_URL } = process.env;
 
   for (const [key, value] of Object.entries({ HOSTED_AT, PATH })) {
     stream.write(`${key}=${value}\n`);
