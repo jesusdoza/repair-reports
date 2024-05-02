@@ -2,7 +2,7 @@ import EditProcedureCard from "./EditProcedureCard";
 
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
-import { ImageObjT, RepairFormDispatchT } from "../../../types";
+import { RepairFormDispatchT } from "../../../types";
 import { Procedure } from "../../classes/Procedure";
 import { ImageObj } from "../../classes/ImageObj";
 

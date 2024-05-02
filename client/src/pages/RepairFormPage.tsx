@@ -19,12 +19,12 @@ export default function RepairFormPage(): React.ReactNode {
     event.preventDefault();
 
     console.log("currentFormState", currentFormState);
-    try {
-      const res = await postRepair(currentFormState);
-      console.log("res update repair", res);
-    } catch (error) {
-      console.log("error handleUpdate @RepairPage ", error);
-    }
+    // try {
+    //   const res = await postRepair(currentFormState);
+    //   console.log("res update repair", res);
+    // } catch (error) {
+    //   console.log("error handleUpdate @RepairPage ", error);
+    // }
   };
 
   const availableGroups: OptionT[] = [
