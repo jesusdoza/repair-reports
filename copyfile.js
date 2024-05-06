@@ -22,22 +22,4 @@ function copyEnvFile() {
   return;
 }
 
-//NOT USED WAS ONLY USED WITH OLD CYLIC SERVICE
-function writeEnvFile(filePath) {
-  // Open the file for writing
-  const stream = fs.createWriteStream(filePath);
-
-  // select environment variables and write them to the file
-  const { VITE_API_URL } = process.env;
-
-  for (const [key, value] of Object.entries({ HOSTED_AT, VITE_API_URL })) {
-    stream.write(`${key}=${value}\n`);
-  }
-
-  // Close the file stream
-  stream.end();
-
-  console.log(`Environment variables written to ${filePath}`);
-}
-
 setUpClientEnvironment();
