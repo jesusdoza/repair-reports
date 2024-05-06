@@ -6,13 +6,7 @@ const newEnvFile = path.normalize("./client/.env.production");
 const HOSTED_AT = process.env.HOSTED_AT;
 
 function setUpClientEnvironment() {
-  if (HOSTED_AT == "render") {
-    copyEnvFile();
-  }
-  //else just make an environment file for vite to use
-  else {
-    writeEnvFile(newEnvFile);
-  }
+  copyEnvFile();
 }
 
 function copyEnvFile() {
@@ -28,15 +22,15 @@ function copyEnvFile() {
   return;
 }
 
+//NOT USED WAS ONLY USED WITH OLD CYLIC SERVICE
 function writeEnvFile(filePath) {
   // Open the file for writing
   const stream = fs.createWriteStream(filePath);
 
-  // Iterate over environment variables and write them to the file
-
+  // select environment variables and write them to the file
   const { VITE_API_URL } = process.env;
 
-  for (const [key, value] of Object.entries({ HOSTED_AT })) {
+  for (const [key, value] of Object.entries({ HOSTED_AT, VITE_API_URL })) {
     stream.write(`${key}=${value}\n`);
   }
 
