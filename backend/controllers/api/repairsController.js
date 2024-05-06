@@ -22,9 +22,6 @@ const addRepair = async (req, res) => {
   const createdBy = req.user._id;
   const groupId = group; //TODO check group allowed or not
 
-  console.log("req.body", req.body);
-  console.log("req.user", req.user);
-
   try {
     const entry = {
       procedureArr,
@@ -36,16 +33,14 @@ const addRepair = async (req, res) => {
       removed: false,
       group: groupId,
     };
-    // console.log(`post at /repairform`,entry)
 
-    // let result = await Repair.create(entry);
-
-    // const repairId = result._id; //add link to repair
+    const result = await Repair.create(entry);
+    const repairId = result._id; //add link to repair
 
     res.send({
       message: "repair added successfully",
       result: entry,
-      repairId: "test",
+      repairId,
     });
   } catch (error) {
     res
