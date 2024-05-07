@@ -1,12 +1,10 @@
 const Repair = require("../../models/Repair");
 
 const getRepairById = async (req, res) => {
+  // get paremeter from url
   const repairId = req.params.id;
   try {
-    // get paremeter from url
     const repairObj = await Repair.findOne({ _id: repairId }).lean();
-    console.log("repairObj", repairObj);
-
     res.status(200).json(repairObj);
   } catch (err) {
     res.status(400).json({
