@@ -55,7 +55,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // routes files
-const signformRoutes = require("./routes/signformRoutes");
 const formRoutes = require("./routes/formRouter.js");
 const repairRoutes = require("./routes/repair");
 const loginRoutes = require("./routes/login");
@@ -85,6 +84,5 @@ app.use("/api", apiRoutes);
 
 ///route "/repairform"
 app.use("/repairform", formRoutes);
-app.use(signformRoutes); // FIXME remove this and allow form Routes to handle signature
 
 module.exports = { app };

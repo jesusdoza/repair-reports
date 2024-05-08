@@ -188,14 +188,13 @@ form.addEventListener("submit", async (event) => {
       const serverResponse = await postRepair(repair);
       statusMessage("Done");
       progress.value += 100;
+      ///redirect to link server provides
+      console.log(serverResponse);
+      location.assign(serverResponse.link);
     } catch (error) {
       console.log("post repair to server error", error);
       throw Error("failed to post repair to server");
     }
-
-    ///redirect to link server provides
-    console.log(serverResponse);
-    location.assign(serverResponse.link);
   } catch (error) {
     // todo if error do not refresh and show form again with message failed to submit
     statusIcons.classList.toggle("hidden"); //hide loading message
