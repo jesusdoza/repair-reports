@@ -83,7 +83,8 @@ app.use("/group", ensureAuth, groupRoutes);
 app.use("/comments", ensureAuth, commentRoutes);
 app.use("/api", apiRoutes);
 
-app.use(formRoutes);
-app.use(signformRoutes);
+///route "/repairform"
+app.use("/repairform", formRoutes);
+app.use(signformRoutes); // FIXME remove this and allow form Routes to handle signature
 
 module.exports = { app };
