@@ -12,7 +12,8 @@ const getForm = async (req, res) => {
     foundUser.groups = [foundUser.username];
     await foundUser.save();
   }
-  const userGroups = [...foundUser.groups];
+  const userGroups = foundUser.groups;
+  console.log("userGroups", userGroups); //FIXME remove console.log
 
   res.render("repairform.ejs", {
     title: "Repair Submission",

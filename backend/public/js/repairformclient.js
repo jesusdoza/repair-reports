@@ -181,7 +181,7 @@ form.addEventListener("submit", async (event) => {
 
     //redirect to link server provides
     console.log(serverResponse);
-    location.assign(serverResponse.link);
+    // location.assign(serverResponse.link);//FIXME uncomment
   } catch (error) {
     // todo if error do not refresh and show form again with message failed to submit
     statusIcons.classList.toggle("hidden"); //hide loading message
@@ -210,13 +210,19 @@ form.addEventListener("submit", async (event) => {
 // ==========================================================================
 // FUNCTIONS
 // ==========================================================================
-// todo HERE 11-22-22
 ///create Procedure Array
 async function createProcedureArr() {
   const allProcedureElements = Array.from(
     document.querySelectorAll(".procedure")
   );
-  const signResponse = await fetch("/signform", {}); //fetch signature from server
+  const groupId = document.querySelector("#groupId");\
+  console.log('groupId', groupId)
+  const requestedFolder = groupId ? groupId.target.value : undefined;
+
+  console.log("requestedFolder", requestedFolder);
+  const signResponse = await fetch("/signform", {
+    body: { folder: requestedFolder },
+  }); //fetch signature from server
   const signData = await signResponse.json(); //convert to json
 
   //start uploading each procedures respective images
