@@ -1,4 +1,4 @@
-import { ProcedureT } from "../../types";
+import { ProcedureT, RepairDataT } from "../../types";
 import { Procedure } from "./Procedure";
 
 export class Repair {
