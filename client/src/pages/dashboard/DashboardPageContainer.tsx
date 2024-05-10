@@ -7,7 +7,7 @@ import { RepairCard } from "../../components/RepairList/RepairCard";
 const testRepairList = [new Repair(), new Repair()];
 
 export default function Dashboard(): React.ReactNode {
-  const repairList = testRepairList;
+  const repairList = testRepairList; //TODO get users repairs from server hook
 
   const repairCards = repairList.map((repairObj) => {
     const procedure =
