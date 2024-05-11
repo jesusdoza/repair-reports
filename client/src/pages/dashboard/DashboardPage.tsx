@@ -20,17 +20,11 @@ export default function DashboardPage({ repairList }: dashboardProps) {
   const [filterdList, setFilteredList] = useState(styledList);
 
   return (
-    <div className="flex  min-h-screen">
-      <aside className=" w-1/6 bg-slate-600">
-        <h3>Filter</h3>
-        <FilterRepairsContainer />
-      </aside>
-      <main className="w-5/6 bg-green-600 ">
-        <h3>Your Repairs</h3>
-        <section>
-          <ul className="flex flex-wrap w-full items-center ">{filterdList}</ul>
-        </section>
-      </main>
+    <div>
+      <h3>Your Repairs</h3>
+      <section>
+        <ul className="flex flex-wrap w-full items-center ">{filterdList}</ul>
+      </section>
     </div>
   );
 }

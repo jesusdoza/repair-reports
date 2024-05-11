@@ -1,7 +1,15 @@
-import React from "react";
-
 import FilterRepairs from "./FilterRepairs";
 
-export default function FilterRepairsContainer() {
-  return <FilterRepairs></FilterRepairs>;
+type filterProps = {
+  list: [];
+  setList: (list: []) => void;
+};
+
+export default function FilterRepairsContainer({
+  list,
+  setList = () => {},
+}: filterProps) {
+  console.log("list", list);
+  setList(list);
+  return <FilterRepairs filterOptions={["one", "two"]} />;
 }
