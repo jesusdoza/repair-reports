@@ -22,17 +22,18 @@ export default function RepairFormPage(): React.ReactNode {
     event.preventDefault();
 
     console.log("currentFormState", currentFormState);
-    try {
-      setSubmitAllowed(false);
-      const res = await postRepair(currentFormState);
-      const { repairId } = res;
+    //FIXME uncomment working code below
+    // try {
+    //   setSubmitAllowed(false);
+    //   const res = await postRepair(currentFormState);
+    //   const { repairId } = res;
 
-      setSubmitAllowed(true);
-      navigate(`/repair/${repairId}`);
-    } catch (error) {
-      setSubmitAllowed(true);
-      console.log("error handleUpdate @RepairPage ", error);
-    }
+    //   setSubmitAllowed(true);
+    //   navigate(`/repair/${repairId}`);
+    // } catch (error) {
+    //   setSubmitAllowed(true);
+    //   console.log("error handleUpdate @RepairPage ", error);
+    // }
   };
 
   const availableGroups: OptionT[] = [
