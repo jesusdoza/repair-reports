@@ -118,8 +118,15 @@ export function EditImageCard({
           return;
         }
 
-        const { url, public_id, folder: uploadFolder } = response.data;
-        console.log("public_id of image uploaded done", public_id);
+        const {
+          url,
+          public_id,
+          folder: uploadFolder,
+        }: { url: string; public_id: string; folder: string } = response.data;
+        console.log("response", response);
+        // console.log("public_id of image uploaded done", public_id);
+        const urlParts = url.split("/upload/");
+        console.log("urlParts", urlParts);
 
         const imageObj: ImageObjT = {
           imageUrl: url,
