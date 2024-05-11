@@ -1,8 +1,9 @@
+import { Repair } from "../../../classes/Repair";
 import FilterRepairs from "./FilterRepairs";
 
 type filterProps = {
-  list: [];
-  setList: (list: []) => void;
+  list: Repair[];
+  setList: (list: Repair[]) => void;
 };
 
 export default function FilterRepairsContainer({

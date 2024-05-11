@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import DashboardPage from "./DashboardPage";
+import UsersRepairs from "./UsersRepairs";
 import { Repair } from "../../classes/Repair";
 import { RepairCard } from "../../components/RepairList/RepairCard";
 import FilterRepairsContainer from "../../components/RepairList/FilterRepairs/FilterRepairsContainer";
@@ -37,10 +37,13 @@ export default function Dashboard(): React.ReactNode {
     <div className="flex  min-h-screen">
       <aside className=" w-1/6 bg-slate-600">
         <h3>Filter</h3>
-        <FilterRepairsContainer />
+        <FilterRepairsContainer
+          setList={(list: Repair[]) => setRepairList(list)}
+          list={repairList}
+        />
       </aside>
       <main className="w-5/6 bg-green-600 ">
-        <DashboardPage repairList={repairCards} />;
+        <UsersRepairs repairList={repairCards} />;
       </main>
     </div>
   );
