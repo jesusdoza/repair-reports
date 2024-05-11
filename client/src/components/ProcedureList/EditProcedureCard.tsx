@@ -18,7 +18,7 @@ export default function EditProcedureCard({
   procedureActions: {
     instructions: (text: string) => void;
     addImage: () => void;
-    editImage: (imageIndex: number, updatedImageObj: ImageObjT) => void;
+    editImage: (imageIndex: number, updatedImageObj: ImageObj) => void;
     removeImage: (imageId: string) => void;
     removeProcedure: () => void;
   };
@@ -101,7 +101,7 @@ function createEditImageCards({
   onRemove = () => {},
 }: {
   imageObjs: ImageObj[];
-  updateUrl: (imageIndex: number, newImageObj: ImageObjT) => void;
+  updateUrl: (imageIndex: number, newImageObj: ImageObj) => void;
   onRemove?: (imageId: string) => void;
 }) {
   const imageCardComponents = imageObjs.map((imageObj, index) => {

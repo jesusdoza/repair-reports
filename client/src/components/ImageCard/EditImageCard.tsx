@@ -18,7 +18,6 @@ import useCreateThumbUrl from "../../hooks/useCreateThumbUrl";
 // }
 
 export function EditImageCard({
-  id,
   url = "",
   setFormImageObj,
   onRemove,
