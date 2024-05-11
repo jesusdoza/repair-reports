@@ -156,8 +156,8 @@ function updateImage(state: Repair, payload: ChangeFormPayloadT) {
   //update image objs :ImageObj[]
   targetProc.imageObjs[imageIndexToUpdate] = newImageObj;
 
-  // return state as Repair;//FIXME old working code
-  return { ...state }; //FIXME old working code
+  // return state as Repair;// old working code
+  return { ...state }; //working code
 
   // return { ...state, procedureArr: newProcedures } as RepairFormT;
 }
@@ -183,7 +183,15 @@ function removeImage(state: Repair, payload: ChangeFormPayloadT) {
     return state;
   }
 
+  console.log("looking for ", imageId);
+
+  //todo //remove image from old images array
   const targetProc = state.procedureArr[procIndex];
+  const newImagesArr = targetProc.images.filter((url) => {
+    if (url.includes(imageId)) return false;
+
+    return true;
+  });
 
   //get images if any from procedure
   // const images = state.procedureArr[procIndex]?.images;
@@ -196,6 +204,7 @@ function removeImage(state: Repair, payload: ChangeFormPayloadT) {
   // const procIndex = payload.procIndex;
 
   targetProc.imageObjs = newImageObjs;
+  targetProc.images = newImagesArr;
 
   return { ...state } as Repair;
 }

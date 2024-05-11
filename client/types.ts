@@ -33,7 +33,7 @@ export type RepairDataT = {
 export type ChangeFormPayloadT = {
   procIndex?: number;
   instructions?: string;
-  newImageUrl?: string;
+  imageUrl?: string;
   imageIndex?: number;
   newImageObj?: ImageObj;
   allProcedures?: ProcedureT[];

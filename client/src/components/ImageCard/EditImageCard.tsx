@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 import useImageManager from "../../hooks/useImageManager";
 import { ImageObj, UploadStatus } from "../../classes/ImageObj";
 import UploadStatusBar from "./UploadStatusBar";
+import useCreateThumbUrl from "../../hooks/useCreateThumbUrl";
 
 // enum UploadStatus {
 //   SUCCESS,
@@ -19,7 +20,7 @@ import UploadStatusBar from "./UploadStatusBar";
 export function EditImageCard({
   id,
   url = "",
-  setFormImageUrl,
+  setFormImageObj,
   onRemove,
   imageData,
 }: {
@@ -27,10 +28,11 @@ export function EditImageCard({
   url: string;
   onRemove?: () => void;
   imageData: ImageObj;
-  setFormImageUrl: (imageObj: ImageObjT) => void; //external state setter to manipulate url prop
+  setFormImageObj: (imageObj: ImageObjT) => void; //external state setter to manipulate url prop
 }) {
   //
   const { uploadImage, deleteImage } = useImageManager();
+  const createThumbUrl = useCreateThumbUrl();
 
   const [isDeletable, setIsDeletable] = useState(url.includes("http"));
   const [isUploadable, setIsUploadable] = useState(url.includes("data:"));
@@ -91,7 +93,7 @@ export function EditImageCard({
       }
 
       //url changed of image either manually or file changed
-      setFormImageUrl({
+      setFormImageObj({
         folder: "testFolder",
         imageId: imageUploadedObj ? imageUploadedObj.imageId : urlText,
         imageUrl: urlText,
@@ -124,17 +126,19 @@ export function EditImageCard({
           folder: uploadFolder,
         }: { url: string; public_id: string; folder: string } = response.data;
         console.log("response", response);
-        // console.log("public_id of image uploaded done", public_id);
-        const urlParts = url.split("/upload/");
-        console.log("urlParts", urlParts);
+
+        //todo get thumbnail url
+        const thumbUrl = createThumbUrl(url);
+        console.log("thumbUrl", thumbUrl);
 
         const imageObj: ImageObjT = {
           imageUrl: url,
           imageId: public_id,
           folder: uploadFolder,
+          imageThumb: thumbUrl,
         };
         setUploadProgress(70);
-        setFormImageUrl(imageObj);
+        setFormImageObj(imageObj);
         setImageUploadedObj(imageObj);
         setUploadProgress(100);
         setImageUploadStatus("SUCCESS");

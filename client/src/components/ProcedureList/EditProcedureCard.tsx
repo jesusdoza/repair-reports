@@ -37,13 +37,6 @@ export default function EditProcedureCard({
     updateUrl: procedureActions.editImage,
     onRemove: procedureActions.removeImage,
   });
-  // const [imageCards, setImageCards] = useState(
-  //   createEditImageCards({
-  //     imageObjs: imageObjs,
-  //     updateUrl: procedureActions.editImage,
-  //     onRemove: procedureActions.removeImage,
-  //   })
-  // );
 
   const handleInstructionsUpdate = useDebouncedCallback((text: string) => {
     procedureActions.instructions(text);
@@ -114,8 +107,8 @@ function createEditImageCards({
   const imageCardComponents = imageObjs.map((imageObj, index) => {
     const { imageUrl, imageId } = imageObj;
     // high order function to update url
-    const updateImageUrl = ({ imageUrl, imageId, folder }: ImageObjT) => {
-      updateUrl(index, { ...new ImageObj(), ...{ imageUrl, imageId, folder } });
+    const updateImageUrl = (updatedImageObj: ImageObjT) => {
+      updateUrl(index, { ...new ImageObj(), ...updatedImageObj });
     };
 
     const removeImageFromList = () => {
@@ -132,7 +125,7 @@ function createEditImageCards({
           onRemove={removeImageFromList}
           key={uuidv4()}
           url={imageUrl}
-          setFormImageUrl={updateImageUrl}
+          setFormImageObj={updateImageUrl}
         />
       </li>
     );
