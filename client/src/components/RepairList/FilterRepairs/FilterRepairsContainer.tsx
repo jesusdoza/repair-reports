@@ -12,5 +12,6 @@ export default function FilterRepairsContainer({
 }: filterProps) {
   console.log("list", list);
   setList(list);
+
   return <FilterRepairs filterOptions={["one", "two"]} />;
 }

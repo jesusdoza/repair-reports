@@ -25,11 +25,38 @@ export default function Dashboard(): React.ReactNode {
       ? procedure?.instructions
       : undefined;
     return (
-      <RepairCard
-        title={title}
-        previewUrl={url}
-        summary={summary}
-      />
+      <div className="relative h-full">
+        <div className="card-actions justify-end absolute h-full flex z-[21] right-0 ">
+          <ul className="z-1 flex flex-col gap-2">
+            <li>
+              <a
+                className="btn w-full"
+                href="/repair/edit/<%= repairs[index]._id %>">
+                edit
+              </a>
+            </li>
+            <li>
+              <a
+                className="btn w-full"
+                href="/repair/<%= repairs[index]._id %>">
+                view
+              </a>
+            </li>
+            <li className="">
+              <a
+                className="btn w-full"
+                href="/repair/<%= repairs[index]._id %>#delete-tool">
+                delete
+              </a>
+            </li>
+          </ul>
+        </div>
+        <RepairCard
+          title={title}
+          previewUrl={url}
+          summary={summary}
+        />
+      </div>
     );
   });
 
