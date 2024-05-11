@@ -1,6 +1,6 @@
 type FilterRepairsProps = { filterOptions: string[] };
 
-export default function FilterRepairs({ filterOptions }: FilterRepairsProps) {
+export default function FilterOptions({ filterOptions }: FilterRepairsProps) {
   const filters = filterOptions.map((option) => {
     return (
       <li className="p-1">

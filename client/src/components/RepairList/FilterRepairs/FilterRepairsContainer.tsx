@@ -1,5 +1,5 @@
 import { Repair } from "../../../classes/Repair";
-import FilterRepairs from "./FilterRepairs";
+import FilterOptions from "./FilterOptions";
 
 type filterProps = {
   list: Repair[];
@@ -11,7 +11,9 @@ export default function FilterRepairsContainer({
   setList = () => {},
 }: filterProps) {
   console.log("list", list);
-  setList(list);
+  console.log("setList", setList);
 
-  return <FilterRepairs filterOptions={["one", "two"]} />;
+  //TODO filter funtionality
+
+  return <FilterOptions filterOptions={["one", "two"]} />;
 }
