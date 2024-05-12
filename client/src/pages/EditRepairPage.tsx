@@ -2,12 +2,11 @@ import { useEffect, useState } from "react";
 import RepairEditForm from "../components/RepairDisplay/RepairEditForm";
 import useRepairApi from "../hooks/useRepairApi";
 import { Repair } from "../classes/Repair";
+import { useParams } from "react-router-dom";
 
-export default function EditRepairPage({
-  repairId = "1",
-}: {
-  repairId: string;
-}) {
+export default function EditRepairPage() {
+  const { id: repairId } = useParams();
+
   const { getRepairById } = useRepairApi();
 
   const [repair, setRepair] = useState<Repair | null>(null);
@@ -20,6 +19,7 @@ export default function EditRepairPage({
     }
     getRepairById(repairId)
       .then((data) => {
+        console.log("data", data);
         setRepair(data);
       })
       .catch((error) => {
@@ -35,8 +35,7 @@ export default function EditRepairPage({
   return (
     <section>
       <h3>Edit Your Repair here</h3>
-      {/* <span>{repair && repair.title}</span> */}
-      <RepairEditForm repair={repair} />
+      {repair && <RepairEditForm repair={repair} />}
     </section>
   );
 }
