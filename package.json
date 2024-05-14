@@ -22,5 +22,8 @@
   "dependencies": {
     "concurrently": "^8.2.2",
     "dotenv": "^16.4.3"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12"
   }
 }
