@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Repair } from "../../classes/Repair";
 import { Procedure } from "../../classes/Procedure";
+import { addItemAtIndex } from "../../hooks/utils/addItem";
 
 export default function FormContainer({
   initialFormState,
@@ -45,7 +46,7 @@ type ProcedureListContainerProps = { procedures: Procedure[] };
 function ProcedureListContainer({ procedures }: ProcedureListContainerProps) {
   const [procComponents, setProcComponents] = useState(
     procedures.map((proc) => {
-      return <div>{proc.id} </div>;
+      return <div>{proc.id}</div>;
     })
   );
 
