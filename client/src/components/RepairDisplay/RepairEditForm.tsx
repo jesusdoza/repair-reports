@@ -12,29 +12,27 @@ import EditProcedureList from "../ProcedureList/EditProcedureList";
 export default function RepairEditForm({
   repair,
   onSubmit,
+  enabled = true,
+  submitType,
 }: {
   repair?: Repair | null | undefined;
   onSubmit?: (repair: Repair) => Promise<T>;
+  enabled?: boolean;
+  submitType: string;
 }) {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { currentFormState, formDispatch } = useRepairFormState(repair);
   // const { postRepair } = useRepairApi();
 
-  const [submitAllowed, setSubmitAllowed] = useState(true);
+  const [submitAllowed, setSubmitAllowed] = useState(enabled);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    console.log("currentFormState", currentFormState);
+    // console.log("currentFormState", currentFormState);
     try {
       if (onSubmit) {
-        setSubmitAllowed(false);
-
-        const res = await onSubmit(currentFormState);
-        const { repairId } = res;
-
-        setSubmitAllowed(true);
-        navigate(`/repair/${repairId}`);
+        onSubmit(currentFormState);
       }
     } catch (error) {
       setSubmitAllowed(true);
@@ -185,7 +183,7 @@ export default function RepairEditForm({
           type="submit"
           className="btn"
           disabled={!submitAllowed}>
-          Create Repair
+          {submitType ? submitType : "Create Repair"}
         </button>
       </section>
     </form>
