@@ -16,8 +16,7 @@ export default function EditRepairPage() {
     console.log("update currentFormState", repair);
     try {
       setSubmitAllowed(false);
-      const res = await updateRepair(repair);
-      console.log("update response");
+      await updateRepair(repair);
       setSubmitAllowed(true);
       navigate(`/repair/${repairId}`);
     } catch (error) {
