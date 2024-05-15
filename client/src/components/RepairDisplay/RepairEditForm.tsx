@@ -11,12 +11,14 @@ import EditProcedureList from "../ProcedureList/EditProcedureList";
 
 export default function RepairEditForm({
   repair,
+  onSubmit,
 }: {
   repair?: Repair | null | undefined;
+  onSubmit?: (repair: Repair) => Promise<T>;
 }) {
   const navigate = useNavigate();
   const { currentFormState, formDispatch } = useRepairFormState(repair);
-  const { postRepair } = useRepairApi();
+  // const { postRepair } = useRepairApi();
 
   const [submitAllowed, setSubmitAllowed] = useState(true);
 
@@ -25,12 +27,15 @@ export default function RepairEditForm({
 
     console.log("currentFormState", currentFormState);
     try {
-      setSubmitAllowed(false);
-      const res = await postRepair(currentFormState);
-      const { repairId } = res;
+      if (onSubmit) {
+        setSubmitAllowed(false);
 
-      setSubmitAllowed(true);
-      navigate(`/repair/${repairId}`);
+        const res = await onSubmit(currentFormState);
+        const { repairId } = res;
+
+        setSubmitAllowed(true);
+        navigate(`/repair/${repairId}`);
+      }
     } catch (error) {
       setSubmitAllowed(true);
       console.log("error handleUpdate @RepairPage ", error);
