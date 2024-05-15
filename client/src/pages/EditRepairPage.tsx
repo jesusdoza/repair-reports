@@ -10,16 +10,16 @@ export default function EditRepairPage() {
   const [repair, setRepair] = useState<Repair | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [submitAllowed, setSubmitAllowed] = useState(true);
-
   const navigate = useNavigate();
 
   const putRepair = async (repair: Repair) => {
     console.log("update currentFormState", repair);
     try {
       setSubmitAllowed(false);
-      // const res = await updateRepair(repair);
+      const res = await updateRepair(repair);
       console.log("update response");
-      // setSubmitAllowed(true);
+      setSubmitAllowed(true);
+      navigate(`/repair/${repairId}`);
     } catch (error) {
       setSubmitAllowed(true);
       console.log("error handleUpdate @RepairPage ", error);
