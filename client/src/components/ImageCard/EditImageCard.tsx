@@ -148,7 +148,6 @@ export function EditImageCard({
       } catch (error) {
         console.log("error uploading", error);
         setImageUploadStatus("ERROR");
-        //todo set alert of failed upload
         return;
       }
     }
@@ -167,6 +166,7 @@ export function EditImageCard({
         });
         console.log("deleteResponse", deleteResponse);
         setImageUploadedObj(null);
+
         if (onRemove) onRemove();
       } catch (error) {
         // reset image obj and do not remove from dom
@@ -188,7 +188,7 @@ export function EditImageCard({
     //turn off camera incase its on
     setActiveCamera(false);
 
-    //FIXME
+    //if image can be removed from database
     if (isDeletable && imageUploadedObj) {
       try {
         const deleteResponse = await deleteImage({
@@ -201,6 +201,7 @@ export function EditImageCard({
       }
     }
 
+    //image available
     if (imageFile) {
       const reader = new FileReader();
 
