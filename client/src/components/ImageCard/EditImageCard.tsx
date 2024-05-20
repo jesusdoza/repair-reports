@@ -92,6 +92,7 @@ export function EditImageCard({
       }
 
       //url changed of image either manually or file changed
+      //todo have folder be added according to user organization in authcontext
       setFormImageObj({
         folder: "testFolder",
         imageId: imageUploadedObj ? imageUploadedObj.imageId : urlText,
@@ -186,6 +187,19 @@ export function EditImageCard({
 
     //turn off camera incase its on
     setActiveCamera(false);
+
+    //FIXME
+    if (isDeletable && imageUploadedObj) {
+      try {
+        const deleteResponse = await deleteImage({
+          imageId: imageUploadedObj.imageId,
+        });
+
+        console.log("changed image delete response", deleteResponse);
+      } catch (error) {
+        console.log("failed to delete image to replace");
+      }
+    }
 
     if (imageFile) {
       const reader = new FileReader();
