@@ -25,7 +25,7 @@ export default function EditProcedureCard({
 }) {
   //index to number to be used as reference of updating state array of the proceduresArray
   const PROCEDURE_INDEX = Number(index);
-  const PROCEDURE_ID = procedureData.id;
+  const PROCEDURE_ID = procedureData._id;
 
   // const { formDispatch } = useContext(RepairFormContext);
 
