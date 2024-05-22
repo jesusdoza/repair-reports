@@ -8,6 +8,7 @@ import { ImageObjT } from "../../../types";
 import { ImageObj } from "../../classes/ImageObj";
 import { Procedure } from "../../classes/Procedure";
 import useImageManager from "../../hooks/useImageManager";
+import ModalConfirm from "../Modals/ModalConfirm";
 
 export default function EditProcedureCard({
   procedureData,
@@ -46,8 +47,6 @@ export default function EditProcedureCard({
   }, 0);
 
   const handleRemoveProcedure = async () => {
-    //TODO remove all images before removing procedure
-
     //remove images if needed
     if (procedureData.imageObjs && procedureData.imageObjs.length > 0) {
       console.log("procedureData", procedureData.imageObjs);
@@ -57,13 +56,10 @@ export default function EditProcedureCard({
         const promises = imagesDataArr.map((data) => {
           console.log("removing id: ", data.imageId);
 
-          //FIXME use the hook not this it only removes component
           return deleteImage({ imageId: data.imageId });
         });
 
-        const result = await Promise.allSettled(promises);
-
-        console.log("result", result);
+        await Promise.allSettled(promises);
       } catch (error) {
         console.log("error deleting multiple images", error);
       }
@@ -76,13 +72,22 @@ export default function EditProcedureCard({
   return (
     <div className="p-3 card relative border border-solid border-slate-700">
       {/* delete procedure button */}
-      <div
-        onClick={() => {
-          handleRemoveProcedure();
-        }}
-        className="btn bg-yellow-600 absolute right-5 top-1 z-20 hover:bg-red-600 hover:scale-125 text-black">
-        Remove procedure
-      </div>
+
+      <ModalConfirm label="Remove procedure">
+        <section>
+          <span>Confirm: </span>
+        </section>
+
+        <section className="flex justify-center">
+          <div
+            onClick={() => {
+              handleRemoveProcedure();
+            }}
+            className="btn bg-yellow-600 hover:bg-red-600 hover:scale-125 w-40 text-black">
+            Remove procedure
+          </div>
+        </section>
+      </ModalConfirm>
 
       {/* edit image cards */}
       <section>
