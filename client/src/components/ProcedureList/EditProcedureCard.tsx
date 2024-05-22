@@ -7,6 +7,7 @@ import { useDebouncedCallback } from "use-debounce";
 import { ImageObjT } from "../../../types";
 import { ImageObj } from "../../classes/ImageObj";
 import { Procedure } from "../../classes/Procedure";
+import useImageManager from "../../hooks/useImageManager";
 
 export default function EditProcedureCard({
   procedureData,
@@ -27,6 +28,8 @@ export default function EditProcedureCard({
   const PROCEDURE_INDEX = Number(index);
   const PROCEDURE_ID = procedureData._id;
 
+  const { deleteImage } = useImageManager();
+
   // const { formDispatch } = useContext(RepairFormContext);
 
   const [instructions, setInstructions] = useState(procedureData.instructions);
@@ -42,12 +45,40 @@ export default function EditProcedureCard({
     procedureActions.instructions(text);
   }, 0);
 
+  const handleRemoveProcedure = async () => {
+    //TODO remove all images before removing procedure
+
+    //remove images if needed
+    if (procedureData.imageObjs && procedureData.imageObjs.length > 0) {
+      console.log("procedureData", procedureData.imageObjs);
+
+      try {
+        const imagesDataArr = procedureData.imageObjs;
+        const promises = imagesDataArr.map((data) => {
+          console.log("removing id: ", data.imageId);
+
+          //FIXME use the hook not this it only removes component
+          return deleteImage({ imageId: data.imageId });
+        });
+
+        const result = await Promise.allSettled(promises);
+
+        console.log("result", result);
+      } catch (error) {
+        console.log("error deleting multiple images", error);
+      }
+    }
+
+    //remove actual procedure component
+    procedureActions.removeProcedure();
+  };
+
   return (
     <div className="p-3 card relative border border-solid border-slate-700">
       {/* delete procedure button */}
       <div
         onClick={() => {
-          procedureActions.removeProcedure();
+          handleRemoveProcedure();
         }}
         className="btn bg-yellow-600 absolute right-5 top-1 z-20 hover:bg-red-600 hover:scale-125 text-black">
         Remove procedure
