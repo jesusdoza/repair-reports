@@ -41,16 +41,16 @@ export default function RepairEditForm({
 
   const availableGroups: OptionT[] = [
     {
-      label: `original: ${repair.group}`,
-      value: repair.group,
+      label: `original: ${repair?.group}`,
+      value: repair?.group ? repair?.group : "group",
     },
     { label: "public", value: "public" },
   ];
 
   const availableBoardTypes: OptionT[] = [
     {
-      label: `original: ${repair.boardType}`,
-      value: repair.group,
+      label: `original: ${repair?.boardType}`,
+      value: repair?.boardType ? repair.boardType : "boardType" ,
     },
     { label: "Cat70 IK", value: "IK" },
     { label: "Cat40 CA", value: "CA" },
