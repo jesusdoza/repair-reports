@@ -16,6 +16,7 @@ export interface ProcedureT {
   instructions: string;
   procedureNum: number;
   thumbs: string[];
+  _id?: string;
 }
 
 export type RepairDataT = {
