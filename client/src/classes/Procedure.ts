@@ -34,6 +34,8 @@ export class Procedure implements ProcedureT {
   }
 
   intializeImageObjs(imageData: ImageObjT[]): ImageObj[] {
-    return;
+    return imageData.map((data) => {
+      return new ImageObj(data);
+    });
   }
 }
