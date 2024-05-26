@@ -34,7 +34,8 @@ export default function RepairEditForm({
     // console.log("currentFormState", currentFormState);
     try {
       if (onSubmit) {
-        onSubmit(currentFormState);
+        // onSubmit(currentFormState);
+        console.log("currentFormState", currentFormState);
       }
     } catch (error) {
       setSubmitAllowed(true);
@@ -176,7 +177,7 @@ export default function RepairEditForm({
         <h3 className="text-xl">Repair procedures</h3>
         <EditProcedureList
           formDispatch={formDispatch}
-          procedureList={currentFormState.procedureArr}
+          procedureList={repair?.procedureArr ? repair.procedureArr : []}
         />
       </section>
       {/* submit section */}
