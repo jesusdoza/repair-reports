@@ -7,6 +7,7 @@ import AvailableOptionsMulti from "../AvailableOptions/AvailableOptionsMulti";
 import { Repair } from "../../classes/Repair";
 import EditProcedureList from "../ProcedureList/EditProcedureList";
 import ModalConfirm from "../Modals/ModalConfirm";
+import { RepairDataT } from "../../../types";
 
 export default function RepairEditForm({
   repair,
@@ -14,14 +15,16 @@ export default function RepairEditForm({
   enabled = true,
   submitType,
 }: {
-  repair?: Repair | null | undefined;
+  repair?: RepairDataT | undefined;
   onSubmit?: (repair: Repair) => Promise<void>;
   enabled?: boolean;
   submitType: string;
 }) {
   // const navigate = useNavigate();
-  // const intialData = new Repair(repair)
-  const { currentFormState, formDispatch } = useRepairFormState(repair);
+
+  const intialData = repair ? new Repair(repair) : new Repair();
+
+  const { currentFormState, formDispatch } = useRepairFormState(intialData);
 
   const [submitAllowed, setSubmitAllowed] = useState(enabled);
 
@@ -50,7 +53,7 @@ export default function RepairEditForm({
   const availableBoardTypes: OptionT[] = [
     {
       label: `original: ${repair?.boardType}`,
-      value: repair?.boardType ? repair.boardType : "boardType" ,
+      value: repair?.boardType ? repair.boardType : "boardType",
     },
     { label: "Cat70 IK", value: "IK" },
     { label: "Cat40 CA", value: "CA" },
