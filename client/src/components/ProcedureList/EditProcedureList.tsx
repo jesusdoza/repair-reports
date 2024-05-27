@@ -36,43 +36,6 @@ export default function EditProcedureList({
     });
   }, []);
 
-  // const addNewProcedure = (index: number) => {
-  //   formDispatch({
-  //     type: "ADD_PROCEDURE",
-  //     payload: { procIndex: index },
-  //   });
-  // };
-
-  // const procedures = procedureList.map((procedureData, procedureIndex) => {
-  //   //object with update methods for editProcedureCard component
-  //   const procedureActions = generateProcedureMethods({
-  //     formDispatch,
-  //     procedureIndex,
-  //     procedureId: procedureData._id,
-  //   });
-
-  //   return (
-  //     <li
-  //       key={uuidv4()}
-  //       className="">
-  //       <EditProcedureCard
-  //         key={procedureData._id}
-  //         procedureActions={procedureActions}
-  //         procedureData={procedureData}
-  //         index={procedureIndex}
-  //       />
-
-  //       <div
-  //         onClick={() => {
-  //           addNewProcedure(procedureIndex + 1);
-  //         }}
-  //         className="btn">
-  //         Add new Procedure here
-  //       </div>
-  //     </li>
-  //   );
-  // });
-
   return (
     <div>
       <div
@@ -82,31 +45,10 @@ export default function EditProcedureList({
             setter: setProcedureList,
             itemToAdd: {
               _id,
-              component: (
-                <li
-                  key={_id}
-                  className="">
-                  <EditProcedureCard
-                    key={_id}
-                    procedureData={new Procedure()}
-                    id={_id ? _id : uuidv4()}
-                  />
-                  <div
-                    onClick={() => {
-                      addProcedureAfter({ id: _id, setter: setProcedureList });
-                      //todo set form data aswell
-                    }}
-                    className="btn">
-                    Add new Procedure here
-                  </div>
-                </li>
-              ),
-              // component: (
-              //   <EditProcedureCard
-              //     key={_id}
-              //     procedureData={new Procedure()}
-              //   />
-              // ),
+              component: createProcedureCard({
+                id: _id,
+                setter: setProcedureList,
+              }),
             },
           });
         }}
@@ -119,63 +61,6 @@ export default function EditProcedureList({
     </div>
   );
 }
-
-//create methods for specific procedure based on there index position
-// function generateProcedureMethods({
-//   procedureIndex,
-//   formDispatch,
-//   procedureId,
-// }: {
-//   procedureIndex: number;
-//   formDispatch: RepairFormDispatchT;
-//   procedureId: string;
-// }) {
-//   const instructions = (text: string) => {
-//     formDispatch({
-//       type: "UPDATE_INTRUC",
-//       payload: { procIndex: procedureIndex, instructions: text },
-//     });
-//   };
-
-//   const addImage = () => {
-//     formDispatch({
-//       type: "ADD_IMAGE",
-//       payload: { procIndex: procedureIndex },
-//     });
-//   };
-
-//   const editImage = (imageIndex: number, updatedImageObj: ImageObj) => {
-//     formDispatch({
-//       type: "UPDATE_IMAGES",
-//       payload: {
-//         procIndex: procedureIndex,
-//         imageIndex: imageIndex,
-//         newImageObj: updatedImageObj,
-//       },
-//     });
-//   };
-
-//   const removeImage = (imageId: string) => {
-//     formDispatch({
-//       type: "REMOVE_IMAGE",
-//       payload: { imageId, procIndex: procedureIndex },
-//     });
-//   };
-//   const removeProcedure = () => {
-//     //remove current procedure
-//     formDispatch({
-//       type: "REMOVE_PROCEDURE",
-//       payload: { procedureId },
-//     });
-//   };
-//   return {
-//     instructions,
-//     addImage,
-//     editImage,
-//     removeImage,
-//     removeProcedure,
-//   };
-// }
 
 function initializeProcedures({
   procs,
@@ -199,25 +84,7 @@ function initializeProcedures({
     const _id = procedureData?._id ? procedureData?._id : uuidv4();
     return {
       _id,
-      component: (
-        <li
-          key={_id}
-          className="">
-          <EditProcedureCard
-            key={procedureData._id}
-            procedureData={procedureData}
-            id={procedureData?._id ? procedureData?._id : uuidv4()}
-          />
-          <div
-            onClick={() => {
-              addProcedureAfter({ id: _id, setter });
-              //todo set form data aswell
-            }}
-            className="btn">
-            Add new Procedure here
-          </div>
-        </li>
-      ) as React.ReactNode,
+      component: createProcedureCard({ id: _id, setter }),
     };
   });
 
@@ -257,12 +124,7 @@ function addProcedureAfter({
     ? itemToAdd
     : {
         _id,
-        component: (
-          <EditProcedureCard
-            key={_id}
-            procedureData={new Procedure()}
-          />
-        ),
+        component: createProcedureCard({ id: _id, setter }),
       };
 
   setter((state) => {
@@ -275,4 +137,39 @@ function addProcedureAfter({
 
     return newState;
   });
+}
+
+function createProcedureCard({
+  id,
+  setter,
+}: {
+  id: string;
+  setter: React.Dispatch<
+    React.SetStateAction<
+      {
+        _id: string;
+        component: React.ReactNode;
+      }[]
+    >
+  >;
+}) {
+  return (
+    <li
+      key={id}
+      className="">
+      <EditProcedureCard
+        key={id}
+        procedureData={new Procedure()}
+        id={id ? id : uuidv4()}
+      />
+      <div
+        onClick={() => {
+          addProcedureAfter({ id, setter });
+          //todo set form data aswell
+        }}
+        className="btn">
+        Add new Procedure here
+      </div>
+    </li>
+  );
 }
