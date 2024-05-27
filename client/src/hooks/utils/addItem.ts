@@ -5,6 +5,10 @@ type addItemInterface = {
   item: { id: string };
 };
 
+//id of target to base insertion on
+//pos position to insert item depending on id
+//arr array which item will be inserted into
+//item object to insert into array
 function addItem({ id, pos, arr, item }: addItemInterface) {
   const newArr = [...arr];
 
