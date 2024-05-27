@@ -29,7 +29,10 @@ export default function EditProcedureList({
 
   useEffect(() => {
     setProcedureList(() => {
-      return initializeProcedures(procedureList, setProcedureList);
+      return initializeProcedures({
+        procs: procedureList,
+        setter: setProcedureList,
+      });
     });
   }, []);
 
@@ -155,8 +158,12 @@ export default function EditProcedureList({
 //   };
 // }
 
-function initializeProcedures(
-  procs: ProcedureT[],
+function initializeProcedures({
+  procs,
+  setter,
+}: {
+  procs: ProcedureT[];
+  updateFormData?: object;
   setter: React.Dispatch<
     React.SetStateAction<
       {
@@ -164,8 +171,8 @@ function initializeProcedures(
         component: React.ReactNode;
       }[]
     >
-  >
-): {
+  >;
+}): {
   _id: string;
   component: React.ReactNode;
 }[] {
@@ -185,7 +192,8 @@ function initializeProcedures(
 
           <div
             onClick={() => {
-              addAfter({ id: _id, setter });
+              addProcedureAfter({ id: _id, setter });
+              //todo set form data aswell
             }}
             className="btn">
             Add new Procedure here
@@ -216,7 +224,7 @@ function addAtBegining({
   });
 }
 
-function addAfter({
+function addProcedureAfter({
   setter,
   itemToAdd,
   id,
