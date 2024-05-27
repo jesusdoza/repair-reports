@@ -1,23 +1,21 @@
 import { createContext } from "react";
 import { Repair } from "../classes/Repair";
 
-export type RepairContextT = {
-  title: string;
-};
+// export type RepairContextT = {
+//   title: string;
+// };
 
-export const RepairContext = createContext<RepairContextT>({
-  title: "",
-});
+const repairData = new Repair();
+
+export const RepairContext = createContext<Repair>(repairData);
 
 export const RepairContextProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  const currentRepairData = new Repair();
-
   return (
-    <RepairContext.Provider value={currentRepairData}>
+    <RepairContext.Provider value={repairData}>
       {children}
     </RepairContext.Provider>
   );
