@@ -1,6 +1,6 @@
 import EditProcedureCard from "./EditProcedureCard";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { ProcedureT } from "../../../types";
 // import { Procedure } from "../../classes/Procedure";
@@ -25,7 +25,13 @@ export default function EditProcedureList({
       _id: string;
       component: React.ReactNode;
     }[]
-  >(initializeProcedures(procedureList));
+  >([]);
+
+  useEffect(() => {
+    setProcedureList(() => {
+      return initializeProcedures(procedureList, setProcedureList);
+    });
+  }, []);
 
   // const addNewProcedure = (index: number) => {
   //   formDispatch({
@@ -149,7 +155,17 @@ export default function EditProcedureList({
 //   };
 // }
 
-function initializeProcedures(procs: ProcedureT[]): {
+function initializeProcedures(
+  procs: ProcedureT[],
+  setter: React.Dispatch<
+    React.SetStateAction<
+      {
+        _id: string;
+        component: React.ReactNode;
+      }[]
+    >
+  >
+): {
   _id: string;
   component: React.ReactNode;
 }[] {
@@ -168,7 +184,9 @@ function initializeProcedures(procs: ProcedureT[]): {
           />
 
           <div
-            onClick={() => {}}
+            onClick={() => {
+              addAfter({ id: _id, setter });
+            }}
             className="btn">
             Add new Procedure here
           </div>
@@ -192,6 +210,41 @@ function addAtBegining({
       pos: "begining",
       arr: state,
       item: itemToAdd,
+    });
+
+    return newState;
+  });
+}
+
+function addAfter({
+  setter,
+  itemToAdd,
+  id,
+}: {
+  setter: React.Dispatch<React.SetStateAction<ProcedureListItemT[]>>;
+  itemToAdd?: ProcedureListItemT;
+  id: string;
+}) {
+  const _id = uuidv4();
+
+  const newItem = itemToAdd
+    ? itemToAdd
+    : {
+        _id,
+        component: (
+          <EditProcedureCard
+            key={_id}
+            procedureData={new Procedure()}
+          />
+        ),
+      };
+
+  setter((state) => {
+    const newState = addItem({
+      pos: "after",
+      arr: state,
+      item: newItem,
+      id,
     });
 
     return newState;
