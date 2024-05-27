@@ -1,24 +1,32 @@
 import { createContext } from "react";
 import { Repair } from "../classes/Repair";
 
-// export type RepairContextT = {
-//   title: string;
-// };
+export type RepairFormDataContextT = {
+  repairFormData: Repair;
+};
 
-const repairData = new Repair();
+const repairFormData = new Repair();
 
-export const RepairContext = createContext<Repair>(repairData);
+export const RepairContext = createContext<RepairFormDataContextT>({
+  repairFormData,
+});
 
 export const RepairContextProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
+  const values = {
+    repairFormData,
+    formAction: { addProcedureAfter, addProcedureAtBegining },
+  };
+
   return (
-    <RepairContext.Provider value={repairData}>
-      {children}
-    </RepairContext.Provider>
+    <RepairContext.Provider value={values}>{children}</RepairContext.Provider>
   );
 };
 
 //methods for updating repair
+
+function addProcedureAfter() {}
+function addProcedureAtBegining() {}
