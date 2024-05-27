@@ -1,8 +1,8 @@
 type addItemInterface = {
   id?: string;
   pos: "before" | "after" | "begining" | "end";
-  arr: { id: string }[];
-  item: { id: string };
+  arr: { _id: string; component: React.ReactNode }[];
+  item: { _id: string; component: React.ReactNode };
 };
 
 //id of target to base insertion on
@@ -22,7 +22,7 @@ function addItem({ id, pos, arr, item }: addItemInterface) {
 
   //find item and pos before or after
   let temp = [];
-  const targetIndex = newArr.findIndex((element) => element?.id == id);
+  const targetIndex = newArr.findIndex((element) => element?._id == id);
 
   if (targetIndex == -1) {
     newArr.push(item);
