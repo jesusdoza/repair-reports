@@ -5,6 +5,8 @@ import { Repair } from "../classes/Repair";
 import { useParams, useNavigate } from "react-router-dom";
 import { RepairDataT, repairDataT } from "../../types";
 
+import { RepairContextProvider } from "../context/RepairFormContext";
+
 export default function EditRepairPageV2() {
   const { id: repairId } = useParams();
   const { getRepairById, updateRepair } = useRepairApi();
@@ -49,16 +51,18 @@ export default function EditRepairPageV2() {
   }
 
   return (
-    <section>
-      <h3>Edit Your Repair here V2</h3>
-      {repair && (
-        <RepairEditForm
-          onSubmit={putRepair}
-          repair={repair}
-          enabled={submitAllowed}
-          submitType="Update"
-        />
-      )}
-    </section>
+    <RepairContextProvider>
+      <section>
+        <h3>Edit Your Repair here V2</h3>
+        {repair && (
+          <RepairEditForm
+            onSubmit={putRepair}
+            repair={repair}
+            enabled={submitAllowed}
+            submitType="Update"
+          />
+        )}
+      </section>
+    </RepairContextProvider>
   );
 }
