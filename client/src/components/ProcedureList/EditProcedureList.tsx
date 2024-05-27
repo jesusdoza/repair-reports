@@ -2,21 +2,30 @@ import EditProcedureCard from "./EditProcedureCard";
 
 import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { ProcedureT, RepairFormDispatchT } from "../../../types";
+import { ProcedureT } from "../../../types";
 // import { Procedure } from "../../classes/Procedure";
-import { ImageObj } from "../../classes/ImageObj";
+// import { ImageObj } from "../../classes/ImageObj";
 import { Procedure } from "../../classes/Procedure";
+
+import { addItem } from "../../hooks/utils/addItem";
+
+type ProcedureListItemT = {
+  _id: string;
+  component: React.ReactNode;
+};
 
 export default function EditProcedureList({
   procedureList,
-  formDispatch,
 }: {
   procedureList: ProcedureT[];
-  formDispatch: RepairFormDispatchT;
 }): React.ReactNode {
-  const [ProcedureList, setProcedureList] = useState<React.ReactNode[]>(
-    initializeProcedures(procedureList)
-  );
+  //starting out procedures state
+  const [ProcedureList, setProcedureList] = useState<
+    {
+      _id: string;
+      component: React.ReactNode;
+    }[]
+  >(initializeProcedures(procedureList));
 
   // const addNewProcedure = (index: number) => {
   //   formDispatch({
@@ -59,18 +68,25 @@ export default function EditProcedureList({
     <div>
       <div
         onClick={() => {
-          setProcedureList((state) => {
-            return [
-              ...state,
-              <EditProcedureCard procedureData={new Procedure()} />,
-            ];
+          const _id = uuidv4();
+          addAtBegining({
+            setter: setProcedureList,
+            itemToAdd: {
+              _id,
+              component: (
+                <EditProcedureCard
+                  key={_id}
+                  procedureData={new Procedure()}
+                />
+              ),
+            },
           });
         }}
         className="btn">
         Add new Procedure at begining
       </div>
       <ul className="w-full flex flex-col gap-2 overflow-hidden">
-        {ProcedureList}
+        {ProcedureList.map((proc) => proc.component)}
       </ul>
     </div>
   );
@@ -133,26 +149,51 @@ export default function EditProcedureList({
 //   };
 // }
 
-function initializeProcedures(procs: ProcedureT[]): React.ReactNode[] {
+function initializeProcedures(procs: ProcedureT[]): {
+  _id: string;
+  component: React.ReactNode;
+}[] {
   const procedureComponents = procs.map((procedureData) => {
-    return (
-      <li
-        key={uuidv4()}
-        className="">
-        <EditProcedureCard
-          key={procedureData._id}
-          procedureData={procedureData}
-          id={procedureData?._id ? procedureData?._id : uuidv4()}
-        />
+    const _id = procedureData?._id ? procedureData?._id : uuidv4();
+    return {
+      _id,
+      component: (
+        <li
+          key={_id}
+          className="">
+          <EditProcedureCard
+            key={procedureData._id}
+            procedureData={procedureData}
+            id={procedureData?._id ? procedureData?._id : uuidv4()}
+          />
 
-        <div
-          onClick={() => {}}
-          className="btn">
-          Add new Procedure here
-        </div>
-      </li>
-    );
+          <div
+            onClick={() => {}}
+            className="btn">
+            Add new Procedure here
+          </div>
+        </li>
+      ) as React.ReactNode,
+    };
   });
 
   return procedureComponents;
+}
+
+function addAtBegining({
+  setter,
+  itemToAdd,
+}: {
+  setter: React.Dispatch<React.SetStateAction<ProcedureListItemT[]>>;
+  itemToAdd: ProcedureListItemT;
+}) {
+  setter((state) => {
+    const newState = addItem({
+      pos: "begining",
+      arr: state,
+      item: itemToAdd,
+    });
+
+    return newState;
+  });
 }
