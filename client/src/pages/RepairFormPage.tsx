@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Repair } from "../classes/Repair";
-import RepairEditForm from "../components/RepairDisplay/RepairEditForm";
+import RepairEditForm from "../components/RepairDisplay/RepairEditFormV2";
 import useRepairApi from "../hooks/useRepairApi";
 import { useNavigate } from "react-router-dom";
 

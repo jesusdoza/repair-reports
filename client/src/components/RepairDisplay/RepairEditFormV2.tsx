@@ -176,7 +176,6 @@ export default function RepairEditForm({
       <section>
         <h3 className="text-xl">Repair procedures</h3>
         <EditProcedureList
-          formDispatch={formDispatch}
           procedureList={repair?.procedureArr ? repair.procedureArr : []}
         />
       </section>

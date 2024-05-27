@@ -83,11 +83,30 @@ export default function EditProcedureList({
             itemToAdd: {
               _id,
               component: (
-                <EditProcedureCard
+                <li
                   key={_id}
-                  procedureData={new Procedure()}
-                />
+                  className="">
+                  <EditProcedureCard
+                    key={_id}
+                    procedureData={new Procedure()}
+                    id={_id ? _id : uuidv4()}
+                  />
+                  <div
+                    onClick={() => {
+                      addProcedureAfter({ id: _id, setter: setProcedureList });
+                      //todo set form data aswell
+                    }}
+                    className="btn">
+                    Add new Procedure here
+                  </div>
+                </li>
               ),
+              // component: (
+              //   <EditProcedureCard
+              //     key={_id}
+              //     procedureData={new Procedure()}
+              //   />
+              // ),
             },
           });
         }}
@@ -189,7 +208,6 @@ function initializeProcedures({
             procedureData={procedureData}
             id={procedureData?._id ? procedureData?._id : uuidv4()}
           />
-
           <div
             onClick={() => {
               addProcedureAfter({ id: _id, setter });
