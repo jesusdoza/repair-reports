@@ -1,16 +1,21 @@
-type itemT = { _id: string; [key: string]: unknown };
-interface addItemInterface {
+type ItemWithIdT = { _id: string };
+interface addItemInterface<T extends ItemWithIdT> {
   id?: string;
   pos: "before" | "after" | "begining" | "end";
-  arr: itemT[];
-  item: itemT;
+  arr: T[];
+  item: T;
 }
 
 //id of target to base insertion on
 //pos position to insert item depending on id
 //arr array which item will be inserted into
 //item object to insert into array
-function addItem({ id, pos, arr, item }: addItemInterface) {
+function addItem<T extends ItemWithIdT>({
+  id,
+  pos,
+  arr,
+  item,
+}: addItemInterface<T>) {
   const newArr = [...arr];
 
   if (pos == "begining") {
