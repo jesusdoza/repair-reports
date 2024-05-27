@@ -1,9 +1,10 @@
-type addItemInterface = {
+type itemT = { _id: string; [key: string]: unknown };
+interface addItemInterface {
   id?: string;
   pos: "before" | "after" | "begining" | "end";
-  arr: { _id: string; component: React.ReactNode }[];
-  item: { _id: string; component: React.ReactNode };
-};
+  arr: itemT[];
+  item: itemT;
+}
 
 //id of target to base insertion on
 //pos position to insert item depending on id
