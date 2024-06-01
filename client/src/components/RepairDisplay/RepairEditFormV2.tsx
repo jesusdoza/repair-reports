@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useContext, useState } from "react";
 import useRepairFormState from "../../hooks/useRepairFormState";
 import AvailableOptions, {
   OptionT,
@@ -8,6 +8,7 @@ import { Repair } from "../../classes/Repair";
 import EditProcedureList from "../ProcedureList/EditProcedureList";
 import ModalConfirm from "../Modals/ModalConfirm";
 import { RepairDataT } from "../../../types";
+import { RepairContext } from "../../context/RepairFormContext";
 
 export default function RepairEditForm({
   repair,
@@ -20,22 +21,24 @@ export default function RepairEditForm({
   enabled?: boolean;
   submitType: string;
 }) {
-  // const navigate = useNavigate();
+  //context will provide all data from now on
+  // const intialData = repair ? new Repair(repair) : new Repair();
 
-  const intialData = repair ? new Repair(repair) : new Repair();
+  const { repairFormData } = useContext(RepairContext);
 
-  const { currentFormState, formDispatch } = useRepairFormState(intialData);
+  //intialize data for form from context
+  const { currentFormState, formDispatch } = useRepairFormState(repairFormData);
 
   const [submitAllowed, setSubmitAllowed] = useState(enabled);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // console.log("currentFormState", currentFormState);
+    // console.log("repairFormData", repairFormData);
     try {
       if (onSubmit) {
         // onSubmit(currentFormState);
-        console.log("currentFormState", currentFormState);
+        console.log("repairFormData", repairFormData);
       }
     } catch (error) {
       setSubmitAllowed(true);

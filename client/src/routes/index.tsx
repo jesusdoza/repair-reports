@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import { Layout } from "../Layout";
 import LatestRepairsPage from "../pages/LatestRepairsPage";
 import ProfilePage from "../pages/ProfilePage";
-import RepairFormPage from "../pages/RepairFormPage";
+import RepairFormPage from "../pages/CreateRepairFormPage";
 import DashboardPage from "../pages/dashboard/DashboardPageContainer";
 import { RepairInfoPageContainer } from "../pages/RepairInfoPageContainer";
 import EditRepairPage from "../pages/EditRepairPage";

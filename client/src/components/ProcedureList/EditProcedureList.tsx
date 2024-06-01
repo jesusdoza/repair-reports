@@ -1,11 +1,12 @@
 import EditProcedureCard from "./EditProcedureCard";
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { ProcedureT } from "../../../types";
 // import { Procedure } from "../../classes/Procedure";
 // import { ImageObj } from "../../classes/ImageObj";
 import { Procedure } from "../../classes/Procedure";
+import { RepairContext } from "../../context/RepairFormContext";
 
 import { addItem } from "../../hooks/utils/addItem";
 
@@ -19,6 +20,7 @@ export default function EditProcedureList({
 }: {
   procedureList: ProcedureT[];
 }): React.ReactNode {
+  //
   //starting out procedures state
   const [ProcedureList, setProcedureList] = useState<
     {
@@ -27,6 +29,7 @@ export default function EditProcedureList({
     }[]
   >([]);
 
+  const { formAction } = useContext(RepairContext);
   useEffect(() => {
     setProcedureList(() => {
       return initializeProcedures({
@@ -40,17 +43,25 @@ export default function EditProcedureList({
     <div>
       <div
         onClick={() => {
-          const _id = uuidv4();
+          const procedure = new Procedure();
+          //sync id
+          const _id = procedure._id;
+
+          //sync components in state
           addAtBegining({
             setter: setProcedureList,
             itemToAdd: {
               _id,
               component: createProcedureCard({
+                procedure,
                 id: _id,
                 setter: setProcedureList,
               }),
             },
           });
+
+          ///sync componente to form context
+          formAction.addProcedureAtBegining(procedure);
         }}
         className="btn">
         Add new Procedure at begining
@@ -142,8 +153,10 @@ function addProcedureAfter({
 function createProcedureCard({
   id,
   setter,
+  procedure,
 }: {
   id: string;
+  procedure: Procedure;
   setter: React.Dispatch<
     React.SetStateAction<
       {
@@ -159,7 +172,7 @@ function createProcedureCard({
       className="">
       <EditProcedureCard
         key={id}
-        procedureData={new Procedure()}
+        procedureData={procedure}
         id={id ? id : uuidv4()}
       />
       <div

@@ -3,6 +3,7 @@ import { Repair } from "../classes/Repair";
 import RepairEditForm from "../components/RepairDisplay/RepairEditFormV2";
 import useRepairApi from "../hooks/useRepairApi";
 import { useNavigate } from "react-router-dom";
+import { RepairContextProvider } from "../context/RepairFormContext";
 
 export default function RepairFormPage(): React.ReactNode {
   const { postRepair } = useRepairApi();
@@ -24,10 +25,12 @@ export default function RepairFormPage(): React.ReactNode {
     }
   };
   return (
-    <RepairEditForm
-      onSubmit={createRepair}
-      enabled={submitAllowed}
-      submitType="Create"
-    />
+    <RepairContextProvider>
+      <RepairEditForm
+        onSubmit={createRepair}
+        enabled={submitAllowed}
+        submitType="Create"
+      />
+    </RepairContextProvider>
   );
 }

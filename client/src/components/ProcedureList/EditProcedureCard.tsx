@@ -22,7 +22,7 @@ export default function EditProcedureCard({
   const PROCEDURE_ID = procedureData._id ? procedureData._id : id;
 
   const [instructions, setInstructions] = useState(procedureData.instructions);
-  const { imageObjs } = procedureData;
+  // const { imageObjs } = procedureData; //TODO images on procedure
 
   return (
     <div className="p-3 card relative border border-solid border-slate-700">
