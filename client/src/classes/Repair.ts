@@ -6,7 +6,7 @@ export class Repair {
   public boardType = "other";
   public engineMake = "other";
   public group = "public";
-  public procedureArr: Procedure[] = [new Procedure()];
+  public procedureArr: Procedure[] = [];
   public title = "New Repair";
 
   constructor(repair: RepairDataT);
@@ -21,6 +21,8 @@ export class Repair {
         ? repair.engineMake
         : this.engineMake;
       this.group = repair?.group ? repair.group : this.group;
+
+      //if procedures passed initialize them else the default
       this.procedureArr = repair?.procedureArr
         ? this.intializeProcedures(repair.procedureArr)
         : this.procedureArr;
