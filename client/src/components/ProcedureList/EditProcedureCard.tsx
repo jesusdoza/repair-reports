@@ -19,7 +19,7 @@ export default function EditProcedureCard({
   id?: string;
 }) {
   //index to number to be used as reference of updating state array of the proceduresArray
-  const PROCEDURE_ID = procedureData._id;
+  const PROCEDURE_ID = procedureData._id ? procedureData._id : id;
 
   const [instructions, setInstructions] = useState(procedureData.instructions);
   const { imageObjs } = procedureData;
