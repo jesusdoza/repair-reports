@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 // import { RepairFormContext } from "../../context/RepairFormContext";
 
 import { EditImageCard } from "../ImageCard/EditImageCard";
@@ -10,6 +10,7 @@ import { ImageObj } from "../../classes/ImageObj";
 // import useImageManager from "../../hooks/useImageManager";
 import ModalConfirm from "../Modals/ModalConfirm";
 import { Procedure } from "../../classes/Procedure";
+import { RepairContext } from "../../context/RepairFormContext";
 
 export default function EditProcedureCard({
   procedureData = new Procedure(),
@@ -18,6 +19,9 @@ export default function EditProcedureCard({
   procedureData: ProcedureT;
   id?: string;
 }) {
+  const { formAction } = useContext(RepairContext);
+  const { updateInstructions } = formAction;
+
   //index to number to be used as reference of updating state array of the proceduresArray
   const PROCEDURE_ID = procedureData._id ? procedureData._id : id;
 
@@ -72,7 +76,11 @@ export default function EditProcedureCard({
           onChange={(e) => {
             e.preventDefault();
             // handleInstructionsUpdate(e.target.value);
-            setInstructions(e.target.value);
+            const text = e.target.value;
+            setInstructions(() => {
+              updateInstructions(id, text);
+              return text;
+            });
           }}
           className="w-3/4 "
           value={instructions}
