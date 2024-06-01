@@ -8,6 +8,7 @@ export type RepairFormDataContextT = {
   formAction: {
     addProcedureAfter: (id: string, item: Procedure) => void;
     addProcedureAtBegining: (item: Procedure) => void;
+    updateInstructions: (id: string, text: string) => void;
   };
 };
 
@@ -18,6 +19,7 @@ export const RepairContext = createContext<RepairFormDataContextT>({
   formAction: {
     addProcedureAfter: () => {},
     addProcedureAtBegining: () => {},
+    updateInstructions: () => {},
   },
 });
 
@@ -46,6 +48,22 @@ export const RepairContextProvider = ({
     });
   }
 
+  ///update insturctions
+  function updateInstructions(id: string, text: string) {
+    setRepairFormData((state) => {
+      const newArr = state.procedureArr.map((proc) => {
+        if (proc._id == id) {
+          proc.instructions = text;
+          return proc;
+        }
+        return proc;
+      });
+      state.procedureArr = newArr;
+
+      return state;
+    });
+  }
+
   ///add procedure after the id provided
   function addProcedureAfter(id: string, item: Procedure) {
     const newArr = addItem({
@@ -64,7 +82,11 @@ export const RepairContextProvider = ({
   ///values to set in context
   const values = {
     repairFormData,
-    formAction: { addProcedureAfter, addProcedureAtBegining },
+    formAction: {
+      addProcedureAfter,
+      addProcedureAtBegining,
+      updateInstructions,
+    },
   };
 
   return (
