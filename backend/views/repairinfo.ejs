@@ -64,17 +64,17 @@
     </section>
 
     <!-- procedures -->
-    <ol class="procedure-list" data-currentProcId="1">
+    <ol class="procedure-list p-4" data-currentProcId="1">
         <%# short curcuit procedureArr?. if no length then end loop only mal formed repair with no image or instructions
             will cause fail %>
             <% for (let i=0 ; repair.procedureArr?.length> i ; i++){ %>
 
-                <li class="card procedure-item">
+                <li class="card procedure-item border border-slate-900 shadow-lg">
 
                     <section class="p-1 center-block flex flex-col">
                         <!-- images list -->
                         <!-- carousel -->
-                        <div class="carousel bg-green-500 print:flex-col">
+                        <div class="carousel print:flex-col">
                             <% for (let a=0 ; repair.procedureArr[i].images.length> a ; a++){ %>
                                 <div id="item<%=a%><%=i%>"
                                     class="carousel-item w-full flex justify-center items-center ">
@@ -93,7 +93,7 @@
                         </div>
 
                         <!-- bottom carousel numbers -->
-                        <div class="flex  bg-green-700 justify-center py-2 gap-2 print:hidden">
+                        <div class="flex justify-center py-2 gap-2 print:hidden">
                             <% for (let a=0 ; repair.procedureArr[i].images.length> a ; a++){ %>
                                 <a href="#item<%=a%><%=i%>" class="btn btn-xs md:btn-md">
                                     <%= a+1 %>
