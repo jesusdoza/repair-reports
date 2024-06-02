@@ -76,7 +76,7 @@
                             <div class="carousel">
                                 <% for (let a=0 ; repair.procedureArr[i].images.length> a ; a++){ %>
                                     <div id="item<%=a%><%=i%>"
-                                        class="carousel-item w-full flex justify-center items-center">
+                                        class="carousel-item w-full flex justify-center items-center print:w-1/2">
                                         <a class="w-full" target="_blank"
                                             href="<%= repair.procedureArr[i].images[a] %>">
                                             <!-- update below -->
@@ -93,7 +93,7 @@
                             </div>
 
                             <!-- bottom carousel numbers -->
-                            <div class="flex justify-center w-full py-2 gap-2">
+                            <div class="flex justify-center w-full py-2 gap-2 print:hidden">
                                 <% for (let a=0 ; repair.procedureArr[i].images.length> a ; a++){ %>
                                     <a href="#item<%=a%><%=i%>" class="btn btn-xs md:btn-md">
                                         <%= a+1 %>

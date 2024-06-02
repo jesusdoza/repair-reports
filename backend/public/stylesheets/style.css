@@ -3930,11 +3930,6 @@ html {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
-.bg-green-400 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(74 222 128 / var(--tw-bg-opacity));
-}
-
 .fill-current {
   fill: currentColor;
 }
@@ -4551,10 +4546,6 @@ media queries
     width: 20rem;
   }
 
-  .md\:w-1\/2 {
-    width: 50%;
-  }
-
   .md\:justify-around {
     justify-content: space-around;
   }
@@ -4677,5 +4668,15 @@ media queries
 
   .xl\:pb-32 {
     padding-bottom: 8rem;
+  }
+}
+
+@media print {
+  .print\:hidden {
+    display: none;
+  }
+
+  .print\:w-1\/2 {
+    width: 50%;
   }
 }
