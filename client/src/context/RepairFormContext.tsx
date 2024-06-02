@@ -3,6 +3,7 @@ import { Repair } from "../classes/Repair";
 import { addItem } from "../hooks/utils/addItem";
 import { Procedure } from "../classes/Procedure";
 import { RepairDataT } from "../../types";
+import { ImageObj } from "../classes/ImageObj";
 
 export type RepairFormDataContextT = {
   repairFormData: Repair;
@@ -12,6 +13,9 @@ export type RepairFormDataContextT = {
     addProcedureAtBegining: (item: Procedure) => void;
     updateInstructions: (id: string, text: string) => void;
     updateTitle: (title: string) => void;
+    updateEngineMake: (title: string) => void;
+    updateGroup: (title: string) => void;
+    updateBoardType: (title: string) => void;
   };
 };
 
@@ -25,6 +29,9 @@ export const RepairContext = createContext<RepairFormDataContextT>({
     addProcedureAtBegining: () => {},
     updateInstructions: () => {},
     updateTitle: () => {},
+    updateEngineMake: () => {},
+    updateGroup: () => {},
+    updateBoardType: () => {},
   },
 });
 
@@ -90,20 +97,101 @@ export const RepairContextProvider = ({
     });
   }
 
+  //initialize form data
   function initializeRepairFormData(repair: RepairDataT) {
     const newRepair = new Repair(repair);
 
     setRepairFormData(newRepair);
   }
+
+  function updateEngineMake(value: string) {
+    setRepairFormData((state) => {
+      state.engineMake = value;
+      return state;
+    });
+  }
+  function updateGroup(value: string) {
+    setRepairFormData((state) => {
+      state.engineMake = value;
+      return state;
+    });
+  }
+  function updateBoardType(value: string) {
+    setRepairFormData((state) => {
+      state.engineMake = value;
+      return state;
+    });
+  }
+
+  //! not tested
+  ///add image to procedure
+  function addImage(item: ImageObj, procedureId: string) {
+    const targetProcedure = repairFormData.procedureArr.findIndex((proc) => {
+      if (proc._id == procedureId) {
+        return true;
+      }
+      return false;
+    });
+
+    const imagesArr = repairFormData.procedureArr[targetProcedure].imageObjs;
+
+    const newImageObjs = addItem({
+      pos: "end",
+      arr: imagesArr,
+      item,
+    });
+
+    setRepairFormData((state) => {
+      state.procedureArr[targetProcedure].imageObjs = newImageObjs;
+
+      return state;
+    });
+  }
+
+  //! not tested
+  //remove by id
+  function removeImage(imageId: string, procedureId: string) {
+    //get target procedure data
+    const targetProcedure = repairFormData.procedureArr.findIndex((proc) => {
+      if (proc._id == procedureId) {
+        return true;
+      }
+      return false;
+    });
+
+    //filter out target id and return wanted imageObjs
+    const newImageObjs = repairFormData.procedureArr[
+      targetProcedure
+    ].imageObjs.filter((imageData) => {
+      if (imageData._id == imageId) return false;
+
+      return true;
+    });
+
+    //update form data state without causing rerender
+    setRepairFormData((state) => {
+      state.procedureArr[targetProcedure].imageObjs = newImageObjs;
+
+      return state;
+    });
+  }
+
+  function updateImage() {}
   ///values to set in context
   const values = {
     repairFormData,
     initializeRepairFormData,
     formAction: {
+      updateEngineMake,
+      updateBoardType,
+      updateGroup,
       addProcedureAfter,
       addProcedureAtBegining,
       updateInstructions,
       updateTitle,
+      addImage,
+      removeImage,
+      updateImage,
     },
   };
 
