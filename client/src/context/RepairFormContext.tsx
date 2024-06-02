@@ -2,9 +2,11 @@ import { createContext, useState } from "react";
 import { Repair } from "../classes/Repair";
 import { addItem } from "../hooks/utils/addItem";
 import { Procedure } from "../classes/Procedure";
+import { RepairDataT } from "../../types";
 
 export type RepairFormDataContextT = {
   repairFormData: Repair;
+  initializeRepairFormData: (repair: RepairDataT) => void;
   formAction: {
     addProcedureAfter: (id: string, item: Procedure) => void;
     addProcedureAtBegining: (item: Procedure) => void;
@@ -16,6 +18,7 @@ export type RepairFormDataContextT = {
 
 export const RepairContext = createContext<RepairFormDataContextT>({
   repairFormData: new Repair(),
+  initializeRepairFormData: () => {},
   formAction: {
     addProcedureAfter: () => {},
     addProcedureAtBegining: () => {},
@@ -79,9 +82,16 @@ export const RepairContextProvider = ({
     });
   }
 
+  function initializeRepairFormData(repair: RepairDataT) {
+    const newRepair = new Repair(repair);
+    console.log("new repair initialized context");
+    console.log("newRepair", newRepair);
+    setRepairFormData(newRepair);
+  }
   ///values to set in context
   const values = {
     repairFormData,
+    initializeRepairFormData,
     formAction: {
       addProcedureAfter,
       addProcedureAtBegining,
