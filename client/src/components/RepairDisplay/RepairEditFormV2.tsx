@@ -1,5 +1,5 @@
-import React, { ChangeEvent, useContext, useState } from "react";
-import useRepairFormState from "../../hooks/useRepairFormState";
+import React, { ChangeEvent, useContext, useEffect, useState } from "react";
+// import useRepairFormState from "../../hooks/useRepairFormState";
 import AvailableOptions, {
   OptionT,
 } from "../AvailableOptions/AvailableOptions";
@@ -24,12 +24,27 @@ export default function RepairEditForm({
   //context will provide all data from now on
   // const intialData = repair ? new Repair(repair) : new Repair();
 
-  const { repairFormData } = useContext(RepairContext);
+  const { repairFormData, initializeRepairFormData } =
+    useContext(RepairContext);
 
   //intialize data for form from context
-  const { currentFormState, formDispatch } = useRepairFormState(repairFormData);
+  // const { currentFormState, formDispatch } = useRepairFormState(repairFormData);
+
+  //have individual state
+  const [title, setTitle] = useState(repair ? repair.title : "new title here");
+  const [engineMake, setEngineMake] = useState(
+    repair ? repair.engineMake : "engine Make"
+  );
 
   const [submitAllowed, setSubmitAllowed] = useState(enabled);
+
+  useEffect(() => {
+    if (repair) {
+      //sync form data only
+      initializeRepairFormData(repair);
+    }
+    console.log("initializing repair data");
+  }, []);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -68,8 +83,8 @@ export default function RepairEditForm({
 
   const availableEngines: OptionT[] = [
     {
-      label: `original: ${currentFormState.engineMake}`,
-      value: currentFormState.engineMake,
+      label: `original: ${engineMake}`,
+      value: engineMake,
     },
     { label: "Caterpillar", value: "cat" },
     { label: "Cummins", value: "cummins" },
@@ -108,18 +123,14 @@ export default function RepairEditForm({
           <div className="flex-1 flex justify-start">
             <input
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                // console.log("e", e.target.value);
-
-                formDispatch({
-                  type: "UPDATE_FIELD",
-                  payload: { formField: { title: e.target.value } },
-                });
+                console.log("e", e.target.value);
+                setTitle(e.target.value);
               }}
               className="text-2xl w-full bg-white"
               id="title"
               name="title"
               type="text"
-              defaultValue={currentFormState.title}
+              defaultValue={title}
             />
           </div>
         </div>
@@ -129,10 +140,7 @@ export default function RepairEditForm({
             title="Visibility group"
             options={availableGroups}
             callback={(group: string) => {
-              formDispatch({
-                type: "UPDATE_FIELD",
-                payload: { formField: { group } },
-              });
+              console.log("changed group", group);
             }}
           />
         </div>
@@ -151,10 +159,7 @@ export default function RepairEditForm({
         <div>
           <AvailableOptions
             callback={(engineMake: string) => {
-              formDispatch({
-                type: "UPDATE_FIELD",
-                payload: { formField: { engineMake } },
-              });
+              setEngineMake(engineMake);
             }}
             title="Engine make"
             options={availableEngines}
