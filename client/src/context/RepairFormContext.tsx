@@ -11,6 +11,7 @@ export type RepairFormDataContextT = {
     addProcedureAfter: (id: string, item: Procedure) => void;
     addProcedureAtBegining: (item: Procedure) => void;
     updateInstructions: (id: string, text: string) => void;
+    updateTitle: (title: string) => void;
   };
 };
 
@@ -23,6 +24,7 @@ export const RepairContext = createContext<RepairFormDataContextT>({
     addProcedureAfter: () => {},
     addProcedureAtBegining: () => {},
     updateInstructions: () => {},
+    updateTitle: () => {},
   },
 });
 
@@ -34,7 +36,14 @@ export const RepairContextProvider = ({
 }) => {
   const repairForm = new Repair();
   const [repairFormData, setRepairFormData] = useState(repairForm);
+  // const [repairFormData, setRepairFormData] = useState(repairForm);
 
+  function updateTitle(title: string) {
+    setRepairFormData((state) => {
+      state.title = title;
+      return state;
+    });
+  }
   /// add to beggining of procedure array
   function addProcedureAtBegining(item: Procedure) {
     //update procedures
@@ -62,7 +71,6 @@ export const RepairContextProvider = ({
         return proc;
       });
       state.procedureArr = newArr;
-
       return state;
     });
   }
@@ -84,8 +92,7 @@ export const RepairContextProvider = ({
 
   function initializeRepairFormData(repair: RepairDataT) {
     const newRepair = new Repair(repair);
-    console.log("new repair initialized context");
-    console.log("newRepair", newRepair);
+
     setRepairFormData(newRepair);
   }
   ///values to set in context
@@ -96,6 +103,7 @@ export const RepairContextProvider = ({
       addProcedureAfter,
       addProcedureAtBegining,
       updateInstructions,
+      updateTitle,
     },
   };
 
