@@ -4679,4 +4679,8 @@ media queries
   .print\:w-1\/2 {
     width: 50%;
   }
+
+  .print\:flex-col {
+    flex-direction: column;
+  }
 }
