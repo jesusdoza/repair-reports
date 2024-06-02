@@ -70,19 +70,22 @@
 
                     <li class=" card procedure-item small-padding">
 
-                        <section class="pic-container center-block">
+                        <section class="pic-container center-block flex flex-col">
                             <!-- images list -->
                             <!-- carousel -->
-                            <div class="carousel ">
+                            <div class="carousel bg-slate-400">
                                 <% for (let a=0 ; repair.procedureArr[i].images.length> a ; a++){ %>
-                                    <div id="item<%=a%><%=i%>" class="carousel-item w-full ">
-                                        <a class="w-full" href="<%= repair.procedureArr[i].images[a] %>">
+                                    <div id="item<%=a%><%=i%>"
+                                        class="carousel-item w-full flex justify-center items-center">
+                                        <a class="w-full" target="_blank"
+                                            href="<%= repair.procedureArr[i].images[a] %>">
                                             <!-- update below -->
                                             <%if (repair.procedureArr[i].images){%>
-                                                <img loading="lazy"
+                                                <img loading="lazy" class="w-full"
                                                     src="<%= repair.procedureArr[i].images[a].replace('/upload/','/upload/c_scale,w_600/')%>">
                                                 <%}%>
                                                     <span>Click to see full image</span>
+                                                    <%= a+1 %>
                                         </a>
                                     </div>
 
@@ -92,7 +95,7 @@
                             <!-- bottom carousel numbers -->
                             <div class="flex justify-center w-full py-2 gap-2">
                                 <% for (let a=0 ; repair.procedureArr[i].images.length> a ; a++){ %>
-                                    <a href="#item<%=a%><%=i%>" class="btn btn-xs">
+                                    <a href="#item<%=a%><%=i%>" class="btn btn-xs md:btn-md">
                                         <%= a+1 %>
                                     </a>
                                     <% } %>
