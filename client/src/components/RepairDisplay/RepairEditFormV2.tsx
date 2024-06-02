@@ -24,7 +24,7 @@ export default function RepairEditForm({
   //context will provide all data from now on
   // const intialData = repair ? new Repair(repair) : new Repair();
 
-  const { repairFormData, initializeRepairFormData } =
+  const { repairFormData, initializeRepairFormData, formAction } =
     useContext(RepairContext);
 
   //intialize data for form from context
@@ -123,7 +123,8 @@ export default function RepairEditForm({
           <div className="flex-1 flex justify-start">
             <input
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                console.log("e", e.target.value);
+                const title = e.target.value;
+                formAction.updateTitle(title);
                 setTitle(e.target.value);
               }}
               className="text-2xl w-full bg-white"
@@ -149,10 +150,10 @@ export default function RepairEditForm({
             title="Board Type"
             options={availableBoardTypes}
             callback={(boardType: string) => {
-              formDispatch({
-                type: "UPDATE_FIELD",
-                payload: { formField: { boardType } },
-              });
+              // formDispatch({
+              //   type: "UPDATE_FIELD",
+              //   payload: { formField: { boardType } },
+              // });
             }}
           />
         </div>
