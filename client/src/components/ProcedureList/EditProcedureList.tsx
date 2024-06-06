@@ -200,7 +200,7 @@ function createProcedureCard({
               }),
             },
           });
-          //todo set form data aswell
+
           if (formAction) formAction.addProcedureAfter(id, newProc);
         }}
         className="btn">
