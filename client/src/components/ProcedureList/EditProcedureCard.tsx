@@ -1,13 +1,9 @@
 import { useContext, useState } from "react";
-// import { RepairFormContext } from "../../context/RepairFormContext";
 
 import { EditImageCard } from "../ImageCard/EditImageCard";
 import { v4 as uuidv4 } from "uuid";
-// import { useDebouncedCallback } from "use-debounce";
 import { ImageObjT, ProcedureT } from "../../../types";
 import { ImageObj } from "../../classes/ImageObj";
-// import { Procedure } from "../../classes/Procedure";
-// import useImageManager from "../../hooks/useImageManager";
 import ModalConfirm from "../Modals/ModalConfirm";
 import { Procedure } from "../../classes/Procedure";
 import { RepairFormDataContext } from "../../context/RepairFormContext";
