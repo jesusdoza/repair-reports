@@ -33,6 +33,7 @@ export default function EditProcedureList({
   >([]);
 
   const { formAction } = useContext(RepairFormDataContext);
+
   useEffect(() => {
     setProcedureList(() => {
       return initializeProcedures({
@@ -78,6 +79,7 @@ export default function EditProcedureList({
   );
 }
 
+/// initialize display components and form state to match
 function initializeProcedures({
   procs,
   setter,
@@ -113,6 +115,7 @@ function initializeProcedures({
   return procedureComponents;
 }
 
+///
 function addAtBegining({
   setter,
   itemToAdd,
@@ -131,7 +134,7 @@ function addAtBegining({
   });
 }
 
-//setter to update state , item to add to state, id to target component in array
+///setter to update state , item to add to state, id to target component in array
 function addProcedureAfter({
   setter,
   itemToAdd,
@@ -198,7 +201,7 @@ function createProcedureCard({
             },
           });
           //todo set form data aswell
-          if (formAction) formAction.addProcedureAfter(newProc._id, newProc);
+          if (formAction) formAction.addProcedureAfter(id, newProc);
         }}
         className="btn">
         Add new Procedure here
