@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 
 import { EditImageCard } from "../ImageCard/EditImageCard";
 import { v4 as uuidv4 } from "uuid";
@@ -7,6 +7,8 @@ import { ImageObj } from "../../classes/ImageObj";
 import ModalConfirm from "../Modals/ModalConfirm";
 import { Procedure } from "../../classes/Procedure";
 import { RepairFormDataContext } from "../../context/RepairFormContext";
+
+type ImageCardListT = { _id: string; component: React.ReactNode };
 
 export default function EditProcedureCard({
   procedureData = new Procedure(),
@@ -23,6 +25,8 @@ export default function EditProcedureCard({
 
   const [instructions, setInstructions] = useState(procedureData.instructions);
   // const { imageObjs } = procedureData; //TODO images on procedure
+
+  const [imageCards, setImageCards] = useState<ImageCardListT[]>([]);
 
   return (
     <div className="p-3 card relative border border-solid border-slate-700">
@@ -49,13 +53,30 @@ export default function EditProcedureCard({
         <h1 className="text-xl">procedure num is </h1>
         <h1 className="text-xl">procedure ID is : {PROCEDURE_ID}</h1>
         <ul className=" w-full flex flex-wrap justify-center align-middle items-center gap-2 p-4  bg-neutral rounded-box">
-          {/* {imageCards} */}
+          {imageCards.map((item) => item.component)}
           <section>
             <div>
               <span>Add another image</span>
               <div
                 onClick={() => {
-                  // procedureActions.addImage();
+                  //todo add imagecard to state
+                  setImageCards((state) => {
+                    const newImageData = new ImageObj();
+                    const newItem: ImageCardListT = {
+                      _id: newImageData._id,
+                      component: (
+                        <EditImageCard
+                          url={newImageData.imageUrl}
+                          id={newImageData._id}
+                          imageData={newImageData}
+                          setFormImageObj={() => {
+                            console.log("no setform yet on imagecard");
+                          }}
+                        />
+                      ),
+                    };
+                    return [...state, newItem];
+                  });
                 }}
                 className="text-xl btn btn-active btn-accent hover:bg-green-300">
                 +

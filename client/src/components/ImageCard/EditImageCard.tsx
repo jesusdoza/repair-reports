@@ -290,7 +290,7 @@ export function EditImageCard({
   return (
     <div
       key={uuidv4()}
-      className="">
+      className="relative">
       <h3>image id :{imageUploadedObj?.imageId}</h3>
       {/* delete x button */}
       <div
