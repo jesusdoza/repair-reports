@@ -1,5 +1,4 @@
 import React, { ChangeEvent, useContext, useEffect, useState } from "react";
-// import useRepairFormState from "../../hooks/useRepairFormState";
 import AvailableOptions, {
   OptionT,
 } from "../AvailableOptions/AvailableOptions";
@@ -21,15 +20,9 @@ export default function RepairEditForm({
   enabled?: boolean;
   submitType: string;
 }) {
-  //context will provide all data from now on
-  // const intialData = repair ? new Repair(repair) : new Repair();
-
   const { repairFormData, initializeRepairFormData, formAction } = useContext(
     RepairFormDataContext
   );
-
-  //intialize data for form from context
-  // const { currentFormState, formDispatch } = useRepairFormState(repairFormData);
 
   //have individual state
   const [title, setTitle] = useState(repair ? repair.title : "new title here");
@@ -65,7 +58,7 @@ export default function RepairEditForm({
   const availableGroups: OptionT[] = [
     {
       label: `original: ${repair?.group}`,
-      value: repair?.group ? repair?.group : "group",
+      value: repair ? repair?.group : "group",
     },
     { label: "public", value: "public" },
   ];
@@ -151,16 +144,14 @@ export default function RepairEditForm({
             title="Board Type"
             options={availableBoardTypes}
             callback={(boardType: string) => {
-              // formDispatch({
-              //   type: "UPDATE_FIELD",
-              //   payload: { formField: { boardType } },
-              // });
+              formAction.updateBoardType(boardType);
             }}
           />
         </div>
         <div>
           <AvailableOptions
             callback={(engineMake: string) => {
+              formAction.updateEngineMake(engineMake);
               setEngineMake(engineMake);
             }}
             title="Engine make"
@@ -170,13 +161,8 @@ export default function RepairEditForm({
         <div>
           <AvailableOptionsMulti
             callback={(searchTags: string[]) => {
-              formDispatch({
-                type: "UPDATE_SEARCH_TAGS",
-                payload: { searchTags },
-              });
+              console.log("no searchtag form action or state", searchTags);
             }}
-            // defaultValue={currentFormState.searchTags}
-            // defaultValue={}
             title="Search tags"
             options={availableTags}
           />
