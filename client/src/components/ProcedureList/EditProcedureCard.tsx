@@ -10,7 +10,7 @@ import { ImageObj } from "../../classes/ImageObj";
 // import useImageManager from "../../hooks/useImageManager";
 import ModalConfirm from "../Modals/ModalConfirm";
 import { Procedure } from "../../classes/Procedure";
-import { RepairContext } from "../../context/RepairFormContext";
+import { RepairFormDataContext } from "../../context/RepairFormContext";
 
 export default function EditProcedureCard({
   procedureData = new Procedure(),
@@ -19,7 +19,7 @@ export default function EditProcedureCard({
   procedureData: ProcedureT;
   id?: string;
 }) {
-  const { formAction } = useContext(RepairContext);
+  const { formAction } = useContext(RepairFormDataContext);
   const { updateInstructions } = formAction;
 
   //index to number to be used as reference of updating state array of the proceduresArray

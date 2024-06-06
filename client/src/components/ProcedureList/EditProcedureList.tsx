@@ -6,7 +6,10 @@ import { ProcedureT } from "../../../types";
 // import { Procedure } from "../../classes/Procedure";
 // import { ImageObj } from "../../classes/ImageObj";
 import { Procedure } from "../../classes/Procedure";
-import { RepairContext } from "../../context/RepairFormContext";
+import {
+  RepairFormDataContext,
+  formActionT,
+} from "../../context/RepairFormContext";
 
 import { addItem } from "../../hooks/utils/addItem";
 
@@ -29,12 +32,13 @@ export default function EditProcedureList({
     }[]
   >([]);
 
-  const { formAction } = useContext(RepairContext);
+  const { formAction } = useContext(RepairFormDataContext);
   useEffect(() => {
     setProcedureList(() => {
       return initializeProcedures({
         procs: procedureList,
         setter: setProcedureList,
+        formAction,
       });
     });
   }, []);
@@ -56,6 +60,7 @@ export default function EditProcedureList({
                 procedure,
                 id: _id,
                 setter: setProcedureList,
+                formAction,
               }),
             },
           });
@@ -76,9 +81,10 @@ export default function EditProcedureList({
 function initializeProcedures({
   procs,
   setter,
+  formAction,
 }: {
   procs: ProcedureT[];
-  updateFormData?: object;
+  formAction?: formActionT;
   setter: React.Dispatch<
     React.SetStateAction<
       {
@@ -95,7 +101,12 @@ function initializeProcedures({
     const _id = procedureData?._id ? procedureData?._id : uuidv4();
     return {
       _id,
-      component: createProcedureCard({ id: _id, setter }),
+      component: createProcedureCard({
+        formAction,
+        id: _id,
+        setter,
+        procedure: procedureData,
+      }),
     };
   });
 
@@ -120,29 +131,21 @@ function addAtBegining({
   });
 }
 
+//setter to update state , item to add to state, id to target component in array
 function addProcedureAfter({
   setter,
   itemToAdd,
   id,
 }: {
   setter: React.Dispatch<React.SetStateAction<ProcedureListItemT[]>>;
-  itemToAdd?: ProcedureListItemT;
+  itemToAdd: ProcedureListItemT;
   id: string;
 }) {
-  const _id = uuidv4();
-
-  const newItem = itemToAdd
-    ? itemToAdd
-    : {
-        _id,
-        component: createProcedureCard({ id: _id, setter }),
-      };
-
   setter((state) => {
     const newState = addItem({
       pos: "after",
       arr: state,
-      item: newItem,
+      item: itemToAdd,
       id,
     });
 
@@ -154,9 +157,11 @@ function createProcedureCard({
   id,
   setter,
   procedure,
+  formAction,
 }: {
   id: string;
-  procedure: Procedure;
+  procedure: ProcedureT;
+  formAction?: formActionT;
   setter: React.Dispatch<
     React.SetStateAction<
       {
@@ -177,8 +182,23 @@ function createProcedureCard({
       />
       <div
         onClick={() => {
-          addProcedureAfter({ id, setter });
+          const newProc = new Procedure();
+
+          addProcedureAfter({
+            id,
+            setter,
+            itemToAdd: {
+              _id: newProc._id,
+              component: createProcedureCard({
+                procedure: newProc,
+                id: newProc._id,
+                setter,
+                formAction,
+              }),
+            },
+          });
           //todo set form data aswell
+          if (formAction) formAction.addProcedureAfter(newProc._id, newProc);
         }}
         className="btn">
         Add new Procedure here

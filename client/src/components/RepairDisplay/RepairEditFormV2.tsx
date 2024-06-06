@@ -8,7 +8,7 @@ import { Repair } from "../../classes/Repair";
 import EditProcedureList from "../ProcedureList/EditProcedureList";
 import ModalConfirm from "../Modals/ModalConfirm";
 import { RepairDataT } from "../../../types";
-import { RepairContext } from "../../context/RepairFormContext";
+import { RepairFormDataContext } from "../../context/RepairFormContext";
 
 export default function RepairEditForm({
   repair,
@@ -24,8 +24,9 @@ export default function RepairEditForm({
   //context will provide all data from now on
   // const intialData = repair ? new Repair(repair) : new Repair();
 
-  const { repairFormData, initializeRepairFormData, formAction } =
-    useContext(RepairContext);
+  const { repairFormData, initializeRepairFormData, formAction } = useContext(
+    RepairFormDataContext
+  );
 
   //intialize data for form from context
   // const { currentFormState, formDispatch } = useRepairFormState(repairFormData);

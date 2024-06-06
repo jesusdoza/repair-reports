@@ -5,6 +5,16 @@ import { Procedure } from "../classes/Procedure";
 import { RepairDataT } from "../../types";
 import { ImageObj } from "../classes/ImageObj";
 
+export type formActionT = {
+  addProcedureAfter: (id: string, item: Procedure) => void;
+  addProcedureAtBegining: (item: Procedure) => void;
+  updateInstructions: (id: string, text: string) => void;
+  updateTitle: (title: string) => void;
+  updateEngineMake: (title: string) => void;
+  updateGroup: (title: string) => void;
+  updateBoardType: (title: string) => void;
+};
+
 export type RepairFormDataContextT = {
   repairFormData: Repair;
   initializeRepairFormData: (repair: RepairDataT) => void;
@@ -21,7 +31,7 @@ export type RepairFormDataContextT = {
 
 // const repairForm = new Repair();
 
-export const RepairContext = createContext<RepairFormDataContextT>({
+export const RepairFormDataContext = createContext<RepairFormDataContextT>({
   repairFormData: new Repair(),
   initializeRepairFormData: () => {},
   formAction: {
@@ -196,6 +206,8 @@ export const RepairContextProvider = ({
   };
 
   return (
-    <RepairContext.Provider value={values}>{children}</RepairContext.Provider>
+    <RepairFormDataContext.Provider value={values}>
+      {children}
+    </RepairFormDataContext.Provider>
   );
 };
