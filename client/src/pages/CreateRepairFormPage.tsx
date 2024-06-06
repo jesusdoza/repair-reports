@@ -4,11 +4,14 @@ import RepairEditForm from "../components/RepairDisplay/RepairEditFormV2";
 import useRepairApi from "../hooks/useRepairApi";
 import { useNavigate } from "react-router-dom";
 import { RepairContextProvider } from "../context/RepairFormContext";
+import { RepairDataT } from "../../types";
 
 export default function RepairFormPage(): React.ReactNode {
   const { postRepair } = useRepairApi();
   const [submitAllowed, setSubmitAllowed] = useState(true);
   const navigate = useNavigate();
+
+  const newRepair = new Repair() as unknown as RepairDataT;
 
   const createRepair = async (repair: Repair) => {
     console.log("update currentFormState", repair);
@@ -26,10 +29,12 @@ export default function RepairFormPage(): React.ReactNode {
   };
   return (
     <RepairContextProvider>
+      <h1>Create new repair</h1>
       <RepairEditForm
         onSubmit={createRepair}
         enabled={submitAllowed}
         submitType="Create"
+        repair={newRepair}
       />
     </RepairContextProvider>
   );
