@@ -5,17 +5,17 @@ import { ImageObjT } from "../../../types";
 import { useDebouncedCallback } from "use-debounce";
 import { v4 as uuidv4 } from "uuid";
 import useImageManager from "../../hooks/useImageManager";
-import { ImageObj, UploadStatus } from "../../classes/ImageObj";
+import { ImageObj } from "../../classes/ImageObj";
 import UploadStatusBar from "./UploadStatusBar";
 import useCreateThumbUrl from "../../hooks/useCreateThumbUrl";
 
-// enum UploadStatus {
-//   SUCCESS,
-//   UPLOADING,
-//   ERROR,
-//   IDLE,
-//   DELETING,
-// }
+enum UploadStatus {
+  SUCCESS,
+  UPLOADING,
+  ERROR,
+  IDLE,
+  DELETING,
+}
 
 export function EditImageCard({
   url = "",
@@ -51,7 +51,7 @@ export function EditImageCard({
 
   //show status of image action
   const [imageUploadStatus, setImageUploadStatus] = useState<UploadStatus>(
-    isDeletable ? "SUCCESS" : "IDLE"
+    isDeletable ? UploadStatus.SUCCESS : UploadStatus.IDLE
   );
 
   //number to track percentage of image action progress
@@ -91,17 +91,17 @@ export function EditImageCard({
 
       //url changed of image either manually or file changed
       //todo have folder be added according to user organization in authcontext
-      setFormImageObj({
-        folder: "testFolder",
-        imageId: imageUploadedObj ? imageUploadedObj.imageId : urlText,
-        imageUrl: urlText,
-      });
+      // setFormImageObj({
+      //   folder: "testFolder",
+      //   imageId: imageUploadedObj ? imageUploadedObj.imageId : urlText,
+      //   imageUrl: urlText,
+      // });
     },
     300
   );
 
   const handleImageUpload = useDebouncedCallback(async (folder: string) => {
-    setImageUploadStatus("UPLOADING");
+    setImageUploadStatus(UploadStatus.UPLOADING);
     setUploadProgress(30);
 
     if (
@@ -139,13 +139,13 @@ export function EditImageCard({
         setFormImageObj(imageObj);
         setImageUploadedObj(imageObj);
         setUploadProgress(100);
-        setImageUploadStatus("SUCCESS");
+        setImageUploadStatus(UploadStatus.SUCCESS);
         setIsUploadable(false);
         setIsDeletable(true);
         return;
       } catch (error) {
         console.log("error uploading", error);
-        setImageUploadStatus("ERROR");
+        setImageUploadStatus(UploadStatus.ERROR);
         return;
       }
     }
