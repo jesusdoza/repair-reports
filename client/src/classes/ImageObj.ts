@@ -1,13 +1,13 @@
 import { ImageObjT } from "../../types";
 import { v4 as uuidv4 } from "uuid";
 
-export type UploadStatus =
-  | "SUCCESS"
-  | "UPLOADING"
-  | "ERROR"
-  | "IDLE"
-  | "DELETING"
-  | "NEEDUPLOAD";
+// export type UploadStatus =
+//   | "SUCCESS"
+//   | "UPLOADING"
+//   | "ERROR"
+//   | "IDLE"
+//   | "DELETING"
+//   | "NEEDUPLOAD";
 
 export class ImageObj implements ImageObjT {
   public imageUrl = "";
@@ -15,7 +15,7 @@ export class ImageObj implements ImageObjT {
   public caption = "";
   public imageId = "";
   public folder = "testFolder";
-  public uploadStatus: UploadStatus = "IDLE";
+  // public uploadStatus: UploadStatus = "IDLE";
   public _id: string = uuidv4();
 
   constructor();
