@@ -27,14 +27,19 @@ export function EditImageCard({
   onRemove?: () => void;
   imageData: ImageObj;
 }) {
-  //
+  //hook for handling image database
   const { uploadImage, deleteImage } = useImageManager();
+
+  //create thumb url from regular url using cloudinary url specification
   const createThumbUrl = useCreateThumbUrl();
 
+  //is image deleteable from cloudinary by checking url
   const [isDeletable, setIsDeletable] = useState(url.includes("http"));
+
+  //is image uploadable by checking image url to include buffer prefix
   const [isUploadable, setIsUploadable] = useState(url.includes("data:"));
 
-  //will hold <video> tag reference
+  //will hold <video> tag reference in dom to show video stream
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   //camera stream
@@ -45,6 +50,7 @@ export function EditImageCard({
 
   //image has been uploaded and have imageObj or null
   //after image is uploaded store details
+  //!maybe just update upload status state and handle if upload happend that way
   const [imageUploadedObj, setImageUploadedObj] = useState<null | ImageObjT>(
     imageData
   );
@@ -58,6 +64,8 @@ export function EditImageCard({
   const [uploadProgress, setUploadProgress] = useState(10);
 
   //new image to upload stored locally
+  //! maybe have a single state to keep image data and update upload status state to keep track of uploaded event
+  //! instead of storing 2 different states
   const [imageToUpload, setImageToUpload] = useState<File | string>(url);
 
   //image preview of file selected or image captured from camera
