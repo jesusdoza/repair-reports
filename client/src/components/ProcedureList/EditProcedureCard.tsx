@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 
 import { EditImageCard } from "../ImageCard/EditImageCard";
 import { v4 as uuidv4 } from "uuid";
-import { ImageObjT, ProcedureT } from "../../../types";
+import { ProcedureT } from "../../../types";
 import { ImageObj } from "../../classes/ImageObj";
 import ModalConfirm from "../Modals/ModalConfirm";
 import { Procedure } from "../../classes/Procedure";
@@ -19,14 +19,23 @@ export default function EditProcedureCard({
 }) {
   const { formAction } = useContext(RepairFormDataContext);
   const { updateInstructions } = formAction;
+  const { imageObjs } = procedureData; //TODO images on procedure
+
+  //todo not wanting th accept id exists
+  const initialImageCardData: ImageCardListT[] = imageObjs.map((data) => {
+    const component = createEditImageCard({
+      imageObj: new ImageObj(data),
+    });
+    return { _id: data._id, component };
+  });
 
   //index to number to be used as reference of updating state array of the proceduresArray
   const PROCEDURE_ID = procedureData._id ? procedureData._id : id;
 
   const [instructions, setInstructions] = useState(procedureData.instructions);
-  // const { imageObjs } = procedureData; //TODO images on procedure
 
-  const [imageCards, setImageCards] = useState<ImageCardListT[]>([]);
+  const [imageCards, setImageCards] =
+    useState<ImageCardListT[]>(initialImageCardData);
 
   return (
     <div className="p-3 card relative border border-solid border-slate-700">
@@ -59,21 +68,23 @@ export default function EditProcedureCard({
               <span>Add another image</span>
               <div
                 onClick={() => {
-                  //todo add imagecard to state
+                  //todo add image data to formContext
+                  console.log("adding image to procedure");
+
+                  const newImageData = new ImageObj();
+                  formAction.addImage(newImageData, PROCEDURE_ID);
+
                   setImageCards((state) => {
-                    const newImageData = new ImageObj();
+                    //data
+                    //function component
+                    const newImageCard = createEditImageCard({
+                      imageObj: newImageData,
+                    });
+
+                    //format for storing in state
                     const newItem: ImageCardListT = {
                       _id: newImageData._id,
-                      component: (
-                        <EditImageCard
-                          url={newImageData.imageUrl}
-                          id={newImageData._id}
-                          imageData={newImageData}
-                          setFormImageObj={() => {
-                            console.log("no setform yet on imagecard");
-                          }}
-                        />
-                      ),
+                      component: newImageCard,
                     };
                     return [...state, newItem];
                   });
@@ -229,42 +240,33 @@ export default function EditProcedureCard({
 //   );
 // }
 
+// const newImageData = new ImageObj();
+//                     const newItem: ImageCardListT = {
+//                       _id: newImageData._id,
+//                       component: (
+//                         <EditImageCard
+//                           url={newImageData.imageUrl}
+//                           id={newImageData._id}
+//                           imageData={newImageData}
+//                           setFormImageObj={() => {
+//                             console.log("no setform yet on imagecard");
+//                           }}
+//                         />
+//                       ),
+//                     };
+
 //create image card components
-function createEditImageCards({
-  updateUrl = () => {},
-  imageObjs,
-  onRemove = () => {},
-}: {
-  imageObjs: ImageObj[];
-  updateUrl: (imageIndex: number, newImageObj: ImageObj) => void;
-  onRemove?: (imageId: string) => void;
-}) {
-  const imageCardComponents = imageObjs.map((imageObj, index) => {
-    const { imageUrl, imageId } = imageObj;
-    // high order function to update url
-    const updateImageUrl = (updatedImageObj: ImageObjT) => {
-      updateUrl(index, { ...new ImageObj(), ...updatedImageObj });
-    };
-
-    const removeImageFromList = () => {
-      if (onRemove) onRemove(imageId);
-    };
-
-    return (
-      <li
-        className="w-full card md:w-1/3 bg-slate-700 p-2"
-        key={uuidv4()}>
-        <EditImageCard
-          imageData={imageObj}
-          id={imageId}
-          onRemove={removeImageFromList}
-          key={uuidv4()}
-          url={imageUrl}
-          setFormImageObj={updateImageUrl}
-        />
-      </li>
-    );
-  });
-
-  return imageCardComponents;
+function createEditImageCard({ imageObj }: { imageObj: ImageObj }) {
+  return (
+    <li
+      className="w-full card md:w-1/3 bg-slate-700 p-2"
+      key={uuidv4()}>
+      <EditImageCard
+        imageData={imageObj}
+        id={imageObj._id}
+        key={uuidv4()}
+        url={imageObj.imageUrl}
+      />
+    </li>
+  ) as React.ReactNode;
 }
