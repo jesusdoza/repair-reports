@@ -4,7 +4,7 @@ import { ImageObj } from "./ImageObj";
 
 export class Procedure implements ProcedureT {
   public images = [""];
-  public imageObjs: ImageObj[] = [new ImageObj()];
+  public imageObjs: ImageObj[] = [];
   public imagesIdArr: string[] = [];
   public instructions = "";
   public procedureNum = 0;
