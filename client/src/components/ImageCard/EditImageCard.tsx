@@ -19,7 +19,6 @@ import useCreateThumbUrl from "../../hooks/useCreateThumbUrl";
 
 export function EditImageCard({
   url = "",
-  setFormImageObj,
   onRemove,
   imageData,
 }: {
@@ -27,7 +26,6 @@ export function EditImageCard({
   url: string;
   onRemove?: () => void;
   imageData: ImageObj;
-  setFormImageObj: (imageObj: ImageObjT) => void; //external state setter to manipulate url prop
 }) {
   //
   const { uploadImage, deleteImage } = useImageManager();
