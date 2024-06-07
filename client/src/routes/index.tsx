@@ -5,7 +5,6 @@ import ProfilePage from "../pages/ProfilePage";
 import RepairFormPage from "../pages/CreateRepairFormPage";
 import DashboardPage from "../pages/dashboard/DashboardPageContainer";
 import { RepairInfoPageContainer } from "../pages/RepairInfoPageContainer";
-import EditRepairPage from "../pages/EditRepairPage";
 import EditRepairPageV2 from "../pages/EditRepairPageV2";
 
 export const routes = createBrowserRouter([
