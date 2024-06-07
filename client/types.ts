@@ -6,7 +6,7 @@ export interface ImageObjT {
   caption?: string;
   imageId: string;
   folder: string;
-  _id?: string;
+  _id: string;
 }
 
 export interface ProcedureT {
