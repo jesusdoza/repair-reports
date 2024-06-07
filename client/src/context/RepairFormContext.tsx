@@ -2,7 +2,7 @@ import { createContext, useState } from "react";
 import { Repair } from "../classes/Repair";
 import { addItem } from "../hooks/utils/addItem";
 import { Procedure } from "../classes/Procedure";
-import { RepairDataT } from "../../types";
+import { ImageObjT, RepairDataT } from "../../types";
 import { ImageObj } from "../classes/ImageObj";
 
 export type formActionT = {
@@ -13,6 +13,7 @@ export type formActionT = {
   updateEngineMake: (title: string) => void;
   updateGroup: (title: string) => void;
   updateBoardType: (title: string) => void;
+  addImage: (item: ImageObj, procedureId: string) => void;
 };
 
 export type RepairFormDataContextT = {
@@ -26,6 +27,7 @@ export type RepairFormDataContextT = {
     updateEngineMake: (title: string) => void;
     updateGroup: (title: string) => void;
     updateBoardType: (title: string) => void;
+    addImage: (item: ImageObj, procedureId: string) => void;
   };
 };
 
@@ -42,6 +44,7 @@ export const RepairFormDataContext = createContext<RepairFormDataContextT>({
     updateEngineMake: () => {},
     updateGroup: () => {},
     updateBoardType: () => {},
+    addImage: () => {},
   },
 });
 
