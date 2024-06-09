@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 // import useUploadImage from "../../hooks/useUploadImage";
 import { CameraPreview } from "./CameraPreview";
 import { ImageObjT } from "../../../types";
@@ -8,6 +8,7 @@ import useImageManager from "../../hooks/useImageManager";
 import { ImageObj } from "../../classes/ImageObj";
 import UploadStatusBar from "./UploadStatusBar";
 import useCreateThumbUrl from "../../hooks/useCreateThumbUrl";
+import { RepairFormDataContext } from "../../context/RepairFormContext";
 
 enum UploadStatus {
   SUCCESS = "SUCCESS",
@@ -21,7 +22,9 @@ export function EditImageCard({
   url = "",
   onRemove,
   imageData,
+  procedureId,
 }: {
+  procedureId: string;
   id: string;
   url: string;
   onRemove?: () => void;
@@ -29,6 +32,7 @@ export function EditImageCard({
 }) {
   //hook for handling image database
   const { uploadImage, deleteImage } = useImageManager();
+  const { formAction } = useContext(RepairFormDataContext);
 
   //create thumb url from regular url using cloudinary url specification
   const createThumbUrl = useCreateThumbUrl();
@@ -97,6 +101,10 @@ export function EditImageCard({
         return;
       }
 
+      console.log("url change");
+
+      formAction.updateImage({ ...imageData, imageUrl: urlText }, procedureId);
+
       //url changed of image either manually or file changed
       //todo have folder be added according to user organization in authcontext
       // setFormImageObj({
@@ -144,6 +152,9 @@ export function EditImageCard({
           folder: uploadFolder,
           imageThumb: thumbUrl,
         };
+
+        //update form data in context
+        formAction.updateImage(new ImageObj(imageObj), procedureId);
 
         setUploadProgress(70);
         // setFormImageObj(imageObj);
