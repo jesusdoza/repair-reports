@@ -20,17 +20,18 @@ export default function EditProcedureCard({
   const { formAction } = useContext(RepairFormDataContext);
   const { updateInstructions } = formAction;
   const { imageObjs } = procedureData; //TODO images on procedure
+  const PROCEDURE_ID = procedureData._id ? procedureData._id : id;
 
-  //todo not wanting th accept id exists
+  //create cards for initial prop data passed in
   const initialImageCardData: ImageCardListT[] = imageObjs.map((data) => {
     const component = createEditImageCard({
+      procedureId: PROCEDURE_ID,
       imageObj: new ImageObj(data),
     });
     return { _id: data._id, component };
   });
 
   //index to number to be used as reference of updating state array of the proceduresArray
-  const PROCEDURE_ID = procedureData._id ? procedureData._id : id;
 
   const [instructions, setInstructions] = useState(procedureData.instructions);
 
@@ -78,6 +79,7 @@ export default function EditProcedureCard({
                     //data
                     //function component
                     const newImageCard = createEditImageCard({
+                      procedureId: PROCEDURE_ID,
                       imageObj: newImageData,
                     });
 
@@ -256,12 +258,19 @@ export default function EditProcedureCard({
 //                     };
 
 //create image card components
-function createEditImageCard({ imageObj }: { imageObj: ImageObj }) {
+function createEditImageCard({
+  imageObj,
+  procedureId,
+}: {
+  imageObj: ImageObj;
+  procedureId: string;
+}) {
   return (
     <li
       className="w-full card md:w-1/3 bg-slate-700 p-2"
       key={uuidv4()}>
       <EditImageCard
+        procedureId={procedureId}
         imageData={imageObj}
         id={imageObj._id}
         key={uuidv4()}
