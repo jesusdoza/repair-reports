@@ -10,11 +10,11 @@ import UploadStatusBar from "./UploadStatusBar";
 import useCreateThumbUrl from "../../hooks/useCreateThumbUrl";
 
 enum UploadStatus {
-  SUCCESS,
-  UPLOADING,
-  ERROR,
-  IDLE,
-  DELETING,
+  SUCCESS = "SUCCESS",
+  UPLOADING = "UPLOADING",
+  ERROR = "ERROR",
+  IDLE = "IDLE",
+  DELETING = "DELETING",
 }
 
 export function EditImageCard({
@@ -138,13 +138,15 @@ export function EditImageCard({
         console.log("thumbUrl", thumbUrl);
 
         const imageObj: ImageObjT = {
+          _id: uuidv4(),
           imageUrl: url,
           imageId: public_id,
           folder: uploadFolder,
           imageThumb: thumbUrl,
         };
+
         setUploadProgress(70);
-        setFormImageObj(imageObj);
+        // setFormImageObj(imageObj);
         setImageUploadedObj(imageObj);
         setUploadProgress(100);
         setImageUploadStatus(UploadStatus.SUCCESS);
