@@ -14,6 +14,7 @@ export type formActionT = {
   updateGroup: (title: string) => void;
   updateBoardType: (title: string) => void;
   addImage: (item: ImageObj, procedureId: string) => void;
+  updateImage: (item: ImageObj, procedureId: string) => void;
 };
 
 export type RepairFormDataContextT = {
@@ -28,6 +29,7 @@ export type RepairFormDataContextT = {
     updateGroup: (title: string) => void;
     updateBoardType: (title: string) => void;
     addImage: (item: ImageObj, procedureId: string) => void;
+    updateImage: (item: ImageObj, procedureId: string) => void;
   };
 };
 
@@ -45,6 +47,7 @@ export const RepairFormDataContext = createContext<RepairFormDataContextT>({
     updateGroup: () => {},
     updateBoardType: () => {},
     addImage: () => {},
+    updateImage: () => {},
   },
 });
 
@@ -189,7 +192,37 @@ export const RepairContextProvider = ({
     });
   }
 
-  function updateImage() {}
+  //update image data by id
+  function updateImage(newImageData: ImageObj, procedureId: string) {
+    console.log("newImageData", newImageData);
+    console.log("procedureId", procedureId);
+    const targetProcedure = repairFormData.procedureArr.findIndex((proc) => {
+      if (proc._id == procedureId) {
+        return true;
+      }
+      return false;
+    });
+
+    //get images Data array from target procedure
+    const imagesArr = repairFormData.procedureArr[targetProcedure].imageObjs;
+
+    //replace target image data by id
+    const newImageObjs = imagesArr.map((imageData) => {
+      if (imageData._id == newImageData._id) {
+        return newImageData;
+      }
+      return imageData;
+    });
+
+    console.log("newImageObjs", newImageObjs);
+
+    //update form state
+    setRepairFormData((state) => {
+      state.procedureArr[targetProcedure].imageObjs = newImageObjs;
+
+      return state;
+    });
+  }
   ///values to set in context
   const values = {
     repairFormData,
