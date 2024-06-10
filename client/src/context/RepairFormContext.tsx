@@ -162,11 +162,12 @@ export const RepairContextProvider = ({
     });
 
     //updating older implementation for backward compatibility to EJS app
-    const imageStringsArr = targetProcedureData.images;
-    imageStringsArr.push(item.imageUrl);
+    const imageStringsArr = newImageObjs.map((data) => data.imageUrl);
 
     setRepairFormData((state) => {
-      targetProcedureData.imageObjs = newImageObjs;
+      const targetProc = state.procedureArr[targetProcedure];
+      targetProc.imageObjs = newImageObjs;
+      targetProc.images = imageStringsArr;
 
       return state;
     });
@@ -191,9 +192,14 @@ export const RepairContextProvider = ({
       return true;
     });
 
+    //updating older implementation for backward compatibility to EJS app
+    const imageStringsArr = newImageObjs.map((data) => data.imageUrl);
+
     //update form data state without causing rerender
     setRepairFormData((state) => {
-      state.procedureArr[targetProcedure].imageObjs = newImageObjs;
+      const targetProc = state.procedureArr[targetProcedure];
+      targetProc.imageObjs = newImageObjs;
+      targetProc.images = imageStringsArr;
 
       return state;
     });
@@ -223,25 +229,15 @@ export const RepairContextProvider = ({
     });
 
     //updating older implementation for backward compatibility to EJS app
-    const imageStringsArr = targetProcedureData.images;
-
-    const imageIndex = imageStringsArr.findIndex(
-      (url) => url == newImageData.imageUrl
-    );
-
-    //found url in string array replace or if not found add
-    if (imageIndex == -1) {
-      imageStringsArr.push(newImageData.imageUrl);
-    } else {
-      imageStringsArr[imageIndex] = newImageData.imageUrl;
-    }
-    //replace image at index
+    const imageStringsArr = newImageObjs.map((data) => data.imageUrl);
 
     console.log("newImageObjs", newImageObjs);
 
     //update form state
     setRepairFormData((state) => {
-      state.procedureArr[targetProcedure].imageObjs = newImageObjs;
+      const targetProc = state.procedureArr[targetProcedure];
+      targetProc.imageObjs = newImageObjs;
+      targetProc.images = imageStringsArr;
 
       return state;
     });
