@@ -15,6 +15,7 @@ export type formActionT = {
   updateBoardType: (title: string) => void;
   addImage: (item: ImageObj, procedureId: string) => void;
   updateImage: (item: ImageObj, procedureId: string) => void;
+  removeImage: (item: ImageObj, procedureId: string) => void;
 };
 
 export type RepairFormDataContextT = {
@@ -30,6 +31,7 @@ export type RepairFormDataContextT = {
     updateBoardType: (title: string) => void;
     addImage: (item: ImageObj, procedureId: string) => void;
     updateImage: (item: ImageObj, procedureId: string) => void;
+    removeImage: (item: ImageObj, procedureId: string) => void;
   };
 };
 
@@ -48,6 +50,7 @@ export const RepairFormDataContext = createContext<RepairFormDataContextT>({
     updateBoardType: () => {},
     addImage: () => {},
     updateImage: () => {},
+    removeImage: () => {},
   },
 });
 
