@@ -33,6 +33,7 @@ export default function EditProcedureCard({
       const component = createEditImageCard({
         procedureId: PROCEDURE_ID,
         imageObj: new ImageObj(data),
+        setter: setImageCards,
       });
       return { _id: data._id, component };
     });
