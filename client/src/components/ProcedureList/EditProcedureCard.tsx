@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { EditImageCard } from "../ImageCard/EditImageCard";
 import { v4 as uuidv4 } from "uuid";
@@ -22,21 +22,30 @@ export default function EditProcedureCard({
   const { imageObjs } = procedureData; //TODO images on procedure
   const PROCEDURE_ID = procedureData._id ? procedureData._id : id;
 
-  //create cards for initial prop data passed in
-  const initialImageCardData: ImageCardListT[] = imageObjs.map((data) => {
-    const component = createEditImageCard({
-      procedureId: PROCEDURE_ID,
-      imageObj: new ImageObj(data),
-    });
-    return { _id: data._id, component };
-  });
-
-  //index to number to be used as reference of updating state array of the proceduresArray
+  // //create cards for initial prop data passed in
+  // const initialImageCardData: ImageCardListT[] = imageObjs.map((data) => {
+  //   const component = createEditImageCard({
+  //     procedureId: PROCEDURE_ID,
+  //     imageObj: new ImageObj(data),
+  //   });
+  //   return { _id: data._id, component };
+  // });
 
   const [instructions, setInstructions] = useState(procedureData.instructions);
 
-  const [imageCards, setImageCards] =
-    useState<ImageCardListT[]>(initialImageCardData);
+  const [imageCards, setImageCards] = useState<ImageCardListT[]>([]);
+
+  useEffect(() => {
+    //create cards for initial prop data passed in
+    const initialImageCardData: ImageCardListT[] = imageObjs.map((data) => {
+      const component = createEditImageCard({
+        procedureId: PROCEDURE_ID,
+        imageObj: new ImageObj(data),
+      });
+      return { _id: data._id, component };
+    });
+    setImageCards(initialImageCardData);
+  }, []);
 
   return (
     <div className="p-3 card relative border border-solid border-slate-700">
