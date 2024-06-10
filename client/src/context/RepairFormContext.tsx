@@ -152,16 +152,21 @@ export const RepairContextProvider = ({
       return false;
     });
 
-    const imagesArr = repairFormData.procedureArr[targetProcedure].imageObjs;
+    const targetProcedureData = repairFormData.procedureArr[targetProcedure];
+    const imageObjArr = targetProcedureData.imageObjs;
 
     const newImageObjs = addItem({
       pos: "end",
-      arr: imagesArr,
+      arr: imageObjArr,
       item,
     });
 
+    //updating older implementation for backward compatibility to EJS app
+    const imageStringsArr = targetProcedureData.images;
+    imageStringsArr.push(item.imageUrl);
+
     setRepairFormData((state) => {
-      state.procedureArr[targetProcedure].imageObjs = newImageObjs;
+      targetProcedureData.imageObjs = newImageObjs;
 
       return state;
     });
@@ -206,15 +211,31 @@ export const RepairContextProvider = ({
     });
 
     //get images Data array from target procedure
-    const imagesArr = repairFormData.procedureArr[targetProcedure].imageObjs;
+    const targetProcedureData = repairFormData.procedureArr[targetProcedure];
+    const imageObjsArr = targetProcedureData.imageObjs;
 
     //replace target image data by id
-    const newImageObjs = imagesArr.map((imageData) => {
+    const newImageObjs = imageObjsArr.map((imageData) => {
       if (imageData._id == newImageData._id) {
         return newImageData;
       }
       return imageData;
     });
+
+    //updating older implementation for backward compatibility to EJS app
+    const imageStringsArr = targetProcedureData.images;
+
+    const imageIndex = imageStringsArr.findIndex(
+      (url) => url == newImageData.imageUrl
+    );
+
+    //found url in string array replace or if not found add
+    if (imageIndex == -1) {
+      imageStringsArr.push(newImageData.imageUrl);
+    } else {
+      imageStringsArr[imageIndex] = newImageData.imageUrl;
+    }
+    //replace image at index
 
     console.log("newImageObjs", newImageObjs);
 
