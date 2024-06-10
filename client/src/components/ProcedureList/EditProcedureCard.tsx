@@ -22,19 +22,11 @@ export default function EditProcedureCard({
   const { imageObjs } = procedureData; //TODO images on procedure
   const PROCEDURE_ID = procedureData._id ? procedureData._id : id;
 
-  // //create cards for initial prop data passed in
-  // const initialImageCardData: ImageCardListT[] = imageObjs.map((data) => {
-  //   const component = createEditImageCard({
-  //     procedureId: PROCEDURE_ID,
-  //     imageObj: new ImageObj(data),
-  //   });
-  //   return { _id: data._id, component };
-  // });
-
   const [instructions, setInstructions] = useState(procedureData.instructions);
 
   const [imageCards, setImageCards] = useState<ImageCardListT[]>([]);
 
+  //load initial state after mount
   useEffect(() => {
     //create cards for initial prop data passed in
     const initialImageCardData: ImageCardListT[] = imageObjs.map((data) => {
@@ -90,6 +82,7 @@ export default function EditProcedureCard({
                     const newImageCard = createEditImageCard({
                       procedureId: PROCEDURE_ID,
                       imageObj: newImageData,
+                      setter: setImageCards,
                     });
 
                     //format for storing in state
@@ -270,9 +263,11 @@ export default function EditProcedureCard({
 function createEditImageCard({
   imageObj,
   procedureId,
+  setter,
 }: {
   imageObj: ImageObj;
   procedureId: string;
+  setter: React.Dispatch<React.SetStateAction<ImageCardListT[]>>;
 }) {
   return (
     <li
@@ -284,7 +279,22 @@ function createEditImageCard({
         id={imageObj._id}
         key={uuidv4()}
         url={imageObj.imageUrl}
+        onRemove={() => removeItem(setter, imageObj._id)}
       />
     </li>
   ) as React.ReactNode;
+}
+
+function removeItem(
+  setter: React.Dispatch<React.SetStateAction<ImageCardListT[]>>,
+  id: string
+) {
+  setter((state) => {
+    const newState = state.filter((imageCard) => {
+      if (imageCard._id == id) return false;
+      return true;
+    });
+
+    return newState;
+  });
 }
