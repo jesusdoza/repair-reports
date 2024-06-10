@@ -194,6 +194,7 @@ export function EditImageCard({
         return;
       }
     } else {
+      formAction.removeImage(imageData._id, procedureId);
       if (onRemove) onRemove();
     }
   };
