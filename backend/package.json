@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "concurrently 'npm:devserver' 'npm:tailwind'",
     "devserver": "nodemon server.js",
-    "start": "node server.js",
+    "start": "npm run tailwind && node server.js",
     "test": "npx cypress run",
     "tailwind": "npx tailwindcss -i ./public/stylesheets/main.css -o ./public/stylesheets/style.css --watch"
   },
