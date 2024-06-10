@@ -37,17 +37,15 @@ export default function RepairEditForm({
       //sync form data only
       initializeRepairFormData(repair);
     }
-    console.log("initializing repair data");
   }, []);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // console.log("repairFormData", repairFormData);
     try {
       if (onSubmit) {
-        // onSubmit(currentFormState);
         console.log("repairFormData", repairFormData);
+        onSubmit(repairFormData);
       }
     } catch (error) {
       setSubmitAllowed(true);
