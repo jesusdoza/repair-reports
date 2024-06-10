@@ -29,6 +29,8 @@ export type RepairDataT = {
   title: string;
   visibility: string;
   searchTags?: string[];
+  version: number;
+
   _id: string;
 };
 

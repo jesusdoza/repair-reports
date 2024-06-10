@@ -3,14 +3,14 @@ import RepairEditForm from "../components/RepairDisplay/RepairEditFormV2";
 import useRepairApi from "../hooks/useRepairApi";
 import { Repair } from "../classes/Repair";
 import { useParams, useNavigate } from "react-router-dom";
-import { RepairDataT, repairDataT } from "../../types";
+import { RepairDataT } from "../../types";
 
 import { RepairContextProvider } from "../context/RepairFormContext";
 
 export default function EditRepairPageV2() {
   const { id: repairId } = useParams();
   const { getRepairById, updateRepair } = useRepairApi();
-  const [repair, setRepair] = useState<repairDataT | null>(null);
+  const [repair, setRepair] = useState<RepairDataT | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [submitAllowed, setSubmitAllowed] = useState(true);
   const navigate = useNavigate();
