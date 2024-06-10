@@ -146,7 +146,7 @@ export function EditImageCard({
         console.log("thumbUrl", thumbUrl);
 
         const imageObj: ImageObjT = {
-          _id: uuidv4(),
+          _id: imageData._id,
           imageUrl: url,
           imageId: public_id,
           folder: uploadFolder,
