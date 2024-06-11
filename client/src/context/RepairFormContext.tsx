@@ -8,7 +8,7 @@ import { ImageObj } from "../classes/ImageObj";
 export type formActionT = {
   addProcedureAfter: (id: string, item: Procedure) => void;
   addProcedureAtBegining: (item: Procedure) => void;
-  removeProcedure: (item: Procedure) => void;
+  removeProcedure: (id: string) => void;
   updateInstructions: (id: string, text: string) => void;
   updateTitle: (title: string) => void;
   updateEngineMake: (title: string) => void;
@@ -24,7 +24,7 @@ export type RepairFormDataContextT = {
   initializeRepairFormData: (repair: RepairDataT) => void;
   formAction: {
     addProcedureAfter: (id: string, item: Procedure) => void;
-    removeProcedure: (item: Procedure) => void;
+    removeProcedure: (id: string) => void;
     addProcedureAtBegining: (item: Procedure) => void;
     updateInstructions: (id: string, text: string) => void;
     updateTitle: (title: string) => void;
