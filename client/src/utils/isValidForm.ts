@@ -3,7 +3,7 @@ import { Repair } from "../classes/Repair";
 
 const reason: string[] = [];
 export class FormTestResult {
-  public isValid: boolean = false;
+  public isValid: boolean = true;
   public invalidProcedures: ProcedureT[] = [];
   public reason: string[] = [];
   constructor() {}
@@ -46,20 +46,22 @@ export function isValidProcedure(procedure: ProcedureT): boolean {
   });
 
   //invalidImages exist this procedure fails check
-  if (invalidImages.length > 0) return false;
-
+  if (invalidImages.length > 0) {
+    return false;
+  }
   return true;
 }
 
 //verify image objects have been uploaded
 export function isImageValidState(image: ImageObjT): boolean {
-  //image status is correct but url is wrong
+  //image url is wrong local buffer
   if (!image.imageUrl.includes("data:")) {
-    reason.push(
-      `image id: ${image.imageId} invalid url ${image.imageUrl.slice(0, 10)}`
-    );
     return true;
   }
 
+  console.log("bad url on image");
+  reason.push(
+    `image id: ${image._id} invalid url: ${image.imageUrl.slice(0, 10)}`
+  );
   return false;
 }
