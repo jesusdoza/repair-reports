@@ -44,6 +44,9 @@ export default function RepairEditForm({
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    setFormError(null); //reset error on submit
+
+    //validate formdata
     const formStatus = isValidForm(repairFormData);
 
     //if invalid set error for display
@@ -51,14 +54,19 @@ export default function RepairEditForm({
       setFormError(formStatus.reason);
     }
 
-    setSubmitAllowed(formStatus.isValid);
+    //pressed submit now disable to allow processing
+    setSubmitAllowed(false);
+
     console.log("formStatus", formStatus);
+
+    //reenable submit after 3 seconds
     new Promise<void>((resolve) => {
       setTimeout(() => {
         setSubmitAllowed(true);
         resolve();
       }, 3000);
     });
+
     try {
       console.log("repairFormData", repairFormData);
       if (onSubmit && formStatus.isValid) {
