@@ -177,8 +177,8 @@ export function EditImageCard({
   //handle delete of image from database and state
   const handleImageDelete = async () => {
     // if image has been uploaded delete from database
-    console.log("delete image");
-    console.log("isDeletable", isDeletable);
+    // console.log("delete image");
+    // console.log("isDeletable", isDeletable);
 
     //delete from database
     if (isDeletable && imageUploadedObj) {
