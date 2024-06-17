@@ -60,8 +60,8 @@ export default function RepairEditForm({
       }, 3000);
     });
     try {
+      console.log("repairFormData", repairFormData);
       if (onSubmit && formStatus.isValid) {
-        console.log("repairFormData", repairFormData);
         //todo enable submit
         //! onSubmit(repairFormData);
       }
@@ -126,8 +126,8 @@ export default function RepairEditForm({
       className="w-full bg-slate-300"
       onSubmit={handleSubmit}>
       <div className="flex text-black justify-center">
-        {submitAllowed && <div className=" bg-green-500 ">form ok</div>}
-        {!submitAllowed && <div className="bg-red-600">Invalid form</div>}
+        {!formError && <div className=" bg-green-500 ">form ok</div>}
+        {formError && <div className="bg-red-600">Invalid form</div>}
         <div>{formError}</div>
       </div>
       <legend className=" gap-4 flex flex-col rounded-lg p-2 border-gray-600 w-full">
