@@ -70,8 +70,8 @@ export default function RepairEditForm({
     try {
       console.log("repairFormData", repairFormData);
       if (onSubmit && formStatus.isValid) {
-        //todo enable submit
-        //! onSubmit(repairFormData);
+        //! todo enable submit
+        onSubmit(repairFormData);
       }
     } catch (error) {
       setSubmitAllowed(true);
