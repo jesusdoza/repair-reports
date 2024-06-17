@@ -54,10 +54,7 @@ export function isValidProcedure(procedure: ProcedureT): boolean {
 //verify image objects have been uploaded
 export function isImageValidState(image: ImageObjT): boolean {
   //image status is correct but url is wrong
-  if (
-    (image.uploadStatus == "SUCCESS" || image.uploadStatus == "IDLE") &&
-    !image.imageUrl.includes("data:")
-  ) {
+  if (!image.imageUrl.includes("data:")) {
     reason.push(
       `image id: ${image.imageId} invalid url ${image.imageUrl.slice(0, 10)}`
     );
