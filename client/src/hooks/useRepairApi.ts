@@ -127,9 +127,10 @@ const useRepairApi = () => {
     }
   };
 
-  const getUsersRepairs = async () => {
+  const getUsersRepairs = async (limit?: number) => {
     try {
       const response = await axios.get(`${API_URL}/api/repairs/user`, {
+        params: { limit },
         withCredentials: true,
       });
       return response.data;

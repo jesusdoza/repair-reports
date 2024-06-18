@@ -7,7 +7,7 @@ import { RepairDataT } from "../../../types";
 // const testRepairList = [new Repair(), new Repair()];
 
 export default function DashboardPageContainer(): React.ReactNode {
-  const foundRepairs = useGetUserRepairs();
+  const foundRepairs = useGetUserRepairs(10);
 
   const [repairList, setRepairList] = useState<RepairDataT[]>(foundRepairs);
   const [filteredList, setFilteredList] = useState<RepairDataT[]>(repairList);
