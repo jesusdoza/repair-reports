@@ -1,5 +1,37 @@
 const Repair = require("../../models/Repair");
 
+const getRepairsforUser = async (req, res) => {
+  const user = req.user;
+  try {
+    const results = await Repair.find({
+      createdBy: user._id,
+      removed: false,
+    })
+      .lean()
+      .sort({ _id: -1 });
+
+    res.status(200).json(results);
+  } catch (error) {
+    console.error("error getting users repairs in dashboard");
+    res.status(500).json({
+      message: `error getting repairs for user: ${user.id}`,
+      error: err,
+    });
+  }
+
+  // get paremeter from url
+  // const repairId = req.params.id;
+  // try {
+  //   const repairObj = await Repair.findOne({ _id: repairId }).lean();
+  //   res.status(200).json(repairObj);
+  // } catch (err) {
+  //   res.status(400).json({
+  //     message: `error getting repair by ID: ${repairId}`,
+  //     error: err,
+  //   });
+  // }
+};
+
 const getRepairById = async (req, res) => {
   // get paremeter from url
   const repairId = req.params.id;
@@ -179,4 +211,10 @@ const searchRepairs = async (req, res) => {
 //   }
 // };
 
-module.exports = { getRepairById, addRepair, getNewestRepairs, updateRepair };
+module.exports = {
+  getRepairById,
+  addRepair,
+  getNewestRepairs,
+  updateRepair,
+  getRepairsforUser,
+};
