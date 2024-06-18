@@ -127,6 +127,24 @@ const useRepairApi = () => {
     }
   };
 
+  const getUsersRepairs = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/api/repairs`, {
+        withCredentials: true,
+      });
+      return response.data;
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error?.response?.status && error?.response?.status == 401) {
+          console.log("unauthorized error @useRepairApi.searchForRepair");
+
+          unauthorizedError();
+        }
+      }
+      throw new Error(`unspecified PUT error ${API_URL}/api/repairs`);
+    }
+  };
+
   return {
     postRepair,
     updateRepair,
@@ -134,6 +152,7 @@ const useRepairApi = () => {
     getLatestRepairs,
     searchForRepair,
     getRepairById,
+    getUsersRepairs,
   };
 };
 
