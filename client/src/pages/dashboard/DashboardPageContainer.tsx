@@ -10,11 +10,13 @@ export default function DashboardPageContainer(): React.ReactNode {
   const { repairsData: foundRepairs, getData: getUserRepairs } =
     useGetUserRepairs();
 
+  const PAGE_LIMIT = 10;
+
   const [repairList, setRepairList] = useState<RepairDataT[]>(foundRepairs); //data
   const [filteredList, setFilteredList] = useState<RepairDataT[]>(repairList); //optionally filtered data
 
   useEffect(() => {
-    getUserRepairs(10, 0);
+    getUserRepairs(PAGE_LIMIT, 0);
   }, []);
 
   useEffect(() => {
@@ -40,7 +42,53 @@ export default function DashboardPageContainer(): React.ReactNode {
       </aside>
       <main className="w-5/6 bg-green-600 ">
         <UsersRepairs repairList={filteredList} />
+        <section>
+          <PageTools
+            onPageChange={(pageNumber: number) => {
+              getUserRepairs(PAGE_LIMIT, pageNumber);
+            }}
+          />
+        </section>
       </main>
     </div>
+  );
+}
+
+type pageToolsProps = {
+  onPageChange: (pageNumber: number) => void;
+};
+
+function PageTools({ onPageChange = () => {} }: pageToolsProps) {
+  const [page, setPage] = useState(0);
+  return (
+    <>
+      {/* <h3>current page {page + 1}</h3> */}
+      <section className="flex justify-between ">
+        {page <= 0 ? (
+          <div className="btn btn-disabled">page</div>
+        ) : (
+          <div
+            onClick={() => {
+              setPage((p) => {
+                onPageChange(p - 1);
+                return p - 1;
+              });
+            }}
+            className="btn">
+            page {page}
+          </div>
+        )}
+        <div
+          onClick={() => {
+            setPage((p) => {
+              onPageChange(p + 1);
+              return p + 1;
+            });
+          }}
+          className="btn">
+          page {page + 2}
+        </div>
+      </section>
+    </>
   );
 }
