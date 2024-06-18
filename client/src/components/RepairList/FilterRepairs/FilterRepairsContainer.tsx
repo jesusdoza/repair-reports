@@ -1,5 +1,4 @@
 import { RepairDataT } from "../../../../types";
-import { Repair } from "../../../classes/Repair";
 import FilterOptions from "./FilterOptions";
 
 type filterProps = {
