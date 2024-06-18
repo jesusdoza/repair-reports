@@ -5,15 +5,18 @@ const getRepairsforUser = async (req, res) => {
   const { limit, page } = req.query;
 
   const limitResults = limit ? limit : 10;
+  const currentPage = page ? page : 0;
+  const skipResults = limitResults * currentPage;
 
   try {
     const results = await Repair.find({
       createdBy: user._id,
       removed: false,
     })
-      .lean()
       .sort({ _id: -1 })
-      .limit(limitResults);
+      .skip(skipResults)
+      .limit(limitResults)
+      .lean();
 
     res.status(200).json(results);
   } catch (error) {
