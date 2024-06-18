@@ -1,22 +1,19 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { RepairDataT } from "../../types";
 import useRepairApi from "./useRepairApi";
 
-const useGetUserRepairs = (limit?: number) => {
+const useGetUserRepairs = () => {
   const [repairsData, setRepairsData] = useState<RepairDataT[] | []>([]);
 
   const { getUsersRepairs } = useRepairApi();
-  useEffect(() => {
-    const getData = async () => {
-      const response = await getUsersRepairs(limit);
-      setRepairsData(response);
-    };
 
-    getData();
-  }, []);
+  const getData = async (limit?: number, page?: number) => {
+    const response = await getUsersRepairs(limit, page);
+    setRepairsData(response);
+  };
 
-  return repairsData;
+  return { repairsData, getData };
 };
 
 export default useGetUserRepairs;

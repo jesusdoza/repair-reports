@@ -7,23 +7,32 @@ import { RepairDataT } from "../../../types";
 // const testRepairList = [new Repair(), new Repair()];
 
 export default function DashboardPageContainer(): React.ReactNode {
-  const foundRepairs = useGetUserRepairs(10);
+  const { repairsData: foundRepairs, getData: getUserRepairs } =
+    useGetUserRepairs();
 
-  const [repairList, setRepairList] = useState<RepairDataT[]>(foundRepairs);
-  const [filteredList, setFilteredList] = useState<RepairDataT[]>(repairList);
+  const [repairList, setRepairList] = useState<RepairDataT[]>(foundRepairs); //data
+  const [filteredList, setFilteredList] = useState<RepairDataT[]>(repairList); //optionally filtered data
 
   useEffect(() => {
-    if (foundRepairs.length > 0) {
-      console.log("foundRepairs", foundRepairs);
-      setRepairList(foundRepairs);
-      setFilteredList(foundRepairs);
-    }
+    getUserRepairs(10, 0);
+  }, []);
+
+  useEffect(() => {
+    setRepairList(foundRepairs);
+    setFilteredList(foundRepairs);
   }, [foundRepairs]);
 
   return (
     <div className="flex  min-h-screen">
       <aside className=" w-1/6 bg-slate-600">
         <h3>Filter</h3>
+        {/* <div
+          className="btn"
+          onClick={() => {
+            getUserRepairs(10, 1);
+          }}>
+          get page 2
+        </div> */}
         <FilterRepairsContainer
           setList={(list: RepairDataT[]) => setFilteredList(list)}
           list={repairList}
