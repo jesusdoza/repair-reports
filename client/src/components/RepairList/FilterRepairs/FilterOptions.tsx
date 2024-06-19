@@ -4,7 +4,7 @@ export default function FilterOptions({ filterOptions }: FilterRepairsProps) {
   const filters = filterOptions.map((option) => {
     return (
       <li className="p-1">
-        <div className="btn">filter By{option}</div>
+        <div className="btn">{option}</div>
       </li>
     );
   });

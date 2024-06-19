@@ -14,22 +14,23 @@ export default function FilterRepairsContainer({
   console.log("setList", setList);
 
   //TODO filter funtionality
-  createFilters(list);
+  const { filterCategories } = createFilters(list);
 
-  return <FilterOptions filterOptions={["one", "two"]} />;
+  return <FilterOptions filterOptions={filterCategories} />;
 }
 
 function createFilters(list: RepairDataT[]) {
   const ignoreFields = new Set([
     "visibility",
     "removed",
-    "__V",
+    "__v",
     "_id",
     "procedureArr",
+    "searchTags",
   ]);
 
   //different fields available in objects to filter by
-  let categories = new Set();
+  let categories = new Set<string>();
 
   //available options under each filter
   // {category1:[value1, value2,],category2:[value3, value4,] }
@@ -55,9 +56,9 @@ function createFilters(list: RepairDataT[]) {
     categories = new Set([...Array.from(categories), ...fields]);
   });
 
-  const filterCategories = Array.from(categories.values());
+  const filterCategories: string[] = Array.from(categories.values());
 
   console.log("filterCategories", filterCategories);
 
-  return { filterCategories, filterOptions: filterOptionsMap };
+  return { filterCategories, filterOptionsMap };
 }
