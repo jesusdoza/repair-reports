@@ -27,6 +27,7 @@ function createFilters(list: RepairDataT[]) {
     "_id",
     "procedureArr",
     "searchTags",
+    "title",
   ]);
 
   //different fields available in objects to filter by
@@ -50,6 +51,7 @@ function createFilters(list: RepairDataT[]) {
 
       if (tempSet) {
         tempSet.add(item[f]);
+        filterOptionsMap.set(f, tempSet);
       }
     });
 
@@ -59,6 +61,7 @@ function createFilters(list: RepairDataT[]) {
   const filterCategories: string[] = Array.from(categories.values());
 
   console.log("filterCategories", filterCategories);
+  console.log("filterOptionsMap", filterOptionsMap);
 
   return { filterCategories, filterOptionsMap };
 }
