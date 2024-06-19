@@ -35,7 +35,7 @@ function createFilters(list: RepairDataT[]) {
 
   //available options under each filter
   // {category1:[value1, value2,],category2:[value3, value4,] }
-  let filterOptionsMap = new Map<string, Set<string>>();
+  const filterOptionsMap = new Map<string, Set<string>>();
 
   list.forEach((item) => {
     const fields = Object.getOwnPropertyNames(item).filter(
