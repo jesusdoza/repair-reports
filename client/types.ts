@@ -97,18 +97,6 @@ export type RepairFormStateActionT =
       payload: { procIndex: number; instructions: string };
     };
 
-export type repairDataT = {
-  boardType: string;
-  createdBy: string;
-  engineMake: string;
-  group: string;
-  procedureArr: ProcedureT[];
-  removed: boolean;
-  title: string;
-  visibility: string;
-  _id: string;
-};
-
 export type signatureT = {
   apikey: string;
   cloudname: string;
