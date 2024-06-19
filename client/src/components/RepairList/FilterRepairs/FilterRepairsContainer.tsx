@@ -50,7 +50,7 @@ function createFilters(list: RepairDataT[]) {
       const tempSet = filterOptionsMap.get(f);
 
       if (tempSet) {
-        tempSet.add(item[f]);
+        tempSet.add(item[f] as string);
         filterOptionsMap.set(f, tempSet);
       }
     });
