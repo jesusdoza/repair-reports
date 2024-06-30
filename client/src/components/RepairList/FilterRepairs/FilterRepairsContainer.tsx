@@ -1,22 +1,34 @@
 import { RepairDataT } from "../../../../types";
 import FilterOptions from "./FilterOptions";
 
-type filterProps = {
-  list: RepairDataT[];
-  setList: (list: RepairDataT[]) => void;
+type filter = {
+  category: string;
+  options: [string];
 };
 
-export default function FilterRepairsContainer({
+type filterProps = {
+  list: RepairDataT[];
+  setFilters?: React.Dispatch<React.SetStateAction<filter[]>>;
+};
+
+export default function FilterRepairsTool({
   list,
-  setList = () => {},
+  setFilters = () => {
+    console.log("setList filterRepairContainer ", list);
+  },
 }: filterProps) {
-  console.log("list", list);
-  console.log("setList", setList);
+  // console.log("list", list);
+  // console.log("setList", setList);
 
   //TODO filter funtionality
-  const { filterCategories } = createFilters(list);
+  const { filterCategories, filterOptionsMap } = createFilters(list);
 
-  return <FilterOptions filterOptions={filterCategories} />;
+  return (
+    <FilterOptions
+      filterCategories={filterCategories}
+      filterCategoryOptions={filterOptionsMap}
+    />
+  );
 }
 
 function createFilters(list: RepairDataT[]) {
@@ -28,6 +40,7 @@ function createFilters(list: RepairDataT[]) {
     "procedureArr",
     "searchTags",
     "title",
+    "createdBy",
   ]);
 
   //different fields available in objects to filter by
@@ -59,9 +72,6 @@ function createFilters(list: RepairDataT[]) {
   });
 
   const filterCategories: string[] = Array.from(categories.values());
-
-  console.log("filterCategories", filterCategories);
-  console.log("filterOptionsMap", filterOptionsMap);
 
   return { filterCategories, filterOptionsMap };
 }
