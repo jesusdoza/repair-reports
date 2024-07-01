@@ -1,9 +1,9 @@
 import { RepairDataT } from "../../../../types";
-import FilterMenu from "./FilterOptions";
+import FilterMenu from "./FilterMenu";
 
 type Filter = {
   category: string;
-  options: [string];
+  option: string;
 };
 
 type FilterProps = {
@@ -11,7 +11,7 @@ type FilterProps = {
   setFilters?: (filter: Filter) => void;
 };
 
-export default function FilterRepairsTool({ list, setFilters }: FilterProps) {
+export default function FilterMenuContainer({ list, setFilters }: FilterProps) {
   // console.log("list", list);
   // console.log("setList", setList);
 
