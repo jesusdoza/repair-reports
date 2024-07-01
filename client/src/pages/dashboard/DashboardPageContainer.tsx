@@ -20,9 +20,10 @@ export default function DashboardPageContainer(): React.ReactNode {
   const [repairList, setRepairList] = useState<RepairDataT[]>(foundRepairs); //data
 
   const [filteredList, setFilteredList] = useState<RepairDataT[]>(repairList); //optionally filtered data
-  const [appliedFilters, setAppliedFilters] = useState<
-    Map<string, Set<string>>
-  >(new Map()); //optionally filtered data
+
+  // const [appliedFilters, setAppliedFilters] = useState<
+  //   Map<string, Set<string>>
+  // >(new Map()); //optionally filtered data
 
   useEffect(() => {
     getUserRepairs(PAGE_LIMIT, 0);
@@ -35,26 +36,16 @@ export default function DashboardPageContainer(): React.ReactNode {
     setFilteredList(foundRepairs);
   }, [foundRepairs]);
 
-  useEffect(() => {
-    console.log("filters set", appliedFilters);
-  }, [appliedFilters]);
+  // useEffect(() => {
+  //   console.log("filters set", appliedFilters);
+  // }, [appliedFilters]);
+
+  const { filterOptionsMap } = createFilters(filteredList);
 
   return (
     <div className="flex  min-h-screen">
       <aside className=" w-1/6 bg-slate-600">
-        <FilterMenuContainer
-          setFilters={(filter: Filter) => {
-            //todo get filters working
-
-            setAppliedFilters((currentFilters) => {
-              return updateFilter({
-                filters: currentFilters,
-                newFilter: filter,
-              });
-            });
-          }}
-          list={filteredList}
-        />
+        <FilterMenuContainer categories={filterOptionsMap} />
       </aside>
       <main className="w-5/6 bg-green-600 ">
         <UsersRepairs repairList={filteredList} />
@@ -110,29 +101,79 @@ function PaganationControls({ onPageChange = () => {} }: paginationProps) {
   );
 }
 
-function updateFilter({
-  filters,
-  newFilter,
-}: {
-  filters: Map<string, Set<string>>;
-  newFilter: Filter;
-}) {
-  //create map with set
-  // key is category
-  //value will be set of strings
-  //check for value before adding
-  //remove if already in set
-  //else add into set
+function createFilters(list: RepairDataT[]) {
+  const ignoreFields = new Set([
+    "visibility",
+    "removed",
+    "__v",
+    "_id",
+    "procedureArr",
+    "searchTags",
+    "title",
+    "createdBy",
+  ]);
 
-  console.log("newFilter", newFilter);
+  //different fields available in objects to filter by
+  let categories = new Set<string>();
 
-  const category = filters.get(newFilter.category);
-  if (category) {
-    //has filter category check if value is present
-    const values = category.entries();
-  }
+  //available options under each filter
+  // {category1:[value1, value2,],category2:[value3, value4,] }
+  const filterOptionsMap = new Map<string, Set<string>>();
 
-  console.log("updated filters", filters);
+  list.forEach((item) => {
+    const fields = Object.getOwnPropertyNames(item).filter(
+      (str) => !ignoreFields.has(str)
+    );
 
-  return filters;
+    //add values for each field to map to know how many different values there are
+    fields.forEach((f) => {
+      if (!filterOptionsMap.has(f)) {
+        filterOptionsMap.set(f, new Set());
+      }
+      const tempSet = filterOptionsMap.get(f);
+
+      if (tempSet) {
+        tempSet.add(item[f] as string);
+        filterOptionsMap.set(f, tempSet);
+      }
+    });
+
+    categories = new Set([...Array.from(categories), ...fields]);
+  });
+
+  const filterCategories: string[] = Array.from(categories.values());
+
+  console.log("filterOptionsMap", Array.from(filterOptionsMap.entries()));
+
+  return { filterCategories, filterOptionsMap };
 }
+
+// function updateFilter({
+//   filters,
+//   newFilter,
+// }: {
+//   filters: Map<string, Set<string>>;
+//   newFilter: Filter;
+// }) {
+//   //create map with set
+//   // key is category
+//   //value will be set of strings
+//   //check for value before adding
+//   //remove if already in set
+//   //else add into set
+
+//   console.log("newFilter", newFilter);
+
+//   const category = filters.get(newFilter.category);
+//   if (category) {
+//     //has filter category check if value is present and update
+//     // if (category.has(newFilter.option)) {
+//     // }
+//   } else {
+//     //add new filter
+//     filters.set(newFilter.category, new Set<string>().add(newFilter.option));
+//   }
+
+//   console.log("updated filters", filters);
+//   return filters;
+// }

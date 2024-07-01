@@ -1,4 +1,4 @@
-import { RepairDataT } from "../../../../types";
+import { useEffect, useState } from "react";
 import FilterMenu from "./FilterMenu";
 
 type Filter = {
@@ -6,68 +6,63 @@ type Filter = {
   option: string;
 };
 
+type StringSetMap = {
+  [key: string]: Set<string>;
+};
+
 type FilterProps = {
-  list: RepairDataT[];
+  categories: Map<string, Set<string>>;
+
   setFilters?: (filter: Filter) => void;
 };
 
-export default function FilterMenuContainer({ list, setFilters }: FilterProps) {
-  // console.log("list", list);
-  // console.log("setList", setList);
-
+export default function FilterMenuContainer({
+  setFilters,
+  categories,
+}: FilterProps) {
   //TODO filter funtionality
-  const { filterCategories, filterOptionsMap } = createFilters(list);
+
+  const [activeFilters, setActiveFilters] = useState<StringSetMap>({});
+
+  const filterCategories = Array.from(categories.keys());
+  const filterOptionsMap = categories;
+
+  useEffect(() => {
+    console.log("activeFilters", activeFilters);
+  }, [activeFilters]);
+
+  function handleFilterChange(newFilter: Filter) {
+    //if category filter exists
+    const categorySet = activeFilters[newFilter.category];
+
+    if (categorySet) {
+      //filter already active remove it
+      if (categorySet.has(newFilter.option)) {
+        categorySet.delete(newFilter.option);
+
+        //no filters in this category anymore
+        if (categorySet.size == 0) {
+          delete activeFilters[newFilter.category];
+        }
+      } else {
+        categorySet.add(newFilter.option);
+      }
+
+      setActiveFilters({ ...activeFilters });
+      return;
+    }
+
+    //if category doesnt exist
+    activeFilters[newFilter.category] = new Set<string>().add(newFilter.option);
+
+    setActiveFilters({ ...activeFilters });
+  }
 
   return (
     <FilterMenu
-      setFilters={setFilters}
+      setFilters={handleFilterChange}
       filterCategories={filterCategories}
       filterCategoryOptions={filterOptionsMap}
     />
   );
-}
-
-function createFilters(list: RepairDataT[]) {
-  const ignoreFields = new Set([
-    "visibility",
-    "removed",
-    "__v",
-    "_id",
-    "procedureArr",
-    "searchTags",
-    "title",
-    "createdBy",
-  ]);
-
-  //different fields available in objects to filter by
-  let categories = new Set<string>();
-
-  //available options under each filter
-  // {category1:[value1, value2,],category2:[value3, value4,] }
-  const filterOptionsMap = new Map<string, Set<string>>();
-
-  list.forEach((item) => {
-    const fields = Object.getOwnPropertyNames(item).filter(
-      (str) => !ignoreFields.has(str)
-    );
-
-    //add values for each field to map to know how many different values there are
-    fields.forEach((f) => {
-      if (!filterOptionsMap.has(f)) {
-        filterOptionsMap.set(f, new Set());
-      }
-      const tempSet = filterOptionsMap.get(f);
-
-      if (tempSet) {
-        tempSet.add(item[f] as string);
-        filterOptionsMap.set(f, tempSet);
-      }
-    });
-
-    categories = new Set([...Array.from(categories), ...fields]);
-  });
-
-  const filterCategories: string[] = Array.from(categories.values());
-
-  return { filterCategories, filterOptionsMap };
 }

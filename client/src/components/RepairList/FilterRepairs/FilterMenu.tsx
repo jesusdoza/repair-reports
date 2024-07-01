@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 type Filter = {
   category: string;
   option: string;
@@ -9,13 +11,17 @@ type FilterRepairsProps = {
   setFilters?: (filter: Filter) => void;
 };
 
-// {category:"", options:[""]}
-
 export default function FilterMenu({
   filterCategories,
   filterCategoryOptions,
   setFilters,
 }: FilterRepairsProps) {
+  function handleFilterChange(filter: Filter) {
+    if (setFilters) {
+      setFilters(filter);
+    }
+  }
+
   //create categories and options available
   const filters = filterCategories.map((category) => {
     const availableOptions = filterCategoryOptions.get(category);
@@ -24,7 +30,7 @@ export default function FilterMenu({
       ? createFilterOptionComponents({
           category,
           options: Array.from(availableOptions),
-          onClickCallback: setFilters,
+          onClickCallback: handleFilterChange,
         })
       : [];
 
