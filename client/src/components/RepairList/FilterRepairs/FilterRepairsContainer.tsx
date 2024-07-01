@@ -1,22 +1,17 @@
 import { RepairDataT } from "../../../../types";
-import FilterOptions from "./FilterOptions";
+import FilterMenu from "./FilterOptions";
 
-type filter = {
+type Filter = {
   category: string;
   options: [string];
 };
 
-type filterProps = {
+type FilterProps = {
   list: RepairDataT[];
-  setFilters?: React.Dispatch<React.SetStateAction<filter[]>>;
+  setFilters?: (filter: Filter) => void;
 };
 
-export default function FilterRepairsTool({
-  list,
-  setFilters = () => {
-    console.log("setList filterRepairContainer ", list);
-  },
-}: filterProps) {
+export default function FilterRepairsTool({ list, setFilters }: FilterProps) {
   // console.log("list", list);
   // console.log("setList", setList);
 
@@ -24,7 +19,8 @@ export default function FilterRepairsTool({
   const { filterCategories, filterOptionsMap } = createFilters(list);
 
   return (
-    <FilterOptions
+    <FilterMenu
+      setFilters={setFilters}
       filterCategories={filterCategories}
       filterCategoryOptions={filterOptionsMap}
     />
