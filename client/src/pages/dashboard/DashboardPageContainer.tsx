@@ -4,7 +4,6 @@ import UsersRepairs from "./UsersRepairs";
 import FilterMenuContainer from "../../components/RepairList/FilterRepairs/FilterMenuContainer";
 import useGetUserRepairs from "../../hooks/useGetUserRepairs";
 import { RepairDataT } from "../../../types";
-// const testRepairList = [new Repair(), new Repair()];
 
 type Filter = {
   category: string;
@@ -21,31 +20,37 @@ export default function DashboardPageContainer(): React.ReactNode {
 
   const [filteredList, setFilteredList] = useState<RepairDataT[]>(repairList); //optionally filtered data
 
-  // const [appliedFilters, setAppliedFilters] = useState<
-  //   Map<string, Set<string>>
-  // >(new Map()); //optionally filtered data
+  const [appliedFilters, setAppliedFilters] = useState<Filter[]>([]);
 
+  //fetchdata
   useEffect(() => {
+    console.log("fetch data");
     getUserRepairs(PAGE_LIMIT, 0);
   }, []);
 
+  //load data when done fetching
   useEffect(() => {
-    console.log("fetch data");
-
     setRepairList(foundRepairs);
     setFilteredList(foundRepairs);
   }, [foundRepairs]);
 
-  // useEffect(() => {
-  //   console.log("filters set", appliedFilters);
-  // }, [appliedFilters]);
+  ///filter list displayed
+  useEffect(() => {
+    const newList = applyFilters(repairList, appliedFilters);
+    setFilteredList(newList);
+  }, [appliedFilters]);
 
   const { filterOptionsMap } = createFilters(filteredList);
 
   return (
     <div className="flex  min-h-screen">
       <aside className=" w-1/6 bg-slate-600">
-        <FilterMenuContainer categories={filterOptionsMap} />
+        <FilterMenuContainer
+          onFiltersChangeCallback={(updatedFilters) => {
+            setAppliedFilters(updatedFilters);
+          }}
+          categories={filterOptionsMap}
+        />
       </aside>
       <main className="w-5/6 bg-green-600 ">
         <UsersRepairs repairList={filteredList} />
@@ -143,37 +148,28 @@ function createFilters(list: RepairDataT[]) {
 
   const filterCategories: string[] = Array.from(categories.values());
 
-  console.log("filterOptionsMap", Array.from(filterOptionsMap.entries()));
+  // console.log("filterOptionsMap", Array.from(filterOptionsMap.entries()));
 
   return { filterCategories, filterOptionsMap };
 }
 
-// function updateFilter({
-//   filters,
-//   newFilter,
-// }: {
-//   filters: Map<string, Set<string>>;
-//   newFilter: Filter;
-// }) {
-//   //create map with set
-//   // key is category
-//   //value will be set of strings
-//   //check for value before adding
-//   //remove if already in set
-//   //else add into set
+function applyFilters(items: RepairDataT[], filters: Filter[]) {
+  const filteredItems = items.filter((item) => {
+    //if any filter does not match return false
+    if (filters.length > 0) {
+      for (let i = 0; i < filters.length; i++) {
+        const currentFilter = filters[i];
+        //todo what if property is an array like tags
+        if (item[currentFilter.category] != currentFilter.option) {
+          return false;
+        }
 
-//   console.log("newFilter", newFilter);
+        return true;
+      }
+    } else {
+      return true;
+    }
+  });
 
-//   const category = filters.get(newFilter.category);
-//   if (category) {
-//     //has filter category check if value is present and update
-//     // if (category.has(newFilter.option)) {
-//     // }
-//   } else {
-//     //add new filter
-//     filters.set(newFilter.category, new Set<string>().add(newFilter.option));
-//   }
-
-//   console.log("updated filters", filters);
-//   return filters;
-// }
+  return filteredItems;
+}

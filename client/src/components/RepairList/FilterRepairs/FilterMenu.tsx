@@ -1,6 +1,4 @@
-// import { useState } from "react";
-
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type Filter = {
   category: string;
@@ -10,21 +8,17 @@ type Filter = {
 type FilterRepairsProps = {
   filterCategories: string[];
   filterCategoryOptions: Map<string, Set<string>>;
-  setFilters?: (filter: Filter) => void;
+  onFilterChangeCallback?: (updatedFilters: Filter[]) => void;
 };
 
 export default function FilterMenu({
   filterCategories,
   filterCategoryOptions,
-  setFilters,
+  onFilterChangeCallback,
 }: FilterRepairsProps) {
   const [activeFilters, setActiveFilters] = useState<Filter[]>([]);
 
   function handleFilterChange(filter: Filter) {
-    if (setFilters) {
-      setFilters(filter);
-    }
-
     setActiveFilters((state) => {
       const existingFilter = state.find(
         (item) =>
@@ -33,10 +27,22 @@ export default function FilterMenu({
 
       if (existingFilter) {
         //remove filter
-        return state.filter((item) => item != existingFilter);
-      }
+        const updatedFilters = state.filter((item) => item != existingFilter);
 
-      return [...state, filter];
+        if (onFilterChangeCallback) {
+          onFilterChangeCallback(updatedFilters);
+        }
+
+        return updatedFilters;
+      } else {
+        const updatedFilters = [...state, filter];
+
+        if (onFilterChangeCallback) {
+          onFilterChangeCallback(updatedFilters);
+        }
+
+        return updatedFilters;
+      }
     });
   }
 
