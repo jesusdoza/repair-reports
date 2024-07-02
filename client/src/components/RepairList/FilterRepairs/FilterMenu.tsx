@@ -66,7 +66,11 @@ export default function FilterMenu({
 
   const activeFilterComponents = activeFilters.map((filter) => {
     return (
-      <div className="btn">
+      <div
+        className="btn"
+        onClick={() => {
+          handleFilterChange(filter);
+        }}>
         <span>{filter.category}</span>
         <span>{filter.option}</span>
       </div>
