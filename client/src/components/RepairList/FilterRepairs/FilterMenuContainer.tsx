@@ -58,11 +58,19 @@ export default function FilterMenuContainer({
     setActiveFilters({ ...activeFilters });
   }
 
+  const activeFilterComponents = Object.entries(activeFilters);
+  console.log("activeFilterComponents", activeFilterComponents);
+
   return (
-    <FilterMenu
-      setFilters={handleFilterChange}
-      filterCategories={filterCategories}
-      filterCategoryOptions={filterOptionsMap}
-    />
+    <div>
+      <ul>
+        <span>active filters</span>
+      </ul>
+      <FilterMenu
+        setFilters={handleFilterChange}
+        filterCategories={filterCategories}
+        filterCategoryOptions={filterOptionsMap}
+      />
+    </div>
   );
 }

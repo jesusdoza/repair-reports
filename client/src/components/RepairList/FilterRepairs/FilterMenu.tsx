@@ -36,14 +36,15 @@ export default function FilterMenu({
 
     return (
       <li className="p-1">
-        <h2 className="menu-title">{category}</h2>
-        <ul>{filterOptionComponents}</ul>
+        <h2 className="">{category}</h2>
+        <ul className="flex flex-wrap gap-1">{filterOptionComponents}</ul>
       </li>
     );
   });
+
   return (
     <div>
-      <ul className="menu bg-slate-500 rounded-box w-full">{filters}</ul>
+      <ul className="bg-slate-500 rounded-box">{filters}</ul>
     </div>
   );
 }
