@@ -20,10 +20,6 @@ export default function FilterMenu({
 }: FilterRepairsProps) {
   const [activeFilters, setActiveFilters] = useState<Filter[]>([]);
 
-  useEffect(() => {
-    console.log("activeFilters", activeFilters);
-  }, [activeFilters]);
-
   function handleFilterChange(filter: Filter) {
     if (setFilters) {
       setFilters(filter);
