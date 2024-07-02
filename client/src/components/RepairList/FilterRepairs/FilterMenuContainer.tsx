@@ -63,9 +63,7 @@ export default function FilterMenuContainer({
 
   return (
     <div>
-      <ul>
-        <span>active filters</span>
-      </ul>
+      <ul></ul>
       <FilterMenu
         setFilters={handleFilterChange}
         filterCategories={filterCategories}

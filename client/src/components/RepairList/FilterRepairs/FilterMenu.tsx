@@ -1,4 +1,6 @@
-import { useState } from "react";
+// import { useState } from "react";
+
+import { useEffect, useState } from "react";
 
 type Filter = {
   category: string;
@@ -16,10 +18,30 @@ export default function FilterMenu({
   filterCategoryOptions,
   setFilters,
 }: FilterRepairsProps) {
+  const [activeFilters, setActiveFilters] = useState<Filter[]>([]);
+
+  useEffect(() => {
+    console.log("activeFilters", activeFilters);
+  }, [activeFilters]);
+
   function handleFilterChange(filter: Filter) {
     if (setFilters) {
       setFilters(filter);
     }
+
+    setActiveFilters((state) => {
+      const existingFilter = state.find(
+        (item) =>
+          item.category == filter.category && item.option == filter.option
+      );
+
+      if (existingFilter) {
+        //remove filter
+        return state.filter((item) => item != existingFilter);
+      }
+
+      return [...state, filter];
+    });
   }
 
   //create categories and options available
@@ -42,8 +64,21 @@ export default function FilterMenu({
     );
   });
 
+  const activeFilterComponents = activeFilters.map((filter) => {
+    return (
+      <div className="btn">
+        <span>{filter.category}</span>
+        <span>{filter.option}</span>
+      </div>
+    );
+  });
+
   return (
     <div>
+      <div>
+        <span>active filters</span>
+        <ul>{activeFilterComponents}</ul>
+      </div>
       <ul className="bg-slate-500 rounded-box">{filters}</ul>
     </div>
   );
