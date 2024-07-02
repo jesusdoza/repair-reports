@@ -5,7 +5,7 @@ type Filter = {
   option: string;
 };
 
-type FilterProps = {
+type FilterMenuContainerProps = {
   categories: Map<string, Set<string>>;
 
   onFiltersChangeCallback?: (updateFilters: Filter[]) => void;
@@ -14,7 +14,7 @@ type FilterProps = {
 export default function FilterMenuContainer({
   onFiltersChangeCallback,
   categories,
-}: FilterProps) {
+}: FilterMenuContainerProps) {
   const filterCategories = Array.from(categories.keys());
   const filterOptionsMap = categories;
 

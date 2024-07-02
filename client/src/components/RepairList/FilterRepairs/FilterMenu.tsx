@@ -5,7 +5,7 @@ type Filter = {
   option: string;
 };
 
-type FilterRepairsProps = {
+type FilterMenuProps = {
   filterCategories: string[];
   filterCategoryOptions: Map<string, Set<string>>;
   onFilterChangeCallback?: (updatedFilters: Filter[]) => void;
@@ -15,7 +15,7 @@ export default function FilterMenu({
   filterCategories,
   filterCategoryOptions,
   onFilterChangeCallback,
-}: FilterRepairsProps) {
+}: FilterMenuProps) {
   const [activeFilters, setActiveFilters] = useState<Filter[]>([]);
 
   function handleFilterChange(filter: Filter) {
