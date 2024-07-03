@@ -88,8 +88,10 @@ exports.apiLogin = (req, res, next) => {
 
 exports.apiSignup = async (req, res, next) => {
   //checking to see if password ect match
-
   console.log(`api signup body`, req.body);
+
+  const { inviteCode, invitePhrase } = req.body;
+
   const validationErrors = validateInput(req);
 
   if (validationErrors.length) {
@@ -104,6 +106,7 @@ exports.apiSignup = async (req, res, next) => {
     gmail_remove_dots: false,
   });
 
+  //create new user doc locally
   const user = new User({
     //new User is our user model, we grab username,email, password from request body of the form to create a new user
     username: req.body.username,
@@ -111,6 +114,7 @@ exports.apiSignup = async (req, res, next) => {
     password: req.body.password,
   });
 
+  //query database
   User.findOne(
     { $or: [{ email: req.body.email }, { username: req.body.username }] },
     async (err, existingUser) => {
@@ -121,15 +125,22 @@ exports.apiSignup = async (req, res, next) => {
         req.flash("errors", ["email already in use"]);
         return res.redirect("../signup");
       }
+
+      //send creation request to database
       const result = await user.save(async (err, createdUser) => {
         //save the new user model to create a new user in our users collection
         if (err) {
           return next(err);
         }
 
+        //group created for user
+        //todo remove this logic and allow invite code to give group to assign
+        //todo find group by querying members array of documents for userid
         const foundGroup = await Group.findOne({
-          name: createdUser.username,
+          // name: createdUser.username,
+          createdBy: createdUser._id,
         });
+
         console.log(`found group`, foundGroup);
         if (!foundGroup) {
           console.log(`user created: `, createdUser);
@@ -170,8 +181,8 @@ function validateInput(req) {
     validationErrors.push("Please enter a valid email address.");
   if (!validator.isLength(req.body.password, { min: 8 }))
     validationErrors.push("password must be atleast 8 characters");
-  if (req.body.password !== req.body.confirmPassword)
-    validationErrors.push("Passwords do not match");
+  // if (req.body.password !== req.body.confirmPassword)
+  //   validationErrors.push("Passwords do not match");
 
   return validationErrors;
 }
