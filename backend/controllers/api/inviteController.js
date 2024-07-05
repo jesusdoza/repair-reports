@@ -1,9 +1,8 @@
 const Invite = require("../../models/Invite");
 
 const getInvite = async (req, res) => {
-  let inviteCode, invitePhrase;
-
-  ({ inviteCode, invitePhrase } = req.body);
+  const inviteCode = req.params["inviteCode"];
+  const invitePhrase = req.params["invitePhrase"];
 
   try {
     if (!inviteCode || !invitePhrase)
@@ -12,7 +11,7 @@ const getInvite = async (req, res) => {
     const invite = await Invite.findOne({ inviteCode, invitePhrase });
 
     if (!invite) {
-      res.status(404).send();
+      res.status(404).send({ inviteCode, invitePhrase });
       return;
     }
 
