@@ -12,7 +12,7 @@ router.post("/login", apiAuthController.apiLogin);
 router.get("/logout", apiAuthController.apiLogout);
 router.post("/signup", apiAuthController.apiSignup);
 
-router.get("/invite", inviteController.getInvite);
+router.get("/invite/:inviteCode/:invitePhrase", inviteController.getInvite);
 router.post("/invite", inviteController.getInvite);
 
 router.use("/repairs", ensureAuthApi, repairRouter);
