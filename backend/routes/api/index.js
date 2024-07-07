@@ -12,8 +12,8 @@ router.post("/login", apiAuthController.apiLogin);
 router.get("/logout", apiAuthController.apiLogout);
 router.post("/signup", apiAuthController.apiSignup);
 
-router.get("/invite/:inviteCode/:invitePhrase", inviteController.getInvite);
-router.post("/invite", inviteController.getInvite);
+router.get("/invite", inviteController.getUsersInvites);
+router.post("/invite", inviteController.postInvite);
 
 router.use("/repairs", ensureAuthApi, repairRouter);
 router.use("/signform", ensureAuthApi, signatureRouter);
