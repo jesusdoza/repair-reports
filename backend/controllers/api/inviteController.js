@@ -1,8 +1,8 @@
 const Invite = require("../../models/Invite");
 
+//get specific invite
 const getInvite = async (req, res) => {
   const inviteCode = req.params["inviteCode"];
-  const invitePhrase = req.params["invitePhrase"];
 
   try {
     if (!inviteCode || !invitePhrase)
@@ -25,4 +25,66 @@ const getInvite = async (req, res) => {
   }
 };
 
-module.exports = { getInvite };
+//get all invites user has created
+const getUsersInvites = async (req, res) => {
+  const userId = req.user.id;
+  try {
+    const invites = await Invite.find({ createdBy: userId });
+
+    if (invites.length === 0) {
+      res.status(404).send({
+        message: "no invites found",
+      });
+      return;
+    }
+
+    res.send({ invites });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send({
+      message: "failed to get users invites",
+    });
+  }
+};
+
+//create single invite
+
+/* 
+type Invite = {
+inviteCode:string
+groupsId:string[]
+createdAt:Date
+createdBy:string
+}
+
+*/
+const postInvite = async (req, res) => {
+  const { inviteCode, groupsId } = req.body;
+  const userId = req.user.id;
+  // const userId = "userid";
+
+  if (!inviteCode) {
+    res.status(404).send({ inviteCode, invitePhrase });
+    return;
+  }
+
+  //todo create the invite document
+  const newInvite = new Invite({
+    inviteCode,
+    groupsId,
+    createdBy: userId,
+  });
+
+  try {
+    await newInvite.save();
+    res.send({ newInvite });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send({
+      message: "failed to get invite",
+      invite: { inviteCode },
+    });
+  }
+};
+
+module.exports = { getInvite, getUsersInvites, postInvite };
