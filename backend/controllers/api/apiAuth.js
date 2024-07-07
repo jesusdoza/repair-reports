@@ -3,6 +3,7 @@ const passport = require("passport");
 const Group = require("../../models/Group"); //user created groups
 const validator = require("validator");
 const User = require("../../models/User"); //new user gets put in user collection
+const Invite = require("../../models/Invite");
 
 exports.apiLogout = (req, res, next) => {
   req.logout((err) => {
@@ -90,7 +91,20 @@ exports.apiSignup = async (req, res, next) => {
   //checking to see if password ect match
   console.log(`api signup body`, req.body);
 
-  const { inviteCode, invitePhrase } = req.body;
+  let foundInvite;
+  const { inviteCode, invitePassword } = req.body;
+
+  try {
+    foundInvite = await Invite.findOne({ inviteCode });
+
+    if (!foundInvite) {
+      res.status(404).send({ notFound: inviteCode });
+      return;
+    }
+  } catch (error) {
+    res.status(500).send({ error: "invite lookup failed" });
+    return;
+  }
 
   const validationErrors = validateInput(req);
 
@@ -102,6 +116,7 @@ exports.apiSignup = async (req, res, next) => {
       reason: validationErrors,
     });
   }
+
   req.body.email = validator.normalizeEmail(req.body.email, {
     gmail_remove_dots: false,
   });
@@ -114,7 +129,7 @@ exports.apiSignup = async (req, res, next) => {
     password: req.body.password,
   });
 
-  //query database
+  //verify user email is unique and create user
   User.findOne(
     { $or: [{ email: req.body.email }, { username: req.body.username }] },
     async (err, existingUser) => {
@@ -123,7 +138,7 @@ exports.apiSignup = async (req, res, next) => {
       }
       if (existingUser) {
         req.flash("errors", ["email already in use"]);
-        return res.redirect("../signup");
+        return res.status(400).send({ error: "email invalid" });
       }
 
       //send creation request to database
@@ -134,30 +149,28 @@ exports.apiSignup = async (req, res, next) => {
         }
 
         //group created for user
-        //todo remove this logic and allow invite code to give group to assign
-        //todo find group by querying members array of documents for userid
-        const foundGroup = await Group.findOne({
-          // name: createdUser.username,
-          createdBy: createdUser._id,
-        });
+        // const foundGroup = await Group.findOne({
+        //   // name: createdUser.username,
+        //   createdBy: createdUser._id,
+        // });
 
-        console.log(`found group`, foundGroup);
-        if (!foundGroup) {
-          console.log(`user created: `, createdUser);
-          ///no group found make one
-          const newGroup = await Group.create({
-            name: user.username,
-            members: [
-              {
-                userid: createdUser._id,
-                username: createdUser.username,
-                role: "3",
-              },
-            ],
-            createdBy: createdUser._id,
-          });
-          console.log("group made: ", newGroup);
-        }
+        // console.log(`found group`, foundGroup);
+        // if (!foundGroup) {
+        //   console.log(`user created: `, createdUser);
+        //   ///no group found make one
+        //   const newGroup = await Group.create({
+        //     name: user.username,
+        //     members: [
+        //       {
+        //         userid: createdUser._id,
+        //         username: createdUser.username,
+        //         role: "3",
+        //       },
+        //     ],
+        //     createdBy: createdUser._id,
+        //   });
+        //   console.log("group made: ", newGroup);
+        // }
 
         req.logIn(user, (err) => {
           if (err) {
