@@ -87,4 +87,11 @@ const postInvite = async (req, res) => {
   }
 };
 
+//utility functions
+//pass in group ids to verify user is member with valid role
+//todo verify user has correct permissions to create invite
+function verifyGroupMembership(groupsId = []) {
+  if (groupsId.length == 0) return false;
+}
+
 module.exports = { getInvite, getUsersInvites, postInvite };
