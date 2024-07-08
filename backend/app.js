@@ -79,7 +79,7 @@ app.use("/signup", signUpRoutes);
 app.use("/repair", ensureAuth, repairRoutes);
 app.use("/profile", ensureAuth, profileRoutes);
 app.use("/dashboard", ensureAuth, dashboardRoutes);
-app.use("/group", ensureAuth, groupRoutes);
+// app.use("/group", ensureAuth, groupRoutes);
 app.use("/comments", ensureAuth, commentRoutes);
 app.use("/api", apiRoutes);
 
