@@ -21,9 +21,9 @@ export default function LoginCard(): React.ReactNode {
   // }, [formData]);
 
   return (
-    <div className="flex justify-center w-full">
-      <div className=" flex justify-center w-96">
-        <div className="bg-slate-500 modal-box p-2 h-full flex flex-col gap-3 w-full">
+    <div className="flex justify-center ">
+      <div className=" flex justify-center w-5/6">
+        <div className="bg-slate-500 p-1 h-full flex flex-col gap-1 w-full">
           <div
             onClick={() => {
               setIsLogin((state) => {
