@@ -1,10 +1,13 @@
+import InviteToolContainer from "../../components/Invite/InviteToolContainer";
 import UserInfoContainer from "../../components/Profile/UserInfoContainer";
 
 export default function ProfilePage(): React.ReactNode {
   return (
     <section className="text-slate-400 flex h-[400px]">
-      <main className="w-4/6 bg-red-950  m-0 h-full p-1">
+      <main className="w-4/6 bg-red-950 m-0 h-full p-1">
         <UserInfoContainer />
+
+        <InviteToolContainer />
       </main>
 
       {/* side bar */}
