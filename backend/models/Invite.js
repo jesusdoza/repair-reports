@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+const GroupData = new mongoose.Schema({ id: String, name: String });
+
 const InviteSchema = new mongoose.Schema({
   inviteCode: {
     type: String,
@@ -9,8 +11,8 @@ const InviteSchema = new mongoose.Schema({
   invitePassword: {
     type: String,
   },
-  groupsId: {
-    type: [String],
+  groups: {
+    type: [GroupData],
     default: [],
   },
   createdAt: {
