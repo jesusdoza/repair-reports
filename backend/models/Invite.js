@@ -23,6 +23,10 @@ const InviteSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  status: {
+    type: String,
+    default: "pending",
+  },
 });
 
 module.exports = mongoose.model("Invite", InviteSchema);
