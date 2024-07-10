@@ -1,66 +1,79 @@
-type InviteT = {
-  inviteCode: string;
-  invitePassword: string;
-  groupsId: string[];
-  createdAt: string;
-  status: string;
+import { useState } from "react";
+
+type GroupOptionT = {
+  id: string;
+  name: string;
 };
 
-type InviteToolPropsT = {
-  invites?: InviteT[];
-};
-
-const testInvites = [
-  {
-    inviteCode: "string",
-    invitePassword: "string",
-    groupsId: ["1234", "1234533"],
-    createdAt: "string",
-    status: "pending",
-  },
+//TODO remove test and use hook
+const TestAvailableGroups = [
+  { id: "1234", name: "cool group" },
+  { id: "1234533", name: "another group" },
 ];
 
-export default function InviteTool({
-  invites = testInvites,
-}: InviteToolPropsT) {
+export default function InviteTool() {
+  const [groupOptions, setGroupOptions] =
+    useState<GroupOptionT[]>(TestAvailableGroups);
+
   return (
-    <section className="relative">
+    <section className="relative p-2 border rounded-lg border-blue-600">
       <div className="flex justify-between">
-        <span>Invite History</span>
+        <div>
+          <CreateInviteForm groupOptions={groupOptions} />
+        </div>
         <div className="btn btn-sm ">
           <span>create invite +</span>
         </div>
       </div>
-      <table className=" w-full">
-        <section className=""></section>
-
-        <tr>
-          <th>Status</th>
-          <th>Invite Code</th>
-          <th>Invite Password</th>
-          <th>Groups</th>
-        </tr>
-        {invites.map((inv) => {
-          return <InviteListing invite={inv} />;
-        })}
-      </table>
     </section>
   );
 }
 
-function InviteListing({ invite }: { invite: InviteT }) {
+type CreateInviteFormPropsT = {
+  groupOptions?: GroupOptionT[];
+};
+
+function CreateInviteForm({ groupOptions = [] }: CreateInviteFormPropsT) {
+  const options = createOptions(groupOptions);
   return (
-    <tr>
-      <td className="text-center">{invite.status}</td>
-      <td className="text-center">{invite.inviteCode}</td>
-      <td className="text-center">{invite.invitePassword}</td>
-      <td className="text-center">
-        <ul>
-          {invite.groupsId.map((id) => (
-            <li>{id}</li>
-          ))}
-        </ul>
-      </td>
-    </tr>
+    <form className="flex flex-wrap">
+      <div>
+        <label className="form-control w-full max-w-xs">
+          <div className="label">
+            <span className="label-text">Invite Password</span>
+            <span className="label-text-alt">Optional</span>
+          </div>
+          <input
+            type="text"
+            placeholder="Optional password"
+            className="input input-bordered w-full max-w-xs"
+          />
+        </label>
+      </div>
+
+      <div>
+        <label className="form-control w-full max-w-xs">
+          <div className="label">
+            <span className="label-text">Pick group</span>
+          </div>
+          <select className="select select-bordered">
+            <option
+              disabled
+              selected>
+              Pick Group
+            </option>
+            {options}
+          </select>
+        </label>
+      </div>
+    </form>
   );
+}
+
+//utility functions
+
+function createOptions(options: GroupOptionT[]) {
+  return options.map((optionData) => {
+    return <option value={optionData.id}>{optionData.name}</option>;
+  });
 }
