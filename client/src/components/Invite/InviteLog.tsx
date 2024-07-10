@@ -27,7 +27,6 @@ type InviteLogProps = {
 export default function InviteLog({ invites = testInvites }: InviteLogProps) {
   return (
     <div>
-      {" "}
       <table className=" w-full">
         <section className=""></section>
 
@@ -54,7 +53,7 @@ function InviteListing({ invite }: { invite: InviteT }) {
       <td className="text-center">
         <ul>
           {invite.groups.map((g) => (
-            <li>
+            <li key={g.id}>
               {g.id}:{g.name}
             </li>
           ))}
