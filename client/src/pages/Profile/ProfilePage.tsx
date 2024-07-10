@@ -3,10 +3,15 @@ import UserInfoContainer from "../../components/Profile/UserInfoContainer";
 
 export default function ProfilePage(): React.ReactNode {
   return (
-    <section className="text-slate-400 bg-emerald-400  flex flex-col ">
+    <section className="text-slate-400   flex flex-col ">
       <div className="flex">
-        <main className="w-4/6 min-h-[400px] bg-red-950 m-0 p-1">
-          <UserInfoContainer />
+        <main className="w-4/6 min-h-[400px] m-0 p-1">
+          <div className="p-2">
+            <UserInfoContainer />
+          </div>
+          <div className="p-2">
+            <InviteToolContainer />
+          </div>
         </main>
 
         {/* side bar */}
@@ -14,7 +19,6 @@ export default function ProfilePage(): React.ReactNode {
           aside
         </aside>
       </div>
-      <InviteToolContainer />
     </section>
   );
 }
