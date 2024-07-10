@@ -1,15 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useInviteManager from "../../hooks/useInviteManager";
 import InviteLog from "./InviteLog";
 import InviteTool from "./InviteTool";
-
-type InviteT = {
-  inviteCode: string;
-  invitePassword: string;
-  groups: { id: string; name: string }[];
-  createdAt: string;
-  status: string;
-};
 
 export default function InviteToolContainer() {
   //todo get any invites user has pending
