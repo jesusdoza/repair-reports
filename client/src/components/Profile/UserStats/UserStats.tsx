@@ -2,9 +2,9 @@ export default function UserStats() {
   return (
     <div className="flex flex-col">
       <div className="self-center">
-        <div className="avatar">
-          <div className="w-[300px] rounded-xl">
-            <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+        <div className="avatar placeholder">
+          <div className="bg-neutral text-neutral-content w-[300px] rounded-full">
+            <span className="text-[100px]">D</span>
           </div>
         </div>
       </div>
