@@ -1,4 +1,4 @@
-import UserInforUpdateForm from "./UserInfoUpdateForm";
+import UserInforUpdateForm from "./ProfileUpdate/UserInfoUpdateForm";
 
 export default function UserInfoContainer() {
   //todo get users profile
