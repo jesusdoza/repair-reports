@@ -14,7 +14,6 @@ type InviteT = {
 export default function InviteToolContainer() {
   //todo get any invites user has pending
   const { getUserInvites, data: inviteData } = useInviteManager();
-  // const [invites, setInvites] = useState<InviteT[]>([]);
 
   useEffect(() => {
     getUserInvites();
