@@ -32,7 +32,20 @@ export default function useInviteManager() {
       }
     }
   }
-  function postInvite() {}
+  async function postInvite({
+    groups,
+    password,
+  }: {
+    groups: string[];
+    password: string;
+  }) {
+    const body = { groups, password };
+
+    const response = axios.post(`${API_URL}/api/invite`, body, {
+      withCredentials: true,
+    });
+    return response;
+  }
 
   return { getUserInvites, postInvite, data };
 }
