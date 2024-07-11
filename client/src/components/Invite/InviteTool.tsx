@@ -1,6 +1,10 @@
-import { useState } from "react";
+// import useInviteManager from "../../hooks/useInviteManager";
 
-type GroupOptionT = {
+import { useState } from "react";
+import { Form } from "react-router-dom";
+import CreatableSelect from "react-select/creatable";
+
+export type GroupOptionT = {
   id: string;
   name: string;
 };
@@ -8,21 +12,34 @@ type GroupOptionT = {
 //TODO remove test and use hook
 const TestAvailableGroups = [
   { id: "1234", name: "cool group" },
-  { id: "1234533", name: "another group" },
+  { id: "12d3", name: "another group" },
+  { id: "1dfadf4533", name: "another group" },
+  { id: "12dfag33", name: "another group" },
+  { id: "122222533", name: "another group" },
+  { id: "99999533", name: "another group" },
+  { id: "100004533", name: "another group" },
+  { id: "13423543", name: "another group" },
 ];
 
-export default function InviteTool() {
-  const [groupOptions, setGroupOptions] =
-    useState<GroupOptionT[]>(TestAvailableGroups);
+type InviteToolProps = {
+  availableGroups?: GroupOptionT[];
+  onPostInvite: (groupIds: string[], password?: string) => Promise<void>;
+};
 
+export default function InviteTool({
+  availableGroups = TestAvailableGroups,
+  onPostInvite,
+}: InviteToolProps) {
   return (
     <section className="relative p-2 border rounded-lg border-blue-600">
-      <div className="flex justify-between">
+      <div>
         <div>
-          <CreateInviteForm groupOptions={groupOptions} />
-        </div>
-        <div className="btn btn-sm ">
-          <span>create invite +</span>
+          <InviteForm
+            onSubmit={(groupIds: string[], password: string) => {
+              onPostInvite(groupIds, password);
+            }}
+            groupOptions={availableGroups}
+          />
         </div>
       </div>
     </section>
@@ -31,12 +48,19 @@ export default function InviteTool() {
 
 type CreateInviteFormPropsT = {
   groupOptions?: GroupOptionT[];
+  onSubmit: (groupIds: string[], password: string) => void;
 };
 
-function CreateInviteForm({ groupOptions = [] }: CreateInviteFormPropsT) {
-  const options = createOptions(groupOptions);
+function InviteForm({ groupOptions = [], onSubmit }: CreateInviteFormPropsT) {
+  const options = groupOptions.map((option) => {
+    return { label: option.name, value: option.id };
+  });
+
+  const [groupIds, setGroupIds] = useState<string[]>([]);
+  const [password] = useState("");
+
   return (
-    <form className="flex flex-wrap">
+    <Form className="flex flex-wrap relative">
       <div>
         <label className="form-control w-full max-w-xs">
           <div className="label">
@@ -45,6 +69,9 @@ function CreateInviteForm({ groupOptions = [] }: CreateInviteFormPropsT) {
           </div>
           <input
             type="text"
+            onChange={(event) => {
+              console.log("password", event.target.value);
+            }}
             placeholder="Optional password"
             className="input input-bordered w-full max-w-xs"
           />
@@ -56,24 +83,49 @@ function CreateInviteForm({ groupOptions = [] }: CreateInviteFormPropsT) {
           <div className="label">
             <span className="label-text">Pick group</span>
           </div>
-          <select className="select select-bordered">
-            <option
-              disabled
-              selected>
-              Pick Group
-            </option>
-            {options}
-          </select>
+          <CreatableSelect
+            isMulti
+            className=" w-full"
+            // defaultValue={defaultValue ? defaultValue : options[0]}
+            isClearable
+            onChange={(options) => {
+              // if (callback) callback(options);
+              const groupIds = options.map((tagObj) => {
+                return tagObj.value;
+              });
+              // console.log("groupIds", groupIds);
+              setGroupIds(groupIds);
+
+              return;
+            }}
+            options={options}
+          />
         </label>
       </div>
-    </form>
+      <div className="btn btn-sm absolute right-0">
+        <div
+          onClick={() => {
+            if (onSubmit) {
+              onSubmit(groupIds, password);
+            }
+          }}>
+          create invite +
+        </div>
+      </div>
+    </Form>
   );
 }
 
 //utility functions
-
 function createOptions(options: GroupOptionT[]) {
   return options.map((optionData) => {
-    return <option value={optionData.id}>{optionData.name}</option>;
+    // return <option value={optionData.id}>{optionData.name}</option>;
+    return (
+      <input
+        type="checkbox"
+        value={optionData.id}>
+        {/* {optionData.name} */}
+      </input>
+    );
   });
 }
