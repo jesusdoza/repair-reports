@@ -37,7 +37,7 @@ export default function useInviteManager() {
     password,
   }: {
     groups: string[];
-    password: string;
+    password?: string;
   }) {
     const body = { groups, password };
 
