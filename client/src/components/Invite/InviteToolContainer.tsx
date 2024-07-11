@@ -5,7 +5,12 @@ import InviteTool from "./InviteTool";
 
 export default function InviteToolContainer() {
   //todo get any invites user has pending
-  const { getUserInvites, data: inviteData } = useInviteManager();
+  const { getUserInvites, data: inviteData, postInvite } = useInviteManager();
+
+  const handlePostInvite = async (groupIds: string[], password?: string) => {
+    console.log("groupIds", groupIds);
+    // await postInvite({ groups: groupIds, password });
+  };
 
   useEffect(() => {
     getUserInvites();
@@ -13,7 +18,7 @@ export default function InviteToolContainer() {
 
   return (
     <div className="p-1 ">
-      <InviteTool />
+      <InviteTool onPostInvite={handlePostInvite} />
       <InviteLog invites={inviteData} />
     </div>
   );
