@@ -8,8 +8,8 @@ export default function InviteToolContainer() {
   const { getUserInvites, data: inviteData, postInvite } = useInviteManager();
 
   const handlePostInvite = async (groupIds: string[], password?: string) => {
-    console.log("groupIds", groupIds);
-    // await postInvite({ groups: groupIds, password });
+    const response = await postInvite({ groups: groupIds, password });
+    console.log("response", response);
   };
 
   useEffect(() => {
