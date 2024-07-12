@@ -11,7 +11,7 @@ export type GroupOptionT = {
 
 //TODO remove test and use hook
 const TestAvailableGroups = [
-  { id: "1234", name: "cool group" },
+  { id: "66906fdfaf083055ee5677a1", name: "cata" },
   { id: "12d3", name: "another group" },
   { id: "1dfadf4533", name: "another group" },
   { id: "12dfag33", name: "another group" },
@@ -114,18 +114,4 @@ function InviteForm({ groupOptions = [], onSubmit }: CreateInviteFormPropsT) {
       </div>
     </Form>
   );
-}
-
-//utility functions
-function createOptions(options: GroupOptionT[]) {
-  return options.map((optionData) => {
-    // return <option value={optionData.id}>{optionData.name}</option>;
-    return (
-      <input
-        type="checkbox"
-        value={optionData.id}>
-        {/* {optionData.name} */}
-      </input>
-    );
-  });
 }
