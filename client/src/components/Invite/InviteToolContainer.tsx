@@ -10,6 +10,7 @@ export default function InviteToolContainer() {
   const handlePostInvite = async (groupIds: string[], password?: string) => {
     const response = await postInvite({ groups: groupIds, password });
     console.log("response", response);
+    getUserInvites();
   };
 
   useEffect(() => {
