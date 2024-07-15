@@ -225,4 +225,5 @@ module.exports = {
   getNewestRepairs,
   updateRepair,
   getRepairsforUser,
+  searchRepairs,
 };
