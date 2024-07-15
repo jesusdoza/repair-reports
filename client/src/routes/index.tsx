@@ -6,6 +6,7 @@ import RepairFormPage from "../pages/CreateRepairFormPage";
 import DashboardPage from "../pages/dashboard/DashboardPageContainer";
 import { RepairInfoPageContainer } from "../pages/RepairInfoPageContainer";
 import EditRepairPageV2 from "../pages/EditRepairPageV2";
+import SearchPage from "../pages/search/SearchPage";
 
 export const routes = createBrowserRouter([
   {
@@ -64,6 +65,14 @@ export const routes = createBrowserRouter([
     element: (
       <Layout>
         <LatestRepairsPage />
+      </Layout>
+    ),
+  },
+  {
+    path: "/search",
+    element: (
+      <Layout>
+        <SearchPage />
       </Layout>
     ),
   },
