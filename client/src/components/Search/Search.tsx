@@ -8,8 +8,10 @@ export default function Search(): React.ReactNode {
   const handleSearch = async (event: React.SyntheticEvent) => {
     event.preventDefault();
     console.log("search", search);
-    const results = await searchForRepair(search);
-    console.log("results", results);
+    if (search) {
+      const results = await searchForRepair(search);
+      console.log("results", results);
+    }
   };
   return (
     <form onSubmit={handleSearch}>
