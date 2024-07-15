@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 import { Repair } from "../classes/Repair";
 import useAuthContext from "./useAuthContext";
-import { signatureT } from "../../types";
+import { RepairDataT, signatureT } from "../../types";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -36,7 +36,9 @@ const useRepairApi = () => {
           withCredentials: true,
         }
       );
-      return response.data;
+      return response?.data?.repairs
+        ? (response?.data?.repairs as RepairDataT[])
+        : [];
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error?.response?.status && error?.response?.status == 401) {
