@@ -69,11 +69,19 @@ export const routes = createBrowserRouter([
     ),
   },
   {
-    path: "/search/:search/:limit/:page",
+    path: "/search",
     element: (
       <Layout>
         <SearchPage />
       </Layout>
     ),
   },
+  // {
+  //   path: "/search/:search/:limit/:page",
+  //   element: (
+  //     <Layout>
+  //       <SearchPage />
+  //     </Layout>
+  //   ),
+  // },
 ]);
