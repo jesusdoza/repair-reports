@@ -6,19 +6,21 @@ export interface InviteT {
   status: string;
 }
 
-export function InviteListing({ invite }: { invite: InviteT }) {
+export function InviteListing({ invite }: { invite?: InviteT }) {
   return (
     <tr>
-      <td className="text-center">{invite.status}</td>
-      <td className="text-center">{invite.inviteCode}</td>
-      <td className="text-center">{invite.invitePassword}</td>
+      <td className="text-center">{invite?.status || ""}</td>
+      <td className="text-center">{invite?.inviteCode || ""}</td>
+      <td className="text-center">{invite?.invitePassword || ""}</td>
       <td className="text-center">
         <ul>
-          {invite.groups.map((g) => (
-            <li key={g.id}>
-              {g.id}:{g.name}
-            </li>
-          ))}
+          {invite?.groups
+            ? invite?.groups.map((g) => (
+                <li key={g.id}>
+                  {g.id}:{g.name}
+                </li>
+              ))
+            : ""}
         </ul>
       </td>
     </tr>

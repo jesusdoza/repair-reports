@@ -1,5 +1,6 @@
 import { it, expect, describe } from "vitest";
 import { render, screen } from "@testing-library/react";
+import "@testing-library/jest-dom/vitest";
 import {
   InviteListing,
   InviteT,
@@ -14,9 +15,26 @@ const testInviteData: InviteT = {
 };
 
 describe("InviteListing", () => {
-  it("should render listing of invites when list is provided ", () => {
+  it("should render listing when invite is provided ", () => {
     render(<InviteListing invite={testInviteData} />);
 
-    screen.debug();
+    const row = screen.getByRole("row");
+
+    expect(row).toBeInTheDocument();
+  });
+  it("should render listing with missing props ", () => {
+    render(<InviteListing />);
+
+    const row = screen.getByRole("row");
+
+    expect(row).toBeInTheDocument();
+  });
+
+  it("should render listing with invalid data ", () => {
+    render(<InviteListing invite={{ id: 12312, test: 12314 }} />);
+
+    const row = screen.getByRole("row");
+
+    expect(row).toBeInTheDocument();
   });
 });
