@@ -20,6 +20,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "types.ts", "tests/components/InviteListing.test.tsx"],
+  "include": ["src", "types.ts", "tests"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
