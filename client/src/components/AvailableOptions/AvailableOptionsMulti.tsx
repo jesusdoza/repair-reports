@@ -33,7 +33,6 @@ export default function AvailableOptionsMulti({
       </div>
       <div className="flex-1 flex justify-center w-[300px]">
         <CreatableSelect
-          id={id}
           isMulti
           className="w-full"
           // defaultValue={defaultValue ? defaultValue : options[0]}
