@@ -21,6 +21,6 @@ router.use("/repairs", ensureAuthApi, repairRouter);
 router.use("/signform", ensureAuthApi, signatureRouter);
 router.use("/images", ensureAuthApi, imagesRouter);
 
-router.use("/groups", groupsController.getUsersGroups);
+router.use("/groups", ensureAuthApi, groupsController.getUsersGroups);
 
 module.exports = router;
