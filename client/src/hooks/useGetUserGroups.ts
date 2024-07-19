@@ -31,7 +31,7 @@ export default function useGetUserGroups() {
     getUserGroups();
   }, []);
 
-  return { data: groups, getUserGroups, error };
+  return { data: groups, fetchData: getUserGroups, error };
 }
 
 async function fetchUserGroupData(): Promise<UserGroupData[]> {
