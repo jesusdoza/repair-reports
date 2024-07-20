@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import useRequestErrorHandler from "./useRequestErrorHandler";
+import axios from "axios";
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 type UserGroupData = {
   _id: string;
@@ -35,5 +38,9 @@ export default function useGetUserGroups() {
 }
 
 async function fetchUserGroupData(): Promise<UserGroupData[]> {
-  return [];
+  const result = (await axios.get(`${API_URL}/api/groups`, {
+    withCredentials: true,
+  })) as UserGroupData[];
+
+  return result;
 }
