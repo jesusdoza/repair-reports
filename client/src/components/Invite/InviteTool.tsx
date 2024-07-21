@@ -72,7 +72,7 @@ function InviteForm({ groupOptions = [], onSubmit }: CreateInviteFormPropsT) {
         {!options.length && (
           <div className="btn btn-disabled">You dont have invite access</div>
         )}
-        {options.length && (
+        {Boolean(options.length) && (
           <label className="form-control w-full max-w-xs h-full">
             <div className="label">
               <span className="label-text">Pick group</span>
