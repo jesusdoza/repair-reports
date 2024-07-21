@@ -34,9 +34,6 @@ export default function useGetUserGroups() {
   useEffect(() => {
     getUserGroups();
   }, []);
-  useEffect(() => {
-    console.log("groups", groups);
-  }, [groups]);
 
   return { data: groups, fetchData: getUserGroups, error };
 }
