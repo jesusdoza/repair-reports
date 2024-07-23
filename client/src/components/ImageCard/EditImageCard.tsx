@@ -9,6 +9,7 @@ import { ImageObj } from "../../classes/ImageObj";
 import UploadStatusBar from "./UploadStatusBar";
 import useCreateThumbUrl from "../../hooks/useCreateThumbUrl";
 import { RepairFormDataContext } from "../../context/RepairFormContext";
+import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 
 enum UploadStatus {
   SUCCESS = "SUCCESS",
@@ -312,72 +313,76 @@ export function EditImageCard({
   };
 
   return (
-    <div
-      key={uuidv4()}
-      className="relative">
-      <h3>image id :{imageUploadedObj?.imageId}</h3>
-      {/* delete x button */}
+    <ErrorBoundary componentName="EditImagecard">
       <div
-        onClick={handleImageDelete}
-        className="btn btn-circle z-10 bg-yellow-600 absolute right-0 hover:bg-red-600 hover:scale-125">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="black">
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M6 18L18 6M6 6l12 12"
-          />
-        </svg>
-      </div>
-
-      {/* alerts and status */}
-      <section className=" flex flex-col items-center h-1/8 relative">
-        {/* upload progress bar */}
-        <div className=" absolute">
-          <UploadStatusBar
-            progress={uploadProgress}
-            status={imageUploadStatus}
-          />
+        data-testid="edit-image-card"
+        key={uuidv4()}
+        className="relative">
+        <h3>image id :{imageUploadedObj?.imageId}</h3>
+        {/* delete x button */}
+        <div
+          onClick={handleImageDelete}
+          className="btn btn-circle z-10 bg-yellow-600 absolute right-0 hover:bg-red-600 hover:scale-125">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="black">
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
         </div>
-      </section>
 
-      {/* image preview or camera preview */}
-      <div className="flex flex-col max-w-[500px] h-5/6 items-center">
-        {/* camera of image preview */}
-        <div className="w-full flex flex-col justify-center items-center h-5/6">
-          <div className="h-4/6">
-            {imagePreview && !activeCamera ? (
-              <section className="w-full flex flex-col  h-full">
-                <img
-                  className=" h-full"
-                  src={imagePreview.toString()}
-                  alt="Preview"
-                />
-              </section>
-            ) : null}
-
-            {activeCamera && (
-              <section className=" flex flex-col border-solid border-2 border-cyan-400 h-full">
-                <div className="w-full h-5/6">
-                  <CameraPreview videoRef={videoRef} />
-                </div>
-
-                <div
-                  className="btn h-1/6"
-                  onClick={captureFrame}>
-                  capture
-                </div>
-              </section>
-            )}
+        {/* alerts and status */}
+        <section className=" flex flex-col items-center h-1/8 relative">
+          {/* upload progress bar */}
+          <div className=" absolute">
+            <UploadStatusBar
+              progress={uploadProgress}
+              status={imageUploadStatus}
+            />
           </div>
-          <section className="flex w-full h-2/6 item-center justify-center ">
-            {/* //! manaul image url input */}
-            {/* <div className="items-center ">
+        </section>
+
+        {/* image preview or camera preview */}
+        <div className="flex flex-col max-w-[500px] h-5/6 items-center">
+          {/* camera of image preview */}
+          <div className="w-full flex flex-col justify-center items-center h-5/6">
+            <div className="h-4/6">
+              {imagePreview && !activeCamera ? (
+                <section
+                  data-testid="image-preview"
+                  className="w-full flex flex-col  h-full">
+                  <img
+                    className=" h-full"
+                    src={imagePreview.toString()}
+                    alt="Preview"
+                  />
+                </section>
+              ) : null}
+
+              {activeCamera && (
+                <section className=" flex flex-col border-solid border-2 border-cyan-400 h-full">
+                  <div className="w-full h-5/6">
+                    <CameraPreview videoRef={videoRef} />
+                  </div>
+
+                  <div
+                    className="btn h-1/6"
+                    onClick={captureFrame}>
+                    capture
+                  </div>
+                </section>
+              )}
+            </div>
+            <section className="flex w-full h-2/6 item-center justify-center ">
+              {/* //! manaul image url input */}
+              {/* <div className="items-center ">
               Image URL
               <textarea
                 onChange={(event) => {
@@ -398,39 +403,40 @@ export function EditImageCard({
                 className="textarea textarea-bordered w-full"
                 placeholder="URL"></textarea>
             </div> */}
-          </section>
-        </div>
-
-        {/* edit tools */}
-        <div className="text-black border-2 border-s-violet-100 w-full">
-          <h3 className=" bg-gray-700">Edit Tools</h3>
-
-          <div>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-            />
+            </section>
           </div>
 
-          <div
-            className="btn btn-sm"
-            onClick={toggleCamera}>
-            {!activeCamera ? "open camera" : "close camera"}
-          </div>
+          {/* edit tools */}
+          <div className="text-black border-2 border-s-violet-100 w-full">
+            <h3 className=" bg-gray-700">Edit Tools</h3>
 
-          {isUploadable && (
-            <div
-              onClick={() => {
-                handleImageUpload("testfolder");
-              }}
-              className="btn btn-sm">
-              Manual Upload Image
+            <div>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+              />
             </div>
-          )}
+
+            <div
+              className="btn btn-sm"
+              onClick={toggleCamera}>
+              {!activeCamera ? "open camera" : "close camera"}
+            </div>
+
+            {isUploadable && (
+              <div
+                onClick={() => {
+                  handleImageUpload("testfolder");
+                }}
+                className="btn btn-sm">
+                Manual Upload Image
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </ErrorBoundary>
   );
 }
 
