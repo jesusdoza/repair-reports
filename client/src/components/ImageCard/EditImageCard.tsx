@@ -19,7 +19,7 @@ enum UploadStatus {
   DELETING = "DELETING",
 }
 
-export function EditImageCard({
+export default function EditImageCardContainer({
   url = "",
   onRemove,
   imageData,
@@ -321,6 +321,7 @@ export function EditImageCard({
         <h3>image id :{imageUploadedObj?.imageId}</h3>
         {/* delete x button */}
         <div
+          data-testid="delete-button"
           onClick={handleImageDelete}
           className="btn btn-circle z-10 bg-yellow-600 absolute right-0 hover:bg-red-600 hover:scale-125">
           <svg
