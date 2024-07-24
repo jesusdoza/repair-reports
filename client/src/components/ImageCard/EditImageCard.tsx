@@ -6,7 +6,7 @@ import { useDebouncedCallback } from "use-debounce";
 import { v4 as uuidv4 } from "uuid";
 import useImageManager from "../../hooks/useImageManager";
 import { ImageObj } from "../../classes/ImageObj";
-import UploadStatusBar from "./UploadStatusBar";
+import StatusBar from "./UploadStatusBar";
 import useCreateThumbUrl from "../../hooks/useCreateThumbUrl";
 import { RepairFormDataContext } from "../../context/RepairFormContext";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
@@ -64,6 +64,8 @@ export default function EditImageCardContainer({
   const [imageUploadStatus, setImageUploadStatus] = useState<UploadStatus>(
     isDeletable ? UploadStatus.SUCCESS : UploadStatus.IDLE
   );
+
+  const [errorMessage, setErrorMessage] = useState<string[]>([]);
 
   //number to track percentage of image action progress
   const [uploadProgress, setUploadProgress] = useState(10);
@@ -168,6 +170,9 @@ export default function EditImageCardContainer({
       } catch (error) {
         console.log("error uploading", error);
         setImageUploadStatus(UploadStatus.ERROR);
+        setErrorMessage((state) => {
+          return [...state, "error uploading"];
+        });
         return;
       }
     }
@@ -194,6 +199,7 @@ export default function EditImageCardContainer({
       } catch (error) {
         // reset image obj and do not remove from dom
         alert("failed to delete image");
+
         // setImageUploadedObj(imageUploadedObj);
         return;
       }
@@ -330,6 +336,7 @@ export default function EditImageCardContainer({
         onCapture={captureFrame}
         url={String(imagePreview)}
         videoRef={videoRef}
+        errorMessages={errorMessage}
       />
     </ErrorBoundary>
   );
@@ -340,7 +347,8 @@ type EditImageCardPropsT = {
   imageId?: string;
   url: string;
   onRemove?: () => void;
-  uploadStatus?: string;
+  errorMessages?: string[];
+  uploadStatus?: UploadStatus;
   uploadProgress?: number;
   isCameraActive: boolean;
   uploadAllowed: boolean;
@@ -355,6 +363,7 @@ function EditImageCard({
   imageId = "",
   url,
   uploadStatus,
+  errorMessages,
   onRemove,
   uploadProgress,
   isCameraActive: activeCamera,
@@ -397,7 +406,8 @@ function EditImageCard({
       <section className=" flex flex-col items-center h-1/8 relative">
         {/* upload progress bar */}
         <div className=" absolute">
-          <UploadStatusBar
+          <StatusBar
+            errorMessages={errorMessages}
             progress={uploadProgress ? uploadProgress : 0}
             status={uploadStatus ? uploadStatus : ""}
           />

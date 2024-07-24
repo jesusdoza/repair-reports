@@ -1,7 +1,8 @@
 import EditImageCardContainer from "../../src/components/ImageCard/EditImageCard";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, getByRole, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 import { ImageObj } from "../../src/classes/ImageObj";
+import { act } from "react";
 
 describe("EditImageCard tests", () => {
   const testImageUrl = "https://placekitten.com/200/300";
@@ -21,25 +22,12 @@ describe("EditImageCard tests", () => {
     expect(imgElement?.src).toBe(testImageUrl);
   });
 
-  // it("should display message on eror", () => {
-  //   const { container } = render(
-  //     <EditImageCardContainer onRemove={() => console.log("test error")} />
-  //   );
-
-  //   const deleteBtn = screen.getByTestId("delete-button");
-
-  //   act(() => {
-  //     fireEvent.click(deleteBtn);
-  //   });
-
-  //   screen.debug();
-  // });
   it("should display uploaded status on http urls", () => {
     const testImageData = new ImageObj();
     testImageData.imageUrl =
       "https://media.istockphoto.com/id/1095522328/photo/searching-missing-piece.jpg?s=2048x2048&w=is&k=20&c=RnVaIz5Y2GZTLDeA2mRrWgg1YjjdSbCu50WkyzzJGbc=";
 
-    const { container } = render(
+    render(
       //@ts-expect-error testing render
       <EditImageCardContainer
         url={testImageData.imageUrl}
@@ -47,11 +35,24 @@ describe("EditImageCard tests", () => {
       />
     );
 
-    const imgElement = container.querySelector("img");
-    screen.debug();
-    screen.getByText("uploaded");
-    expect(imgElement?.src).toBe(testImageData.imageUrl);
+    screen.getByTestId("upload-status-bar");
+    const statusElem = screen.getByTestId("status");
+    expect(statusElem.textContent).toMatch(/uploaded/i);
   });
 
-  it("should display camera when activated", () => {});
+  it("should call on remove method", () => {
+    const onRemove = vi.fn();
+    render(
+      <EditImageCardContainer
+        //@ts-expect-error testing render
+        imageData={{ _id: "1" }}
+        onRemove={onRemove}
+      />
+    );
+    const deleteBtn = screen.getByTestId("delete-button");
+    act(() => {
+      fireEvent.click(deleteBtn);
+    });
+    expect(onRemove).toBeCalledTimes(1);
+  });
 });
