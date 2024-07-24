@@ -24,7 +24,7 @@ export default function UploadStatusBar({
         {/* uploaded success badge */}
         {status == "SUCCESS" && (
           <div className="badge bg-green-500 text-black absolute left-0">
-            <Check className=" text-slate-800" /> uploaded
+            <Check className=" text-slate-800" /> <h3>uploaded</h3>
           </div>
         )}
 
