@@ -318,15 +318,18 @@ export default function EditImageCardContainer({
         onUpload={() => {
           handleImageUpload("testfolder");
         }}
+        onFileChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+          handleFileChange(event);
+        }}
+        uploadStatus={imageUploadStatus}
+        uploadProgress={uploadProgress}
+        onRemove={handleImageDelete}
         uploadAllowed={isUploadable}
         isCameraActive={activeCamera}
         onToggleCamera={toggleCamera}
         onCapture={captureFrame}
-        url={imagePreview}
+        url={String(imagePreview)}
         videoRef={videoRef}
-        onFileChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          handleFileChange(event);
-        }}
       />
     </ErrorBoundary>
   );
@@ -395,8 +398,8 @@ function EditImageCard({
         {/* upload progress bar */}
         <div className=" absolute">
           <UploadStatusBar
-            progress={uploadProgress}
-            status={uploadStatus}
+            progress={uploadProgress ? uploadProgress : 0}
+            status={uploadStatus ? uploadStatus : ""}
           />
         </div>
       </section>
