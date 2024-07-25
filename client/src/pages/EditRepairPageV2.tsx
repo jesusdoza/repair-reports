@@ -19,9 +19,9 @@ export default function EditRepairPageV2() {
     try {
       setSubmitAllowed(false);
       console.log("repair", repair);
-      // await updateRepair(repair);
-      // setSubmitAllowed(true);
-      // navigate(`/repair/${repairId}`);
+      await updateRepair(repair);
+      setSubmitAllowed(true);
+      navigate(`/repair/${repairId}`);
     } catch (error) {
       setSubmitAllowed(true);
       console.log("error handleUpdate @RepairPage ", error);
