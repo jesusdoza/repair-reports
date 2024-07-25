@@ -86,7 +86,9 @@ export default function EditProcedureCard({
   }
 
   return (
-    <div className="p-3 card relative border border-solid border-slate-700">
+    <div
+      data-testid="edit-procedure-card"
+      className="p-3 card relative border border-solid border-slate-700">
       {/* delete procedure button */}
 
       <div
