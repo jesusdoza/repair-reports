@@ -34,6 +34,7 @@ export default function EditProcedureList({
 
   const { formAction } = useContext(RepairFormDataContext);
 
+  //sets up the procedure list
   useEffect(() => {
     setProcedureList(() => {
       return initializeProcedures({
@@ -79,6 +80,8 @@ export default function EditProcedureList({
   );
 }
 
+///*************************** */ UTILITY FUNCTIONS********************************
+
 /// initialize display components and form state to match
 function initializeProcedures({
   procs,
@@ -99,6 +102,7 @@ function initializeProcedures({
   _id: string;
   component: React.ReactNode;
 }[] {
+  //create array of objects consisting of id and react component {_d:string, component:< component/>}
   const procedureComponents = procs.map((procedureData) => {
     const _id = procedureData?._id ? procedureData?._id : uuidv4();
     return {
@@ -156,6 +160,7 @@ function addProcedureAfter({
   });
 }
 
+//returns react component representing Procedure
 function createProcedureCard({
   id,
   setter,
