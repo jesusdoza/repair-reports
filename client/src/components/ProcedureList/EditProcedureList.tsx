@@ -32,7 +32,7 @@ export default function EditProcedureList({
     }[]
   >([]);
 
-  const { formAction, repairFormData } = useContext(RepairFormDataContext);
+  const { formAction } = useContext(RepairFormDataContext);
 
   //sets up the procedure list
   useEffect(() => {
@@ -198,6 +198,9 @@ function createProcedureCard({
             const newStateList = state.filter((item) => item._id != id);
 
             // return state;
+            if (formAction?.removeImage) {
+              formAction.removeProcedure(id);
+            }
             return newStateList;
           });
         }}
