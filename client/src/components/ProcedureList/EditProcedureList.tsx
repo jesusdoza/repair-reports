@@ -206,6 +206,7 @@ function createProcedureCard({
         }}
       />
       <div
+        data-testid="add-procedure-btn"
         onClick={() => {
           const newProc = new Procedure();
 
