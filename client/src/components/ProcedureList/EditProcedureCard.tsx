@@ -92,6 +92,7 @@ export default function EditProcedureCard({
       {/* delete procedure button */}
 
       <div
+        data-testid="remove-procedure-btn"
         onClick={() => {
           handleRemoveProcedure();
         }}
