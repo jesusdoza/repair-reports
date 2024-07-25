@@ -25,21 +25,21 @@ export default function EditProcedureList({
 }): React.ReactNode {
   //
   //starting out procedures state
-  const [ProcedureList, setProcedureList] = useState<
+  const [procedureComponentList, setProcedureComponentList] = useState<
     {
       _id: string;
       component: React.ReactNode;
     }[]
   >([]);
 
-  const { formAction } = useContext(RepairFormDataContext);
+  const { formAction, repairFormData } = useContext(RepairFormDataContext);
 
   //sets up the procedure list
   useEffect(() => {
-    setProcedureList(() => {
+    setProcedureComponentList(() => {
       return initializeProcedures({
         procs: procedureList,
-        setter: setProcedureList,
+        setter: setProcedureComponentList,
         formAction,
       });
     });
@@ -55,26 +55,26 @@ export default function EditProcedureList({
 
           //sync components in state
           addAtBegining({
-            setter: setProcedureList,
+            setter: setProcedureComponentList,
             itemToAdd: {
               _id,
               component: createProcedureCard({
                 procedure,
                 id: _id,
-                setter: setProcedureList,
+                setter: setProcedureComponentList,
                 formAction,
               }),
             },
           });
 
           ///sync component to form context
-          formAction.addProcedureAtBegining(procedure);
+          // formAction.addProcedureAtBegining(procedure);
         }}
         className="btn">
         Add new Procedure at begining
       </div>
       <ul className="w-full flex flex-col gap-2 overflow-hidden">
-        {ProcedureList.map((proc) => proc.component)}
+        {procedureComponentList.map((proc) => proc.component)}
       </ul>
     </div>
   );
@@ -139,6 +139,12 @@ function addAtBegining({
 }
 
 ///setter to update state , item to add to state, id to target component in array
+/**
+ *
+ * @param setter state setter to add procedure to state
+ * @param itemToAdd object to add to state after the selected procedure
+ * @param id id of procedure to target so item can be placed after it
+ */
 function addProcedureAfter({
   setter,
   itemToAdd,
@@ -147,7 +153,7 @@ function addProcedureAfter({
   setter: React.Dispatch<React.SetStateAction<ProcedureListItemT[]>>;
   itemToAdd: ProcedureListItemT;
   id: string;
-}) {
+}): void {
   setter((state) => {
     const newState = addItem({
       pos: "after",
@@ -200,7 +206,7 @@ function createProcedureCard({
         onClick={() => {
           const newProc = new Procedure();
 
-          console.log("added: ", newProc._id);
+          // console.log("added: ", newProc._id);
 
           addProcedureAfter({
             id,

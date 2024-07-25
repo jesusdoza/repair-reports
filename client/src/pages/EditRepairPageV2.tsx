@@ -16,12 +16,12 @@ export default function EditRepairPageV2() {
   const navigate = useNavigate();
 
   const handleUpdateRepair = async (repair: Repair) => {
-    console.log("update currentFormState", repair);
     try {
       setSubmitAllowed(false);
-      await updateRepair(repair);
-      setSubmitAllowed(true);
-      navigate(`/repair/${repairId}`);
+      console.log("repair", repair);
+      // await updateRepair(repair);
+      // setSubmitAllowed(true);
+      // navigate(`/repair/${repairId}`);
     } catch (error) {
       setSubmitAllowed(true);
       console.log("error handleUpdate @RepairPage ", error);
@@ -53,12 +53,7 @@ export default function EditRepairPageV2() {
   return (
     <RepairContextProvider>
       <section>
-        <h3
-          onClick={() => {
-            console.log("repair", repair);
-          }}>
-          Edit Your Repair here V2
-        </h3>
+        <h3>Edit Your Repair here V2</h3>
         {repair && (
           <RepairEditForm
             onSubmit={handleUpdateRepair}
