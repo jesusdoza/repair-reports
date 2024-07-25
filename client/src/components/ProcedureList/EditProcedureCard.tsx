@@ -20,12 +20,10 @@ export default function EditProcedureCard({
   id?: string;
   onRemove?: () => void;
 }) {
-  console.log("myid is :", id);
   const { formAction } = useContext(RepairFormDataContext);
   const { updateInstructions } = formAction;
   const { imageObjs } = procedureData; //TODO images on procedure
   const PROCEDURE_ID = procedureData._id ? procedureData._id : id;
-  console.log("PROCEDURE_ID", PROCEDURE_ID);
   const { deleteImage } = useImageManager();
 
   const [instructions, setInstructions] = useState(procedureData.instructions);

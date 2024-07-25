@@ -27,7 +27,7 @@ function addItem<T extends ItemWithIdT>({
   }
 
   //find item and pos before or after
-  let temp = [];
+
   const targetIndex = newArr.findIndex((element) => element?._id == id);
 
   if (targetIndex == -1) {
@@ -50,9 +50,7 @@ function addItem<T extends ItemWithIdT>({
     front.push(item);
   }
 
-  temp = front.concat(end);
-
-  return temp;
+  return front.concat(end);
 }
 
 export { addItem };

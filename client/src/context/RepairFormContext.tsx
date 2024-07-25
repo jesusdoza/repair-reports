@@ -114,12 +114,22 @@ export const RepairContextProvider = ({
 
   ///add procedure after the id provided
   function addProcedureAfter(id: string, item: Procedure) {
+    if (repairFormData.procedureArr.length < 2) {
+      setRepairFormData((state) => {
+        state.procedureArr.push(item);
+
+        return state;
+      });
+      return;
+    }
+
     const newArr = addItem({
       id,
       pos: "after",
       arr: repairFormData.procedureArr,
       item,
     });
+
     setRepairFormData((state) => {
       state.procedureArr = newArr;
 
@@ -132,6 +142,8 @@ export const RepairContextProvider = ({
     const newRepair = new Repair(repair);
 
     setRepairFormData(newRepair);
+
+    console.log("setRepairdata");
   }
 
   function updateEngineMake(value: string) {
