@@ -68,7 +68,7 @@ export default function EditProcedureList({
           });
 
           ///sync component to form context
-          // formAction.addProcedureAtBegining(procedure);
+          formAction.addProcedureAtBegining(procedure);
         }}
         className="btn">
         Add new Procedure at begining
