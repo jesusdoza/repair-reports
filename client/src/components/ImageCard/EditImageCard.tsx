@@ -6,9 +6,10 @@ import { useDebouncedCallback } from "use-debounce";
 import { v4 as uuidv4 } from "uuid";
 import useImageManager from "../../hooks/useImageManager";
 import { ImageObj } from "../../classes/ImageObj";
-import UploadStatusBar from "./UploadStatusBar";
+import StatusBar from "./UploadStatusBar";
 import useCreateThumbUrl from "../../hooks/useCreateThumbUrl";
 import { RepairFormDataContext } from "../../context/RepairFormContext";
+import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 
 enum UploadStatus {
   SUCCESS = "SUCCESS",
@@ -18,7 +19,7 @@ enum UploadStatus {
   DELETING = "DELETING",
 }
 
-export function EditImageCard({
+export default function EditImageCardContainer({
   url = "",
   onRemove,
   imageData,
@@ -63,6 +64,8 @@ export function EditImageCard({
   const [imageUploadStatus, setImageUploadStatus] = useState<UploadStatus>(
     isDeletable ? UploadStatus.SUCCESS : UploadStatus.IDLE
   );
+
+  const [errorMessage, setErrorMessage] = useState<string[]>([]);
 
   //number to track percentage of image action progress
   const [uploadProgress, setUploadProgress] = useState(10);
@@ -167,6 +170,9 @@ export function EditImageCard({
       } catch (error) {
         console.log("error uploading", error);
         setImageUploadStatus(UploadStatus.ERROR);
+        setErrorMessage((state) => {
+          return [...state, "error uploading"];
+        });
         return;
       }
     }
@@ -193,6 +199,7 @@ export function EditImageCard({
       } catch (error) {
         // reset image obj and do not remove from dom
         alert("failed to delete image");
+
         // setImageUploadedObj(imageUploadedObj);
         return;
       }
@@ -312,13 +319,73 @@ export function EditImageCard({
   };
 
   return (
+    <ErrorBoundary componentName="EditImagecard">
+      <EditImageCard
+        onUpload={() => {
+          handleImageUpload("testfolder");
+        }}
+        onFileChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+          handleFileChange(event);
+        }}
+        uploadStatus={imageUploadStatus}
+        uploadProgress={uploadProgress}
+        onRemove={handleImageDelete}
+        uploadAllowed={isUploadable}
+        isCameraActive={activeCamera}
+        onToggleCamera={toggleCamera}
+        onCapture={captureFrame}
+        url={String(imagePreview)}
+        videoRef={videoRef}
+        errorMessages={errorMessage}
+      />
+    </ErrorBoundary>
+  );
+}
+
+//todo extract view from the logic
+type EditImageCardPropsT = {
+  imageId?: string;
+  url: string;
+  onRemove?: () => void;
+  errorMessages?: string[];
+  uploadStatus?: UploadStatus;
+  uploadProgress?: number;
+  isCameraActive: boolean;
+  uploadAllowed: boolean;
+  videoRef: React.RefObject<HTMLVideoElement>;
+  onCapture: () => void;
+  onFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onToggleCamera: () => void;
+  onUpload: () => void;
+};
+
+function EditImageCard({
+  imageId = "",
+  url,
+  uploadStatus,
+  errorMessages,
+  onRemove,
+  uploadProgress,
+  isCameraActive: activeCamera,
+  videoRef,
+  onCapture,
+  onFileChange,
+  onToggleCamera,
+  uploadAllowed,
+  onUpload,
+}: EditImageCardPropsT) {
+  return (
     <div
+      data-testid="edit-image-card"
       key={uuidv4()}
       className="relative">
-      <h3>image id :{imageUploadedObj?.imageId}</h3>
+      <h3>image id :{imageId}</h3>
       {/* delete x button */}
       <div
-        onClick={handleImageDelete}
+        data-testid="delete-button"
+        onClick={() => {
+          if (onRemove) onRemove();
+        }}
         className="btn btn-circle z-10 bg-yellow-600 absolute right-0 hover:bg-red-600 hover:scale-125">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -339,9 +406,10 @@ export function EditImageCard({
       <section className=" flex flex-col items-center h-1/8 relative">
         {/* upload progress bar */}
         <div className=" absolute">
-          <UploadStatusBar
-            progress={uploadProgress}
-            status={imageUploadStatus}
+          <StatusBar
+            errorMessages={errorMessages}
+            progress={uploadProgress ? uploadProgress : 0}
+            status={uploadStatus ? uploadStatus : ""}
           />
         </div>
       </section>
@@ -351,11 +419,14 @@ export function EditImageCard({
         {/* camera of image preview */}
         <div className="w-full flex flex-col justify-center items-center h-5/6">
           <div className="h-4/6">
-            {imagePreview && !activeCamera ? (
-              <section className="w-full flex flex-col  h-full">
+            {/* there is image to preview and camera is inactive */}
+            {url && !activeCamera ? (
+              <section
+                data-testid="image-preview"
+                className="w-full flex flex-col  h-full">
                 <img
                   className=" h-full"
-                  src={imagePreview.toString()}
+                  src={url.toString()}
                   alt="Preview"
                 />
               </section>
@@ -369,7 +440,7 @@ export function EditImageCard({
 
                 <div
                   className="btn h-1/6"
-                  onClick={captureFrame}>
+                  onClick={onCapture}>
                   capture
                 </div>
               </section>
@@ -378,26 +449,26 @@ export function EditImageCard({
           <section className="flex w-full h-2/6 item-center justify-center ">
             {/* //! manaul image url input */}
             {/* <div className="items-center ">
-              Image URL
-              <textarea
-                onChange={(event) => {
-                  // event.preventDefault();
-                  const text = event.target.value;
-                  setImagePreview(text);
-                  handleUrlChange(text);
-                }}
-                wrap="true"
-                // defaultValue={url}
-                defaultValue={
-                  typeof imagePreview == "string"
-                    ? imagePreview
-                    : "no image url"
-                }
-                // value={url}
-                cols={30}
-                className="textarea textarea-bordered w-full"
-                placeholder="URL"></textarea>
-            </div> */}
+        Image URL
+        <textarea
+          onChange={(event) => {
+            // event.preventDefault();
+            const text = event.target.value;
+            setImagePreview(text);
+            handleUrlChange(text);
+          }}
+          wrap="true"
+          // defaultValue={url}
+          defaultValue={
+            typeof imagePreview == "string"
+              ? imagePreview
+              : "no image url"
+          }
+          // value={url}
+          cols={30}
+          className="textarea textarea-bordered w-full"
+          placeholder="URL"></textarea>
+      </div> */}
           </section>
         </div>
 
@@ -409,20 +480,22 @@ export function EditImageCard({
             <input
               type="file"
               accept="image/*"
-              onChange={handleFileChange}
+              onChange={(event) => {
+                onFileChange(event);
+              }}
             />
           </div>
 
           <div
             className="btn btn-sm"
-            onClick={toggleCamera}>
+            onClick={onToggleCamera}>
             {!activeCamera ? "open camera" : "close camera"}
           </div>
 
-          {isUploadable && (
+          {uploadAllowed && (
             <div
               onClick={() => {
-                handleImageUpload("testfolder");
+                onUpload();
               }}
               className="btn btn-sm">
               Manual Upload Image
