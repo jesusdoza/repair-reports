@@ -10,6 +10,7 @@ import StatusBar from "./UploadStatusBar";
 import useCreateThumbUrl from "../../hooks/useCreateThumbUrl";
 import { RepairFormDataContext } from "../../context/RepairFormContext";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
+import { ImageCard } from "./ImagePreviewCard";
 
 enum UploadStatus {
   SUCCESS = "SUCCESS",
@@ -420,17 +421,7 @@ function EditImageCard({
         <div className="w-full flex flex-col justify-center items-center h-5/6">
           <div className="h-4/6">
             {/* there is image to preview and camera is inactive */}
-            {url && !activeCamera ? (
-              <section
-                data-testid="image-preview"
-                className="w-full flex flex-col  h-full">
-                <img
-                  className=" h-full"
-                  src={url.toString()}
-                  alt="Preview"
-                />
-              </section>
-            ) : null}
+            {url && !activeCamera ? <ImageCard url={url.toString()} /> : null}
 
             {activeCamera && (
               <section className=" flex flex-col border-solid border-2 border-cyan-400 h-full">
