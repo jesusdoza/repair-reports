@@ -1,15 +1,16 @@
 import { ProcedureT } from "../../../types";
 import { v4 as uuidv4 } from "uuid";
+import { ImageCard } from "../ImageCard/ImagePreviewCard";
 
 export function ProcedureCard({ proc }: { proc: ProcedureT }) {
   const images = proc.images.map((url: string) => {
     return (
       <li
         key={uuidv4()}
-        className="carousel-item w-3/4">
-        <img
-          src={url}
-          className="rounded-box"
+        className="carousel-item w-3/4 flex items-center">
+        <ImageCard
+          key={uuidv4()}
+          url={url}
         />
       </li>
     );
