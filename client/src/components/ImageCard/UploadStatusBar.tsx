@@ -52,7 +52,7 @@ export default function StatusBar({
             </svg>
             {errorMessages
               ? errorMessages.map((text: string) => {
-                  return <span>text</span>;
+                  return <span>{text}</span>;
                 })
               : ""}
           </section>
