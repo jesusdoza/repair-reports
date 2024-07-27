@@ -450,13 +450,14 @@ function EditImageCard({
             {/* there is image to preview and camera is inactive */}
             {url && !activeCamera ? <ImageCard url={url.toString()} /> : null}
 
-            {activeCamera && (
+            {/* {activeCamera && (
               <CaptureCamera
+                onCameraSelect={() => {}}
                 cameras={cameras}
                 onCapture={onCapture}
                 videoRef={videoRef}
               />
-            )}
+            )} */}
           </div>
           <section className="flex w-full h-2/6 item-center justify-center ">
             {/* //! manaul image url input */}
@@ -492,17 +493,18 @@ function EditImageCard({
             <input
               type="file"
               accept="image/*"
+              capture
               onChange={(event) => {
                 onFileChange(event);
               }}
             />
           </div>
 
-          <div
+          {/* <div
             className="btn btn-sm"
             onClick={onToggleCamera}>
             {!activeCamera ? "open camera" : "close camera"}
-          </div>
+          </div> */}
 
           {uploadAllowed && (
             <div
