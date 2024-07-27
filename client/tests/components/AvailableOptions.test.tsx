@@ -1,5 +1,5 @@
-import { it, expect, describe, vi, assert } from "vitest";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { it, expect, describe } from "vitest";
+import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 
 import AvailableOptions, {
@@ -14,6 +14,7 @@ const testOptions: OptionT[] = [
 
 describe("AvailableOptions component", () => {
   it("should not crash when no options given", () => {
+    //@ts-expect-error empty props
     render(<AvailableOptions />);
     const component = screen.getByTestId("available-options-single");
     expect(component).toBeInTheDocument();
@@ -21,6 +22,7 @@ describe("AvailableOptions component", () => {
   });
   it("should display original option", () => {
     render(
+      //@ts-expect-error missing props
       <AvailableOptions
         title="title text"
         options={testOptions}
