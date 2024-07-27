@@ -2,7 +2,7 @@
 
 import CreatableSelect from "react-select/creatable";
 
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
 
 export type OptionT = {
   value: string;
@@ -22,14 +22,14 @@ export default function AvailableOptionsMulti({
 }) {
   const inputTitle = title ? title : "multi select";
 
-  const id = uuidv4().slice(0, 5);
+  // const id = uuidv4().slice(0, 5);
 
   return (
     <div
       data-testid="available-options-multi"
       className="flex flex-col justify-around items-center items-center">
       <div className="flex-1 flex w-11/12 justify-center">
-        <span className="text-center">{title}</span>
+        <span className="text-center">{inputTitle}</span>
       </div>
       <div className="flex-1 flex justify-center w-[300px]">
         <CreatableSelect

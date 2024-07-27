@@ -1,15 +1,15 @@
 type userInfoProps = { email?: string; username?: string };
 
 export default function UserInforUpdateForm({
-  email,
-  username,
+  email = "",
+  username = "",
 }: userInfoProps) {
   return (
     <section>
       <form action="">
         <label className="form-control w-full max-w-xs">
           <div className="label">
-            <span className="label-text">Email</span>
+            <span className="label-text">{email}</span>
           </div>
           <input
             name="email"
@@ -20,7 +20,7 @@ export default function UserInforUpdateForm({
         </label>
         <label className="form-control w-full max-w-xs">
           <div className="label">
-            <span className="label-text">Username</span>
+            <span className="label-text">{username}</span>
           </div>
           <input
             type="text"

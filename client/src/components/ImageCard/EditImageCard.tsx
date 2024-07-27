@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 // import useUploadImage from "../../hooks/useUploadImage";
-import { CameraPreview } from "./CameraPreview";
 import { ImageObjT } from "../../../types";
 import { useDebouncedCallback } from "use-debounce";
 import { v4 as uuidv4 } from "uuid";
@@ -260,6 +259,7 @@ export default function EditImageCardContainer({
     if (activeCamera) {
       setActiveCamera(false);
 
+      //if camera running turn off
       if (mediaStreamRef.current) {
         mediaStreamRef.current.getTracks().forEach((track) => track.stop());
         mediaStreamRef.current = null;
@@ -272,9 +272,11 @@ export default function EditImageCardContainer({
     setActiveCamera(true);
     try {
       //get users camera if available
-      mediaStreamRef.current = await navigator.mediaDevices.getUserMedia({
+      const userMedia = await navigator.mediaDevices.getUserMedia({
         video: true,
       });
+
+      mediaStreamRef.current = userMedia;
 
       //if a ref has a node currently set, give it the camera stream
       if (videoRef.current) {
@@ -303,6 +305,8 @@ export default function EditImageCardContainer({
       const blobData = await fetch(dataUrl).then((res) => res.blob());
 
       const imageFileFromBlob = new File([blobData], "image.jpg");
+
+      //stop the strea
       if (mediaStreamRef.current) {
         mediaStreamRef.current.getTracks().forEach((track) => track.stop());
         mediaStreamRef.current = null;
@@ -369,12 +373,12 @@ function EditImageCard({
   uploadProgress,
   isCameraActive: activeCamera,
   videoRef,
-  onCapture,
   onFileChange,
-  onToggleCamera,
   uploadAllowed,
   onUpload,
 }: EditImageCardPropsT) {
+  useEffect(() => {}, [videoRef]);
+
   return (
     <div
       data-testid="edit-image-card"
@@ -423,19 +427,14 @@ function EditImageCard({
             {/* there is image to preview and camera is inactive */}
             {url && !activeCamera ? <ImageCard url={url.toString()} /> : null}
 
-            {activeCamera && (
-              <section className=" flex flex-col border-solid border-2 border-cyan-400 h-full">
-                <div className="w-full h-5/6">
-                  <CameraPreview videoRef={videoRef} />
-                </div>
-
-                <div
-                  className="btn h-1/6"
-                  onClick={onCapture}>
-                  capture
-                </div>
-              </section>
-            )}
+            {/* {activeCamera && (
+              <CaptureCamera
+                onCameraSelect={() => {}}
+                cameras={cameras}
+                onCapture={onCapture}
+                videoRef={videoRef}
+              />
+            )} */}
           </div>
           <section className="flex w-full h-2/6 item-center justify-center ">
             {/* //! manaul image url input */}
@@ -471,17 +470,18 @@ function EditImageCard({
             <input
               type="file"
               accept="image/*"
+              capture
               onChange={(event) => {
                 onFileChange(event);
               }}
             />
           </div>
 
-          <div
+          {/* <div
             className="btn btn-sm"
             onClick={onToggleCamera}>
             {!activeCamera ? "open camera" : "close camera"}
-          </div>
+          </div> */}
 
           {uploadAllowed && (
             <div
@@ -497,3 +497,75 @@ function EditImageCard({
     </div>
   );
 }
+
+// type CaptureCameraPropsT = {
+//   videoRef: React.RefObject<HTMLVideoElement>;
+//   onCapture: () => void;
+//   cameras: MediaDeviceInfo[];
+//   onCameraSelect: (id: string) => void;
+// };
+// function CaptureCamera({
+//   onCapture,
+//   videoRef,
+//   cameras,
+//   onCameraSelect,
+// }: CaptureCameraPropsT) {
+//   function handleSelectCam(id: string) {
+//     if (onCameraSelect) {
+//       onCameraSelect(id);
+//     }
+//   }
+
+//   return (
+//     <section className=" flex flex-col border-solid border-2 border-cyan-400 h-full">
+//       <div className="w-full h-5/6">
+//         <CameraPreview videoRef={videoRef} />
+//       </div>
+//       <label htmlFor="">
+//         input file
+//         <input
+//           type="file"
+//           accept="image/"
+//         />
+//       </label>
+//       <div
+//         className="btn h-1/6"
+//         onClick={onCapture}>
+//         capture
+//       </div>
+//       <div>
+//         {cameras.map((cam) => {
+//           return (
+//             <li>
+//               <div
+//                 onClick={() => handleSelectCam(cam.deviceId)}
+//                 className="btn btn-xs">
+//                 dfa
+//               </div>
+//             </li>
+//           );
+//         })}
+//       </div>
+//     </section>
+//   );
+// }
+
+// //************** UTILITYS  ***************/
+
+// async function getCameras({
+//   setCameras,
+// }: {
+//   setCameras: React.Dispatch<React.SetStateAction<MediaDeviceInfo[]>>;
+// }) {
+//   try {
+//     await navigator.mediaDevices.getUserMedia({ video: true }); //ask for access
+
+//     const devices = await navigator.mediaDevices.enumerateDevices();
+
+//     const videoDevs = devices.filter((device) => device.kind === "videoinput");
+
+//     setCameras(videoDevs);
+//   } catch (error) {
+//     console.log("error getting cameras", error);
+//   }
+// }

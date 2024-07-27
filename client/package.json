@@ -7,7 +7,7 @@
     "coverage": "vitest run --coverage",
     "test": "vitest",
     "test:ui": "vitest --ui --coverage.enabled=true --api 8001",
-    "dev": "vite --port 5173",
+    "dev": "vite --port 5173 --host",
     "build": "vite build --emptyOutDir --outDir ../backend/public/react",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite build --emptyOutDir --outDir ./dist && vite preview"
