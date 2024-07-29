@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import LoginCard from "../components/LoginSignUp/LoginCard";
 
@@ -55,12 +55,10 @@ export const AuthContextProvider = ({
   const [isAuth, setIsAuth] = useState(false);
   const [userInfo, setUserInfo] = useState<User | null>(null);
 
-  // useEffect(() => {
-  //   console.log("userInfo", userInfo);
-  //   console.log("userToken display for testing remove this console.log", [
-  //     userToken,
-  //   ]);
-  // }, [userToken, userInfo]);
+  useEffect(() => {
+    console.log("verigy login");
+    verifyLogin();
+  }, []);
 
   const logout = async () => {
     // console.log("logout");
@@ -119,8 +117,8 @@ export const AuthContextProvider = ({
     setIsAuth(false);
   };
 
-  const verifyLogin = async () => {
-    const response = await axios.post(`${API_URL}/api/login/status`, {
+  async function verifyLogin() {
+    const response = await axios.get(`${API_URL}/api/login/verify`, {
       withCredentials: true,
     });
     // console.log("response", response.data.user);
@@ -137,7 +135,7 @@ export const AuthContextProvider = ({
     }
 
     setIsAuth(false);
-  };
+  }
 
   const values: authContextT = {
     userToken,
