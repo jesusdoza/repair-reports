@@ -7,7 +7,6 @@ module.exports = function (passport) {
   passport.use(
     new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
       User.findOne({ email: email.toLowerCase() }, (err, user) => {
-        const { password, ...cleanUser } = user;
         if (err) {
           return done(err);
         }
@@ -26,7 +25,7 @@ module.exports = function (passport) {
             return done(err);
           }
           if (isMatch) {
-            return done(null, cleanUser);
+            return done(null, user);
           }
 
           return done(null, false, {
