@@ -117,6 +117,26 @@ export const AuthContextProvider = ({
     setIsAuth(false);
   };
 
+  const verifyLogin = async () => {
+    const response = await axios.post(`${API_URL}/api/login/status`, {
+      withCredentials: true,
+    });
+    // console.log("response", response.data.user);
+    if (response.status == 200) {
+      const user = response.data.user;
+      console.log("userverify login: ", response.data.user);
+      if (user) {
+        setUserInfo((state) => {
+          return { ...state, ...response.data.user };
+        });
+        setIsAuth(true);
+      }
+      return;
+    }
+
+    setIsAuth(false);
+  };
+
   const values: authContextT = {
     userToken,
     setUserToken,
@@ -125,6 +145,7 @@ export const AuthContextProvider = ({
     logout,
     signUp,
     unauthorizedError,
+    verifyLogin,
   };
 
   return (
