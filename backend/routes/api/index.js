@@ -11,7 +11,7 @@ const inviteController = require("../../controllers/api/inviteController.js");
 // /api/*
 
 router.post("/login", apiAuthController.apiLogin);
-router.post("/login/verify", ensureAuthApi, apiAuthController.apiVerifyLogin);
+router.get("/login/verify", ensureAuthApi, apiAuthController.apiVerifyLogin);
 router.get("/logout", apiAuthController.apiLogout);
 router.post("/signup", apiAuthController.apiSignup);
 

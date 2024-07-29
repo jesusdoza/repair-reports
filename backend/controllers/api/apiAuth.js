@@ -193,7 +193,7 @@ exports.apiVerifyLogin = async (req, res, next) => {
 
   console.log("user", user);
 
-  res.status(200).send({ user: {} });
+  res.status(200).send({ user });
 };
 
 ///***************** UTILITY************************* */
