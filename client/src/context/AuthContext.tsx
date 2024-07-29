@@ -32,6 +32,7 @@ export type authContextT = {
       }) => Promise<void>)
     | null;
   unauthorizedError: () => void;
+  verifyLogin: () => void;
 };
 
 export const AuthContext = createContext<authContextT>({
@@ -42,6 +43,7 @@ export const AuthContext = createContext<authContextT>({
   signUp: null,
   logout: null,
   unauthorizedError: () => {},
+  verifyLogin: () => {},
 });
 
 export const AuthContextProvider = ({
