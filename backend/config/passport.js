@@ -7,6 +7,7 @@ module.exports = function (passport) {
   passport.use(
     new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
       User.findOne({ email: email.toLowerCase() }, (err, user) => {
+        const { password, ...cleanUser } = user;
         if (err) {
           return done(err);
         }
@@ -25,7 +26,7 @@ module.exports = function (passport) {
             return done(err);
           }
           if (isMatch) {
-            return done(null, user);
+            return done(null, cleanUser);
           }
 
           return done(null, false, {
@@ -43,6 +44,10 @@ module.exports = function (passport) {
   });
 
   passport.deserializeUser((id, done) => {
-    User.findById(id, (err, user) => done(err, user));
+    User.findById(id, (err, user) => {
+      //what is used in the req.user object
+      const { password, ...cleanUser } = user._doc;
+      done(err, cleanUser);
+    });
   });
 };
