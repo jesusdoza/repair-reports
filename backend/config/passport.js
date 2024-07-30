@@ -43,6 +43,10 @@ module.exports = function (passport) {
   });
 
   passport.deserializeUser((id, done) => {
-    User.findById(id, (err, user) => done(err, user));
+    User.findById(id, (err, user) => {
+      //what is used in the req.user object
+      const { password, ...cleanUser } = user._doc;
+      done(err, cleanUser);
+    });
   });
 };
