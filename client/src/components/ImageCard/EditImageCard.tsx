@@ -469,8 +469,7 @@ function EditImageCard({
           <div>
             <input
               type="file"
-              accept="image/*"
-              capture
+              accept="file"
               onChange={(event) => {
                 onFileChange(event);
               }}
