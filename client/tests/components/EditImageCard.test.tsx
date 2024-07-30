@@ -1,8 +1,9 @@
-import EditImageCardContainer from "../../src/components/ImageCard/EditImageCard";
-import { fireEvent, getByRole, render, screen } from "@testing-library/react";
+import EditImageCardContainer from "../../src/components/ImageCard/EditImageCard/EditImageCardContainer";
+import { fireEvent, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 import { ImageObj } from "../../src/classes/ImageObj";
 import { act } from "react";
+import { describe, expect, it, vi } from "vitest";
 
 describe("EditImageCard tests", () => {
   const testImageUrl = "https://placekitten.com/200/300";
@@ -43,6 +44,7 @@ describe("EditImageCard tests", () => {
   it("should call on remove method", () => {
     const onRemove = vi.fn();
     render(
+      //@ts-expect-error testing missing props
       <EditImageCardContainer
         //@ts-expect-error testing render
         imageData={{ _id: "1" }}

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import EditImageCard from "../ImageCard/EditImageCard";
+import EditImageCard from "../ImageCard/EditImageCard/EditImageCardContainer";
 import { v4 as uuidv4 } from "uuid";
 import { ImageObjT, ProcedureT } from "../../../types";
 import { ImageObj } from "../../classes/ImageObj";
