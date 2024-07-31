@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 import { it, expect, describe } from "vitest";
 import React from "react";
@@ -26,16 +26,34 @@ describe("group", () => {
   it("should have a submit button", () => {
     render(<LoginSignupContainer />);
     const submitButton = screen.getByRole("button");
-    screen.debug(submitButton);
     expect(submitButton).toBeInTheDocument();
   });
   it("should have a signup button", () => {
     render(<LoginSignupContainer />);
 
     const signupButton = screen.getByText(/signup/i);
-    screen.debug(signupButton);
+
     expect(signupButton).toBeInTheDocument();
   });
 
-  it("should display signup form when clicked", () => {});
+  it("should display signup form when clicked", () => {
+    render(<LoginSignupContainer />);
+
+    const signupButton = screen.getByText(/signup/i);
+
+    act(() => {
+      fireEvent.click(signupButton);
+    });
+
+    screen.debug();
+
+    const emailFeilds = screen.getAllByPlaceholderText(/email/i);
+    expect(emailFeilds.length).toBe(2);
+    const passwordFeilds = screen.getAllByPlaceholderText(/password/i);
+    expect(passwordFeilds.length).toBe(2);
+
+    screen.getAllByPlaceholderText(/invite code/i);
+
+    screen.getAllByPlaceholderText(/username/i);
+  });
 });
