@@ -7,6 +7,7 @@ import DashboardPage from "../pages/dashboard/DashboardPageContainer";
 import { RepairInfoPageContainer } from "../pages/RepairInfoPageContainer";
 import EditRepairPageV2 from "../pages/EditRepairPageV2";
 import SearchPage from "../pages/search/SearchPage";
+import LogoutPage from "../pages/LogoutPage";
 
 export const routes = createBrowserRouter([
   {
@@ -73,6 +74,14 @@ export const routes = createBrowserRouter([
     element: (
       <Layout>
         <SearchPage />
+      </Layout>
+    ),
+  },
+  {
+    path: "/logout",
+    element: (
+      <Layout>
+        <LogoutPage />
       </Layout>
     ),
   },

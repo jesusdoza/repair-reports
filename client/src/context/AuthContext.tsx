@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import axios from "axios";
-import LoginCard from "../components/LoginSignUp/LoginCard";
+import LoginSignupContainer from "../components/LoginSignUp/LoginSignupContainer";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -150,7 +150,7 @@ export const AuthContextProvider = ({
 
   return (
     <AuthContext.Provider value={values}>
-      {!isAuth ? <LoginCard /> : <>{children}</>}
+      {!isAuth ? <LoginSignupContainer /> : <>{children}</>}
     </AuthContext.Provider>
   );
 };
