@@ -15,4 +15,19 @@ const navMenu: NavLinkT[] = [
   },
 ];
 
-export { navMenu };
+const profileMenu: NavLinkT[] = [
+  {
+    label: "Profile",
+    url: "/profile",
+  },
+  {
+    label: "Settings",
+    url: "#",
+  },
+  {
+    label: "Logout",
+    url: "/logout",
+  },
+];
+
+export { navMenu, profileMenu };

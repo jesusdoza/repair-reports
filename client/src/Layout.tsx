@@ -1,7 +1,7 @@
 // type layoutProps = { children: React.ReactNode };
 // import Router from "./Router";
 import React from "react";
-import { navMenu } from "./config/NavMenu.ts";
+import { navMenu, profileMenu } from "./config/NavBar.ts";
 
 import Navbar from "./components/Navbar/Navbar.tsx";
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary.tsx";
@@ -14,7 +14,10 @@ export const Layout = ({
     <>
       <nav>
         <ErrorBoundary componentName="Navbar">
-          <Navbar menu={navMenu} />
+          <Navbar
+            mainMenu={navMenu}
+            profileMenu={profileMenu}
+          />
         </ErrorBoundary>
       </nav>
       {children}
