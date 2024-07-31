@@ -1,8 +1,9 @@
+//@ts-nocheck
 import { render, screen, fireEvent, act } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 
-import { Procedure } from "../../src/classes/Procedure";
-import EditProcedureList from "../../src/components/ProcedureList/EditProcedureList";
+import { Procedure } from "../../../src/classes/Procedure";
+import EditProcedureList from "../../../src/components/ProcedureList/EditProcedureList";
 
 const testProcedureList = [
   new Procedure({ instructions: "first" }),

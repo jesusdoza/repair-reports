@@ -2,8 +2,26 @@ import { Link } from "react-router-dom";
 import useAuthContext from "../../hooks/useAuthContext";
 import Search from "../Search/Search";
 
-export default function Navbar(): React.ReactNode {
+export type NavLinkT = {
+  url: string;
+  label: string;
+};
+
+type NavbarPropsT = {
+  menu: NavLinkT[];
+};
+
+export default function Navbar({ menu = [] }: NavbarPropsT): React.ReactNode {
   const { logout } = useAuthContext();
+
+  const navbarMenu = menu.map((item) => {
+    return (
+      <MenuItem
+        label={item.label}
+        url={item.url}
+      />
+    );
+  });
   return (
     <>
       <div className="navbar bg-base-100 gap-3">
@@ -14,27 +32,9 @@ export default function Navbar(): React.ReactNode {
         </div>
 
         <ul className=" flex menu menu-horizontal gap-1">
-          <li>
-            <Link to={"/dashboard"}>
-              <span>Dashboard</span>
-            </Link>
-          </li>
-          <li>
-            <Link to={"/"}>
-              <span>Latest Reports</span>
-            </Link>
-          </li>
-          <li>
-            <Link to={"/repairform"}>
-              <span>Create Report</span>
-            </Link>
-          </li>
+          {navbarMenu}
+
           <li className="form-control">
-            {/* <input
-              type="text"
-              placeholder="Search"
-              className="input input-bordered w-24 md:w-auto"
-            /> */}
             <Search></Search>
           </li>
 
@@ -76,5 +76,15 @@ export default function Navbar(): React.ReactNode {
         </ul>
       </div>
     </>
+  );
+}
+
+function MenuItem({ label, url }: NavLinkT) {
+  return (
+    <li>
+      <Link to={url}>
+        <span>{label}</span>
+      </Link>
+    </li>
   );
 }
