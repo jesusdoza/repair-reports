@@ -3,7 +3,7 @@ import { render, screen, fireEvent, act } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 import InviteTool, {
   GroupOptionT,
-} from "../../src/components/Invite/InviteTool";
+} from "../../../src/components/Invite/InviteTool";
 import React from "react";
 
 const testGroups: GroupOptionT[] = [
