@@ -1,26 +1,58 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
+type FormDataT = {
+  email: string;
+  password: string;
+};
+
 type LoginProps = {
   onLogin?: (email: string, password: string) => void;
 };
 
-export default function LoginForm({ onLogin }: onLoginProps) {
-  const [formData, setFormData] = useState({
+export default function LoginForm({ onLogin }: LoginProps) {
+  const [formData, setFormData] = useState<FormDataT>({
     email: "",
     password: "",
   });
 
-  const [validPassword, setValidPassword] = useState(false);
-  const [validEmail, setValidEmail] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isValidForm, setIsValidForm] = useState(false);
+  const [errors, setErrors] = useState<string[]>([]);
+
+  useEffect(() => {
+    setErrors([]);
+    setIsValidForm(true);
+  }, [formData]);
 
   return (
     <div>
       <form
         className="w-5/6"
         onSubmit={(event) => {
+          setIsSubmitted(true);
           event.preventDefault();
+
+          const formErrors = validateForm(formData);
+
+          setTimeout(() => {
+            setIsSubmitted(false);
+          }, 3000);
+
+          if (formErrors.length) {
+            setErrors(formErrors);
+            setIsValidForm(false);
+            return;
+          }
+
+          if (onLogin && formErrors.length == 0) {
+            onLogin(formData.email, formData.password);
+          }
         }}>
-        <div className="btn-xs btn w-48 ">Signup here</div>
+        <div>
+          {errors.map((err) => (
+            <div className="badge bg-red-500 text-black">{err}</div>
+          ))}
+        </div>
         <div className="flex flex-col align-middle justify-center items-center gap-2">
           <label className="max-w-xs flex flex-col justify-center">
             <div className="label">
@@ -56,11 +88,27 @@ export default function LoginForm({ onLogin }: onLoginProps) {
           </label>
           <button
             type="submit"
-            className={"btn " + (isSubmitted ? "btn-disabled" : "")}>
+            className={
+              "btn " + (isSubmitted || !isValidForm ? "btn-disabled" : "")
+            }>
             Submit
           </button>
         </div>
       </form>
     </div>
   );
+}
+
+//***UTILITY */
+function validateForm(form: FormDataT) {
+  const errors: string[] = [];
+
+  if (form.email.length < 3) {
+    errors.push("email invalid");
+  }
+  if (form.password.length < 1) {
+    errors.push("password is required");
+  }
+
+  return errors;
 }

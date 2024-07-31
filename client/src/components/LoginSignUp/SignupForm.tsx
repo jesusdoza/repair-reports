@@ -33,22 +33,32 @@ export default function SignupForm({ onSubmit }: SignUpProps) {
     inviteCode: "",
   });
 
-  const [isValid, setIsValid] = useState(false);
+  const [errors, setErrors] = useState<string[]>([]);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const [isValidForm, setIsValidForm] = useState(false);
 
   useEffect(() => {
-    const errorsInForm = isValidForm(formData);
-
-    if (errorsInForm.length == 0) {
-      setIsValid(true);
-    } else {
-      setIsValid(false);
-    }
+    setErrors([]);
+    setIsValidForm(true);
   }, [formData]);
 
   const handleSubmit = (formData: FormDataT) => {
     const { email, password, username, inviteCode } = formData;
+    const formErrors = validateForm(formData);
+    setIsSubmitted(true);
 
-    if (onSubmit) {
+    setTimeout(() => {
+      setIsSubmitted(false);
+    }, 3000);
+
+    if (formErrors.length) {
+      setErrors(formErrors);
+      setIsValidForm(false);
+      return;
+    }
+
+    if (onSubmit && formErrors.length == 0) {
       onSubmit({ email, password, username, inviteCode });
     }
   };
@@ -59,9 +69,14 @@ export default function SignupForm({ onSubmit }: SignUpProps) {
         className="w-5/6"
         onSubmit={(event) => {
           event.preventDefault();
+
           handleSubmit(formData);
         }}>
-        <div className="btn-xs btn w-48 ">Login here</div>
+        <div>
+          {errors.map((err) => (
+            <div className="badge bg-red-500 text-black">{err}</div>
+          ))}
+        </div>
         <div className="flex flex-col align-middle justify-center items-center gap-2">
           <label className="max-w-xs flex flex-col">
             <div className="label">
@@ -169,6 +184,13 @@ export default function SignupForm({ onSubmit }: SignUpProps) {
               className="input input-bordered "
             />
           </label>
+          <button
+            type="submit"
+            className={
+              "btn " + (isSubmitted || !isValidForm ? "btn-disabled" : "")
+            }>
+            Submit
+          </button>
         </div>
       </form>
     </div>
@@ -177,7 +199,7 @@ export default function SignupForm({ onSubmit }: SignUpProps) {
 
 //**UTILITY FN */
 
-function isValidForm(form: FormDataT): string[] {
+function validateForm(form: FormDataT): string[] {
   const errors: string[] = [];
 
   if (form.email !== form.confirmEmail) {
