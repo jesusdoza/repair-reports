@@ -1,7 +1,7 @@
-import EditImageCardContainer from "../../src/components/ImageCard/EditImageCard/EditImageCardContainer";
+import EditImageCardContainer from "../../../src/components/ImageCard/EditImageCard/EditImageCardContainer";
 import { fireEvent, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
-import { ImageObj } from "../../src/classes/ImageObj";
+import { ImageObj } from "../../../src/classes/ImageObj";
 import { act } from "react";
 import { describe, expect, it, vi } from "vitest";
 

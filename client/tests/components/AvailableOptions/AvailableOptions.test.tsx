@@ -4,7 +4,7 @@ import "@testing-library/jest-dom/vitest";
 
 import AvailableOptions, {
   OptionT,
-} from "../../src/components/AvailableOptions/AvailableOptions";
+} from "../../../src/components/AvailableOptions/AvailableOptions";
 
 const testOptions: OptionT[] = [
   { label: "option1", value: "option1" },

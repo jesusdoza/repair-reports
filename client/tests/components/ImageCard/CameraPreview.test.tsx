@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 
-import { CameraPreview } from "../../src/components/ImageCard/CameraPreview";
+import { CameraPreview } from "../../../src/components/ImageCard/CameraPreview";
 import { createRef } from "react";
 
 describe("CameraPreview ", () => {
