@@ -81,6 +81,7 @@ function ProfileNavItem({ menu }: { menu: NavLinkT[] }) {
   return (
     <div className="dropdown dropdown-end ">
       <div
+        data-testid="nav-profile-menu"
         tabIndex={0}
         role="button"
         className="btn btn-ghost btn-circle avatar">
