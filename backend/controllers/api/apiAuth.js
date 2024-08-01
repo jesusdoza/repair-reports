@@ -87,9 +87,9 @@ exports.apiLogin = (req, res, next) => {
   })(req, res, next);
 };
 
+///TODO CHECK SIGNUP
 exports.apiSignup = async (req, res, next) => {
   //checking to see if password ect match
-  console.log(`api signup body`, req.body);
 
   let foundInvite = new Invite();
   const { inviteCode, invitePassword } = req.body;
@@ -127,7 +127,7 @@ exports.apiSignup = async (req, res, next) => {
     username: req.body.username,
     email: req.body.email,
     password: req.body.password,
-    groups: foundInvite.groups,
+    // groups: foundInvite.groups,//! handling group membership with members database collection
   });
 
   //verify user email is unique and create user
@@ -138,7 +138,8 @@ exports.apiSignup = async (req, res, next) => {
         return next(err);
       }
       if (existingUser) {
-        req.flash("errors", ["email already in use"]);
+        //TODO REMOVE CONSOLE
+        // console.log("user email in use");
         return res.status(400).send({ error: "email invalid" });
       }
 
@@ -151,7 +152,13 @@ exports.apiSignup = async (req, res, next) => {
 
         try {
           //create member entries for each group in invite
-          Promise.allSettled(createGroupMemberEntries(foundInvite.groups));
+
+          const promises = createGroupMemberEntries(
+            foundInvite.groups,
+            createdUser
+          );
+
+          await Promise.allSettled(promises);
         } catch (error) {
           console.error("failed to create member of group entries");
         }
@@ -161,10 +168,12 @@ exports.apiSignup = async (req, res, next) => {
             return next(err);
           }
 
+          const { password, ...cleanUser } = createdUser;
+
           res.send({
             message: "user created",
             signup: "success",
-            user: createdUser,
+            user: cleanUser,
           });
         });
       });
@@ -193,17 +202,22 @@ function validateInput(req) {
   return validationErrors;
 }
 
-//create member of group entries
-function createGroupMemberEntries(groups = []) {
-  return (groupMemberEntriesPromises = foundInvite.groups.map((group) => {
+//create member of group entries promises
+/**
+ *
+ * @param {groups, user} groups :{id,name}[], user:{_id, username}
+ * @returns
+ */
+function createGroupMemberEntries(groups = [], user) {
+  console.log("groups", groups);
+  return groups.map((group) => {
     const entry = new Member({
       groupId: group.id,
       groupName: group.name,
       role: ["read"],
-      userId: createdUser._id,
-      username: createdUser.username,
+      userId: user._id,
+      username: user.username,
     });
-
     return entry.save();
-  }));
+  });
 }
