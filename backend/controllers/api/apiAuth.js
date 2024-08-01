@@ -168,7 +168,7 @@ exports.apiSignup = async (req, res, next) => {
             return next(err);
           }
 
-          const { password, ...cleanUser } = createdUser;
+          const { password, ...cleanUser } = createdUser._doc;
 
           res.send({
             message: "user created",
