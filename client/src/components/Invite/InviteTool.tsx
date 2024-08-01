@@ -54,7 +54,6 @@ function InviteForm({ groupOptions = [], onSubmit }: CreateInviteFormPropsT) {
         className="flex flex-wrap relative"
         onSubmit={(event) => {
           event.preventDefault();
-          console.log("invite sent");
           if (onSubmit) {
             onSubmit(groupIds, password);
           }

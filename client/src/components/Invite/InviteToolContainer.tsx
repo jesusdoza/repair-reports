@@ -8,15 +8,15 @@ import isInviteAllowed from "../../hooks/utils/isInviteAllowed";
 export default function InviteToolContainer() {
   //todo get any invites user has pending
   const { getUserInvites, data: inviteData, postInvite } = useInviteManager();
-  const { data: userGroupData, fetchData: getUserGroupData } =
+  const { data: userGroupMemberships, fetchData: getUserGroupData } =
     useGetUserGroups();
 
-  const inviteAllowedGroups = userGroupData.filter((groupData) => {
+  const inviteAllowedGroups = userGroupMemberships.filter((groupData) => {
     return isInviteAllowed(groupData);
   });
 
   const availableInviteGroups = inviteAllowedGroups.map((groupData) => {
-    return { id: groupData._id, name: groupData.groupName };
+    return { id: groupData.groupId, name: groupData.groupName };
   });
 
   const handlePostInvite = async (groupIds: string[], password?: string) => {
@@ -31,8 +31,8 @@ export default function InviteToolContainer() {
 
   //TODO remove this and implement group data into invite tool
   useEffect(() => {
-    console.log("data from groups", userGroupData);
-  }, [userGroupData]);
+    console.log("data from groups", userGroupMemberships);
+  }, [userGroupMemberships]);
 
   return (
     <div className="p-1 ">
