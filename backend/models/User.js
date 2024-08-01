@@ -33,13 +33,13 @@ const UserSchema = new mongoose.Schema(
       default: "no_email@no_email.com",
       lowercase: true,
     },
-    groups: {
-      //groups user belongs to default personal group
-      type: [String],
-      default: function () {
-        return this.username;
-      },
-    },
+    // groups: {
+    //   //groups user belongs to default personal group
+    //   type: [String],
+    //   default: function () {
+    //     return this.username;
+    //   },
+    // },
   },
   {
     collection: "users",
