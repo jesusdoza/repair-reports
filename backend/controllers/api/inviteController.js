@@ -29,7 +29,7 @@ const getInvite = async (req, res) => {
 
 //get all invites user has created
 const getUsersInvites = async (req, res) => {
-  const userId = req.user.id;
+  const userId = req.user._id;
   try {
     const invites = await Invite.find({ createdBy: userId });
 
@@ -62,8 +62,7 @@ createdBy:string
 */
 const postInvite = async (req, res) => {
   const { password, groups } = req.body;
-  const userId = req.user.id;
-  // const userId = "userid";
+  const userId = String(req.user._id);
 
   //no groups provided to create invite
   if (!groups) {

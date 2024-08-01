@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import { EditImageCard } from "../ImageCard/EditImageCard";
+import EditImageCard from "../ImageCard/EditImageCard/EditImageCardContainer";
 import { v4 as uuidv4 } from "uuid";
 import { ImageObjT, ProcedureT } from "../../../types";
 import { ImageObj } from "../../classes/ImageObj";
@@ -20,12 +20,10 @@ export default function EditProcedureCard({
   id?: string;
   onRemove?: () => void;
 }) {
-  console.log("myid is :", id);
   const { formAction } = useContext(RepairFormDataContext);
   const { updateInstructions } = formAction;
   const { imageObjs } = procedureData; //TODO images on procedure
   const PROCEDURE_ID = procedureData._id ? procedureData._id : id;
-  console.log("PROCEDURE_ID", PROCEDURE_ID);
   const { deleteImage } = useImageManager();
 
   const [instructions, setInstructions] = useState(procedureData.instructions);
@@ -88,10 +86,13 @@ export default function EditProcedureCard({
   }
 
   return (
-    <div className="p-3 card relative border border-solid border-slate-700">
+    <div
+      data-testid="edit-procedure-card"
+      className="p-3 card relative border border-solid border-slate-700">
       {/* delete procedure button */}
 
       <div
+        data-testid="remove-procedure-btn"
         onClick={() => {
           handleRemoveProcedure();
         }}

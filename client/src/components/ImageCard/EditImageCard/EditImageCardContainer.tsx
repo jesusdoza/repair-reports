@@ -1,14 +1,16 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 // import useUploadImage from "../../hooks/useUploadImage";
-import { CameraPreview } from "./CameraPreview";
-import { ImageObjT } from "../../../types";
+import { ImageObjT } from "../../../../types";
 import { useDebouncedCallback } from "use-debounce";
-import { v4 as uuidv4 } from "uuid";
-import useImageManager from "../../hooks/useImageManager";
-import { ImageObj } from "../../classes/ImageObj";
-import UploadStatusBar from "./UploadStatusBar";
-import useCreateThumbUrl from "../../hooks/useCreateThumbUrl";
-import { RepairFormDataContext } from "../../context/RepairFormContext";
+
+import useImageManager from "../../../hooks/useImageManager";
+import { ImageObj } from "../../../classes/ImageObj";
+
+import useCreateThumbUrl from "../../../hooks/useCreateThumbUrl";
+import { RepairFormDataContext } from "../../../context/RepairFormContext";
+import ErrorBoundary from "../../ErrorBoundary/ErrorBoundary";
+
+import EditImageCard from "./EditImageCard";
 
 enum UploadStatus {
   SUCCESS = "SUCCESS",
@@ -18,7 +20,7 @@ enum UploadStatus {
   DELETING = "DELETING",
 }
 
-export function EditImageCard({
+export default function EditImageCardContainer({
   url = "",
   onRemove,
   imageData,
@@ -63,6 +65,8 @@ export function EditImageCard({
   const [imageUploadStatus, setImageUploadStatus] = useState<UploadStatus>(
     isDeletable ? UploadStatus.SUCCESS : UploadStatus.IDLE
   );
+
+  const [errorMessage, setErrorMessage] = useState<string[]>([]);
 
   //number to track percentage of image action progress
   const [uploadProgress, setUploadProgress] = useState(10);
@@ -167,6 +171,9 @@ export function EditImageCard({
       } catch (error) {
         console.log("error uploading", error);
         setImageUploadStatus(UploadStatus.ERROR);
+        setErrorMessage((state) => {
+          return [...state, "error uploading"];
+        });
         return;
       }
     }
@@ -193,6 +200,7 @@ export function EditImageCard({
       } catch (error) {
         // reset image obj and do not remove from dom
         alert("failed to delete image");
+
         // setImageUploadedObj(imageUploadedObj);
         return;
       }
@@ -252,6 +260,7 @@ export function EditImageCard({
     if (activeCamera) {
       setActiveCamera(false);
 
+      //if camera running turn off
       if (mediaStreamRef.current) {
         mediaStreamRef.current.getTracks().forEach((track) => track.stop());
         mediaStreamRef.current = null;
@@ -264,9 +273,11 @@ export function EditImageCard({
     setActiveCamera(true);
     try {
       //get users camera if available
-      mediaStreamRef.current = await navigator.mediaDevices.getUserMedia({
+      const userMedia = await navigator.mediaDevices.getUserMedia({
         video: true,
       });
+
+      mediaStreamRef.current = userMedia;
 
       //if a ref has a node currently set, give it the camera stream
       if (videoRef.current) {
@@ -295,6 +306,8 @@ export function EditImageCard({
       const blobData = await fetch(dataUrl).then((res) => res.blob());
 
       const imageFileFromBlob = new File([blobData], "image.jpg");
+
+      //stop the strea
       if (mediaStreamRef.current) {
         mediaStreamRef.current.getTracks().forEach((track) => track.stop());
         mediaStreamRef.current = null;
@@ -312,124 +325,25 @@ export function EditImageCard({
   };
 
   return (
-    <div
-      key={uuidv4()}
-      className="relative">
-      <h3>image id :{imageUploadedObj?.imageId}</h3>
-      {/* delete x button */}
-      <div
-        onClick={handleImageDelete}
-        className="btn btn-circle z-10 bg-yellow-600 absolute right-0 hover:bg-red-600 hover:scale-125">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="black">
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M6 18L18 6M6 6l12 12"
-          />
-        </svg>
-      </div>
-
-      {/* alerts and status */}
-      <section className=" flex flex-col items-center h-1/8 relative">
-        {/* upload progress bar */}
-        <div className=" absolute">
-          <UploadStatusBar
-            progress={uploadProgress}
-            status={imageUploadStatus}
-          />
-        </div>
-      </section>
-
-      {/* image preview or camera preview */}
-      <div className="flex flex-col max-w-[500px] h-5/6 items-center">
-        {/* camera of image preview */}
-        <div className="w-full flex flex-col justify-center items-center h-5/6">
-          <div className="h-4/6">
-            {imagePreview && !activeCamera ? (
-              <section className="w-full flex flex-col  h-full">
-                <img
-                  className=" h-full"
-                  src={imagePreview.toString()}
-                  alt="Preview"
-                />
-              </section>
-            ) : null}
-
-            {activeCamera && (
-              <section className=" flex flex-col border-solid border-2 border-cyan-400 h-full">
-                <div className="w-full h-5/6">
-                  <CameraPreview videoRef={videoRef} />
-                </div>
-
-                <div
-                  className="btn h-1/6"
-                  onClick={captureFrame}>
-                  capture
-                </div>
-              </section>
-            )}
-          </div>
-          <section className="flex w-full h-2/6 item-center justify-center ">
-            {/* //! manaul image url input */}
-            {/* <div className="items-center ">
-              Image URL
-              <textarea
-                onChange={(event) => {
-                  // event.preventDefault();
-                  const text = event.target.value;
-                  setImagePreview(text);
-                  handleUrlChange(text);
-                }}
-                wrap="true"
-                // defaultValue={url}
-                defaultValue={
-                  typeof imagePreview == "string"
-                    ? imagePreview
-                    : "no image url"
-                }
-                // value={url}
-                cols={30}
-                className="textarea textarea-bordered w-full"
-                placeholder="URL"></textarea>
-            </div> */}
-          </section>
-        </div>
-
-        {/* edit tools */}
-        <div className="text-black border-2 border-s-violet-100 w-full">
-          <h3 className=" bg-gray-700">Edit Tools</h3>
-
-          <div>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-            />
-          </div>
-
-          <div
-            className="btn btn-sm"
-            onClick={toggleCamera}>
-            {!activeCamera ? "open camera" : "close camera"}
-          </div>
-
-          {isUploadable && (
-            <div
-              onClick={() => {
-                handleImageUpload("testfolder");
-              }}
-              className="btn btn-sm">
-              Manual Upload Image
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
+    <ErrorBoundary componentName="EditImagecard">
+      <EditImageCard
+        onUpload={() => {
+          handleImageUpload("testfolder");
+        }}
+        onFileChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+          handleFileChange(event);
+        }}
+        uploadStatus={imageUploadStatus}
+        uploadProgress={uploadProgress}
+        onRemove={handleImageDelete}
+        uploadAllowed={isUploadable}
+        isCameraActive={activeCamera}
+        onToggleCamera={toggleCamera}
+        onCapture={captureFrame}
+        url={String(imagePreview)}
+        videoRef={videoRef}
+        errorMessages={errorMessage}
+      />
+    </ErrorBoundary>
   );
 }

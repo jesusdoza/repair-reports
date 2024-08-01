@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import AvailableOptionsMulti from "../../src/components/AvailableOptions/AvailableOptionsMulti";
 import "@testing-library/jest-dom/vitest";
+import AvailableOptionsMulti from "../../../src/components/AvailableOptions/AvailableOptionsMulti";
 
 const testOptions = [
   {

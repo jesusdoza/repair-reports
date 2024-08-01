@@ -25,7 +25,7 @@ export default function EditProcedureList({
 }): React.ReactNode {
   //
   //starting out procedures state
-  const [ProcedureList, setProcedureList] = useState<
+  const [procedureComponentList, setProcedureComponentList] = useState<
     {
       _id: string;
       component: React.ReactNode;
@@ -34,11 +34,12 @@ export default function EditProcedureList({
 
   const { formAction } = useContext(RepairFormDataContext);
 
+  //sets up the procedure list
   useEffect(() => {
-    setProcedureList(() => {
+    setProcedureComponentList(() => {
       return initializeProcedures({
         procs: procedureList,
-        setter: setProcedureList,
+        setter: setProcedureComponentList,
         formAction,
       });
     });
@@ -54,13 +55,13 @@ export default function EditProcedureList({
 
           //sync components in state
           addAtBegining({
-            setter: setProcedureList,
+            setter: setProcedureComponentList,
             itemToAdd: {
               _id,
               component: createProcedureCard({
                 procedure,
                 id: _id,
-                setter: setProcedureList,
+                setter: setProcedureComponentList,
                 formAction,
               }),
             },
@@ -73,11 +74,13 @@ export default function EditProcedureList({
         Add new Procedure at begining
       </div>
       <ul className="w-full flex flex-col gap-2 overflow-hidden">
-        {ProcedureList.map((proc) => proc.component)}
+        {procedureComponentList.map((proc) => proc.component)}
       </ul>
     </div>
   );
 }
+
+///*************************** */ UTILITY FUNCTIONS********************************
 
 /// initialize display components and form state to match
 function initializeProcedures({
@@ -99,6 +102,7 @@ function initializeProcedures({
   _id: string;
   component: React.ReactNode;
 }[] {
+  //create array of objects consisting of id and react component {_d:string, component:< component/>}
   const procedureComponents = procs.map((procedureData) => {
     const _id = procedureData?._id ? procedureData?._id : uuidv4();
     return {
@@ -135,6 +139,12 @@ function addAtBegining({
 }
 
 ///setter to update state , item to add to state, id to target component in array
+/**
+ *
+ * @param setter state setter to add procedure to state
+ * @param itemToAdd object to add to state after the selected procedure
+ * @param id id of procedure to target so item can be placed after it
+ */
 function addProcedureAfter({
   setter,
   itemToAdd,
@@ -143,7 +153,7 @@ function addProcedureAfter({
   setter: React.Dispatch<React.SetStateAction<ProcedureListItemT[]>>;
   itemToAdd: ProcedureListItemT;
   id: string;
-}) {
+}): void {
   setter((state) => {
     const newState = addItem({
       pos: "after",
@@ -156,6 +166,7 @@ function addProcedureAfter({
   });
 }
 
+//returns react component representing Procedure
 function createProcedureCard({
   id,
   setter,
@@ -187,15 +198,19 @@ function createProcedureCard({
             const newStateList = state.filter((item) => item._id != id);
 
             // return state;
+            if (formAction?.removeImage) {
+              formAction.removeProcedure(id);
+            }
             return newStateList;
           });
         }}
       />
       <div
+        data-testid="add-procedure-btn"
         onClick={() => {
           const newProc = new Procedure();
 
-          console.log("added: ", newProc._id);
+          // console.log("added: ", newProc._id);
 
           addProcedureAfter({
             id,

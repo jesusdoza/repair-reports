@@ -172,7 +172,15 @@ exports.apiSignup = async (req, res, next) => {
   );
 };
 
-//utility
+exports.apiVerifyLogin = async (req, res, next) => {
+  const user = req.user;
+
+  console.log("user", user);
+
+  res.status(200).send({ user });
+};
+
+///***************** UTILITY************************* */
 function validateInput(req) {
   const validationErrors = [];
   if (!validator.isEmail(req.body.email))

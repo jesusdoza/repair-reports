@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import useRepairApi from "../../hooks/useRepairApi";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Search(): React.ReactNode {
-  const { searchForRepair } = useRepairApi();
   const location = useLocation();
   const navigate = useNavigate();
 

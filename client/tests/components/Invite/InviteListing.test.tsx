@@ -4,7 +4,7 @@ import "@testing-library/jest-dom/vitest";
 import {
   InviteListing,
   InviteT,
-} from "../../src/components/Invite/InviteListing/InviteListing";
+} from "../../../src/components/Invite/InviteListing/InviteListing";
 
 const testInviteData: InviteT = {
   createdAt: "12345",

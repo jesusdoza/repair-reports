@@ -1,6 +1,6 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import axios from "axios";
-import LoginCard from "../components/LoginSignUp/LoginCard";
+import LoginSignupContainer from "../components/LoginSignUp/LoginSignupContainer";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -32,6 +32,7 @@ export type authContextT = {
       }) => Promise<void>)
     | null;
   unauthorizedError: () => void;
+  verifyLogin: () => void;
 };
 
 export const AuthContext = createContext<authContextT>({
@@ -42,6 +43,7 @@ export const AuthContext = createContext<authContextT>({
   signUp: null,
   logout: null,
   unauthorizedError: () => {},
+  verifyLogin: () => {},
 });
 
 export const AuthContextProvider = ({
@@ -53,12 +55,10 @@ export const AuthContextProvider = ({
   const [isAuth, setIsAuth] = useState(false);
   const [userInfo, setUserInfo] = useState<User | null>(null);
 
-  // useEffect(() => {
-  //   console.log("userInfo", userInfo);
-  //   console.log("userToken display for testing remove this console.log", [
-  //     userToken,
-  //   ]);
-  // }, [userToken, userInfo]);
+  useEffect(() => {
+    console.log("verigy login");
+    verifyLogin();
+  }, []);
 
   const logout = async () => {
     // console.log("logout");
@@ -117,6 +117,26 @@ export const AuthContextProvider = ({
     setIsAuth(false);
   };
 
+  async function verifyLogin() {
+    const response = await axios.get(`${API_URL}/api/login/verify`, {
+      withCredentials: true,
+    });
+    // console.log("response", response.data.user);
+    if (response.status == 200) {
+      const user = response.data.user;
+      console.log("userverify login: ", response.data.user);
+      if (user) {
+        setUserInfo((state) => {
+          return { ...state, ...response.data.user };
+        });
+        setIsAuth(true);
+      }
+      return;
+    }
+
+    setIsAuth(false);
+  }
+
   const values: authContextT = {
     userToken,
     setUserToken,
@@ -125,11 +145,12 @@ export const AuthContextProvider = ({
     logout,
     signUp,
     unauthorizedError,
+    verifyLogin,
   };
 
   return (
     <AuthContext.Provider value={values}>
-      {!isAuth ? <LoginCard /> : <>{children}</>}
+      {!isAuth ? <LoginSignupContainer /> : <>{children}</>}
     </AuthContext.Provider>
   );
 };
