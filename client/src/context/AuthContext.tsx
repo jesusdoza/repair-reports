@@ -10,6 +10,15 @@ type User = {
   role: string;
   email: string;
   groups: string[];
+  createdAt: string;
+};
+
+// 52c114
+// }
+type SingupResponseT = {
+  message: string;
+  signup: string;
+  user: User;
 };
 
 export type authContextT = {
@@ -103,13 +112,27 @@ export const AuthContextProvider = ({
     username: string;
     inviteCode: string;
   }) => {
-    const response = await axios.post(`${API_URL}/api/signup`, {
-      email,
-      password,
-      username,
-      inviteCode,
-    });
-    console.log("response", response.data);
+    try {
+      const response = await axios.post(
+        `${API_URL}/api/signup`,
+        {
+          email,
+          password,
+          username,
+          inviteCode,
+        },
+        { withCredentials: true }
+      );
+      const data = response.data as SingupResponseT;
+
+      setUserInfo((state) => {
+        return { ...state, ...data.user };
+      });
+      setIsAuth(true);
+    } catch (error) {
+      console.log("failed to signup");
+      unauthorizedError();
+    }
   };
 
   const unauthorizedError = () => {
