@@ -50,7 +50,15 @@ function InviteForm({ groupOptions = [], onSubmit }: CreateInviteFormPropsT) {
 
   return (
     <div>
-      <form className="flex flex-wrap relative">
+      <form
+        className="flex flex-wrap relative"
+        onSubmit={(event) => {
+          event.preventDefault();
+          console.log("invite sent");
+          if (onSubmit) {
+            onSubmit(groupIds, password);
+          }
+        }}>
         <div>
           <label className="form-control w-full h-[70px]">
             <div className="label">
@@ -99,15 +107,11 @@ function InviteForm({ groupOptions = [], onSubmit }: CreateInviteFormPropsT) {
           )}
         </div>
         <div className="btn btn-sm absolute right-0">
-          <div
-            data-testid="invite-submit"
-            onClick={() => {
-              if (onSubmit) {
-                onSubmit(groupIds, password);
-              }
-            }}>
+          <button
+            typeof="submit"
+            data-testid="invite-submit">
             create invite +
-          </div>
+          </button>
         </div>
       </form>
     </div>
