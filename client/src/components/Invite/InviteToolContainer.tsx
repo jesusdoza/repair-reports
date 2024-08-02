@@ -2,14 +2,17 @@ import { useEffect } from "react";
 import useInviteManager from "../../hooks/useInviteManager";
 import InviteLog from "./InviteLog";
 import InviteTool from "./InviteTool";
-import useGetUserGroups from "../../hooks/useGetUserGroups";
+import useGetUserGroups, { UserGroupDataT } from "../../hooks/useGetUserGroups";
 import isInviteAllowed from "../../hooks/utils/isInviteAllowed";
 
-export default function InviteToolContainer() {
+export default function InviteToolContainer({
+  userGroupMemberships = [],
+}: {
+  userGroupMemberships: UserGroupDataT[];
+}) {
   //todo get any invites user has pending
   const { getUserInvites, data: inviteData, postInvite } = useInviteManager();
-  const { data: userGroupMemberships, fetchData: getUserGroupData } =
-    useGetUserGroups();
+  const { fetchData: getUserGroupData } = useGetUserGroups();
 
   const inviteAllowedGroups = userGroupMemberships.filter((groupData) => {
     return isInviteAllowed(groupData);
