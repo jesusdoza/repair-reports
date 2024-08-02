@@ -17,6 +17,8 @@ const mockReturn: UserGroupDataT[] = [
   },
 ];
 
+const callFetchDataTimes = 3;
+
 //@ts-expect-error mocking only data part of axios response
 const mockAxiosResponse: AxiosResponse<UserGroupDataT[], unknown> = {
   data: mockReturn,
@@ -33,14 +35,14 @@ describe("useGetUserGroups", () => {
     const { result } = renderHook(() => useGetUserGroups());
 
     await act(async () => {
-      await result.current.fetchData();
-      await result.current.fetchData();
+      for (let i = 0; i < callFetchDataTimes; i++)
+        await result.current.fetchData();
     });
 
     await waitFor(() => {
       expect(Array.isArray(result.current.data)).toBe(true);
       expect(result.current.data.length).toBe(mockReturn.length);
-      expect(axiosMockGet).toBeCalledTimes(3);
+      expect(axiosMockGet).toBeCalledTimes(callFetchDataTimes);
     });
 
     await vi.waitFor(

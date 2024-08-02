@@ -10,7 +10,6 @@ export type UserGroupDataT = {
   username: string;
   role: string[];
   groupId: string;
-
   groupName: string;
 };
 
@@ -30,10 +29,6 @@ export default function useGetUserGroups() {
       setError(["failed to get groups memberships"]);
     }
   };
-
-  useEffect(() => {
-    getUserGroups();
-  }, []);
 
   return { data: groups, fetchData: getUserGroups, error };
 }

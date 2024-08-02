@@ -1,4 +1,20 @@
-export default function UserStats() {
+type UserStatsPropsT = {
+  totalRepairs?: number;
+  groupsList?: GroupListingT[];
+};
+
+export type GroupListingT = {
+  groupName: string;
+  role: string[];
+  groupId: string;
+};
+
+export default function UserStats({
+  totalRepairs = 0,
+  groupsList = [],
+}: UserStatsPropsT) {
+  const rows = createRows(groupsList);
+
   return (
     <div className="flex flex-col">
       <div className="self-center">
@@ -8,22 +24,55 @@ export default function UserStats() {
           </div>
         </div>
       </div>
-      <div className="flex justify-center">
-        <section className="flex gap-1">
-          <button className="btn ">
+      <div className="flex justify-center items-center">
+        {/* <section className="flex gap-1"> */}
+        <section>
+          <div className="btn ">
             <div>
               <span className="block">Total Repairs</span>
-              <div className="badge">99</div>
+              <div className="badge">{totalRepairs}</div>
             </div>
-          </button>
-          <button className="btn ">
-            <div>
-              <span className="block">Joined Groups</span>
-              <div className="badge">99</div>
-            </div>
-          </button>
+          </div>
         </section>
+
+        <section className="flex gap-1 items-center">
+          <details className="dropdown">
+            <summary className="btn m-1 flex flex-col">
+              <span className="block">Joined Groups</span>
+              <span className="badge">{groupsList.length}</span>
+            </summary>
+            <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow ">
+              <li>
+                <div className="h-96 overflow-x-auto">
+                  <table className="table table-pin-rows">
+                    <thead>
+                      <tr>
+                        <th>Group</th>
+                        <th>Role</th>
+                      </tr>
+                    </thead>
+                    <tbody>{rows}</tbody>
+                  </table>
+                </div>
+              </li>
+            </ul>
+          </details>
+        </section>
+        {/* </section> */}
       </div>
     </div>
   );
+}
+
+function createRows(groupList: GroupListingT[]) {
+  if (!groupList.length) return [];
+
+  return groupList.map((listing) => {
+    return (
+      <tr data-testid="group-listing">
+        <td>{listing.groupName}</td>
+        <td>{listing.role}</td>
+      </tr>
+    );
+  });
 }
