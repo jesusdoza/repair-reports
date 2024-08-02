@@ -1,6 +1,6 @@
 type UserStatsPropsT = {
-  totalRepairs: number;
-  groupsList: GroupListingT[];
+  totalRepairs?: number;
+  groupsList?: GroupListingT[];
 };
 
 export type GroupListingT = {
