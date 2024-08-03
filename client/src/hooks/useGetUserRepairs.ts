@@ -10,7 +10,9 @@ const useGetUserRepairs = () => {
 
   const getData = async (limit?: number, page?: number) => {
     const response = await getUsersRepairs(limit, page);
-    setRepairsData(response);
+
+    const { results } = response;
+    setRepairsData(results);
   };
 
   return { repairsData, getData };
