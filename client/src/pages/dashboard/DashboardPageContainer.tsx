@@ -4,11 +4,7 @@ import UsersRepairs from "./UsersRepairs";
 import FilterMenuContainer from "../../components/RepairList/FilterRepairs/FilterMenuContainer";
 import useGetUserRepairs from "../../hooks/useGetUserRepairs";
 import { RepairDataT } from "../../../types";
-
-type Filter = {
-  category: string;
-  option: string;
-};
+import ErrorBoundary from "../../components/ErrorBoundary/ErrorBoundary";
 
 export default function DashboardPageContainer(): React.ReactNode {
   const { repairsData: foundRepairs, getData: getUserRepairs } =
@@ -20,7 +16,7 @@ export default function DashboardPageContainer(): React.ReactNode {
 
   const [filteredList, setFilteredList] = useState<RepairDataT[]>(repairList); //optionally filtered data
 
-  const [appliedFilters, setAppliedFilters] = useState<Filter[]>([]);
+  // const [appliedFilters, setAppliedFilters] = useState<Filter[]>([]);
 
   //fetchdata
   useEffect(() => {
@@ -35,31 +31,39 @@ export default function DashboardPageContainer(): React.ReactNode {
   }, [foundRepairs]);
 
   ///filter list displayed
-  useEffect(() => {
-    const newList = applyFilters(repairList, appliedFilters);
-    setFilteredList(newList);
-  }, [appliedFilters]);
+  // useEffect(() => {
+  //   const newList = applyFilters(repairList, appliedFilters);
+  //   setFilteredList(newList);
 
-  const { filterOptionsMap } = createFilters(filteredList);
+  //   console.log("failed to applyfilters");
+  //   setFilteredList(repairList);
+  // }, [appliedFilters]);
+
+  // const { filterOptionsMap } = createFilters(filteredList);
 
   return (
     <div className="flex  min-h-screen">
       <aside className=" w-1/6 bg-slate-600">
-        <FilterMenuContainer
-          onFiltersChangeCallback={(updatedFilters) => {
-            setAppliedFilters(updatedFilters);
-          }}
-          categories={filterOptionsMap}
-        />
+        <ErrorBoundary componentName="FilterMenuContainer">
+          <FilterMenuContainer
+            repairList={repairList}
+            setFilteredList={setFilteredList}
+            // categories={filterOptionsMap}
+          />
+        </ErrorBoundary>
       </aside>
       <main className="w-5/6 bg-green-600 ">
-        <UsersRepairs repairList={filteredList} />
+        <ErrorBoundary componentName="UsersRepairs">
+          <UsersRepairs repairList={filteredList} />
+        </ErrorBoundary>
         <section>
-          <PaganationControls
-            onPageChange={(pageNumber: number) => {
-              getUserRepairs(PAGE_LIMIT, pageNumber);
-            }}
-          />
+          <ErrorBoundary componentName="UsersRepairs">
+            <PaganationControls
+              onPageChange={(pageNumber: number) => {
+                getUserRepairs(PAGE_LIMIT, pageNumber);
+              }}
+            />
+          </ErrorBoundary>
         </section>
       </main>
     </div>
@@ -106,70 +110,70 @@ function PaganationControls({ onPageChange = () => {} }: paginationProps) {
   );
 }
 
-function createFilters(list: RepairDataT[]) {
-  const ignoreFields = new Set([
-    "visibility",
-    "removed",
-    "__v",
-    "_id",
-    "procedureArr",
-    "searchTags",
-    "title",
-    "createdBy",
-  ]);
+// function createFilters(list: RepairDataT[]) {
+//   const ignoreFields = new Set([
+//     "visibility",
+//     "removed",
+//     "__v",
+//     "_id",
+//     "procedureArr",
+//     "searchTags",
+//     "title",
+//     "createdBy",
+//   ]);
 
-  //different fields available in objects to filter by
-  let categories = new Set<string>();
+//   //different fields available in objects to filter by
+//   let categories = new Set<string>();
 
-  //available options under each filter
-  // {category1:[value1, value2,],category2:[value3, value4,] }
-  const filterOptionsMap = new Map<string, Set<string>>();
+//   //available options under each filter
+//   // {category1:[value1, value2,],category2:[value3, value4,] }
+//   const filterOptionsMap = new Map<string, Set<string>>();
 
-  list.forEach((item) => {
-    const fields = Object.getOwnPropertyNames(item).filter(
-      (str) => !ignoreFields.has(str)
-    );
+//   list.forEach((item) => {
+//     const fields = Object.getOwnPropertyNames(item).filter(
+//       (str) => !ignoreFields.has(str)
+//     );
 
-    //add values for each field to map to know how many different values there are
-    fields.forEach((f) => {
-      if (!filterOptionsMap.has(f)) {
-        filterOptionsMap.set(f, new Set());
-      }
-      const tempSet = filterOptionsMap.get(f);
+//     //add values for each field to map to know how many different values there are
+//     fields.forEach((f) => {
+//       if (!filterOptionsMap.has(f)) {
+//         filterOptionsMap.set(f, new Set());
+//       }
+//       const tempSet = filterOptionsMap.get(f);
 
-      if (tempSet) {
-        tempSet.add(item[f] as string);
-        filterOptionsMap.set(f, tempSet);
-      }
-    });
+//       if (tempSet) {
+//         tempSet.add(item[f] as string);
+//         filterOptionsMap.set(f, tempSet);
+//       }
+//     });
 
-    categories = new Set([...Array.from(categories), ...fields]);
-  });
+//     categories = new Set([...Array.from(categories), ...fields]);
+//   });
 
-  const filterCategories: string[] = Array.from(categories.values());
+//   const filterCategories: string[] = Array.from(categories.values());
 
-  // console.log("filterOptionsMap", Array.from(filterOptionsMap.entries()));
+//   // console.log("filterOptionsMap", Array.from(filterOptionsMap.entries()));
 
-  return { filterCategories, filterOptionsMap };
-}
+//   return { filterCategories, filterOptionsMap };
+// }
 
-function applyFilters(items: RepairDataT[], filters: Filter[]) {
-  const filteredItems = items.filter((item) => {
-    //if any filter does not match return false
-    if (filters.length > 0) {
-      for (let i = 0; i < filters.length; i++) {
-        const currentFilter = filters[i];
-        //todo what if property is an array like tags
-        if (item[currentFilter.category] != currentFilter.option) {
-          return false;
-        }
+// function applyFilters(items: RepairDataT[], filters: Filter[]) {
+//   const filteredItems = items.filter((item) => {
+//     //if any filter does not match return false
+//     if (filters.length > 0) {
+//       for (let i = 0; i < filters.length; i++) {
+//         const currentFilter = filters[i];
+//         //todo what if property is an array like tags
+//         if (item[currentFilter.category] != currentFilter.option) {
+//           return false;
+//         }
 
-        return true;
-      }
-    } else {
-      return true;
-    }
-  });
+//         return true;
+//       }
+//     } else {
+//       return true;
+//     }
+//   });
 
-  return filteredItems;
-}
+//   return filteredItems;
+// }

@@ -6,26 +6,58 @@ const getRepairsforUser = async (req, res) => {
   const user = req.user;
   const { limit, page } = req.query;
 
-  const limitResults = limit ? limit : 10;
-  const currentPage = page ? page : 0;
-  const skipResults = limitResults * currentPage;
+  const limitResults = Number(limit) > 0 ? Number(limit) : 10;
+  const currentPage = page ? Number(page) : 0;
+  const skipResults = limitResults > 0 ? Number(limitResults * currentPage) : 0;
 
   try {
-    const results = await Repair.find({
-      createdBy: user._id,
-      removed: false,
-    })
-      .sort({ _id: -1 })
-      .skip(skipResults)
-      .limit(limitResults)
-      .lean();
+    //!new aggreate
+    const aggregateResults = await Repair.aggregate([
+      {
+        //get only users repairs
+        $match: {
+          removed: false,
+          createdBy: user._id.toString(),
+        },
+      },
+      {
+        $sort: {
+          _id: -1,
+        },
+      },
+      {
+        //create metadata to include total from previous stage
+        $facet: {
+          metaData: [{ $count: "totalByUser" }],
+          results: [{ $skip: skipResults }, { $limit: limitResults }],
+        },
+      },
+    ]);
+    //! new aggragate above ^^^^^^^^^^^^^^
 
-    res.status(200).json(results);
+    //old query
+    // const results = await Repair.find({
+    //   createdBy: user._id,
+    //   removed: false,
+    // })
+    //   .sort({ _id: -1 })
+    //   .skip(skipResults)
+    //   .limit(limitResults)
+    //   .lean();
+
+    const metaData = aggregateResults[0].metaData[0];
+
+    res.status(200).json({
+      results: aggregateResults[0].results,
+      totalByUser: metaData.totalByUser,
+      currentPage,
+      limitResults,
+    });
   } catch (error) {
-    console.error("error getting users repairs in dashboard");
-    res.status(500).json({
-      message: `error getting repairs for user: ${user.id}`,
-      error: err,
+    console.error("error getting users repairs");
+    res.status(401).json({
+      message: `error getting repairs for user: ${user._id}`,
+      error,
     });
   }
 

@@ -4,13 +4,16 @@ import InviteToolContainer from "../../components/Invite/InviteToolContainer";
 import UserInfoContainer from "../../components/Profile/UserInfoContainer";
 import UserStats from "../../components/Profile/UserStats/UserStats";
 import useGetUserGroups from "../../hooks/useGetUserGroups";
+import useGetUserRepairs from "../../hooks/useGetUserRepairs";
 
 export default function ProfilePage(): React.ReactNode {
   const { data: userGroupMemberships, fetchData: getUserGroupData } =
     useGetUserGroups();
+  const { getData, metaData } = useGetUserRepairs();
 
   useEffect(() => {
     getUserGroupData();
+    getData();
   }, []);
 
   return (
@@ -32,7 +35,10 @@ export default function ProfilePage(): React.ReactNode {
         {/* side bar */}
         <aside className="w-2/6 min-h-[400px] m-0 bg-green-900 p-1">
           <ErrorBoundary componentName="UserStats">
-            <UserStats groupsList={userGroupMemberships} />
+            <UserStats
+              groupsList={userGroupMemberships}
+              totalRepairs={metaData.totalByUser}
+            />
           </ErrorBoundary>
         </aside>
       </div>
