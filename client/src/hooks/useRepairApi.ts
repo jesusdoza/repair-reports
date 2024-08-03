@@ -8,7 +8,9 @@ const API_URL = import.meta.env.VITE_API_URL;
 const useRepairApi = () => {
   const { unauthorizedError } = useAuthContext();
 
-  const getLatestRepairs = async (limit: string | number) => {
+  const getLatestRepairs = async (requestLimit?: string | number) => {
+    const limit = requestLimit ? Number(requestLimit) : 1;
+
     try {
       const response = await axios.get(`${API_URL}/api/repairs`, {
         withCredentials: true,

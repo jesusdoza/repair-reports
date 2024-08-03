@@ -9,6 +9,7 @@ const useGetLatest = (limit: number) => {
   useEffect(() => {
     const getData = async () => {
       const response = await getLatestRepairs(limit);
+
       setRepairsData(response);
     };
 
