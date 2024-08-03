@@ -45,8 +45,6 @@ describe("group", () => {
       fireEvent.click(signupButton);
     });
 
-    screen.debug();
-
     const emailFeilds = screen.getAllByPlaceholderText(/email/i);
     expect(emailFeilds.length).toBe(2);
     const passwordFeilds = screen.getAllByPlaceholderText(/password/i);
