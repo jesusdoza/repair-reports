@@ -8,6 +8,7 @@ import { RepairInfoPageContainer } from "../pages/RepairInfoPageContainer";
 import EditRepairPageV2 from "../pages/EditRepairPageV2";
 import SearchPage from "../pages/search/SearchPage";
 import LogoutPage from "../pages/LogoutPage";
+import ErrorBoundary from "../components/ErrorBoundary/ErrorBoundary";
 
 export const routes = createBrowserRouter([
   {
@@ -15,7 +16,9 @@ export const routes = createBrowserRouter([
     path: "/",
     element: (
       <Layout>
-        <LatestRepairsPage />
+        <ErrorBoundary componentName="LatestRepairsPage">
+          <LatestRepairsPage />
+        </ErrorBoundary>
       </Layout>
     ),
   },
@@ -23,7 +26,9 @@ export const routes = createBrowserRouter([
     path: "/dashboard",
     element: (
       <Layout>
-        <DashboardPage />
+        <ErrorBoundary componentName="DashboardPage">
+          <DashboardPage />
+        </ErrorBoundary>
       </Layout>
     ),
   },
@@ -31,7 +36,9 @@ export const routes = createBrowserRouter([
     path: "/profile",
     element: (
       <Layout>
-        <ProfilePage />
+        <ErrorBoundary componentName="ProfilePage">
+          <ProfilePage />
+        </ErrorBoundary>
       </Layout>
     ),
   },
@@ -39,7 +46,9 @@ export const routes = createBrowserRouter([
     path: "/repairform",
     element: (
       <Layout>
-        <RepairFormPage />
+        <ErrorBoundary componentName="RepairFormPage">
+          <RepairFormPage />
+        </ErrorBoundary>
       </Layout>
     ),
   },
@@ -49,7 +58,9 @@ export const routes = createBrowserRouter([
     path: "/repair/edit/:id",
     element: (
       <Layout>
-        <EditRepairPageV2 />
+        <ErrorBoundary componentName="EditRepairPageV2">
+          <EditRepairPageV2 />
+        </ErrorBoundary>
       </Layout>
     ),
   },
@@ -57,7 +68,9 @@ export const routes = createBrowserRouter([
     path: "/repair/:repair_id",
     element: (
       <Layout>
-        <RepairInfoPageContainer />
+        <ErrorBoundary componentName="RepairInfoPageContainer">
+          <RepairInfoPageContainer />
+        </ErrorBoundary>
       </Layout>
     ),
   },
@@ -65,7 +78,9 @@ export const routes = createBrowserRouter([
     path: "/react",
     element: (
       <Layout>
-        <LatestRepairsPage />
+        <ErrorBoundary componentName="RepairInfoPageContainer">
+          <LatestRepairsPage />
+        </ErrorBoundary>
       </Layout>
     ),
   },
@@ -73,7 +88,9 @@ export const routes = createBrowserRouter([
     path: "/search",
     element: (
       <Layout>
-        <SearchPage />
+        <ErrorBoundary componentName="RepairInfoPageContainer">
+          <SearchPage />
+        </ErrorBoundary>
       </Layout>
     ),
   },
