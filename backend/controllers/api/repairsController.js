@@ -45,9 +45,11 @@ const getRepairsforUser = async (req, res) => {
     //   .limit(limitResults)
     //   .lean();
 
+    const metaData = aggregateResults[0].metaData[0];
+
     res.status(200).json({
       results: aggregateResults[0].results,
-      metaData: aggregateResults[0].metaData,
+      totalByUser: metaData.totalByUser,
       currentPage,
       limitResults,
     });
