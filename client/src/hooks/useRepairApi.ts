@@ -21,7 +21,7 @@ const useRepairApi = () => {
         if (error?.response?.status && error?.response?.status == 401) {
           console.log("unauthorized error @useRepairApi.getLatestRepairs");
 
-          unauthorizedError();
+          // unauthorizedError();
         }
       }
     }
@@ -96,7 +96,7 @@ const useRepairApi = () => {
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error?.response?.status && error?.response?.status == 401) {
-          console.log("unauthorized error @useRepairApi.searchForRepair");
+          console.log("unauthorized error @useRepairApi.udpateRepair");
 
           unauthorizedError();
         }
@@ -120,7 +120,7 @@ const useRepairApi = () => {
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error?.response?.status && error?.response?.status == 401) {
-          console.log("unauthorized error @useRepairApi.searchForRepair");
+          console.log("unauthorized error @useRepairApi.postRepair");
 
           unauthorizedError();
         }
@@ -139,7 +139,7 @@ const useRepairApi = () => {
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error?.response?.status && error?.response?.status == 401) {
-          console.log("unauthorized error @useRepairApi.searchForRepair");
+          console.log("unauthorized error @useRepairApi.getUserRepair");
 
           unauthorizedError();
         }

@@ -137,7 +137,7 @@ export const AuthContextProvider = ({
 
   const unauthorizedError = () => {
     console.log("unauthorized log in again");
-    setIsAuth(false);
+    // setIsAuth(false);
   };
 
   async function verifyLogin() {
