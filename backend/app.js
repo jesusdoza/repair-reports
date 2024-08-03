@@ -18,8 +18,8 @@ const PORT = 8000;
 const cookieMaxAge = 15 * 60 * 1000;
 
 const corsOptions = {
-  origin:
-    process.env.NODE_ENV == "development" ? true : process.env.client_origin, // Replace with your front-end URL
+  origin: true,
+  // process.env.NODE_ENV == "development" ? true : process.env.client_origin, // Replace with your front-end URL
   credentials: true,
 };
 
@@ -39,11 +39,14 @@ app.use(
     secret: process.env.session_secret,
     resave: false,
     saveUninitialized: false,
+
     store: MongoStore.create({
       mongoUrl: process.env.connect_string,
     }),
     rolling: true,
     cookie: {
+      secure: true,
+      sameSite: "none",
       maxAge: cookieMaxAge,
     },
   })
