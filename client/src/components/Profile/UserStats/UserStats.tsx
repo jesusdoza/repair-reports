@@ -13,7 +13,7 @@ export default function UserStats({
   totalRepairs = 0,
   groupsList = [],
 }: UserStatsPropsT) {
-  const rows = createRows(groupsList);
+  const joinedGroupsRows = createRows(groupsList);
 
   return (
     <div className="flex flex-col">
@@ -51,7 +51,7 @@ export default function UserStats({
                         <th>Role</th>
                       </tr>
                     </thead>
-                    <tbody>{rows}</tbody>
+                    <tbody>{joinedGroupsRows}</tbody>
                   </table>
                 </div>
               </li>
