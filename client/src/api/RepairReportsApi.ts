@@ -3,8 +3,9 @@ import { Repair } from "../classes/Repair";
 import { signatureT } from "../../types";
 const API_URL = import.meta.env.VITE_API_URL;
 
-const getLatestRepairs = async (limit: string | number) => {
-  // const response = await axios.get(`http://localhost:8000/api/repairs`, {
+const getLatestRepairs = async (requestedLimit?: string | number) => {
+  const limit = requestedLimit ? Number(requestedLimit) : 1;
+
   const response = await axios.get(`${API_URL}/api/repairs`, {
     withCredentials: true,
     params: { num: limit },
