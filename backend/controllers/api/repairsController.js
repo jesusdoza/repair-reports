@@ -6,9 +6,9 @@ const getRepairsforUser = async (req, res) => {
   const user = req.user;
   const { limit, page } = req.query;
 
-  const limitResults = limit ? Number(limit) : 10;
+  const limitResults = Number(limit) > 0 ? Number(limit) : 10;
   const currentPage = page ? Number(page) : 0;
-  const skipResults = Number(limitResults * currentPage);
+  const skipResults = limitResults > 0 ? Number(limitResults * currentPage) : 0;
 
   try {
     //!new aggreate
@@ -28,7 +28,7 @@ const getRepairsforUser = async (req, res) => {
       {
         //create metadata to include total from previous stage
         $facet: {
-          metaData: [{ $count: "total" }],
+          metaData: [{ $count: "totalByUser" }],
           results: [{ $skip: skipResults }, { $limit: limitResults }],
         },
       },
@@ -48,6 +48,8 @@ const getRepairsforUser = async (req, res) => {
     res.status(200).json({
       results: aggregateResults[0].results,
       metaData: aggregateResults[0].metaData,
+      currentPage,
+      limitResults,
     });
   } catch (error) {
     console.error("error getting users repairs");
