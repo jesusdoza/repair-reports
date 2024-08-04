@@ -50,7 +50,7 @@ export default function LoginForm({ onLogin }: LoginProps) {
         }}>
         <div>
           {errors.map((err) => (
-            <div className="badge bg-red-500 text-black">{err}</div>
+            <div className="badge text-black bg-red-300">{err}</div>
           ))}
         </div>
         <div className="flex flex-col align-middle justify-center items-center gap-2">
@@ -67,10 +67,10 @@ export default function LoginForm({ onLogin }: LoginProps) {
               }}
               type="text"
               placeholder="Email"
-              className="input input-bordered "
+              className="input input-bordered text-black max-w-xs bg-slate-300"
             />
           </label>
-          <label className="max-w-xs flex flex-col">
+          <label className="max-w-xs flex flex-col justify-center">
             <div className="label">
               <span className="label-text">Password:</span>
             </div>
@@ -83,13 +83,14 @@ export default function LoginForm({ onLogin }: LoginProps) {
               }}
               type="password"
               placeholder="Password"
-              className="input input-bordered w-full max-w-xs"
+              className="input input-bordered text-black max-w-xs bg-slate-300"
             />
           </label>
           <button
             type="submit"
             className={
-              "btn " + (isSubmitted || !isValidForm ? "btn-disabled" : "")
+              "btn bg-teal-500 text-black hover:bg-teal-300" +
+              (isSubmitted || !isValidForm ? "btn-disabled" : "")
             }>
             Submit
           </button>
