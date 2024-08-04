@@ -17,12 +17,10 @@ describe(" make querys from string to use in aggregate", () => {
   test("array length different size should fail", () => {
     const querys = getAggregate(testPhrase);
     expect(getAggregate(testPhrase + " anotherword").length).not.toBe(3);
-    console.log(querys);
   });
   test("query objects should be formated correctly", () => {
     const querys = getAggregate(testPhrase);
     expect(getAggregate(testPhrase + " anotherword").length).not.toBe(3);
-    console.log(querys);
     querys.forEach((element) => {
       expect(element.text).toBeTruthy();
       expect(element.text.query).toBeTruthy();
