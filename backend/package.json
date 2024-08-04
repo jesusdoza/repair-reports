@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "dev": "concurrently 'npm:devserver' 'npm:dev-tailwind'",
-    "devserver": "nodemon server.js",
+    "devserver": "nodemon ./dist/server.js",
     "start": "npm run tailwind && node server.js",
     "test": "npx cypress run",
     "tailwind": "npx tailwindcss -i ./public/stylesheets/main.css -o ./public/stylesheets/style.css",

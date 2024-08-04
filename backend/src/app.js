@@ -10,7 +10,8 @@ const MongoStore = require("connect-mongo");
 // const mongooseDb = require("./config/dbM");
 const cookieParser = require("cookie-parser");
 
-require("dotenv").config({ path: "./config/.env" }); // to use with enviroment variables initializes enviroment vars
+// require("dotenv").config({ path: "../.env" }); // to use with enviroment variables initializes enviroment vars
+require("dotenv").config(); // to use with enviroment variables initializes enviroment vars
 require("./config/passport")(passport);
 
 const app = express();
