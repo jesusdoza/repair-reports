@@ -4,11 +4,21 @@ import LoginForm from "./LoginForm";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 import SignupForm from "./SignupForm";
 import ColabImage from "../../assets/Live collaboration-rafiki.svg";
+import { Navigate } from "react-router-dom";
 
 export default function LoginSignupContainer(): React.ReactNode {
-  const { login, signUp } = useContext(AuthContext);
+  const { login, signUp, isAuth } = useContext(AuthContext);
 
   const [isLogin, setIsLogin] = useState(true);
+
+  if (isAuth) {
+    return (
+      <Navigate
+        to="/latest"
+        replace={true}
+      />
+    );
+  }
 
   return (
     <div className="flex flex-col w-full items-center bg-slate-50">

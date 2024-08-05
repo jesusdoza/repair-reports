@@ -40,7 +40,11 @@ export default function Navbar({
       <div className="navbar bg-base-100 gap-3 px-3">
         <div className="flex-1">
           <div>
-            <a className="btn btn-ghost text-xl">Circuit Chaser</a>
+            <Link
+              to={"/"}
+              className="btn btn-ghost text-xl">
+              Circuit Chaser
+            </Link>
           </div>
         </div>
 
