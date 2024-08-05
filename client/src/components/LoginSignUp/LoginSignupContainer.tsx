@@ -14,7 +14,7 @@ export default function LoginSignupContainer(): React.ReactNode {
   if (isAuth) {
     return (
       <Navigate
-        to="/dashboard"
+        to="/latest"
         replace={true}
       />
     );
