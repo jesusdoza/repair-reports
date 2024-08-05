@@ -7,7 +7,7 @@ const navMenu: NavLinkT[] = [
   },
   {
     label: "Latest Reports",
-    url: "/",
+    url: "/latest",
   },
   {
     label: "Create Report",
