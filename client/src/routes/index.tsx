@@ -8,48 +8,78 @@ import { RepairInfoPageContainer } from "../pages/RepairInfoPageContainer";
 import EditRepairPageV2 from "../pages/EditRepairPageV2";
 import SearchPage from "../pages/search/SearchPage";
 import LogoutPage from "../pages/LogoutPage";
+
+import HomePage from "../pages/Home/HomePage";
 import ErrorBoundary from "../components/ErrorBoundary/ErrorBoundary";
+import LoginSignupContainer from "../components/LoginSignUp/LoginSignupContainer";
+import ProtectedRoute from "../components/ProtectedRoute";
 
 export const routes = createBrowserRouter([
   {
     index: true,
     path: "/",
     element: (
-      <Layout>
+      <ErrorBoundary componentName="HomePage">
+        <HomePage />
+      </ErrorBoundary>
+    ),
+  },
+  {
+    // index: true,
+    path: "/login",
+    element: (
+      <ErrorBoundary componentName="LatestRepairsPage">
+        <LoginSignupContainer />
+      </ErrorBoundary>
+    ),
+  },
+  {
+    // index: true,
+    path: "/latest",
+    element: (
+      <ProtectedRoute>
         <ErrorBoundary componentName="LatestRepairsPage">
-          <LatestRepairsPage />
+          <Layout>
+            <LatestRepairsPage />
+          </Layout>
         </ErrorBoundary>
-      </Layout>
+      </ProtectedRoute>
     ),
   },
   {
     path: "/dashboard",
     element: (
-      <Layout>
-        <ErrorBoundary componentName="DashboardPage">
-          <DashboardPage />
-        </ErrorBoundary>
-      </Layout>
+      <ProtectedRoute>
+        <Layout>
+          <ErrorBoundary componentName="DashboardPage">
+            <DashboardPage />
+          </ErrorBoundary>
+        </Layout>
+      </ProtectedRoute>
     ),
   },
   {
     path: "/profile",
     element: (
-      <Layout>
-        <ErrorBoundary componentName="ProfilePage">
-          <ProfilePage />
-        </ErrorBoundary>
-      </Layout>
+      <ProtectedRoute>
+        <Layout>
+          <ErrorBoundary componentName="ProfilePage">
+            <ProfilePage />
+          </ErrorBoundary>
+        </Layout>
+      </ProtectedRoute>
     ),
   },
   {
     path: "/repairform",
     element: (
-      <Layout>
-        <ErrorBoundary componentName="RepairFormPage">
-          <RepairFormPage />
-        </ErrorBoundary>
-      </Layout>
+      <ProtectedRoute>
+        <Layout>
+          <ErrorBoundary componentName="RepairFormPage">
+            <RepairFormPage />
+          </ErrorBoundary>
+        </Layout>
+      </ProtectedRoute>
     ),
   },
 
@@ -57,41 +87,49 @@ export const routes = createBrowserRouter([
   {
     path: "/repair/edit/:id",
     element: (
-      <Layout>
-        <ErrorBoundary componentName="EditRepairPageV2">
-          <EditRepairPageV2 />
-        </ErrorBoundary>
-      </Layout>
+      <ProtectedRoute>
+        <Layout>
+          <ErrorBoundary componentName="EditRepairPageV2">
+            <EditRepairPageV2 />
+          </ErrorBoundary>
+        </Layout>
+      </ProtectedRoute>
     ),
   },
   {
     path: "/repair/:repair_id",
     element: (
-      <Layout>
-        <ErrorBoundary componentName="RepairInfoPageContainer">
-          <RepairInfoPageContainer />
-        </ErrorBoundary>
-      </Layout>
+      <ProtectedRoute>
+        <Layout>
+          <ErrorBoundary componentName="RepairInfoPageContainer">
+            <RepairInfoPageContainer />
+          </ErrorBoundary>
+        </Layout>
+      </ProtectedRoute>
     ),
   },
   {
     path: "/react",
     element: (
-      <Layout>
-        <ErrorBoundary componentName="RepairInfoPageContainer">
-          <LatestRepairsPage />
-        </ErrorBoundary>
-      </Layout>
+      <ProtectedRoute>
+        <Layout>
+          <ErrorBoundary componentName="RepairInfoPageContainer">
+            <LatestRepairsPage />
+          </ErrorBoundary>
+        </Layout>
+      </ProtectedRoute>
     ),
   },
   {
     path: "/search",
     element: (
-      <Layout>
-        <ErrorBoundary componentName="RepairInfoPageContainer">
-          <SearchPage />
-        </ErrorBoundary>
-      </Layout>
+      <ProtectedRoute>
+        <Layout>
+          <ErrorBoundary componentName="RepairInfoPageContainer">
+            <SearchPage />
+          </ErrorBoundary>
+        </Layout>
+      </ProtectedRoute>
     ),
   },
   {
