@@ -42,6 +42,7 @@ export type authContextT = {
     | null;
   unauthorizedError: () => void;
   verifyLogin: () => void;
+  isAuth: boolean;
 };
 
 export const AuthContext = createContext<authContextT>({
@@ -53,6 +54,7 @@ export const AuthContext = createContext<authContextT>({
   logout: null,
   unauthorizedError: () => {},
   verifyLogin: () => {},
+  isAuth: false,
 });
 
 export const AuthContextProvider = ({
@@ -169,11 +171,13 @@ export const AuthContextProvider = ({
     signUp,
     unauthorizedError,
     verifyLogin,
+    isAuth,
   };
 
   return (
     <AuthContext.Provider value={values}>
-      {!isAuth ? <LoginSignupContainer /> : <>{children}</>}
+      {/* {!isAuth ? <LoginSignupContainer /> : <>{children}</>} */}
+      {children}
     </AuthContext.Provider>
   );
 };
