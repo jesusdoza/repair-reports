@@ -45,12 +45,12 @@ describe("useGetUserGroups", () => {
       expect(axiosMockGet).toBeCalledTimes(callFetchDataTimes);
     });
 
-    await vi.waitFor(
-      () => {
-        console.log("result.current", result.current);
-      },
-      { timeout: 1000 }
-    );
+    // await vi.waitFor(
+    //   () => {
+    //     console.log("result.current", result.current);
+    //   },
+    //   { timeout: 1000 }
+    // );
   });
 
   it("should return empty array on error and set error state", async () => {
