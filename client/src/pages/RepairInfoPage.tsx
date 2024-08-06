@@ -5,10 +5,10 @@ import { useLocation, useParams } from "react-router-dom";
 import useAuthContext from "../hooks/useAuthContext";
 import { RepairDataT } from "../../types";
 
-import RepairInfoPage from "../components/RepairInfoPage";
+import RepairInfo from "../components/RepairDisplay/RepairInfo";
 import useRepairApi from "../hooks/useRepairApi";
 
-export const RepairInfoPageContainer = (): React.ReactNode => {
+export const RepairInfoPage = (): React.ReactNode => {
   const { repair_id } = useParams();
   const { state }: { state: { repair: RepairDataT | undefined } } =
     useLocation();
@@ -41,7 +41,7 @@ export const RepairInfoPageContainer = (): React.ReactNode => {
   }
 
   return (
-    <RepairInfoPage
+    <RepairInfo
       userId={userId}
       repair={repairData}
     />

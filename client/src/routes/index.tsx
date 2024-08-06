@@ -4,7 +4,7 @@ import LatestRepairsPage from "../pages/LatestRepairsPage";
 import ProfilePage from "../pages/Profile/ProfilePage";
 import RepairFormPage from "../pages/CreateRepairFormPage";
 import DashboardPage from "../pages/dashboard/DashboardPageContainer";
-import { RepairInfoPageContainer } from "../pages/RepairInfoPageContainer";
+import { RepairInfoPage } from "../pages/RepairInfoPage";
 import EditRepairPageV2 from "../pages/EditRepairPageV2";
 import SearchPage from "../pages/search/SearchPage";
 import LogoutPage from "../pages/LogoutPage";
@@ -102,7 +102,7 @@ export const routes = createBrowserRouter([
       <ProtectedRoute>
         <Layout>
           <ErrorBoundary componentName="RepairInfoPageContainer">
-            <RepairInfoPageContainer />
+            <RepairInfoPage />
           </ErrorBoundary>
         </Layout>
       </ProtectedRoute>
