@@ -7,7 +7,8 @@
     "dev": "concurrently 'npm:devserver' 'npm:dev-tailwind'",
     "devserver": "nodemon server.js",
     "start": "npm run tailwind && node server.js",
-    "test": "npx cypress run",
+    "test:e2e": "npx cypress run",
+    "test": "vitest",
     "tailwind": "npx tailwindcss -i ./public/stylesheets/main.css -o ./public/stylesheets/style.css",
     "dev-tailwind": "npx tailwindcss -i ./public/stylesheets/main.css -o ./public/stylesheets/style.css --watch"
   },
@@ -37,6 +38,7 @@
   },
   "devDependencies": {
     "concurrently": "^8.0.1",
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "vitest": "^2.0.5"
   }
 }
