@@ -12,6 +12,9 @@
     "tailwind": "npx tailwindcss -i ./public/stylesheets/main.css -o ./public/stylesheets/style.css",
     "dev-tailwind": "npx tailwindcss -i ./public/stylesheets/main.css -o ./public/stylesheets/style.css --watch"
   },
+  "engines": {
+    "node": ">=20"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
