@@ -3,22 +3,28 @@ import dataProfile from "../dataProfile.ts";
 
 // import dataJson from "../../ignoreFiles/repairs_8_6_24.json";
 
-// const testData = dataJson;
+const testDataPath = "./ignoreFiles/repairs_8_6_24.json";
 
 describe("dataProfile", () => {
-  // it("accept path string to json and return object with ", async () => {
-  //   const result = await dataProfile("../../ignoreFiles/repairs_8_6_24.json");
+  it("accept path string to json and return object ", async () => {
+    const result = await dataProfile(testDataPath);
 
-  //   expect(typeof result).toBe("object");
-  // });
+    expect(typeof result).toBe("object");
+  });
 
   it("should error gracefully if path to json is invalid", async () => {
-    const result = await dataProfile("./no file");
+    const { error } = await dataProfile("./no file");
 
-    console.log("result.error", result.error);
-    expect(result.error).toBeTruthy();
+    expect(error).toBe("file does not exist");
   });
-  it.todo("should return amount of objects parsed", () => {});
-  it.todo("should return array of different object patterns found", () => {});
-  it.todo("should return ", () => {});
+  it("should return amount of objects parsed", async () => {
+    const { objsParsed } = await dataProfile(testDataPath);
+
+    expect(objsParsed).toBeGreaterThan(0);
+  });
+  // it.todo(
+  //   "should return array of different object patterns found",
+  //   async () => {}
+  // );
+  // it.todo("should return ", async () => {});
 });
