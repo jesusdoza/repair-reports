@@ -3,7 +3,7 @@ import dataProfile from "../dataProfile.ts";
 
 // import dataJson from "../../ignoreFiles/repairs_8_6_24.json";
 
-const testDataPath = "./ignoreFiles/repairs_8_6_24.json";
+const testDataPath = "./ignoreFiles/test.json";
 
 describe("dataProfile", () => {
   it("accept path string to json and return object ", async () => {
