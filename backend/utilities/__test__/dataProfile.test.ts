@@ -26,7 +26,8 @@ describe("dataProfile", () => {
   it("should return array of different object patterns found", async () => {
     const { objsParsed, patterns } = await dataProfile(testDataPath);
     expect(patterns?.length).toBeGreaterThan(0);
-    console.log("patterns", patterns);
+    console.table(patterns);
+    console.log("objsParsed", objsParsed);
   });
   // it.todo("should return ", async () => {});
 });

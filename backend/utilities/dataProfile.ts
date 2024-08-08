@@ -5,8 +5,16 @@ import { pipeline } from "stream/promises";
 type returnT = {
   objsParsed: number;
   error: string[] | null;
-  patterns: any[] | null;
+  patterns: PatternStatT[] | null;
 };
+
+type PatternStatT = {
+  pattern: string[];
+  count: number;
+};
+
+//hold current object structure desired to conform rest of objects
+const currentPattern = {};
 
 export default async function dataProfile(
   filePathStr: string
@@ -28,7 +36,7 @@ export default async function dataProfile(
 
 async function parsFile(filePath: string): Promise<returnT> {
   let objsParsed = 0;
-  let patterns: string[][] = [];
+  let patterns: PatternStatT[] = [];
   let errors: string[] | null = null;
 
   let patternStrings: string[] = [];
@@ -54,15 +62,19 @@ async function parsFile(filePath: string): Promise<returnT> {
         //string from pattern
         const patternStr = "".concat(...objPattern.sort());
 
-        const foundPattern = patternStrings.findIndex((text) => {
+        const foundPatternIndex = patternStrings.findIndex((text) => {
           // console.log("text", text);
 
           return patternStr === text;
         });
 
-        if (foundPattern == -1) {
-          patterns.push(objPattern);
+        if (foundPatternIndex == -1) {
+          patterns.push({ count: 1, pattern: objPattern });
           patternStrings.push(patternStr);
+        }
+
+        if (foundPatternIndex != -1) {
+          patterns[foundPatternIndex].count += 1;
         }
       } catch (error) {
         if (!errors) {
@@ -76,32 +88,6 @@ async function parsFile(filePath: string): Promise<returnT> {
     rl.on("close", () => {
       resolve({ objsParsed, error: errors, patterns });
     });
-
-    // reader.on("data", (chunk) => {
-    //   const text = chunk.toString();
-    //   let documents = text.split(/\}$/);
-
-    //   documents.forEach((doc, index) => {
-    //     try {
-    //       const obj = JSON.parse(doc);
-    //       // if (index % 10 == 0) {
-    //       //   console.log("Obj", index, obj);
-    //       // }
-    //     } catch (error) {
-    //       console.log("ERROR PARSING index:", index);
-    //       console.log("ERROR PARSING string:", doc.slice(-20));
-    //       console.log("error: ", error);
-    //     }
-    //   });
-
-    //   //   console.log("documents.length", documents.length);
-
-    //   objsParsed += documents.length;
-    // });
-
-    // reader.on("end", () => {
-    //   resolve({ objsParsed });
-    // });
   });
 }
 
