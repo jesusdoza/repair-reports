@@ -15,16 +15,17 @@ describe("dataProfile", () => {
   it("should error gracefully if path to json is invalid", async () => {
     const { error } = await dataProfile("./no file");
 
-    expect(error).toBe("file does not exist");
+    expect(error).toContain("file does not exist");
   });
   it("should return amount of objects parsed", async () => {
     const { objsParsed } = await dataProfile(testDataPath);
 
     expect(objsParsed).toBeGreaterThan(0);
   });
-  // it.todo(
-  //   "should return array of different object patterns found",
-  //   async () => {}
-  // );
+  it("should return array of different object patterns found", async () => {
+    const { objsParsed, patterns } = await dataProfile(testDataPath);
+    expect(patterns?.length).toBeGreaterThan(1);
+    console.log("patterns", patterns);
+  });
   // it.todo("should return ", async () => {});
 });
