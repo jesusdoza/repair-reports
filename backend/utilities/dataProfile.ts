@@ -52,10 +52,10 @@ async function parsFile(filePath: string): Promise<returnT> {
         const objPattern = getPattern(document);
 
         //string from pattern
-        const patternStr = "".concat(...objPattern);
+        const patternStr = "".concat(...objPattern.sort());
 
         const foundPattern = patternStrings.findIndex((text) => {
-          console.log("text", text);
+          // console.log("text", text);
 
           return patternStr === text;
         });

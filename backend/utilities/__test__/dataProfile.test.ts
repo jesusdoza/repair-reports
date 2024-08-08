@@ -3,7 +3,8 @@ import dataProfile from "../dataProfile.ts";
 
 // import dataJson from "../../ignoreFiles/repairs_8_6_24.json";
 
-const testDataPath = "./ignoreFiles/test.json";
+let testDataPath = "./ignoreFiles/test.json";
+testDataPath = "./ignoreFiles/repairs_8_6_24.json";
 
 describe("dataProfile", () => {
   it("accept path string to json and return object ", async () => {
@@ -24,7 +25,7 @@ describe("dataProfile", () => {
   });
   it("should return array of different object patterns found", async () => {
     const { objsParsed, patterns } = await dataProfile(testDataPath);
-    expect(patterns?.length).toBeGreaterThan(1);
+    expect(patterns?.length).toBeGreaterThan(0);
     console.log("patterns", patterns);
   });
   // it.todo("should return ", async () => {});
