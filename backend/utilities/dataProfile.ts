@@ -17,7 +17,8 @@ type PatternStatT = {
 const currentPattern = {};
 
 export default async function dataProfile(
-  filePathStr: string
+  filePathStr: string,
+  desiredPattern?: string[]
 ): Promise<returnT> {
   let reader: fs.ReadStream;
 

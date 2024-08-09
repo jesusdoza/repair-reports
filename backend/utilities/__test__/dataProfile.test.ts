@@ -26,8 +26,17 @@ describe("dataProfile", () => {
   it("should return array of different object patterns found", async () => {
     const { objsParsed, patterns } = await dataProfile(testDataPath);
     expect(patterns?.length).toBeGreaterThan(0);
-    console.table(patterns);
-    console.log("objsParsed", objsParsed);
+    // console.table(patterns);
+    // console.log("objsParsed", objsParsed);
+    // console.log("patterns", patterns);
   });
-  // it.todo("should return ", async () => {});
+  it.todo("should test agains a wanted pattern ", async () => {
+    const desiredPattern: string[] = [];
+
+    const { objsParsed, patterns } = await dataProfile(
+      testDataPath,
+      desiredPattern
+    );
+    expect(patterns?.length).toBeGreaterThan(0);
+  });
 });
