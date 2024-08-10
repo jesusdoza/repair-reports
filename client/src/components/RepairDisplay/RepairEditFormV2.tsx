@@ -162,10 +162,11 @@ export default function RepairEditForm({
                   formAction.updateTitle(title);
                   setTitle(e.target.value);
                 }}
-                className="text-2xl w-full bg-white"
+                className="text-2xl w-full bg-white text-black"
                 id="title"
                 name="title"
                 type="text"
+                value={title}
                 placeholder={title}
               />
             </div>
@@ -219,7 +220,9 @@ export default function RepairEditForm({
         {/* submit section */}
         <section className={`p-3`}></section>
       </form>
-      <footer className="bg-slate-500 p-7">
+      <footer
+        data-testid="repair-form-tools"
+        className="bg-slate-500 p-7">
         <ModalConfirm label={submitType ? submitType : "Create Repair"}>
           <div>
             <span>Please confirm: </span>
