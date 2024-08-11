@@ -36,7 +36,7 @@ vi.mock("../../../src/hooks/useGetUserGroups");
   error: [],
 });
 
-(useGetUserRepairs as jest.Mock).mockReturnValue({
+(useGetUserRepairs as import * as jest from "jest";Mock).mockReturnValue({
   getData: () => {},
   metaData: { totalByUser: 23, currentPage: 1, limitResults: 2 },
 });
@@ -47,8 +47,6 @@ describe("ProfilePage tests", () => {
 
     render(<ProfilePage />);
 
-    screen.debug();
-
-    expect(1).toBeTruthy();
+    screen.getByText(23);
   });
 });
