@@ -14,7 +14,7 @@ require("dotenv").config({ path: "./config/.env" }); // to use with enviroment v
 require("./config/passport")(passport);
 
 const app = express();
-const PORT = 8000;
+// const PORT = 8000;
 const cookieMaxAge = 15 * 60 * 1000;
 
 const corsOptions = {

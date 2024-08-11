@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import RepairEditForm from "../components/RepairDisplay/RepairEditFormV2";
 import useRepairApi from "../hooks/useRepairApi";
 import { Repair } from "../classes/Repair";
@@ -10,23 +10,27 @@ import { RepairContextProvider } from "../context/RepairFormContext";
 export default function EditRepairPageV2() {
   const { id: repairId } = useParams();
   const { getRepairById, updateRepair } = useRepairApi();
+  const navigate = useNavigate();
+
   const [repair, setRepair] = useState<RepairDataT | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [submitAllowed, setSubmitAllowed] = useState(true);
-  const navigate = useNavigate();
 
-  const handleUpdateRepair = async (repair: Repair) => {
-    try {
-      setSubmitAllowed(false);
-      console.log("repair", repair);
-      await updateRepair(repair);
-      setSubmitAllowed(true);
-      navigate(`/repair/${repairId}`);
-    } catch (error) {
-      setSubmitAllowed(true);
-      console.log("error handleUpdate @RepairPage ", error);
-    }
-  };
+  const handleUpdateRepair = useCallback(
+    async (repair: Repair) => {
+      try {
+        setSubmitAllowed(false);
+        // console.log("repair", repair);
+        await updateRepair(repair);
+        setSubmitAllowed(true);
+        navigate(`/repair/${repairId}`);
+      } catch (error) {
+        setSubmitAllowed(true);
+        console.log("error handleUpdate @RepairPage ", error);
+      }
+    },
+    [repairId]
+  );
 
   useEffect(() => {
     if (!repairId) {
