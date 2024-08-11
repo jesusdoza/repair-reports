@@ -4,43 +4,12 @@ import ColabImage from "../../assets/HomePage/live_collaboration-rafiki.svg";
 import CircuitBoardHeroImage from "../../assets/HomePage/Printed-circuit-board-pana.svg";
 import FirmwareImage from "../../assets/HomePage/Firmware-amico.svg";
 import { Link } from "react-router-dom";
-
-type LinkDataT = {
-  url: string;
-  label: string;
-};
-
-const homePageNavLinks: LinkDataT[] = [
-  {
-    url: "/login",
-    label: "Log in",
-  },
-  {
-    url: "/dashboard",
-    label: "Dashboard",
-  },
-  {
-    url: "/latest",
-    label: "Latest Repairs",
-  },
-  {
-    url: "/repairform",
-    label: "Create Repair",
-  },
-  {
-    url: "/search",
-    label: "Search",
-  },
-  {
-    url: "/login",
-    label: "Sign up",
-  },
-];
+import { homePageNavLinks } from "../../config/HomePageNavLinks";
 
 export default function HomePage() {
   return (
     <div className="w-full">
-      <div className="relative overflow-hidden">
+      <section className="relative overflow-hidden">
         <div className="mx-auto max-w-7xl">
           <div className="relative bg-white z-10  pb-8 sm:pb-16 md:pb-20 lg:w-full lg:max-w-2xl lg:pb-28 xl:pb-32">
             <div>
@@ -128,7 +97,7 @@ export default function HomePage() {
               </main>
             </div>
           </div>
-          <div className="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
+          <div className="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 ">
             <img
               loading="lazy"
               src={CircuitBoardHeroImage}
@@ -136,8 +105,9 @@ export default function HomePage() {
             />
           </div>
         </div>
-      </div>
-      <div className="hero min-h-screen bg-base-200">
+      </section>
+
+      <section className="hero min-h-screen bg-base-200">
         <div className="hero-content flex-col lg:flex-row-reverse">
           <div>
             <h2 className="text-5xl font-bold">Collaborate</h2>
@@ -153,9 +123,9 @@ export default function HomePage() {
             className="max-w-sm rounded-lg shadow-2xl"
           />
         </div>
-      </div>
+      </section>
 
-      <div className="hero min-h-screen bg-base-200">
+      <section className="hero min-h-screen bg-base-200">
         <div className="hero-content flex-col lg:flex-row">
           <div>
             <h2 className="text-5xl font-bold">Document repairs </h2>
@@ -170,10 +140,10 @@ export default function HomePage() {
             className="max-w-sm rounded-lg shadow-2xl"
           />
         </div>
-      </div>
+      </section>
 
       <footer>
-        <footer className="footer p-10 bg-base-200 text-base-content">
+        <div className="footer p-10 bg-base-200 text-base-content">
           <div>
             <svg
               width="50"
@@ -207,7 +177,7 @@ export default function HomePage() {
             <a className="link link-hover">Privacy policy</a>
             <a className="link link-hover">Cookie policy</a>
           </div>
-        </footer>
+        </div>
       </footer>
     </div>
   );
