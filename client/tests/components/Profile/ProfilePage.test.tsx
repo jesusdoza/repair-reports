@@ -5,25 +5,32 @@ import {
   screen,
 } from "@testing-library/react";
 import React from "react";
-import jest from "jest";
+
+// import * as jest from "jest";
 import "@testing-library/jest-dom/vitest";
-import { it, expect, describe, vi, Vitest, VitestUtils } from "vitest";
+import {
+  it,
+  expect,
+  describe,
+  vi,
+  Vitest,
+  VitestUtils,
+  type Mock,
+} from "vitest";
 
 import useGetUserGroups from "../../../src/hooks/useGetUserGroups";
-import useGetUserRepairs, {
-  metaDataT,
-} from "../../../src/hooks/useGetUserRepairs";
+import useGetUserRepairs from "../../../src/hooks/useGetUserRepairs";
 
 import ProfilePage from "../../../src/pages/Profile/ProfilePage";
 
 vi.mock("../../../src/hooks/useGetUserRepairs");
 vi.mock("../../../src/hooks/useGetUserGroups");
 
-(useGetUserRepairs as jest.Mock).mockReturnValue({
+(useGetUserRepairs as Mock).mockReturnValue({
   getData: () => {},
   metaData: { totalByUser: 23, currentPage: 1, limitResults: 2 },
 });
-(useGetUserGroups as jest.Mock).mockReturnValue({
+(useGetUserGroups as Mock).mockReturnValue({
   data: [],
   fetchData: () => {},
   error: [],
