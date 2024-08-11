@@ -1,12 +1,19 @@
-import { act, fireEvent, render, screen } from "@testing-library/react";
+import {
+  act,
+  fireEvent,
+  getByRole,
+  render,
+  screen,
+} from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 import { it, expect, describe, vi, beforeEach } from "vitest";
 import React from "react";
 
 import EditRepairForm from "../../../src/components/RepairDisplay/RepairEditFormV2";
-import { Repair } from "../../../src/classes/Repair";
 import { RepairDataT } from "../../../types";
 import { Procedure } from "../../../src/classes/Procedure";
+import { RepairContextProvider } from "../../../src/context/RepairFormContext";
+import { Repair } from "../../../src/classes/Repair";
 
 const testData: RepairDataT = {
   boardType: "test board",
@@ -32,6 +39,8 @@ const testData: RepairDataT = {
   visibility: "public",
 };
 
+const expectedRepair = new Repair(testData);
+
 describe("EditRepairForm", () => {
   const onSubmitMock = vi.fn();
 
@@ -55,7 +64,14 @@ describe("EditRepairForm", () => {
     //instructions on one procedure
     screen.getByText(testData.procedureArr[0].instructions, { exact: false });
   });
-  it("call edit function passed in", () => {
+
+  it("call edit function passed in", async () => {
+    // onSubmitMock.mockImplementation((args) => {
+    //   // console.log("args", args);
+    // });
+
+    onSubmitMock.mockReset();
+
     render(
       <EditRepairForm
         submitType="Update"
@@ -65,11 +81,50 @@ describe("EditRepairForm", () => {
     );
 
     const submitButton = screen.getByTestId("repair-form-tools");
-    // screen.debug(submitButton);
+    await act(() => {
+      fireEvent.click(submitButton);
+    });
+
+    const confirmModal = screen.getByTestId("confirm-modal");
+
+    await act(async () => {
+      const confirmButton = getByRole(confirmModal, "button", { hidden: true });
+      await fireEvent.click(confirmButton);
+    });
+
+    expect(onSubmitMock).toBeCalled();
   });
-  it.todo(
-    "repair form changes should be reflected on call function passed in",
-    () => {}
-  );
+
+  it("repair form changes should be reflected on call function passed in", async () => {
+    onSubmitMock.mockReset();
+
+    render(
+      <RepairContextProvider>
+        <EditRepairForm
+          submitType="Update"
+          repair={testData}
+          onSubmit={onSubmitMock}
+        />
+      </RepairContextProvider>
+    );
+
+    const submitButton = screen.getByTestId("repair-form-tools");
+    await act(() => {
+      fireEvent.click(submitButton);
+    });
+
+    const confirmModal = screen.getByTestId("confirm-modal");
+
+    await act(async () => {
+      const confirmButton = getByRole(confirmModal, "button", {
+        hidden: true,
+      });
+      await fireEvent.click(confirmButton);
+    });
+
+    expect(onSubmitMock).toBeCalledWith(expectedRepair);
+    expect(onSubmitMock).not.toBeCalledWith(new Repair());
+  });
+
   it.todo("should handle invalid repair data", () => {});
 });
