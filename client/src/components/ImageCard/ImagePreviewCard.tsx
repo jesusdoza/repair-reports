@@ -2,7 +2,6 @@ export function ImageCard({ url }: { url: string }) {
   const validLink = !url.startsWith("data:image");
   const imageLink = validLink ? url : "#";
 
-  console.log("validLink", validLink);
   return (
     <section
       data-testid="image-preview"

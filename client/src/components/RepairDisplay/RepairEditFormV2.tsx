@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useContext, useEffect, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
 import AvailableOptions, {
   OptionT,
 } from "../AvailableOptions/AvailableOptions";
@@ -41,40 +41,46 @@ export default function RepairEditForm({
     }
   }, []);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  // useEffect(() => {
+  //   console.log("repairFormData", repairFormData);
+  // }, [repairFormData]);
 
-    setFormError(null); //reset error on submit
+  const handleSubmit =
+    // async (event: React.FormEvent<HTMLFormElement>) => {
+    async () => {
+      // event.preventDefault();
 
-    //validate formdata
-    const formStatus = isValidForm(repairFormData);
+      setFormError(null); //reset error on submit
 
-    //if invalid set error for display
-    if (!formStatus.isValid) {
-      setFormError(formStatus.reason);
-    }
+      //validate formdata
+      const formStatus = isValidForm(repairFormData);
 
-    //pressed submit now disable to allow processing
-    setSubmitAllowed(false);
-
-    //reenable submit after 3 seconds
-    new Promise<void>((resolve) => {
-      setTimeout(() => {
-        setSubmitAllowed(true);
-        resolve();
-      }, 3000);
-    });
-
-    try {
-      if (onSubmit && formStatus.isValid) {
-        //! todo enable submit
-        onSubmit(repairFormData);
+      //if invalid set error for display
+      if (!formStatus.isValid) {
+        setFormError(formStatus.reason);
       }
-    } catch (error) {
-      setSubmitAllowed(true);
-      console.log("error handleUpdate @RepairPage ", error);
-    }
-  };
+
+      //pressed submit now disable to allow processing
+      setSubmitAllowed(false);
+
+      //reenable submit after 3 seconds
+      new Promise<void>((resolve) => {
+        setTimeout(() => {
+          setSubmitAllowed(true);
+          resolve();
+        }, 3000);
+      });
+
+      try {
+        if (onSubmit && formStatus.isValid) {
+          //! todo enable submit
+          onSubmit(repairFormData);
+        }
+      } catch (error) {
+        setSubmitAllowed(true);
+        console.log("error handleUpdate @RepairPage ", error);
+      }
+    };
 
   const availableGroups: OptionT[] = [
     {
@@ -126,87 +132,105 @@ export default function RepairEditForm({
     },
   ];
 
-  return (
-    <form
-      className="w-full bg-slate-300"
-      onSubmit={handleSubmit}>
-      <div className="flex text-black justify-center">
-        {!formError && <div className=" bg-green-500 ">form ok</div>}
-        {formError && <div className="bg-red-600">Invalid form</div>}
-        <div>{formError}</div>
+  if (!repair) {
+    return (
+      <div>
+        <span>no data</span>
       </div>
-      <legend className=" gap-4 flex flex-col rounded-lg p-2 border-gray-600 w-full">
-        <div className="flex flex-col w-full justify-around items-center align-middle ">
-          <div className="flex-1 flex justify-end">
-            <span className="text-4xl w-full text-right">Title:</span>
+    );
+  }
+
+  return (
+    <div>
+      <form
+        className="w-full bg-slate-300"
+        onSubmit={handleSubmit}>
+        <div className="flex text-black justify-center">
+          {!formError && <div className=" bg-green-500 ">form ok</div>}
+          {formError && <div className="bg-red-600">Invalid form</div>}
+          <div>{formError}</div>
+        </div>
+        <legend className=" gap-4 flex flex-col rounded-lg p-2 border-gray-600 w-full">
+          <div className="flex flex-col w-full justify-around items-center align-middle ">
+            <div className="flex-1 flex justify-end">
+              <span className="text-4xl w-full text-right">Title:</span>
+            </div>
+            <div className="flex-1 flex justify-start">
+              <input
+                data-testid="title-input"
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  const title = e.target.value;
+                  formAction.updateTitle(title);
+                  setTitle(e.target.value);
+                }}
+                className="text-2xl w-full bg-white text-black"
+                id="title"
+                name="title"
+                type="text"
+                value={title}
+                placeholder={title}
+              />
+            </div>
           </div>
-          <div className="flex-1 flex justify-start">
-            <input
-              onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                const title = e.target.value;
-                formAction.updateTitle(title);
-                setTitle(e.target.value);
+
+          <div className="">
+            <AvailableOptions
+              title="Visibility group"
+              options={availableGroups}
+              callback={(group: string) => {
+                console.log("changed group", group);
               }}
-              className="text-2xl w-full bg-white"
-              id="title"
-              name="title"
-              type="text"
-              placeholder={title}
             />
           </div>
-        </div>
-
-        <div className="">
-          <AvailableOptions
-            title="Visibility group"
-            options={availableGroups}
-            callback={(group: string) => {
-              console.log("changed group", group);
-            }}
-          />
-        </div>
-        <div>
-          <AvailableOptions
-            title="Board Type"
-            options={availableBoardTypes}
-            callback={(boardType: string) => {
-              formAction.updateBoardType(boardType);
-            }}
-          />
-        </div>
-        <div>
-          <AvailableOptions
-            callback={(engineMake: string) => {
-              formAction.updateEngineMake(engineMake);
-              setEngineMake(engineMake);
-            }}
-            title="Engine make"
-            options={availableEngines}
-          />
-        </div>
-        <div>
-          <AvailableOptionsMulti
-            callback={(searchTags: string[]) => {
-              console.log("no searchtag form action or state", searchTags);
-            }}
-            title="Search tags"
-            options={availableTags}
-          />
-        </div>
-      </legend>
-
-      <section>
-        <h3 className="text-xl">Repair procedures</h3>
-        <EditProcedureList
-          procedureList={repair?.procedureArr ? repair.procedureArr : []}
-        />
-      </section>
-      {/* submit section */}
-      <section className={`p-3`}>
-        <ModalConfirm label={submitType ? submitType : "Create Repair"}>
           <div>
+            <AvailableOptions
+              title="Board Type"
+              options={availableBoardTypes}
+              callback={(boardType: string) => {
+                formAction.updateBoardType(boardType);
+              }}
+            />
+          </div>
+          <div>
+            <AvailableOptions
+              callback={(engineMake: string) => {
+                formAction.updateEngineMake(engineMake);
+                setEngineMake(engineMake);
+              }}
+              title="Engine make"
+              options={availableEngines}
+            />
+          </div>
+          <div>
+            <AvailableOptionsMulti
+              callback={(searchTags: string[]) => {
+                console.log("no searchtag form action or state", searchTags);
+              }}
+              title="Search tags"
+              options={availableTags}
+            />
+          </div>
+        </legend>
+
+        <section>
+          <h3 className="text-xl">Repair procedures</h3>
+          <EditProcedureList
+            procedureList={repair?.procedureArr ? repair.procedureArr : []}
+          />
+        </section>
+        {/* submit section */}
+        <section className={`p-3`}></section>
+      </form>
+      <footer
+        data-testid="repair-form-tools"
+        className="bg-slate-500 p-7">
+        <ModalConfirm label={submitType ? submitType : "Create Repair"}>
+          <div data-testid="confirm-modal">
             <span>Please confirm: </span>
             <button
+              onClick={() => {
+                handleSubmit();
+              }}
               type="submit"
               className="btn"
               disabled={!submitAllowed}>
@@ -214,7 +238,7 @@ export default function RepairEditForm({
             </button>
           </div>
         </ModalConfirm>
-      </section>
-    </form>
+      </footer>
+    </div>
   );
 }
