@@ -7,6 +7,7 @@ import {
 } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 import { it, expect, describe, vi, beforeEach } from "vitest";
+import userEvent from "@testing-library/user-event";
 import React from "react";
 
 import EditRepairForm from "../../../src/components/RepairDisplay/RepairEditFormV2";
@@ -41,7 +42,8 @@ const testData: RepairDataT = {
 
 const expectedRepair = new Repair(testData);
 
-describe("EditRepairForm", () => {
+///TEST SUITE
+describe("EditRepairForm tests", () => {
   const onSubmitMock = vi.fn();
 
   beforeEach(() => {
@@ -53,7 +55,8 @@ describe("EditRepairForm", () => {
     render(<EditRepairForm />);
     screen.getByText(/no data/i);
   });
-  it("display data", () => {
+
+  it("should display data passed in", () => {
     //@ts-expect-error checking empty prop render
     render(<EditRepairForm repair={testData} />);
 
@@ -65,7 +68,7 @@ describe("EditRepairForm", () => {
     screen.getByText(testData.procedureArr[0].instructions, { exact: false });
   });
 
-  it("call edit function passed in", async () => {
+  it("should call edit function passed in", async () => {
     // onSubmitMock.mockImplementation((args) => {
     //   // console.log("args", args);
     // });
@@ -80,22 +83,14 @@ describe("EditRepairForm", () => {
       />
     );
 
-    const submitButton = screen.getByTestId("repair-form-tools");
     await act(() => {
-      fireEvent.click(submitButton);
-    });
-
-    const confirmModal = screen.getByTestId("confirm-modal");
-
-    await act(async () => {
-      const confirmButton = getByRole(confirmModal, "button", { hidden: true });
-      await fireEvent.click(confirmButton);
+      submitFormAction();
     });
 
     expect(onSubmitMock).toBeCalled();
   });
 
-  it("repair form changes should be reflected on call function passed in", async () => {
+  it("should send in correct form data to function onsubmit fn", async () => {
     onSubmitMock.mockReset();
 
     render(
@@ -108,23 +103,64 @@ describe("EditRepairForm", () => {
       </RepairContextProvider>
     );
 
-    const submitButton = screen.getByTestId("repair-form-tools");
     await act(() => {
-      fireEvent.click(submitButton);
-    });
-
-    const confirmModal = screen.getByTestId("confirm-modal");
-
-    await act(async () => {
-      const confirmButton = getByRole(confirmModal, "button", {
-        hidden: true,
-      });
-      await fireEvent.click(confirmButton);
+      submitFormAction();
     });
 
     expect(onSubmitMock).toBeCalledWith(expectedRepair);
     expect(onSubmitMock).not.toBeCalledWith(new Repair());
   });
 
-  it.todo("should handle invalid repair data", () => {});
+  it("title input should change and be reflected with correct formData", async () => {
+    onSubmitMock.mockReset();
+
+    const titleChangeValue = "this new title";
+
+    const user = userEvent.setup();
+
+    render(
+      <RepairContextProvider>
+        <EditRepairForm
+          submitType="Update"
+          repair={testData}
+          onSubmit={onSubmitMock}
+        />
+      </RepairContextProvider>
+    );
+
+    const titleInput = screen.getByTestId("title-input");
+    user.clear(titleInput);
+
+    //submit form
+    await act(async () => {
+      await user.type(titleInput, titleChangeValue);
+    });
+
+    await act(() => {
+      submitFormAction();
+    });
+
+    screen.debug(titleInput);
+
+    expectedRepair.title = titleChangeValue;
+
+    expect(onSubmitMock).toBeCalledWith(expectedRepair);
+  });
 });
+
+//*************************utility***********************
+async function submitFormAction() {
+  const submitButton = screen.getByTestId("repair-form-tools");
+  await act(() => {
+    fireEvent.click(submitButton);
+  });
+
+  const confirmModal = screen.getByTestId("confirm-modal");
+
+  await act(async () => {
+    const confirmButton = getByRole(confirmModal, "button", {
+      hidden: true,
+    });
+    await fireEvent.click(confirmButton);
+  });
+}

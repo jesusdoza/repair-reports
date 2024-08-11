@@ -157,6 +157,7 @@ export default function RepairEditForm({
             </div>
             <div className="flex-1 flex justify-start">
               <input
+                data-testid="title-input"
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   const title = e.target.value;
                   formAction.updateTitle(title);
