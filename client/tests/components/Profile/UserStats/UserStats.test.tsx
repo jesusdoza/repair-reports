@@ -67,6 +67,7 @@ describe("UserStats", () => {
 
     const targetCell = screen.getByText(/invite/i);
     const targetRow = targetCell.closest("tr");
+    //@ts-expect-error checking must have row with current state
     getByText(targetRow, testGroupListProp[0].groupName);
   });
 });
