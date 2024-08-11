@@ -38,7 +38,7 @@ describe("findMissing() utility", () => {
 
   const patternNotMatching = ["bob", "test", "extra"];
 
-  it("should get the properties that are mssing from object", () => {
+  it("should get the properties that are mssing from array", () => {
     const missingFormList = findMissing(desiredPattern, patternNotMatching);
     expect(missingFormList).toEqual([missingItem]);
   });

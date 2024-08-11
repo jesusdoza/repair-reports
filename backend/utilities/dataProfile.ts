@@ -42,6 +42,7 @@ export default async function dataProfile(
   }
 
   const processedFile = await findPatterns(filePath);
+
   objsParsed = processedFile.objsParsed;
   patternsFound = processedFile.patterns;
 
@@ -118,8 +119,6 @@ async function findPatterns(filePath: string): Promise<patternsFoundT> {
 function getPattern(obj: object) {
   const values = Object.entries(obj);
   const props = Object.getOwnPropertyNames(obj);
-  // console.log("props", props);
-  // console.log("values", values);
   return props;
 }
 
