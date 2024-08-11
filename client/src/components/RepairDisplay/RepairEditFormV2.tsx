@@ -224,7 +224,7 @@ export default function RepairEditForm({
         data-testid="repair-form-tools"
         className="bg-slate-500 p-7">
         <ModalConfirm label={submitType ? submitType : "Create Repair"}>
-          <div>
+          <div data-testid="confirm-modal">
             <span>Please confirm: </span>
             <button
               onClick={() => {
