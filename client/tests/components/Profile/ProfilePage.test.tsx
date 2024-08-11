@@ -36,7 +36,7 @@ vi.mock("../../../src/hooks/useGetUserGroups");
   error: [],
 });
 
-(useGetUserRepairs as import * as jest from "jest";Mock).mockReturnValue({
+(useGetUserRepairs as Mock).mockReturnValue({
   getData: () => {},
   metaData: { totalByUser: 23, currentPage: 1, limitResults: 2 },
 });
