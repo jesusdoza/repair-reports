@@ -1,5 +1,6 @@
 import { it, expect, describe, test } from "vitest";
-import dataProfile from "../dataProfile.ts";
+import dataProfile, { findMissing } from "../dataProfile.ts";
+import Repair from "../../models/Repair.js";
 
 // import dataJson from "../../ignoreFiles/repairs_8_6_24.json";
 
@@ -23,20 +24,22 @@ describe("dataProfile", () => {
 
     expect(objsParsed).toBeGreaterThan(0);
   });
+
   it("should return array of different object patterns found", async () => {
     const { objsParsed, patterns } = await dataProfile(testDataPath);
-    expect(patterns?.length).toBeGreaterThan(0);
-    // console.table(patterns);
-    // console.log("objsParsed", objsParsed);
-    // console.log("patterns", patterns);
+    expect(patterns[0]).toHaveProperty("pattern");
   });
-  it.todo("should test agains a wanted pattern ", async () => {
-    const desiredPattern: string[] = [];
+});
 
-    const { objsParsed, patterns } = await dataProfile(
-      testDataPath,
-      desiredPattern
-    );
-    expect(patterns?.length).toBeGreaterThan(0);
+describe("findMissing() utility", () => {
+  const missingItem = "missing from list";
+  const desiredPattern = ["bob", "test"];
+  desiredPattern.push(missingItem);
+
+  const patternNotMatching = ["bob", "test", "extra"];
+
+  it("should get the properties that are mssing from object", () => {
+    const missingFormList = findMissing(desiredPattern, patternNotMatching);
+    expect(missingFormList).toEqual([missingItem]);
   });
 });

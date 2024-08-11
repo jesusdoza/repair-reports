@@ -2,15 +2,23 @@ import fs, { promises } from "fs";
 import readline from "readline";
 import path from "path";
 import { pipeline } from "stream/promises";
+import { find } from "../models/Repair";
+
 type returnT = {
   objsParsed: number;
   error: string[] | null;
-  patterns: PatternStatT[] | null;
+  patterns: { pattern: string[]; count: number; missing?: string[] }[];
 };
 
 type PatternStatT = {
   pattern: string[];
   count: number;
+};
+
+type patternsFoundT = {
+  objsParsed: number;
+  patterns: PatternStatT[];
+  error: string[] | null;
 };
 
 //hold current object structure desired to conform rest of objects
@@ -21,21 +29,34 @@ export default async function dataProfile(
   desiredPattern?: string[]
 ): Promise<returnT> {
   let reader: fs.ReadStream;
-
   let objsParsed: number = 0;
+  let patternsFound: PatternStatT[] = [];
+  let errors: string[] | null = null;
 
   const filePath = path.resolve(filePathStr);
 
   try {
     await promises.open(filePath, "r");
   } catch (err) {
-    return { error: ["file does not exist"], objsParsed: 0, patterns: null };
+    return { error: ["file does not exist"], objsParsed: 0, patterns: [] };
   }
 
-  return await parsFile(filePath);
+  const processedFile = await findPatterns(filePath);
+  objsParsed = processedFile.objsParsed;
+  patternsFound = processedFile.patterns;
+
+  if (desiredPattern) {
+    patternsFound = patternsFound.map((p) => {
+      const missing: string[] = findMissing(desiredPattern, p.pattern);
+
+      return { ...p, missing };
+    });
+  }
+
+  return { objsParsed, patterns: patternsFound, error: errors };
 }
 
-async function parsFile(filePath: string): Promise<returnT> {
+async function findPatterns(filePath: string): Promise<patternsFoundT> {
   let objsParsed = 0;
   let patterns: PatternStatT[] = [];
   let errors: string[] | null = null;
@@ -87,6 +108,8 @@ async function parsFile(filePath: string): Promise<returnT> {
     });
 
     rl.on("close", () => {
+      //todo process patterns for fixes
+
       resolve({ objsParsed, error: errors, patterns });
     });
   });
@@ -98,4 +121,20 @@ function getPattern(obj: object) {
   // console.log("props", props);
   // console.log("values", values);
   return props;
+}
+
+export function findMissing(desiredPattern: string[], pattern: string[]) {
+  // const extra: string = [];
+  const missing: string[] = [];
+
+  const temp = [...pattern].sort();
+
+  desiredPattern.forEach((p) => {
+    const foundIndex = temp.findIndex((item) => item == p);
+    if (foundIndex == -1) {
+      missing.push(p);
+    }
+  });
+
+  return missing;
 }
