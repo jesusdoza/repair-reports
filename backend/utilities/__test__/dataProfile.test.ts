@@ -29,9 +29,15 @@ describe("dataProfile", () => {
 
     expect(patterns[0]).toHaveProperty("pattern");
   });
+
+  it("should return ids of objects matching a pattern", async () => {
+    const { objsParsed, patterns } = await dataProfile(testDataPath);
+
+    expect(patterns[0]).toHaveProperty("ids");
+  });
 });
 
-describe("findMissing() utility", () => {
+describe("findMissing() method", () => {
   const missingItem = "missing from list";
   const desiredPattern = ["bob", "test"];
   desiredPattern.push(missingItem);

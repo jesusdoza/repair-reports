@@ -9,14 +9,15 @@ type returnT = {
   patterns: { pattern: string[]; count: number; missing?: string[] }[];
 };
 
-type PatternStatT = {
+type PatternEntryT = {
   pattern: string[];
   count: number;
+  ids: String[];
 };
 
 type patternsFoundT = {
   objsParsed: number;
-  patterns: PatternStatT[];
+  patterns: PatternEntryT[];
   error: string[] | null;
 };
 
@@ -28,7 +29,7 @@ export default async function dataProfile(
   desiredPattern?: string[]
 ): Promise<returnT> {
   let objsParsed: number = 0;
-  let patternsFound: PatternStatT[] = [];
+  let patternsFound: PatternEntryT[] = [];
   let errors: string[] | null = null;
 
   const filePath = path.resolve(filePathStr);
@@ -57,7 +58,7 @@ export default async function dataProfile(
 
 async function findPatterns(filePath: string): Promise<patternsFoundT> {
   let objsParsed = 0;
-  let patterns: PatternStatT[] = [];
+  let patterns: PatternEntryT[] = [];
   let errors: string[] | null = null;
 
   let patternStrings: string[] = [];
@@ -77,7 +78,7 @@ async function findPatterns(filePath: string): Promise<patternsFoundT> {
         const document = JSON.parse(line);
         objsParsed += 1;
 
-        // const id = document
+        const docId = document._id.$oid;
 
         //get properties aka patter of obj
         const objPattern = getPattern(document);
@@ -92,12 +93,17 @@ async function findPatterns(filePath: string): Promise<patternsFoundT> {
         });
 
         if (foundPatternIndex == -1) {
-          patterns.push({ count: 1, pattern: objPattern });
+          patterns.push({
+            count: 1,
+            pattern: objPattern,
+            ids: [docId],
+          });
           patternStrings.push(patternStr);
         }
 
         if (foundPatternIndex != -1) {
           patterns[foundPatternIndex].count += 1;
+          patterns[foundPatternIndex].ids.push(docId);
         }
       } catch (error) {
         if (!errors) {
@@ -139,10 +145,11 @@ export function findMissing(desiredPattern: string[], pattern: string[]) {
 }
 
 async function main() {
-  const patternThis = new Repair();
+  //@ts-expect-error _doc does exist on mongoose instance
+  const patternThis = new Repair()._doc;
 
   const pathToDataJson = "./ignoreFiles/data.json";
-  const desiredPattern = Object.entries(patternThis._doc)
+  const desiredPattern = Object.entries(patternThis)
     .map((e) => e[0])
     .sort();
 
@@ -160,4 +167,4 @@ async function main() {
   fs.writeFileSync(filePath, jsonString, "utf-8");
 }
 
-// main();
+main();
