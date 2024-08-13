@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as readline from "readline";
 import * as path from "path";
-import * as Repair from "../models/Repair";
+import Repair from "../models/Repair.js";
 
 type returnT = {
   objsParsed: number;
@@ -27,7 +27,6 @@ export default async function dataProfile(
   filePathStr: string,
   desiredPattern?: string[]
 ): Promise<returnT> {
-  let reader: fs.ReadStream;
   let objsParsed: number = 0;
   let patternsFound: PatternStatT[] = [];
   let errors: string[] | null = null;
@@ -161,4 +160,4 @@ async function main() {
   fs.writeFileSync(filePath, jsonString, "utf-8");
 }
 
-main();
+// main();
