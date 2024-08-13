@@ -144,6 +144,7 @@ export function findMissing(desiredPattern: string[], pattern: string[]) {
   return missing;
 }
 
+//main function to run from node directly
 async function main() {
   const patternThis = new Repair()._doc;
 
