@@ -1,6 +1,6 @@
 import { it, expect, describe, test } from "vitest";
 import dataProfile, { findMissing } from "../dataProfile.ts";
-import Repair from "../../models/Repair.js";
+import Repair from "../models/Repair.js";
 
 // import dataJson from "../../ignoreFiles/repairs_8_6_24.json";
 

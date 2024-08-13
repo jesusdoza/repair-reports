@@ -1,8 +1,7 @@
-import fs, { promises } from "fs";
-import readline from "readline";
-import path from "path";
-import { pipeline } from "stream/promises";
-import { find } from "../models/Repair";
+import * as fs from "fs";
+import * as readline from "readline";
+import * as path from "path";
+import * as Repair from "./models/Repair";
 
 type returnT = {
   objsParsed: number;
@@ -36,7 +35,7 @@ export default async function dataProfile(
   const filePath = path.resolve(filePathStr);
 
   try {
-    await promises.open(filePath, "r");
+    await fs.promises.open(filePath, "r");
   } catch (err) {
     return { error: ["file does not exist"], objsParsed: 0, patterns: [] };
   }
@@ -78,6 +77,8 @@ async function findPatterns(filePath: string): Promise<patternsFoundT> {
       try {
         const document = JSON.parse(line);
         objsParsed += 1;
+
+        // const id = document
 
         //get properties aka patter of obj
         const objPattern = getPattern(document);
@@ -137,3 +138,27 @@ export function findMissing(desiredPattern: string[], pattern: string[]) {
 
   return missing;
 }
+
+async function main() {
+  const patternThis = new Repair();
+
+  const pathToDataJson = "./ignoreFiles/data.json";
+  const desiredPattern = Object.entries(patternThis._doc)
+    .map((e) => e[0])
+    .sort();
+
+  const results = await dataProfile(pathToDataJson, desiredPattern);
+
+  console.log("results", results);
+
+  // Define the file path
+  const filePath = path.join(__dirname, "patterns.json");
+
+  // Serialize the object to a JSON string
+  const jsonString = JSON.stringify(results, null, 2);
+
+  // Write the JSON string to the file
+  fs.writeFileSync(filePath, jsonString, "utf-8");
+}
+
+main();
