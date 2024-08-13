@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as readline from "readline";
 import * as path from "path";
-import * as Repair from "./models/Repair";
+import * as Repair from "../models/Repair";
 
 type returnT = {
   objsParsed: number;
