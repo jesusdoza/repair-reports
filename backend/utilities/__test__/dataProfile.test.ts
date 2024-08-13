@@ -3,8 +3,7 @@ import dataProfile, { findMissing } from "../dataProfile.ts";
 import * as Repair from "../../models/Repair.js";
 // import dataJson from "../../ignoreFiles/repairs_8_6_24.json";
 
-let testDataPath = "./utilities/ignoreFiles/test.json";
-// testDataPath = "../ignoreFiles/data.json";
+let testDataPath = "./utilities/testFiles/test.json";
 
 describe("dataProfile", () => {
   it("accept path string to json and return object ", async () => {
