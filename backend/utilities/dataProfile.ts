@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as readline from "readline";
 import * as path from "path";
-import Repair from "../models/Repair.js";
+import * as Repair from "../models/Repair.js";
 
 type returnT = {
   objsParsed: number;
@@ -145,10 +145,9 @@ export function findMissing(desiredPattern: string[], pattern: string[]) {
 }
 
 async function main() {
-  //@ts-expect-error _doc does exist on mongoose instance
   const patternThis = new Repair()._doc;
 
-  const pathToDataJson = "./ignoreFiles/data.json";
+  const pathToDataJson = "./data.json";
   const desiredPattern = Object.entries(patternThis)
     .map((e) => e[0])
     .sort();
