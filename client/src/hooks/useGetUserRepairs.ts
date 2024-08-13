@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { RepairDataT } from "../../types";
 import useRepairApi from "./useRepairApi";
-type metaDataT = {
+export type metaDataT = {
   totalByUser: number;
   currentPage: number;
   limitResults: number;
@@ -21,15 +21,20 @@ const useGetUserRepairs = () => {
   const getData = async (limit?: number, page?: number) => {
     const response = await getUsersRepairs(limit, page);
 
-    const { results, ...otherData } = response as {
-      results: RepairDataT[];
-      totalByUser: number;
-      currentPage: number;
-      limitResults: number;
-    };
+    try {
+      const { results, ...otherData } = response as {
+        results: RepairDataT[];
+        totalByUser: number;
+        currentPage: number;
+        limitResults: number;
+      };
 
-    setMetaData(otherData);
-    setRepairsData(results);
+      setMetaData(otherData);
+      setRepairsData(results);
+    } catch (error) {
+      setMetaData({ totalByUser: 0, currentPage: 0, limitResults: 0 });
+      setRepairsData([]);
+    }
   };
 
   return { repairsData, getData, metaData };
