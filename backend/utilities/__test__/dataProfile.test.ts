@@ -1,11 +1,9 @@
 import { it, expect, describe, test } from "vitest";
 import dataProfile, { findMissing } from "../dataProfile.ts";
-import Repair from "../../models/Repair.js";
-
+import * as Repair from "../../models/Repair.js";
 // import dataJson from "../../ignoreFiles/repairs_8_6_24.json";
 
-let testDataPath = "./ignoreFiles/test.json";
-testDataPath = "./ignoreFiles/repairs_8_6_24.json";
+let testDataPath = "./utilities/testFiles/test.json";
 
 describe("dataProfile", () => {
   it("accept path string to json and return object ", async () => {
@@ -19,19 +17,27 @@ describe("dataProfile", () => {
 
     expect(error).toContain("file does not exist");
   });
+
   it("should return amount of objects parsed", async () => {
-    const { objsParsed } = await dataProfile(testDataPath);
+    const { objsParsed, error } = await dataProfile(testDataPath);
 
     expect(objsParsed).toBeGreaterThan(0);
   });
 
   it("should return array of different object patterns found", async () => {
     const { objsParsed, patterns } = await dataProfile(testDataPath);
+
     expect(patterns[0]).toHaveProperty("pattern");
+  });
+
+  it("should return ids of objects matching a pattern", async () => {
+    const { objsParsed, patterns } = await dataProfile(testDataPath);
+
+    expect(patterns[0]).toHaveProperty("ids");
   });
 });
 
-describe("findMissing() utility", () => {
+describe("findMissing() method", () => {
   const missingItem = "missing from list";
   const desiredPattern = ["bob", "test"];
   desiredPattern.push(missingItem);

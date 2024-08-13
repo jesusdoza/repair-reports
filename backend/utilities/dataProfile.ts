@@ -1,8 +1,7 @@
-import fs, { promises } from "fs";
-import readline from "readline";
-import path from "path";
-import { pipeline } from "stream/promises";
-import { find } from "../models/Repair";
+import * as fs from "fs";
+import * as readline from "readline";
+import * as path from "path";
+import * as Repair from "../models/Repair.js";
 
 type returnT = {
   objsParsed: number;
@@ -10,14 +9,15 @@ type returnT = {
   patterns: { pattern: string[]; count: number; missing?: string[] }[];
 };
 
-type PatternStatT = {
+type PatternEntryT = {
   pattern: string[];
   count: number;
+  ids: String[];
 };
 
 type patternsFoundT = {
   objsParsed: number;
-  patterns: PatternStatT[];
+  patterns: PatternEntryT[];
   error: string[] | null;
 };
 
@@ -28,15 +28,14 @@ export default async function dataProfile(
   filePathStr: string,
   desiredPattern?: string[]
 ): Promise<returnT> {
-  let reader: fs.ReadStream;
   let objsParsed: number = 0;
-  let patternsFound: PatternStatT[] = [];
+  let patternsFound: PatternEntryT[] = [];
   let errors: string[] | null = null;
 
   const filePath = path.resolve(filePathStr);
 
   try {
-    await promises.open(filePath, "r");
+    await fs.promises.open(filePath, "r");
   } catch (err) {
     return { error: ["file does not exist"], objsParsed: 0, patterns: [] };
   }
@@ -59,7 +58,7 @@ export default async function dataProfile(
 
 async function findPatterns(filePath: string): Promise<patternsFoundT> {
   let objsParsed = 0;
-  let patterns: PatternStatT[] = [];
+  let patterns: PatternEntryT[] = [];
   let errors: string[] | null = null;
 
   let patternStrings: string[] = [];
@@ -79,6 +78,8 @@ async function findPatterns(filePath: string): Promise<patternsFoundT> {
         const document = JSON.parse(line);
         objsParsed += 1;
 
+        const docId = document._id.$oid;
+
         //get properties aka patter of obj
         const objPattern = getPattern(document);
 
@@ -92,12 +93,17 @@ async function findPatterns(filePath: string): Promise<patternsFoundT> {
         });
 
         if (foundPatternIndex == -1) {
-          patterns.push({ count: 1, pattern: objPattern });
+          patterns.push({
+            count: 1,
+            pattern: objPattern,
+            ids: [docId],
+          });
           patternStrings.push(patternStr);
         }
 
         if (foundPatternIndex != -1) {
           patterns[foundPatternIndex].count += 1;
+          patterns[foundPatternIndex].ids.push(docId);
         }
       } catch (error) {
         if (!errors) {
@@ -137,3 +143,28 @@ export function findMissing(desiredPattern: string[], pattern: string[]) {
 
   return missing;
 }
+
+//main function to run from node directly
+async function main() {
+  const patternThis = new Repair()._doc;
+
+  const pathToDataJson = "./data.json";
+  const desiredPattern = Object.entries(patternThis)
+    .map((e) => e[0])
+    .sort();
+
+  const results = await dataProfile(pathToDataJson, desiredPattern);
+
+  console.log("results", results);
+
+  // Define the file path
+  const filePath = path.join(__dirname, "patterns.json");
+
+  // Serialize the object to a JSON string
+  const jsonString = JSON.stringify(results, null, 2);
+
+  // Write the JSON string to the file
+  fs.writeFileSync(filePath, jsonString, "utf-8");
+}
+
+main();
