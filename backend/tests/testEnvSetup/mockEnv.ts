@@ -7,6 +7,7 @@ import { setupDatabase, uriEnv } from "./mockMongoDb";
 // };
 
 vi.stubEnv("NODE_ENV", "development");
+vi.stubEnv("session_secret", "fdasfsa");
 await setupDatabase();
 
 vi.stubEnv("connect_string", uriEnv);
