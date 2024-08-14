@@ -13,14 +13,16 @@ describe("server open and protected routes routes ", () => {
     await request(application).get("/login").expect(200);
     await request(application).get("/signup").expect(200);
   });
-  it("should return 400 for protected routes when not authenticated", async () => {
+
+  it("should return 302 and redirect for login on ejs app routes", async () => {
     const protectedRoutes = ["/repair", "/dashboard", "/profile", "/comments"];
     const length = protectedRoutes.length;
 
     for (let i = 0; i < length; i++) {
-      let response = await request(application).get(protectedRoutes[i]);
+      const route = protectedRoutes[i];
+      let response = await request(application).get(route);
 
-      expect(response.status, `faild on route ${protectedRoutes[i]}`).toBe(302);
+      expect(response.status, `failed on route ${route}`).toBe(302);
       expect(response.headers["location"]).toBe("/login");
     }
   });
