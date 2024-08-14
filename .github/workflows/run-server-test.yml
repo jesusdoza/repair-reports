@@ -1,5 +1,5 @@
 name: run server tests
-run-name: ${{ github.actor }} is running client tests
+run-name: ${{ github.actor }} is running server tests
 on:
   pull_request:
 
