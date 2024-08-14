@@ -2,8 +2,8 @@ name: run client tests
 run-name: ${{ github.actor }} is running client tests
 on:
   pull_request:
-    paths:
-      - "client/**"
+    # paths:
+    #   - "client/**"
 jobs:
   Test-client:
     runs-on: ubuntu-latest
