@@ -71,7 +71,6 @@ const reactRoutes = require("./routes/react");
 // =============================================================
 // ROUTES
 app.use("/react", reactRoutes);
-app.use("/", homeRoutes);
 app.use("/login", loginRoutes);
 app.use("/logout", logoutRoutes);
 app.use("/signup", signUpRoutes);
@@ -80,8 +79,9 @@ app.use("/profile", ensureAuth, profileRoutes);
 app.use("/dashboard", ensureAuth, dashboardRoutes);
 app.use("/comments", ensureAuth, commentRoutes);
 app.use("/api", apiRoutes);
+app.use("/", homeRoutes);
 
 ///route "/repairform"
 app.use("/repairform", formRoutes);
 
-module.exports = { app };
+module.exports = app;
