@@ -9,12 +9,8 @@ import { setupDatabase, uriEnv } from "./mockMongoDb";
 vi.stubEnv("NODE_ENV", "development");
 await setupDatabase();
 
-async function main() {
-  await setupDatabase();
-  vi.stubEnv("connect_string", uriEnv);
-}
+vi.stubEnv("connect_string", uriEnv);
 
-main();
 // cloud_name = dafdsfad
 // cloud_key = 12412412
 // cloud_secret = 412341234213fdA7dfa
