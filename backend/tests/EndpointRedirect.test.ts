@@ -1,7 +1,7 @@
 import { it, expect, describe, test, vi, beforeAll, afterAll } from "vitest";
+import "./testEnvSetup/mockEnv.js"; //mock env variables loaded need to load before app wont work in same file for some reason
 import request from "supertest";
 import { App } from "supertest/types.js";
-import "./testEnvSetup/mockEnv.js"; //mock env variables loaded need to load before app wont work in same file for some reason
 // import { setupDatabase, teardownDatabase } from "./testEnvSetup/setupTests.js";
 
 import app from "../app.js";
