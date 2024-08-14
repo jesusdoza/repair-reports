@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: 21
 
-      - name: install client dependencies
+      - name: install server dependencies
         working-directory: backend
         run: npm ci
 
