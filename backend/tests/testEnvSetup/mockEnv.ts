@@ -6,11 +6,15 @@ import { setupDatabase, uriEnv } from "./mockMongoDb";
 //   await mongoServer.stop();
 // };
 
+vi.stubEnv("NODE_ENV", "development");
 await setupDatabase();
 
-vi.stubEnv("NODE_ENV", "development");
-vi.stubEnv("connect_string", uriEnv);
+async function main() {
+  await setupDatabase();
+  vi.stubEnv("connect_string", uriEnv);
+}
 
+main();
 // cloud_name = dafdsfad
 // cloud_key = 12412412
 // cloud_secret = 412341234213fdA7dfa
