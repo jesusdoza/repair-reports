@@ -146,25 +146,30 @@ export function findMissing(desiredPattern: string[], pattern: string[]) {
 
 //main function to run from node directly
 async function main() {
-  const patternThis = new Repair()._doc;
+  try {
+    const newRep = new Repair();
+    const patternThis = newRep._doc;
 
-  const pathToDataJson = "./data.json";
-  const desiredPattern = Object.entries(patternThis)
-    .map((e) => e[0])
-    .sort();
+    const pathToDataJson = "./data.json";
+    const desiredPattern = Object.entries(patternThis)
+      .map((e) => e[0])
+      .sort();
 
-  const results = await dataProfile(pathToDataJson, desiredPattern);
+    const results = await dataProfile(pathToDataJson, desiredPattern);
 
-  console.log("results", results);
+    console.log("results", results);
 
-  // Define the file path
-  const filePath = path.join(__dirname, "patterns.json");
+    // Define the file path
+    const filePath = path.join(__dirname, "patterns.json");
 
-  // Serialize the object to a JSON string
-  const jsonString = JSON.stringify(results, null, 2);
+    // Serialize the object to a JSON string
+    const jsonString = JSON.stringify(results, null, 2);
 
-  // Write the JSON string to the file
-  fs.writeFileSync(filePath, jsonString, "utf-8");
+    // Write the JSON string to the file
+    fs.writeFileSync(filePath, jsonString, "utf-8");
+  } catch (error) {
+    console.log("error in dataProfiletest", error);
+  }
 }
 
 main();
