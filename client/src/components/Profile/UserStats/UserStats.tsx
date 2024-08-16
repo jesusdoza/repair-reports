@@ -35,9 +35,9 @@ export default function UserStats({
           </div>
         </section>
 
-        <section className="flex gap-1 items-center">
+        <section className="flex justify-center items-center">
           <details className="dropdown">
-            <summary className="btn m-1 flex flex-col">
+            <summary className="btn flex flex-col">
               <span className="block">Joined Groups</span>
               <span className="badge">{groupsList.length}</span>
             </summary>
