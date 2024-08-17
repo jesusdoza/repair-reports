@@ -19,7 +19,7 @@ export default function InviteTool({
 }: InviteToolProps) {
   return (
     <section className="relative p-2 border rounded-lg border-blue-600">
-      <div>
+      <div className="">
         <div>
           <InviteForm
             onSubmit={(groupIds: string[], password: string) => {

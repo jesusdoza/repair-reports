@@ -18,13 +18,13 @@ export default function Modal({
 
   return (
     <div
-      className="hero-overlay h-[500px] absolute top-0 sticky"
+      className="hero-overlay h-screen absolute top-0 z-50"
       onClick={onClose}>
       <div
-        className="modal-content"
+        className="modal-content hero-overlay"
         onClick={(e) => e.stopPropagation()}>
         <button
-          className="modal-close z-20"
+          className="modal-close "
           onClick={onClose}>
           &times;
         </button>

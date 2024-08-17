@@ -25,14 +25,16 @@ export default function ProfilePage(): React.ReactNode {
   }, []);
 
   return (
-    <section className="text-slate-400   flex flex-col ">
-      <Modal
-        onClose={() => {
-          setIsModalOpen(false);
-        }}
-        isOpen={isModalOpen}>
-        {modalContent}
-      </Modal>
+    <section className="text-slate-400 flex flex-col ">
+      <div className="">
+        <Modal
+          onClose={() => {
+            setIsModalOpen(false);
+          }}
+          isOpen={isModalOpen}>
+          {modalContent}
+        </Modal>
+      </div>
       {/* TEST MODAL BUTTON */}
       <button
         className="btn btn-sm w-[100px]"

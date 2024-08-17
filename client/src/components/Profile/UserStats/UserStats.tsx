@@ -36,12 +36,12 @@ export default function UserStats({
         </section>
 
         <section className="flex justify-center items-center">
-          <details className="dropdown">
+          <details className="dropdown ">
             <summary className="btn flex flex-col">
               <span className="block">Joined Groups</span>
               <span className="badge">{groupsList.length}</span>
             </summary>
-            <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow ">
+            <ul className="menu dropdown-content bg-base-100 rounded-box w-52 p-2 shadow ">
               <li>
                 <div className="h-96 overflow-x-auto">
                   <table className="table table-pin-rows">
