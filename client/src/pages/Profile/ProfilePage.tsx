@@ -47,7 +47,17 @@ export default function ProfilePage(): React.ReactNode {
         modal toggle
       </button>
       {/* TEST MODAL BUTTON */}
-      <div className="flex">
+      <div className="flex flex-col md:flex-row justify-center items-center">
+        {/* side bar */}
+        <aside className="w-2/6 min-h-[400px] m-0 p-1">
+          <ErrorBoundary componentName="UserStats">
+            <UserStats
+              groupsList={userGroupMemberships}
+              totalRepairs={metaData.totalByUser}
+            />
+          </ErrorBoundary>
+        </aside>
+
         <main className="w-4/6 min-h-[400px] m-0 p-1">
           <div className="p-2">
             <UserInfoContainer />
@@ -60,16 +70,6 @@ export default function ProfilePage(): React.ReactNode {
             </ErrorBoundary>
           </div>
         </main>
-
-        {/* side bar */}
-        <aside className="w-2/6 min-h-[400px] m-0 bg-green-900 p-1">
-          <ErrorBoundary componentName="UserStats">
-            <UserStats
-              groupsList={userGroupMemberships}
-              totalRepairs={metaData.totalByUser}
-            />
-          </ErrorBoundary>
-        </aside>
       </div>
     </section>
   );

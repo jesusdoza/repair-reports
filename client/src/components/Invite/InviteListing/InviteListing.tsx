@@ -13,11 +13,16 @@ export function InviteListing({ invite }: { invite?: InviteT }) {
       <td className="text-center">{invite?.inviteCode || ""}</td>
       <td className="text-center">{invite?.invitePassword || ""}</td>
       <td className="text-center">
-        <ul>
+        <ul className="w-full">
           {invite?.groups
             ? invite?.groups.map((g) => (
-                <li key={g.id}>
-                  {g.id}:{g.name}
+                <li
+                  key={g.id}
+                  className="w-full">
+                  <span className="text-wrap">
+                    <span>{g.id.slice(0, 6)}:</span>
+                    {g.name}
+                  </span>
                 </li>
               ))
             : ""}
