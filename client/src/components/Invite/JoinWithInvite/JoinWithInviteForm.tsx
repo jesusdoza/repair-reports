@@ -1,4 +1,3 @@
-import React from "react";
 import image from "../../../assets/Live collaboration-rafiki.svg";
 export default function JoinWithInviteForm() {
   return (
