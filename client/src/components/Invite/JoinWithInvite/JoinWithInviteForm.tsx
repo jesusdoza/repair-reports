@@ -1,13 +1,13 @@
 import React from "react";
-
+import image from "../../../assets/Live collaboration-rafiki.svg";
 export default function JoinWithInviteForm() {
   return (
-    <div>
-      <div className="hero bg-base-200 min-h-screen">
-        <div className="hero-content flex-col lg:flex-row-reverse">
+    <div className="w-full">
+      <div className="hero  bg-base-200 min-h-screen">
+        <div className="hero-content flex-col lg:flex-row-reverse w-full ">
           <img
-            src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
-            className="max-w-sm rounded-lg shadow-2xl"
+            src={image}
+            className="max-w-sm rounded-lg shadow-2xl  bg-green-300"
           />
           <div>
             <h1 className="text-5xl font-bold">Join a group</h1>
