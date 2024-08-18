@@ -22,6 +22,8 @@ export default function useInviteManager() {
         withCredentials: true,
       });
 
+      console.log("response", response);
+
       setData(response.data.invites);
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -58,22 +60,15 @@ export default function useInviteManager() {
     inviteCode: string;
     password?: string;
   }) {
-    try {
-      const response = axios.get(`${API_URL}/api/invite`, {
-        withCredentials: true,
-        params: {
-          invitecode: inviteCode,
-          password,
-        },
-      });
-      return response;
-    } catch (error) {
-      setErrors((state) => {
-        console.log("error getting invite", error);
-        return [...state, "invalid code"];
-      });
-    }
+    const response = axios.get(`${API_URL}/api/invite11111`, {
+      withCredentials: true,
+      params: {
+        invitecode: inviteCode,
+        password,
+      },
+    });
+    return response;
   }
 
-  return { getUserInvites, getInvite, postInvite, errors, data };
+  return { getUserInvites, getInvite, postInvite, data };
 }
