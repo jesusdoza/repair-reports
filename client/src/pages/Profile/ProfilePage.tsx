@@ -1,23 +1,23 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import ErrorBoundary from "../../components/ErrorBoundary/ErrorBoundary";
 import InviteToolContainer from "../../components/Invite/InviteToolContainer";
 import UserInfoContainer from "../../components/Profile/UserInfoContainer";
 import UserStats from "../../components/Profile/UserStats/UserStats";
 import useGetUserGroups from "../../hooks/useGetUserGroups";
 import useGetUserRepairs from "../../hooks/useGetUserRepairs";
-import Modal from "../../components/Modal/Modal";
+// import Modal from "../../components/Modal/Modal";
 
 export default function ProfilePage(): React.ReactNode {
   const { data: userGroupMemberships, fetchData: getUserGroupData } =
     useGetUserGroups();
   const { getData, metaData } = useGetUserRepairs();
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState(
-    <>
-      <p>no content</p>
-    </>
-  );
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [modalContent, setModalContent] = useState(
+  //   <>
+  //     <p>no content</p>
+  //   </>
+  // );
 
   useEffect(() => {
     getUserGroupData();
@@ -26,7 +26,7 @@ export default function ProfilePage(): React.ReactNode {
 
   return (
     <section className="text-slate-400 flex flex-col ">
-      <div className="">
+      {/* <div className="">
         <Modal
           onClose={() => {
             setIsModalOpen(false);
@@ -34,9 +34,9 @@ export default function ProfilePage(): React.ReactNode {
           isOpen={isModalOpen}>
           {modalContent}
         </Modal>
-      </div>
+      </div> */}
       {/* TEST MODAL BUTTON */}
-      <button
+      {/* <button
         className="btn btn-sm w-[100px]"
         onClick={(event) => {
           event.preventDefault();
@@ -45,7 +45,7 @@ export default function ProfilePage(): React.ReactNode {
           });
         }}>
         modal toggle
-      </button>
+      </button> */}
       {/* TEST MODAL BUTTON */}
       <div className="flex flex-col md:flex-row justify-center items-center">
         {/* side bar */}

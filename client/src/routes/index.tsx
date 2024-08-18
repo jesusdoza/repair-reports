@@ -13,6 +13,7 @@ import HomePage from "../pages/Home/HomePage";
 import ErrorBoundary from "../components/ErrorBoundary/ErrorBoundary";
 import LoginSignupContainer from "../components/LoginSignUp/LoginSignupContainer";
 import ProtectedRoute from "../components/ProtectedRoute";
+import InvitePage from "../pages/invite/InvitePage";
 
 export const routes = createBrowserRouter([
   {
@@ -127,6 +128,18 @@ export const routes = createBrowserRouter([
         <Layout>
           <ErrorBoundary componentName="RepairInfoPageContainer">
             <SearchPage />
+          </ErrorBoundary>
+        </Layout>
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/invite",
+    element: (
+      <ProtectedRoute>
+        <Layout>
+          <ErrorBoundary componentName="InvitePage">
+            <InvitePage />
           </ErrorBoundary>
         </Layout>
       </ProtectedRoute>
