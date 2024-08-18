@@ -14,7 +14,7 @@ export default function InvitePage() {
   const handleGetInvite = async (inviteCode: string, password?: string) => {
     try {
       await getInvite({ inviteCode, password });
-      // navigate("/profile");
+      navigate("/profile");
     } catch (error) {
       console.log("error getting invite by code", error);
       setErrors(["invalid code"]);
