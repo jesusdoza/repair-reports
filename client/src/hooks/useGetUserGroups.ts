@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useRequestErrorHandler from "./useRequestErrorHandler";
 import axios from "axios";
 

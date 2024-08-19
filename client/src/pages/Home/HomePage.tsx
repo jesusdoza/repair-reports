@@ -1,5 +1,3 @@
-import React from "react";
-
 import ColabImage from "../../assets/HomePage/live_collaboration-rafiki.svg";
 import CircuitBoardHeroImage from "../../assets/HomePage/Printed-circuit-board-pana.svg";
 import FirmwareImage from "../../assets/HomePage/Firmware-amico.svg";

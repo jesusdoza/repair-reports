@@ -14,7 +14,7 @@ type InviteDataT = {
 export default function useInviteManager() {
   const { unauthorizedError } = useAuthContext();
   const [data, setData] = useState<InviteDataT[]>([]);
-  const [errors, setErrors] = useState<string[]>([]);
+  // const [errors, setErrors] = useState<string[]>([]);
 
   async function getUserInvites() {
     try {

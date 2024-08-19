@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 import JoinWithInviteForm from "../../components/Invite/JoinWithInvite/JoinWithInviteForm";
 import useInviteManager from "../../hooks/useInviteManager";
