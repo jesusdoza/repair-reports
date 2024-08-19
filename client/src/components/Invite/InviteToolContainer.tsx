@@ -38,17 +38,19 @@ export default function InviteToolContainer({
   }, [userGroupMemberships]);
 
   return (
-    <div className="p-1 ">
+    <div className="p-1">
       <div
         className="btn bg-green-500"
         onClick={() => getUserGroupData()}>
         refresh
       </div>
-      <InviteTool
-        onPostInvite={handlePostInvite}
-        availableGroups={availableInviteGroups}
-      />
-      <InviteLog invites={inviteData} />
+      <div className="">
+        <InviteTool
+          onPostInvite={handlePostInvite}
+          availableGroups={availableInviteGroups}
+        />
+        <InviteLog invites={inviteData} />
+      </div>
     </div>
   );
 }

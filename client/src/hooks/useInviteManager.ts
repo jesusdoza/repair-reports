@@ -14,12 +14,15 @@ type InviteDataT = {
 export default function useInviteManager() {
   const { unauthorizedError } = useAuthContext();
   const [data, setData] = useState<InviteDataT[]>([]);
+  // const [errors, setErrors] = useState<string[]>([]);
 
   async function getUserInvites() {
     try {
       const response = await axios.get(`${API_URL}/api/invite`, {
         withCredentials: true,
       });
+
+      console.log("response", response);
 
       setData(response.data.invites);
     } catch (error) {
@@ -32,6 +35,8 @@ export default function useInviteManager() {
       }
     }
   }
+
+  //create invite by current user
   async function postInvite({
     groups,
     password,
@@ -47,5 +52,23 @@ export default function useInviteManager() {
     return response;
   }
 
-  return { getUserInvites, postInvite, data };
+  //request invite by invite code not made
+  async function getInvite({
+    inviteCode,
+    password,
+  }: {
+    inviteCode: string;
+    password?: string;
+  }) {
+    const response = axios.get(`${API_URL}/api/invite11111`, {
+      withCredentials: true,
+      params: {
+        invitecode: inviteCode,
+        password,
+      },
+    });
+    return response;
+  }
+
+  return { getUserInvites, getInvite, postInvite, data };
 }

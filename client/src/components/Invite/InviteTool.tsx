@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import CreatableSelect from "react-select/creatable";
+import { Link } from "react-router-dom";
 
 export type GroupOptionT = {
   id: string;
@@ -19,7 +20,7 @@ export default function InviteTool({
 }: InviteToolProps) {
   return (
     <section className="relative p-2 border rounded-lg border-blue-600">
-      <div>
+      <div className="">
         <div>
           <InviteForm
             onSubmit={(groupIds: string[], password: string) => {
@@ -105,12 +106,19 @@ function InviteForm({ groupOptions = [], onSubmit }: CreateInviteFormPropsT) {
             </label>
           )}
         </div>
-        <div className="btn btn-sm absolute right-0">
+        <div className=" absolute right-0">
           <button
+            className="btn btn-sm"
             typeof="submit"
             data-testid="invite-submit">
             create invite +
           </button>
+
+          <div className="btn btn-sm">
+            <Link to={"/invite"}>
+              <div className="">Join group</div>
+            </Link>
+          </div>
         </div>
       </form>
     </div>

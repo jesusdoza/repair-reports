@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 type UserStatsPropsT = {
   totalRepairs?: number;
   groupsList?: GroupListingT[];
@@ -16,35 +18,37 @@ export default function UserStats({
   const joinedGroupsRows = createRows(groupsList);
 
   return (
-    <div className="flex flex-col">
-      <div className="self-center">
-        <div className="avatar placeholder">
-          <div className="bg-neutral text-neutral-content w-[300px] rounded-full">
+    <div className="flex flex-col gap-1">
+      <div className="self-center w-full flex justify-center">
+        <div className="avatar placeholder w-full">
+          <div className="bg-neutral text-neutral-content w-full rounded-full">
             <span className="text-[100px]">D</span>
           </div>
         </div>
       </div>
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center flex-wrap gap-1">
         {/* <section className="flex gap-1"> */}
         <section>
-          <div className="btn ">
+          <Link
+            to={"/dashboard"}
+            className="btn ">
             <div>
               <span className="block">Total Repairs</span>
               <div className="badge">{totalRepairs}</div>
             </div>
-          </div>
+          </Link>
         </section>
 
-        <section className="flex gap-1 items-center">
-          <details className="dropdown">
-            <summary className="btn m-1 flex flex-col">
+        <section className="flex justify-center items-center">
+          <details className="dropdown ">
+            <summary className="btn flex flex-col">
               <span className="block">Joined Groups</span>
               <span className="badge">{groupsList.length}</span>
             </summary>
-            <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow ">
+            <ul className=" dropdown-content bg-base-100 rounded-box w-52 p-2 shadow right-0">
               <li>
-                <div className="h-96 overflow-x-auto">
-                  <table className="table table-pin-rows">
+                <div className="h-max overflow-x-auto">
+                  <table className="table">
                     <thead>
                       <tr>
                         <th>Group</th>

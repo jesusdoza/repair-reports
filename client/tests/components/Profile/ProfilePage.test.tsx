@@ -22,6 +22,7 @@ import useGetUserGroups from "../../../src/hooks/useGetUserGroups";
 import useGetUserRepairs from "../../../src/hooks/useGetUserRepairs";
 
 import ProfilePage from "../../../src/pages/Profile/ProfilePage";
+import { MemoryRouter } from "react-router-dom";
 
 vi.mock("../../../src/hooks/useGetUserRepairs");
 vi.mock("../../../src/hooks/useGetUserGroups");
@@ -45,7 +46,11 @@ describe("ProfilePage tests", () => {
   it("should display users total repairs created and total groups joined", () => {
     // Mock the return value of the hook
 
-    render(<ProfilePage />);
+    render(
+      <MemoryRouter>
+        <ProfilePage />
+      </MemoryRouter>
+    );
 
     screen.getByText(23);
   });
