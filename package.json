@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "back-install": "cd ./backend/ && npm install",
     "client-install": "cd ./client/ && npm install",
