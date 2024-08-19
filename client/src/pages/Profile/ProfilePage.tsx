@@ -12,13 +12,6 @@ export default function ProfilePage(): React.ReactNode {
     useGetUserGroups();
   const { getData, metaData } = useGetUserRepairs();
 
-  // const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [modalContent, setModalContent] = useState(
-  //   <>
-  //     <p>no content</p>
-  //   </>
-  // );
-
   useEffect(() => {
     getUserGroupData();
     getData();
@@ -26,27 +19,6 @@ export default function ProfilePage(): React.ReactNode {
 
   return (
     <section className="text-slate-400 flex flex-col ">
-      {/* <div className="">
-        <Modal
-          onClose={() => {
-            setIsModalOpen(false);
-          }}
-          isOpen={isModalOpen}>
-          {modalContent}
-        </Modal>
-      </div> */}
-      {/* TEST MODAL BUTTON */}
-      {/* <button
-        className="btn btn-sm w-[100px]"
-        onClick={(event) => {
-          event.preventDefault();
-          setIsModalOpen((bool) => {
-            return !bool;
-          });
-        }}>
-        modal toggle
-      </button> */}
-      {/* TEST MODAL BUTTON */}
       <div className="flex flex-col md:flex-row justify-center items-center">
         {/* side bar */}
         <aside className="w-2/6 min-h-[400px] m-0 p-1">
