@@ -5,6 +5,7 @@ import InviteTool, {
   GroupOptionT,
 } from "../../../src/components/Invite/InviteTool";
 import React from "react";
+import { MemoryRouter } from "react-router-dom";
 
 const testGroups: GroupOptionT[] = [
   {
@@ -25,10 +26,12 @@ describe("InviteTool", () => {
   const testFn = vi.fn();
   it("should display list of groups to invite", () => {
     render(
-      <InviteTool
-        availableGroups={testGroups}
-        onPostInvite={testFn}
-      />
+      <MemoryRouter>
+        <InviteTool
+          availableGroups={testGroups}
+          onPostInvite={testFn}
+        />
+      </MemoryRouter>
     );
     const list = screen.getByText(/Select group/i);
 
@@ -41,10 +44,12 @@ describe("InviteTool", () => {
 
   it("should call onPostIntive method with passed in prop", () => {
     render(
-      <InviteTool
-        availableGroups={testGroups}
-        onPostInvite={testFn}
-      />
+      <MemoryRouter>
+        <InviteTool
+          availableGroups={testGroups}
+          onPostInvite={testFn}
+        />
+      </MemoryRouter>
     );
 
     const submitButton = screen.getByTestId("invite-submit");
@@ -60,10 +65,12 @@ describe("InviteTool", () => {
 
   it("should call onPostIntive method with correct args", () => {
     render(
-      <InviteTool
-        availableGroups={testGroups}
-        onPostInvite={testFn}
-      />
+      <MemoryRouter>
+        <InviteTool
+          availableGroups={testGroups}
+          onPostInvite={testFn}
+        />
+      </MemoryRouter>
     );
 
     const submitButton = screen.getByTestId("invite-submit");

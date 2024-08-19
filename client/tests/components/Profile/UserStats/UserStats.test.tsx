@@ -10,6 +10,7 @@ import {
 import "@testing-library/jest-dom/vitest";
 import { it, expect, describe } from "vitest";
 import React from "react";
+import { MemoryRouter } from "react-router-dom";
 
 const testGroupListProp: GroupListingT[] = [
   {
@@ -29,10 +30,12 @@ const testTotalRepairsProp = 4;
 describe("UserStats", () => {
   it("should display table with corect number of listings", () => {
     render(
-      <UserStats
-        groupsList={testGroupListProp}
-        totalRepairs={testTotalRepairsProp}
-      />
+      <MemoryRouter>
+        <UserStats
+          groupsList={testGroupListProp}
+          totalRepairs={testTotalRepairsProp}
+        />
+      </MemoryRouter>
     );
 
     const table = screen.getByRole("table");
@@ -49,20 +52,24 @@ describe("UserStats", () => {
 
   it("should display total number of repairs", () => {
     render(
-      <UserStats
-        groupsList={testGroupListProp}
-        totalRepairs={testTotalRepairsProp}
-      />
+      <MemoryRouter>
+        <UserStats
+          groupsList={testGroupListProp}
+          totalRepairs={testTotalRepairsProp}
+        />
+      </MemoryRouter>
     );
     screen.getByText(testTotalRepairsProp);
   });
 
   it("should display correct roles", () => {
     render(
-      <UserStats
-        groupsList={testGroupListProp}
-        totalRepairs={testTotalRepairsProp}
-      />
+      <MemoryRouter>
+        <UserStats
+          groupsList={testGroupListProp}
+          totalRepairs={testTotalRepairsProp}
+        />
+      </MemoryRouter>
     );
 
     const targetCell = screen.getByText(/invite/i);
