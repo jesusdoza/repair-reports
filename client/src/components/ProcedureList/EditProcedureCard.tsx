@@ -35,10 +35,13 @@ export default function EditProcedureCard({
   const [instructions, setInstructions] = useState(procedureData.instructions);
 
   const [imageCards, setImageCards] = useState<ImageCardListT[]>([]);
+  const [message, setMessage] = useState<string[]>([]);
 
   //load initial state after mount
   useEffect(() => {
     //create cards for initial prop data passed in
+
+    const updatedImageObjs: ImageObj[] = [];
 
     let initialImageCardData: ImageCardListT[];
 
@@ -54,6 +57,15 @@ export default function EditProcedureCard({
 
       //older repair version convert over
     } else if (imageUrls) {
+      console.log("old data converting image Urls to imageObjs");
+
+      setMessage((arr) => {
+        return [
+          ...arr,
+          "old data format detected please click update to upgrade format",
+        ];
+      });
+
       initialImageCardData = imageUrls.map((url) => {
         const newImageObj = new ImageObj();
 
@@ -76,17 +88,24 @@ export default function EditProcedureCard({
           .slice(0, -4)
           .split("/")[0];
 
+        console.log("adding imageobj", newImageObj);
+        updatedImageObjs.push(newImageObj);
+
         // url.split(".com")[1].split("upload")[1].split("/").slice(2).join('/').slice(0,-4)
         const component = createEditImageCard({
           procedureId: PROCEDURE_ID,
           imageObj: newImageObj,
           setter: setImageCards,
         });
+
         return { _id: newImageObj._id, component };
       });
     } else {
+      console.log("no data for images");
       initialImageCardData = [];
     }
+
+    formAction.replaceImageObjs(updatedImageObjs, PROCEDURE_ID);
 
     setImageCards(initialImageCardData);
   }, []);
@@ -142,6 +161,28 @@ export default function EditProcedureCard({
       data-testid="edit-procedure-card"
       className="p-3 card relative border border-solid border-slate-700">
       {/* delete procedure button */}
+
+      {message.length ? (
+        <div
+          role="alert"
+          className="alert alert-warning">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6 shrink-0 stroke-current"
+            fill="none"
+            viewBox="0 0 24 24">
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+            />
+          </svg>
+          {message.map((text) => (
+            <span>{text}</span>
+          ))}
+        </div>
+      ) : null}
 
       <div
         data-testid="remove-procedure-btn"
