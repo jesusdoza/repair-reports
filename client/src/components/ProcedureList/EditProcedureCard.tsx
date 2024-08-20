@@ -22,7 +22,13 @@ export default function EditProcedureCard({
 }) {
   const { formAction } = useContext(RepairFormDataContext);
   const { updateInstructions } = formAction;
-  const { imageObjs } = procedureData; //TODO images on procedure
+  // const { imageObjs } = procedureData; //TODO images on procedure
+  const imageObjs = procedureData?.imageObjs
+    ? procedureData?.imageObjs
+    : undefined;
+
+  const imageUrls = procedureData?.images ? procedureData?.images : undefined;
+
   const PROCEDURE_ID = procedureData._id ? procedureData._id : id;
   const { deleteImage } = useImageManager();
 
@@ -33,14 +39,55 @@ export default function EditProcedureCard({
   //load initial state after mount
   useEffect(() => {
     //create cards for initial prop data passed in
-    const initialImageCardData: ImageCardListT[] = imageObjs.map((data) => {
-      const component = createEditImageCard({
-        procedureId: PROCEDURE_ID,
-        imageObj: new ImageObj(data),
-        setter: setImageCards,
+
+    let initialImageCardData: ImageCardListT[];
+
+    if (imageObjs) {
+      initialImageCardData = imageObjs.map((data) => {
+        const component = createEditImageCard({
+          procedureId: PROCEDURE_ID,
+          imageObj: new ImageObj(data),
+          setter: setImageCards,
+        });
+        return { _id: data._id, component };
       });
-      return { _id: data._id, component };
-    });
+
+      //older repair version convert over
+    } else if (imageUrls) {
+      initialImageCardData = imageUrls.map((url) => {
+        const newImageObj = new ImageObj();
+
+        //TODO create imageObj from just the url
+        newImageObj.imageUrl = url;
+        newImageObj.imageThumb = url;
+        newImageObj.imageId = url
+          .split(".com")[1]
+          .split("upload")[1]
+          .split("/")
+          .slice(2)
+          .join("/")
+          .slice(0, -4);
+        newImageObj.folder = url
+          .split(".com")[1]
+          .split("upload")[1]
+          .split("/")
+          .slice(2)
+          .join("/")
+          .slice(0, -4)
+          .split("/")[0];
+
+        // url.split(".com")[1].split("upload")[1].split("/").slice(2).join('/').slice(0,-4)
+        const component = createEditImageCard({
+          procedureId: PROCEDURE_ID,
+          imageObj: newImageObj,
+          setter: setImageCards,
+        });
+        return { _id: newImageObj._id, component };
+      });
+    } else {
+      initialImageCardData = [];
+    }
+
     setImageCards(initialImageCardData);
   }, []);
 
@@ -65,6 +112,11 @@ export default function EditProcedureCard({
   }
 
   async function handleRemoveProcedure() {
+    if (!imageObjs) {
+      console.log("no imageObjs to use for image removal");
+      return;
+    }
+
     if (confirm("delete procedure? ")) {
       const promises: Promise<void>[] = [];
 
