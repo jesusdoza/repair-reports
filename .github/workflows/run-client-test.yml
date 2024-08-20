@@ -29,3 +29,7 @@ jobs:
       - name: run tests
         working-directory: client
         run: npm run test
+
+      - name: run typescript
+        working-directory: client
+        run: npm run tsc

@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "coverage": "vitest run --coverage",
     "test": "vitest",
