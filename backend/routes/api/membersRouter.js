@@ -1,8 +1,6 @@
 const router = require("express").Router();
-const imagesController = require("../../controllers/api/imagesController.js");
+const memebersController = require("../../controllers/api/membersController.js");
 
-router.post("/", (req, res) => {
-  res.send({ post: "members" });
-});
+router.post("/", memebersController.addMemberTogroup);
 
 module.exports = router;
