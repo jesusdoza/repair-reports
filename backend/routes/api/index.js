@@ -5,6 +5,7 @@ const { ensureAuthApi } = require("../../middleware/auth");
 const repairRouter = require("./repairs");
 const signatureRouter = require("./signature.js");
 const imagesRouter = require("./imagesRouter.js");
+const membersRouter = require("./membersRouter.js");
 
 const inviteController = require("../../controllers/api/inviteController.js");
 
@@ -23,5 +24,6 @@ router.use("/signform", ensureAuthApi, signatureRouter);
 router.use("/images", ensureAuthApi, imagesRouter);
 
 router.use("/groups", ensureAuthApi, groupsController.getUsersGroups);
+router.use("/members", membersRouter);
 
 module.exports = router;
