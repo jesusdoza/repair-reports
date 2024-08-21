@@ -328,7 +328,7 @@ export default function EditImageCardContainer({
     <ErrorBoundary componentName="EditImagecard">
       <EditImageCard
         onUpload={() => {
-          handleImageUpload("testfolder");
+          handleImageUpload("cata");
         }}
         onFileChange={(event: React.ChangeEvent<HTMLInputElement>) => {
           handleFileChange(event);

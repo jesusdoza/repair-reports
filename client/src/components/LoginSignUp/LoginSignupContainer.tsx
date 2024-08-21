@@ -59,6 +59,12 @@ export default function LoginSignupContainer(): React.ReactNode {
               alt="image of 2 people shaking hands"
             />
           </section>
+
+          <a
+            href="http://192.168.1.88:80/api/oauth"
+            className="btn">
+            keycloak
+          </a>
         </div>
       </div>
     </div>

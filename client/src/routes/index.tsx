@@ -8,6 +8,7 @@ import { RepairInfoPage } from "../pages/RepairInfoPage";
 import EditRepairPageV2 from "../pages/EditRepairPageV2";
 import SearchPage from "../pages/search/SearchPage";
 import LogoutPage from "../pages/LogoutPage";
+import SuccessLogin from "../pages/SuccessLogin.tsx";
 
 import HomePage from "../pages/Home/HomePage";
 import ErrorBoundary from "../components/ErrorBoundary/ErrorBoundary";
@@ -150,6 +151,14 @@ export const routes = createBrowserRouter([
     element: (
       <Layout>
         <LogoutPage />
+      </Layout>
+    ),
+  },
+  {
+    path: "/oauthsuccess",
+    element: (
+      <Layout>
+        <SuccessLogin />
       </Layout>
     ),
   },

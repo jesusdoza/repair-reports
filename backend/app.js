@@ -23,6 +23,8 @@ const corsOptions = {
   credentials: true,
 };
 
+console.log("corsOptions", corsOptions);
+
 app.set("view engine", "ejs");
 app.use(require("./middleware/httpsRedirect").httpsRedirect);
 app.use(cors(corsOptions));
