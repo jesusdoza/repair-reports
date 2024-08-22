@@ -3,7 +3,13 @@ const Member = require("../../models/Member");
 const Invite = require("../../models/Invite");
 
 const getUsersGroups = async (req, res) => {
-  const userId = req.user._id;
+  const userId = req?.user?._id;
+
+  if (!userId) {
+    res.status(401).send();
+    return;
+  }
+
   const usersGroups = await Member.find({ userId });
 
   res.send(usersGroups);
