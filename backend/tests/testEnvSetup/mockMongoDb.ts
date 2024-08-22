@@ -6,10 +6,17 @@ let uriEnv = "";
 
 export const setupDatabase = async () => {
   mongoServer = await MongoMemoryServer.create();
-  const uri = mongoServer.getUri();
+  const uri = await mongoServer.getUri();
   uriEnv = uri;
 
-  //   await mongoose.connect(uri);
+  if (mongoose.connection.readyState === 1) {
+    console.log("Mongoose is already connected");
+  } else {
+    await mongoose.connect(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+  }
   return uri;
 };
 

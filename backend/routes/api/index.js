@@ -1,11 +1,10 @@
 const router = require("express").Router();
 const apiAuthController = require("../../controllers/api/apiAuth");
-const groupsController = require("../../controllers/api/groupsController.js");
+const groupsRouter = require("./groupsRouter.js");
 const { ensureAuthApi } = require("../../middleware/auth");
 const repairRouter = require("./repairs");
 const signatureRouter = require("./signature.js");
 const imagesRouter = require("./imagesRouter.js");
-const membersRouter = require("./membersRouter.js");
 
 const inviteController = require("../../controllers/api/inviteController.js");
 
@@ -23,7 +22,7 @@ router.use("/repairs", ensureAuthApi, repairRouter);
 router.use("/signform", ensureAuthApi, signatureRouter);
 router.use("/images", ensureAuthApi, imagesRouter);
 
-router.use("/groups", ensureAuthApi, groupsController.getUsersGroups);
-router.use("/members", membersRouter);
+// router.use("/groups", ensureAuthApi, groupsRouter);
+router.use("/groups", groupsRouter);
 
 module.exports = router;
