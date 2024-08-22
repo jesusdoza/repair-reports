@@ -10,8 +10,13 @@ const UserSchema = new mongoose.Schema(
       lowercase: true,
     },
     password: {
-      type: String,
-      // required: true,
+      type: [String, null],
+    },
+    oauthProvider: {
+      type: [String, null],
+    },
+    oauthProviderId: {
+      type: [String, null],
     },
     createdAt: {
       type: Date,
