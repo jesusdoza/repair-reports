@@ -70,8 +70,6 @@ describe("groupController test", () => {
   const application = app as unknown as App;
 
   it("should return 200 when user object is present", async () => {
-    //setup as if user is authenticated
-
     const response = await request(application).get("/api/groups");
     expect(response.statusCode).toBe(200);
   });
@@ -79,14 +77,13 @@ describe("groupController test", () => {
   it("should return array of objects", async () => {
     const response = await request(application).get("/api/groups");
 
-    console.log("response", response.body);
-
     expect(response.statusCode).toBe(200);
     expect(Array.isArray(response.body)).toBe(true);
     expect(response.body.length).toBe(mockMemberEntries.length);
   });
 
   it("should return 401 when no user id is found", async () => {
+    //remove user authentication to mock invalid user
     requestIntercept.mockImplementationOnce((req) => {
       return req;
     });
