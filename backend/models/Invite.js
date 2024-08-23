@@ -10,6 +10,7 @@ const InviteSchema = new mongoose.Schema({
   //security for specific invite optional
   invitePassword: {
     type: String,
+    default: null,
   },
   groups: {
     type: [GroupData],
