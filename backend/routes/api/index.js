@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const apiAuthController = require("../../controllers/api/apiAuth");
-const groupsRouter = require("./groupsRouter.js");
+const membersRouter = require("./membersRouter.js");
 const { ensureAuthApi } = require("../../middleware/auth");
 const repairRouter = require("./repairs");
 const signatureRouter = require("./signature.js");
@@ -23,6 +23,6 @@ router.use("/signform", ensureAuthApi, signatureRouter);
 router.use("/images", ensureAuthApi, imagesRouter);
 
 // router.use("/groups", ensureAuthApi, groupsRouter);
-router.use("/groups", groupsRouter);
+router.use("/members", membersRouter);
 
 module.exports = router;
