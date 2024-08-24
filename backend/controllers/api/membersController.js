@@ -1,6 +1,7 @@
 const Member = require("../../models/Member");
 
 const Invite = require("../../models/Invite");
+const createGroupMemberEntries = require("../../utilities/groupMemberPromisesHelper/createGroupMemberEntries");
 
 const getUsersGroups = async (req, res) => {
   const userId = req?.user?._id;
@@ -25,13 +26,12 @@ const addMemberTogroup = async (req, res) => {
   const foundInvite = await Invite.find({ inviteCode: invitecode });
 
   //verify invite code and optional password
-
   if (!foundInvite) {
     res.status(401).send();
     return;
   }
 
-  if (foundInvite.password && foundInvite.password == password) {
+  if (foundInvite.password && foundInvite.password != password) {
     res.status(401).send();
     return;
   }
@@ -44,23 +44,3 @@ const addMemberTogroup = async (req, res) => {
   res.status(201).send();
 };
 module.exports = { getUsersGroups, addMemberTogroup };
-
-//create member of group entries promises
-/**
- *
- * @param {groups, user} groups :{id,name}[], user:{_id, username}
- * @returns
- */
-function createGroupMemberEntries(groups = [], user) {
-  console.log("groups", groups);
-  return groups.map((group) => {
-    const entry = new Member({
-      groupId: group.id,
-      groupName: group.name,
-      role: ["read"],
-      userId: user._id,
-      username: user.username,
-    });
-    return entry.save();
-  });
-}
