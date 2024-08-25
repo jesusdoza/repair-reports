@@ -16,12 +16,12 @@ const testGroupListProp: GroupListingT[] = [
   {
     groupId: "1111",
     groupName: "number1",
-    role: ["read", "invite"],
+    roles: ["read", "invite"],
   },
   {
     groupId: "22222",
     groupName: "number2",
-    role: ["read"],
+    roles: ["read"],
   },
 ];
 
