@@ -12,7 +12,7 @@ const InviteSchema = new mongoose.Schema({
     required: true,
   },
   //security for specific invite optional
-  invitePassword: {
+  password: {
     type: String,
     default: null,
   },
