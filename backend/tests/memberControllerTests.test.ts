@@ -23,7 +23,7 @@ import { setupDatabase, teardownDatabase } from "./testEnvSetup/mockMongoDb.js";
 import {
   getUsersGroups,
   addMemberTogroup,
-} from "../controllers/api/groupsController.js";
+} from "../controllers/api/membersController.js";
 
 const mockMemberEntries = [
   { memberEntry: "fasdf" },
@@ -82,7 +82,7 @@ describe("groupController test", () => {
     expect(response.body.length).toBe(mockMemberEntries.length);
   });
 
-  it("should return 401 when no user id is found", async () => {
+  it("should return 401 when user is not authenticated is found", async () => {
     //remove user authentication to mock invalid user
     requestIntercept.mockImplementationOnce((req) => {
       return req;
