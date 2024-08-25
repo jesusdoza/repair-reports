@@ -21,16 +21,19 @@ const addMemberTogroup = async (req, res) => {
   const password = req.body?.password;
   const user = req.user;
 
+  if (!invitecode) {
+    res.status(401).send();
+    return;
+  }
+
   //find invite
   const foundInvite = await Invite.findOne({ inviteCode: invitecode });
 
   //verify invite code and optional password
   if (!foundInvite) {
-    res.status(401).send();
-    return;
   }
 
-  if (foundInvite.password && foundInvite.password != password) {
+  if (foundInvite.password && foundInvite.password !== password) {
     res.status(401).send();
     return;
   }
