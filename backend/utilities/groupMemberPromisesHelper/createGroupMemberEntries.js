@@ -38,7 +38,7 @@ function createGroupMemberEntries(groups = [], user) {
         const entry = new Member({
           groupId: group.id,
           groupName: group.name,
-          role: newRoles,
+          roles: newRoles,
           userId: user._id,
           username: user.username,
         });
