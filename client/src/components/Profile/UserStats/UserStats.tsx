@@ -7,7 +7,7 @@ type UserStatsPropsT = {
 
 export type GroupListingT = {
   groupName: string;
-  role: string[];
+  roles: string[];
   groupId: string;
 };
 
@@ -75,7 +75,7 @@ function createRows(groupList: GroupListingT[]) {
     return (
       <tr data-testid="group-listing">
         <td>{listing.groupName}</td>
-        <td>{listing.role}</td>
+        <td>{listing.roles}</td>
       </tr>
     );
   });

@@ -8,7 +8,7 @@ export type UserGroupDataT = {
   _id: string;
   userId: string;
   username: string;
-  role: string[];
+  roles: string[];
   groupId: string;
   groupName: string;
 };

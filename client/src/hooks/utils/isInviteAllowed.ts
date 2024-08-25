@@ -1,9 +1,9 @@
 interface GroupData {
-  role: string[];
+  roles: string[];
 }
 
 export default function isInviteAllowed(data: GroupData) {
-  if (data.role.includes("invite")) return true;
+  if (data.roles.includes("invite")) return true;
 
   return false;
 }
