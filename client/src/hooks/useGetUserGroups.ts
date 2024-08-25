@@ -8,7 +8,7 @@ export type UserGroupDataT = {
   _id: string;
   userId: string;
   username: string;
-  role: string[];
+  roles: string[];
   groupId: string;
   groupName: string;
 };
@@ -34,7 +34,7 @@ export default function useGetUserGroups() {
 }
 
 async function fetchUserGroupData(): Promise<UserGroupDataT[]> {
-  const result = await axios.get(`${API_URL}/api/groups`, {
+  const result = await axios.get(`${API_URL}/api/members/user`, {
     withCredentials: true,
   });
 

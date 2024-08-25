@@ -22,8 +22,6 @@ export default function useInviteManager() {
         withCredentials: true,
       });
 
-      console.log("response", response);
-
       setData(response.data.invites);
     } catch (error) {
       if (error instanceof AxiosError) {

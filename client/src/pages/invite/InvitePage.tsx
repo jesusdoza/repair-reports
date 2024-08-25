@@ -1,19 +1,20 @@
 import { useState } from "react";
 
 import JoinWithInviteForm from "../../components/Invite/JoinWithInvite/JoinWithInviteForm";
-import useInviteManager from "../../hooks/useInviteManager";
 
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function InvitePage() {
-  const { getInvite } = useInviteManager();
   const navigate = useNavigate();
 
   const [errors, setErrors] = useState<string[]>([]);
 
-  const handleGetInvite = async (inviteCode: string, password?: string) => {
+  const handleJoinGroup = async (inviteCode: string, password?: string) => {
     try {
-      await getInvite({ inviteCode, password });
+      await joinGroup({ inviteCode, password });
       navigate("/profile");
     } catch (error) {
       console.log("error getting invite by code", error);
@@ -24,9 +25,25 @@ export default function InvitePage() {
   return (
     <div>
       <JoinWithInviteForm
-        onSubmit={handleGetInvite}
+        onSubmit={handleJoinGroup}
         errors={errors}
       />
     </div>
+  );
+}
+
+async function joinGroup({
+  inviteCode,
+  password,
+}: {
+  inviteCode: string;
+  password?: string;
+}) {
+  await axios.post(
+    `${API_URL}/api/members/join`,
+    { inviteCode, password },
+    {
+      withCredentials: true,
+    }
   );
 }

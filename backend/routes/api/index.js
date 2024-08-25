@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const apiAuthController = require("../../controllers/api/apiAuth");
-const groupsController = require("../../controllers/api/groupsController.js");
+const membersRouter = require("./membersRouter.js");
 const { ensureAuthApi } = require("../../middleware/auth");
 // const { oauth2Authenticate } = require("../../middleware/oauth2NOTUSED.js");
 const repairRouter = require("./repairs");
@@ -24,7 +24,8 @@ router.use("/repairs", ensureAuthApi, repairRouter);
 router.use("/signform", ensureAuthApi, signatureRouter);
 router.use("/images", ensureAuthApi, imagesRouter);
 
-router.use("/groups", ensureAuthApi, groupsController.getUsersGroups);
+// router.use("/groups", ensureAuthApi, groupsRouter);
+router.use("/members", membersRouter);
 
 router.get(
   "/oauth/callback",

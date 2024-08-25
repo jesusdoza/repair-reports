@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
-const GroupData = new mongoose.Schema({ id: String, name: String });
+const GroupData = new mongoose.Schema({
+  id: String,
+  name: String,
+  roles: { type: [String], default: ["read"] },
+});
 
 const InviteSchema = new mongoose.Schema({
   inviteCode: {
@@ -8,8 +12,9 @@ const InviteSchema = new mongoose.Schema({
     required: true,
   },
   //security for specific invite optional
-  invitePassword: {
+  password: {
     type: String,
+    default: null,
   },
   groups: {
     type: [GroupData],
@@ -29,4 +34,8 @@ const InviteSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Invite", InviteSchema);
+const Invite = mongoose.models?.Invite
+  ? mongoose.models.Invite
+  : mongoose.model("Invite", InviteSchema);
+
+module.exports = Invite;

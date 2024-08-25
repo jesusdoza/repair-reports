@@ -41,10 +41,6 @@ export default function RepairEditForm({
     }
   }, []);
 
-  // useEffect(() => {
-  //   console.log("repairFormData", repairFormData);
-  // }, [repairFormData]);
-
   const handleSubmit =
     // async (event: React.FormEvent<HTMLFormElement>) => {
     async () => {
@@ -74,6 +70,7 @@ export default function RepairEditForm({
       try {
         if (onSubmit && formStatus.isValid) {
           //! todo enable submit
+          // console.log("repairFormData", repairFormData);
           onSubmit(repairFormData);
         }
       } catch (error) {

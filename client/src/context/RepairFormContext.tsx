@@ -17,6 +17,7 @@ export type formActionT = {
   addImage: (item: ImageObj, procedureId: string) => void;
   updateImage: (item: ImageObj, procedureId: string) => void;
   removeImage: (imageId: string, procedureId: string) => void;
+  replaceImageObjs: (list: ImageObj[], procedureId: string) => void;
 };
 
 export type RepairFormDataContextT = {
@@ -34,6 +35,7 @@ export type RepairFormDataContextT = {
     addImage: (item: ImageObj, procedureId: string) => void;
     updateImage: (item: ImageObj, procedureId: string) => void;
     removeImage: (imageId: string, procedureId: string) => void;
+    replaceImageObjs: (list: ImageObj[], procedureId: string) => void;
   };
 };
 
@@ -54,6 +56,7 @@ export const RepairFormDataContext = createContext<RepairFormDataContextT>({
     addImage: () => {},
     updateImage: () => {},
     removeImage: () => {},
+    replaceImageObjs: () => {},
   },
 });
 
@@ -196,6 +199,29 @@ export const RepairContextProvider = ({
       return state;
     });
   }
+  function replaceImageObjs(list: ImageObj[], procedureId: string) {
+    const targetProcedure = repairFormData.procedureArr.findIndex((proc) => {
+      if (proc._id == procedureId) {
+        return true;
+      }
+      return false;
+    });
+
+    // const targetProcedureData = repairFormData.procedureArr[targetProcedure];
+
+    const newImageObjs = list;
+
+    //updating older implementation for backward compatibility to EJS app
+    const imageStringsArr = newImageObjs.map((data) => data.imageUrl);
+
+    setRepairFormData((state) => {
+      const targetProc = state.procedureArr[targetProcedure];
+      targetProc.imageObjs = newImageObjs;
+      targetProc.images = imageStringsArr;
+
+      return state;
+    });
+  }
 
   //remove by id
   function removeImage(imageId: string, procedureId: string) {
@@ -282,6 +308,7 @@ export const RepairContextProvider = ({
       addImage,
       removeImage,
       updateImage,
+      replaceImageObjs,
     },
   };
 
