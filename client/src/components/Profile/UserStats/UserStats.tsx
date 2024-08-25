@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 type UserStatsPropsT = {
   totalRepairs?: number;
   groupsList?: GroupListingT[];
+  username: string;
 };
 
 export type GroupListingT = {
@@ -12,6 +13,7 @@ export type GroupListingT = {
 };
 
 export default function UserStats({
+  username = "user name",
   totalRepairs = 0,
   groupsList = [],
 }: UserStatsPropsT) {
@@ -22,7 +24,7 @@ export default function UserStats({
       <div className="self-center w-full flex justify-center">
         <div className="avatar placeholder w-full">
           <div className="bg-neutral text-neutral-content w-full rounded-full">
-            <span className="text-[100px]">D</span>
+            <span className="text-[100px] w-full">{username}</span>
           </div>
         </div>
       </div>

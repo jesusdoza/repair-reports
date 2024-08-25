@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Search from "../Search/Search";
+import useAuthContext from "../../hooks/useAuthContext";
 
 export type NavLinkT = {
   url: string;
@@ -15,6 +16,8 @@ export default function Navbar({
   mainMenu = [],
   profileMenu = [],
 }: NavbarPropsT): React.ReactNode {
+  const { userInfo } = useAuthContext();
+
   function MenuItem({ label, url }: NavLinkT) {
     return (
       <li>
@@ -35,6 +38,7 @@ export default function Navbar({
       );
     });
   };
+
   return (
     <>
       <div className="navbar bg-base-100 gap-3 px-3">
@@ -54,13 +58,22 @@ export default function Navbar({
             <Search />
           </li>
         </ul>
-        <ProfileNavItem menu={profileMenu} />
+        <ProfileNavItem
+          username={userInfo?.username}
+          menu={profileMenu}
+        />
       </div>
     </>
   );
 }
 
-function ProfileNavItem({ menu }: { menu: NavLinkT[] }) {
+function ProfileNavItem({
+  menu,
+  username,
+}: {
+  menu: NavLinkT[];
+  username: string;
+}) {
   function MenuItem(item: NavLinkT) {
     return (
       <li>
@@ -95,6 +108,7 @@ function ProfileNavItem({ menu }: { menu: NavLinkT[] }) {
             src="#"
           />
         </div>
+        <span>{username}</span>
       </div>
       <ul
         tabIndex={0}
