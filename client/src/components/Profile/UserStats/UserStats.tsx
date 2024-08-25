@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 type UserStatsPropsT = {
   totalRepairs?: number;
   groupsList?: GroupListingT[];
-  username: string;
+  username?: string;
 };
 
 export type GroupListingT = {

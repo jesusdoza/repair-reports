@@ -69,7 +69,7 @@ export default function Navbar({
 
 function ProfileNavItem({
   menu,
-  username,
+  username = "",
 }: {
   menu: NavLinkT[];
   username: string;
