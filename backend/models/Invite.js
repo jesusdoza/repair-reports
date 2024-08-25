@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
-const GroupData = new mongoose.Schema({ id: String, name: String });
+const GroupData = new mongoose.Schema({
+  id: String,
+  name: String,
+  roles: { type: [String], default: ["read"] },
+});
 
 const InviteSchema = new mongoose.Schema({
   inviteCode: {
