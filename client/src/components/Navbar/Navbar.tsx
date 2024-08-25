@@ -72,7 +72,7 @@ function ProfileNavItem({
   username = "",
 }: {
   menu: NavLinkT[];
-  username: string;
+  username?: string;
 }) {
   function MenuItem(item: NavLinkT) {
     return (
