@@ -34,13 +34,10 @@ const getRepairsforUser = async (req, res) => {
       },
     ]);
 
-    console.log("aggregateResults", aggregateResults);
     const metaData =
       aggregateResults[0]?.metaData && aggregateResults[0]?.metaData.length > 0
         ? aggregateResults[0].metaData[0]
         : undefined;
-
-    // console.log("metaData", metaData);
 
     res.status(200).json({
       results: aggregateResults[0].results,
