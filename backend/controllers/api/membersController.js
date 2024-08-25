@@ -40,6 +40,6 @@ const addMemberTogroup = async (req, res) => {
   const results = await Promise.allSettled(promises);
 
   //return status 201
-  res.status(201).send(results);
+  res.status(201).send();
 };
 module.exports = { getUsersGroups, addMemberTogroup };
