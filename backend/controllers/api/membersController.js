@@ -19,11 +19,10 @@ const getUsersGroups = async (req, res) => {
 const addMemberTogroup = async (req, res) => {
   const invitecode = req.body.inviteCode;
   const password = req.body?.password;
-
   const user = req.user;
 
   //find invite
-  const foundInvite = await Invite.find({ inviteCode: invitecode });
+  const foundInvite = await Invite.findOne({ inviteCode: invitecode });
 
   //verify invite code and optional password
   if (!foundInvite) {
@@ -38,9 +37,9 @@ const addMemberTogroup = async (req, res) => {
 
   const promises = createGroupMemberEntries(foundInvite.groups, user);
 
-  await Promise.allSettled(promises);
+  const results = await Promise.allSettled(promises);
 
   //return status 201
-  res.status(201).send();
+  res.status(201).send(results);
 };
 module.exports = { getUsersGroups, addMemberTogroup };
