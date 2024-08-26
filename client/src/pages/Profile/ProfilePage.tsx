@@ -5,12 +5,17 @@ import UserInfoContainer from "../../components/Profile/UserInfoContainer";
 import UserStats from "../../components/Profile/UserStats/UserStats";
 import useGetUserGroups from "../../hooks/useGetUserGroups";
 import useGetUserRepairs from "../../hooks/useGetUserRepairs";
+import useAuthContext from "../../hooks/useAuthContext";
 // import Modal from "../../components/Modal/Modal";
 
 export default function ProfilePage(): React.ReactNode {
   const { data: userGroupMemberships, fetchData: getUserGroupData } =
     useGetUserGroups();
   const { getData, metaData } = useGetUserRepairs();
+
+  const { userInfo } = useAuthContext();
+
+  console.log("userInfo", userInfo);
 
   useEffect(() => {
     getUserGroupData();
@@ -26,6 +31,7 @@ export default function ProfilePage(): React.ReactNode {
             <UserStats
               groupsList={userGroupMemberships}
               totalRepairs={metaData.totalByUser}
+              username={userInfo?.username}
             />
           </ErrorBoundary>
         </aside>
