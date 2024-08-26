@@ -91,6 +91,10 @@ const RepairSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    prevData: {
+      type: [RepairSchema],
+      default: [],
+    },
   },
   {
     collection: "repair-reports",
