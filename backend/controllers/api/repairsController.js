@@ -33,23 +33,15 @@ const getRepairsforUser = async (req, res) => {
         },
       },
     ]);
-    //! new aggragate above ^^^^^^^^^^^^^^
 
-    //old query
-    // const results = await Repair.find({
-    //   createdBy: user._id,
-    //   removed: false,
-    // })
-    //   .sort({ _id: -1 })
-    //   .skip(skipResults)
-    //   .limit(limitResults)
-    //   .lean();
-
-    const metaData = aggregateResults[0].metaData[0];
+    const metaData =
+      aggregateResults[0]?.metaData && aggregateResults[0]?.metaData.length > 0
+        ? aggregateResults[0].metaData[0]
+        : undefined;
 
     res.status(200).json({
       results: aggregateResults[0].results,
-      totalByUser: metaData.totalByUser,
+      totalByUser: metaData ? metaData?.totalByUser : 0,
       currentPage,
       limitResults,
     });
