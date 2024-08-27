@@ -1,5 +1,11 @@
 import { ImageObj } from "./src/classes/ImageObj";
-
+export interface InviteT {
+  inviteCode: string;
+  password: string;
+  groups: { id: string; name: string }[];
+  createdAt: string;
+  status: string;
+}
 export interface ImageObjT {
   imageUrl: string;
   imageThumb?: string;
