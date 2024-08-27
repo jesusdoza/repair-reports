@@ -40,7 +40,7 @@ export default function RepairEditForm({
 
       initializeRepairFormData(new Repair(repair));
     }
-  }, []);
+  }, [repair]);
 
   const handleSubmit =
     // async (event: React.FormEvent<HTMLFormElement>) => {
