@@ -37,7 +37,8 @@ export default function RepairEditForm({
   useEffect(() => {
     if (repair) {
       //sync form data only
-      initializeRepairFormData(repair);
+
+      initializeRepairFormData(new Repair(repair));
     }
   }, []);
 

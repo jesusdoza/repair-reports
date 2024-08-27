@@ -22,7 +22,7 @@ export type formActionT = {
 
 export type RepairFormDataContextT = {
   repairFormData: Repair;
-  initializeRepairFormData: (repair: RepairDataT) => void;
+  initializeRepairFormData: (repair: Repair) => void;
   formAction: {
     addProcedureAfter: (id: string, item: Procedure) => void;
     removeProcedure: (id: string) => void;
@@ -141,8 +141,8 @@ export const RepairContextProvider = ({
   }
 
   //initialize form data
-  function initializeRepairFormData(repair: RepairDataT) {
-    const newRepair = new Repair(repair);
+  function initializeRepairFormData(newRepair: Repair) {
+    // const newRepair = new Repair(repair);
 
     setRepairFormData(newRepair);
 
