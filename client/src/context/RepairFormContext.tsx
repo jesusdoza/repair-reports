@@ -318,3 +318,9 @@ export const RepairContextProvider = ({
     </RepairFormDataContext.Provider>
   );
 };
+
+export function changeTitle(repair: Repair, newTitle: string) {
+  repair.title = newTitle;
+
+  return repair;
+}
