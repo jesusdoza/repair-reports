@@ -50,7 +50,7 @@ describe("RepairFormContext tests", () => {
     });
   });
 
-  it("should add procedure to repair", async () => {
+  it("should add procedure to repair increasing array", async () => {
     const { result } = renderHook(() => useContext(RepairFormDataContext), {
       wrapper: RepairContextProvider,
     });
@@ -71,7 +71,7 @@ describe("RepairFormContext tests", () => {
     });
   });
 
-  it("should add procedure after desired procedure with id", async () => {
+  it("should add procedure after desired procedure with id matching", async () => {
     const { result } = renderHook(() => useContext(RepairFormDataContext), {
       wrapper: RepairContextProvider,
     });
@@ -89,6 +89,7 @@ describe("RepairFormContext tests", () => {
     );
 
     let testProc = new Procedure();
+    testProc._id += "new one";
     let addAfterPos = 0;
     let pushedProcId =
       result.current.repairFormData.procedureArr[addAfterPos + 1]._id;
@@ -112,41 +113,35 @@ describe("RepairFormContext tests", () => {
     ).toBe(pushedProcId);
 
     //SECOND TEST
-    console.log(
-      "before : ",
-      result.current.repairFormData.procedureArr.map((i) => i._id)
-    );
+    // console.log(
+    //   "before : ",
+    //   result.current.repairFormData.procedureArr.map((i) => i._id)
+    // );
 
     addAfterPos = 1;
     testProc = new Procedure();
+    testProc._id += "new 2";
     pushedProcId =
       result.current.repairFormData.procedureArr[addAfterPos + 1]._id;
 
-    console.log(
-      "add after ",
-      result.current.repairFormData.procedureArr[addAfterPos]._id
-    );
+    const targetId =
+      result.current.repairFormData.procedureArr[addAfterPos]._id;
 
     //add procedure after first one
+    console.log("target id: ", targetId);
     await act(async () => {
-      result.current.formAction.addProcedureAfter(
-        procedures[addAfterPos]._id,
-        testProc
-      );
+      result.current.formAction.addProcedureAfter(targetId, testProc);
     });
 
-    console.log(
-      "after : ",
-      result.current.repairFormData.procedureArr.map((i) => i._id)
-    );
-    //expect new procedure to be inserted after the pos specified
+    //TODO FAILING TEST
+    // expect new procedure to be inserted after the pos specified
     expect(
       result.current.repairFormData.procedureArr[addAfterPos + 1]._id
     ).toBe(testProc._id);
 
-    //expect old procedure to be one index up from previous
-    // expect(
-    //   result.current.repairFormData.procedureArr[addAfterPos + 2]._id
-    // ).toBe(pushedProcId);
+    // expect old procedure to be one index up from previous
+    expect(
+      result.current.repairFormData.procedureArr[addAfterPos + 2]._id
+    ).toBe(pushedProcId);
   });
 });
