@@ -39,7 +39,7 @@ export default function RepairEditForm({
       //sync form data only
       initializeRepairFormData(repair);
     }
-  }, []);
+  }, [repair]);
 
   const handleSubmit =
     // async (event: React.FormEvent<HTMLFormElement>) => {
