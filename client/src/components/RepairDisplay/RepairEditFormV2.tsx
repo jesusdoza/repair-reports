@@ -41,43 +41,41 @@ export default function RepairEditForm({
     }
   }, [repair]);
 
-  const handleSubmit =
-    // async (event: React.FormEvent<HTMLFormElement>) => {
-    async () => {
-      // event.preventDefault();
+  const handleSubmit = async () => {
+    // event.preventDefault();
 
-      setFormError(null); //reset error on submit
+    setFormError(null); //reset error on submit
 
-      //validate formdata
-      const formStatus = isValidForm(repairFormData);
+    //validate formdata
+    const formStatus = isValidForm(repairFormData);
 
-      //if invalid set error for display
-      if (!formStatus.isValid) {
-        setFormError(formStatus.reason);
-      }
+    //if invalid set error for display
+    if (!formStatus.isValid) {
+      setFormError(formStatus.reason);
+    }
 
-      //pressed submit now disable to allow processing
-      setSubmitAllowed(false);
+    //pressed submit now disable to allow processing
+    setSubmitAllowed(false);
 
-      //reenable submit after 3 seconds
-      new Promise<void>((resolve) => {
-        setTimeout(() => {
-          setSubmitAllowed(true);
-          resolve();
-        }, 3000);
-      });
-
-      try {
-        if (onSubmit && formStatus.isValid) {
-          //! todo enable submit
-          // console.log("repairFormData", repairFormData);
-          onSubmit(repairFormData);
-        }
-      } catch (error) {
+    //reenable submit after 3 seconds
+    new Promise<void>((resolve) => {
+      setTimeout(() => {
         setSubmitAllowed(true);
-        console.log("error handleUpdate @RepairPage ", error);
+        resolve();
+      }, 3000);
+    });
+
+    try {
+      if (onSubmit && formStatus.isValid) {
+        //! todo enable submit
+        // console.log("repairFormData", repairFormData);
+        onSubmit(repairFormData);
       }
-    };
+    } catch (error) {
+      setSubmitAllowed(true);
+      console.log("error handleUpdate @RepairPage ", error);
+    }
+  };
 
   const availableGroups: OptionT[] = [
     {
