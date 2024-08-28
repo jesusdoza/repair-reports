@@ -52,12 +52,19 @@ const postSignForm = async (req, res) => {
     });
   } catch (error) {}
 };
+
 const signForm = async (req, res) => {
   const userId = req.user._id;
 
   //requested folder user wants to upload to
   //todo folder validation. Does user have auth to save in this folder maybe its a company folder
-  const desiredFolder = `${req.query?.folder ? req.query.folder : "no_folder"}`;
+
+  let desiredFolder = `${req.query?.folder ? req.query.folder : "no_folder"}`;
+
+  //add any images in dev to specific folder to delete
+  if (process.env.NODE_ENV == "development") {
+    desiredFolder = "dev_environment/" + desiredFolder;
+  }
 
   //folder to organize this image in
   //composed of folder requested by user and the userId
