@@ -23,11 +23,9 @@ export default function EditProcedureCard({
   const { formAction } = useContext(RepairFormDataContext);
   const { updateInstructions } = formAction;
   // const { imageObjs } = procedureData; //TODO images on procedure
-  const imageObjs = procedureData?.imageObjs
-    ? procedureData?.imageObjs
-    : undefined;
+  const imageObjs = procedureData?.imageObjs ? procedureData?.imageObjs : [];
 
-  const imageUrls = procedureData?.images ? procedureData?.images : undefined;
+  // const imageUrls = procedureData?.images ? procedureData?.images : undefined;
 
   const PROCEDURE_ID = procedureData._id ? procedureData._id : id;
   const { deleteImage } = useImageManager();
@@ -41,71 +39,71 @@ export default function EditProcedureCard({
   useEffect(() => {
     //create cards for initial prop data passed in
 
-    const updatedImageObjs: ImageObj[] = [];
+    // const updatedImageObjs: ImageObj[] = [];
 
-    let initialImageCardData: ImageCardListT[];
+    // let initialImageCardData: ImageCardListT[];
 
-    if (imageObjs) {
-      initialImageCardData = imageObjs.map((data) => {
-        const component = createEditImageCard({
-          procedureId: PROCEDURE_ID,
-          imageObj: new ImageObj(data),
-          setter: setImageCards,
-        });
-        return { _id: data._id, component };
+    //new format normal flow
+    const initialImageCardData = imageObjs.map((data) => {
+      const component = createEditImageCard({
+        procedureId: PROCEDURE_ID,
+        imageObj: new ImageObj(data),
+        setter: setImageCards,
       });
+      return { _id: data._id, component };
+    });
 
-      //older repair version convert over
-    } else if (imageUrls) {
-      console.log("old data converting image Urls to imageObjs");
+    //older repair version convert over to bring inline with new format
+    // } else if (imageUrls) {
+    //   console.log("old data converting image Urls to imageObjs");
 
-      setMessage((arr) => {
-        return [
-          ...arr,
-          "old data format detected please click update to upgrade format",
-        ];
-      });
+    //   setMessage((arr) => {
+    //     return [
+    //       ...arr,
+    //       "old data format detected please click update to upgrade format",
+    //     ];
+    //   });
 
-      initialImageCardData = imageUrls.map((url) => {
-        const newImageObj = new ImageObj();
+    //   initialImageCardData = imageUrls.map((url) => {
+    //     const newImageObj = new ImageObj();
 
-        //TODO create imageObj from just the url
-        newImageObj.imageUrl = url;
-        newImageObj.imageThumb = url;
-        newImageObj.imageId = url
-          .split(".com")[1]
-          .split("upload")[1]
-          .split("/")
-          .slice(2)
-          .join("/")
-          .slice(0, -4);
-        newImageObj.folder = url
-          .split(".com")[1]
-          .split("upload")[1]
-          .split("/")
-          .slice(2)
-          .join("/")
-          .slice(0, -4)
-          .split("/")[0];
+    //     //TODO create imageObj from just the url
+    //     newImageObj.imageUrl = url;
+    //     newImageObj.imageThumb = url;
+    //     newImageObj.imageId = url
+    //       .split(".com")[1]
+    //       .split("upload")[1]
+    //       .split("/")
+    //       .slice(2)
+    //       .join("/")
+    //       .slice(0, -4);
+    //     newImageObj.folder = url
+    //       .split(".com")[1]
+    //       .split("upload")[1]
+    //       .split("/")
+    //       .slice(2)
+    //       .join("/")
+    //       .slice(0, -4)
+    //       .split("/")[0];
 
-        console.log("adding imageobj", newImageObj);
-        updatedImageObjs.push(newImageObj);
+    //     console.log("adding imageobj", newImageObj);
+    //     updatedImageObjs.push(newImageObj);
 
-        // url.split(".com")[1].split("upload")[1].split("/").slice(2).join('/').slice(0,-4)
-        const component = createEditImageCard({
-          procedureId: PROCEDURE_ID,
-          imageObj: newImageObj,
-          setter: setImageCards,
-        });
+    //     // url.split(".com")[1].split("upload")[1].split("/").slice(2).join('/').slice(0,-4)
+    //     const component = createEditImageCard({
+    //       procedureId: PROCEDURE_ID,
+    //       imageObj: newImageObj,
+    //       setter: setImageCards,
+    //     });
 
-        return { _id: newImageObj._id, component };
-      });
-    } else {
-      console.log("no data for images");
-      initialImageCardData = [];
-    }
+    //     return { _id: newImageObj._id, component };
+    //   });
+    // } else {
+    //   console.log("no data for images");
+    //   initialImageCardData = [];
+    // }
 
-    formAction.replaceImageObjs(updatedImageObjs, PROCEDURE_ID);
+    // formAction.replaceImageObjs(updatedImageObjs, PROCEDURE_ID);
 
     setImageCards(initialImageCardData);
   }, []);
