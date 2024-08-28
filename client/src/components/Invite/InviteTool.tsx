@@ -47,7 +47,7 @@ function InviteForm({ groupOptions = [], onSubmit }: CreateInviteFormPropsT) {
 
   //group ids selected
   const [groupIds, setGroupIds] = useState<string[]>([]);
-  const [password] = useState("");
+  const [password, setPassword] = useState("");
 
   return (
     <div>
@@ -68,7 +68,7 @@ function InviteForm({ groupOptions = [], onSubmit }: CreateInviteFormPropsT) {
             <input
               type="text"
               onChange={(event) => {
-                console.log("password", event.target.value);
+                setPassword(event.target.value);
               }}
               placeholder="Optional password"
               className="input input-bordered w-full max-w-xs"

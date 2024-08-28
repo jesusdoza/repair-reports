@@ -1,17 +1,10 @@
+import { InviteT } from "../../../types";
 import { InviteListing } from "./InviteListing/InviteListing";
-
-export type InviteT = {
-  inviteCode: string;
-  invitePassword: string;
-  groups: { id: string; name: string }[];
-  createdAt: string;
-  status: string;
-};
 
 const testInvites = [
   {
     inviteCode: "string",
-    invitePassword: "string",
+    password: "string",
     groups: [
       { id: "1234", name: "cool group" },
       { id: "1234533", name: "another group" },

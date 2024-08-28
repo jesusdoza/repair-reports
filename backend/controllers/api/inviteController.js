@@ -91,6 +91,7 @@ const postInvite = async (req, res) => {
   //must be unique invite code
   const newInvite = new Invite({
     inviteCode: uuidv4().slice(0, 6),
+    password,
     groups: allowedGroups,
     createdBy: userId,
   });
