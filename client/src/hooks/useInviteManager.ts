@@ -2,18 +2,11 @@ import axios, { AxiosError } from "axios";
 const API_URL = import.meta.env.VITE_API_URL;
 import useAuthContext from "./useAuthContext";
 import { useState } from "react";
-
-type InviteDataT = {
-  inviteCode: string;
-  invitePassword: string;
-  groups: { id: string; name: string }[];
-  createdAt: string;
-  status: string;
-};
+import { InviteT } from "../../types";
 
 export default function useInviteManager() {
   const { unauthorizedError } = useAuthContext();
-  const [data, setData] = useState<InviteDataT[]>([]);
+  const [data, setData] = useState<InviteT[]>([]);
   // const [errors, setErrors] = useState<string[]>([]);
 
   async function getUserInvites() {
