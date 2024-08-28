@@ -12,6 +12,7 @@
     "test:ui": "vitest --ui --coverage.enabled=true --api 8001",
     "dev": "vite --port 5173 --host",
     "build": "vite build --emptyOutDir --outDir ../backend/public/react",
+    "build-dev": "vite build --watch --emptyOutDir --outDir ../backend/public/react",
     "build-local": "vite build --emptyOutDir --outDir ./dist",
     "tsc": "npx tsc",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
