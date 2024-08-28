@@ -51,12 +51,10 @@ export class Procedure implements ProcedureT {
   ): ImageObj[] {
     //if already new format imageobjs instantiate them
     if (imageData && imageData?.length > 0) {
-      console.log("image objs exist");
       return imageData.map((data) => {
         return new ImageObj(data);
       });
     } else if (imageUrls && imageUrls.length > 0) {
-      console.log("image objs missing deriving from urls");
       //case older format repair with only imageUrls derive imageObjs from string url
       return imageUrls.map((url) => Procedure.deriveImageObj(url));
     }
