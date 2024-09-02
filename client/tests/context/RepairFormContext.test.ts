@@ -212,7 +212,6 @@ describe("repairform context procedure change tests", () => {
             expect(procedureObj._id).not.toBe(targetProcedureId);
           }
         });
-        //go through the images in all procedures to see if image url was addeded
       }
     });
   });
