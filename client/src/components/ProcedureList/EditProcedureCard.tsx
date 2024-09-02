@@ -23,9 +23,7 @@ export default function EditProcedureCard({
   const { formAction } = useContext(RepairFormDataContext);
   const { updateInstructions } = formAction;
   // const { imageObjs } = procedureData; //TODO images on procedure
-  const imageObjs = procedureData?.imageObjs
-    ? procedureData?.imageObjs
-    : undefined;
+  const imageObjs = procedureData?.imageObjs ? procedureData?.imageObjs : [];
 
   const imageUrls = procedureData?.images ? procedureData?.images : undefined;
 
@@ -39,13 +37,16 @@ export default function EditProcedureCard({
 
   //load initial state after mount
   useEffect(() => {
+    console.log("imageObjs", imageObjs);
     //create cards for initial prop data passed in
 
-    const updatedImageObjs: ImageObj[] = [];
+    // const updatedImageObjs: ImageObj[] = [];
 
     let initialImageCardData: ImageCardListT[];
 
-    if (imageObjs) {
+    //new format normal flow
+    if (imageObjs.length > 0) {
+      console.log("new data creating imageObjs");
       initialImageCardData = imageObjs.map((data) => {
         const component = createEditImageCard({
           procedureId: PROCEDURE_ID,
@@ -55,8 +56,8 @@ export default function EditProcedureCard({
         return { _id: data._id, component };
       });
 
-      //older repair version convert over
-    } else if (imageUrls) {
+      //older repair version convert over to bring inline with new format
+    } else if (imageUrls?.length && imageUrls.length > 0) {
       console.log("old data converting image Urls to imageObjs");
 
       setMessage((arr) => {
@@ -88,8 +89,8 @@ export default function EditProcedureCard({
           .slice(0, -4)
           .split("/")[0];
 
-        console.log("adding imageobj", newImageObj);
-        updatedImageObjs.push(newImageObj);
+        // console.log("adding imageobj", newImageObj);
+        // updatedImageObjs.push(newImageObj);
 
         // url.split(".com")[1].split("upload")[1].split("/").slice(2).join('/').slice(0,-4)
         const component = createEditImageCard({
@@ -105,7 +106,7 @@ export default function EditProcedureCard({
       initialImageCardData = [];
     }
 
-    formAction.replaceImageObjs(updatedImageObjs, PROCEDURE_ID);
+    // formAction.replaceImageObjs(updatedImageObjs, PROCEDURE_ID);
 
     setImageCards(initialImageCardData);
   }, []);

@@ -144,9 +144,10 @@ export const RepairContextProvider = ({
   function initializeRepairFormData(newRepair: Repair) {
     // const newRepair = new Repair(repair);
 
-    setRepairFormData(newRepair);
-
     console.log("setRepairdata");
+    console.log("newRepair", newRepair);
+
+    setRepairFormData(newRepair);
   }
 
   function updateEngineMake(value: string) {
