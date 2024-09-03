@@ -1,4 +1,4 @@
-import { it, expect, describe } from "vitest";
+import { it, expect, describe, vi } from "vitest";
 import {
   act,
   render,
@@ -19,6 +19,14 @@ import { Repair } from "../../src/classes/Repair";
 import { useContext } from "react";
 import { Procedure } from "../../src/classes/Procedure";
 import { ImageObj } from "../../src/classes/ImageObj";
+
+const getTestRepairInstance = vi.fn(() => {
+  return new Repair(
+    JSON.parse(
+      '{"_id":{"$oid":"62c747111face0e18e1f76e4"},"procedureArr":[{"images":["http://res.cloudinary.com/da6jwh1id/image/upload/v1657227012/cata/th14mscnwg2aoglujrzq.jpg","http://res.cloudinary.com/da6jwh1id/image/upload/v1657227024/cata/twdfhsjlp13q8ehupjls.jpg","http://res.cloudinary.com/da6jwh1id/image/upload/v1657227025/cata/fo8cb1alrvh3s1rmgoxd.jpg"],"procedureNum":{"$numberInt":"0"},"instructions":"Accelerator signal is on pin 66 of plug J1 Pin 66 touches resistor 223 under plug From 223 resistor it goes to HC14A chip next to rams"}],"searchtags":"No tps, ","title":"No Tps 8v good","boardType":"KA","engineMake":"cat"}'
+    )
+  );
+});
 
 describe("repair form context method tests", () => {
   it("should change title on repair data changeTitle()", () => {
@@ -146,7 +154,7 @@ describe("repairform context procedure change tests", () => {
 
     const procedures = [new Procedure(), new Procedure(), new Procedure()];
     const targetProcedureId = procedures[1]._id;
-    const initialRepairData = new Repair();
+    const initialRepairData = getTestRepairInstance();
     initialRepairData.procedureArr = procedures;
     const { result } = renderHook(() => useContext(RepairFormDataContext), {
       wrapper: RepairContextProvider,
@@ -180,10 +188,9 @@ describe("repairform context procedure change tests", () => {
   it("adds image to target procedure", async () => {
     const newImageUrl = "http://new_url";
 
-    const procedures = [new Procedure(), new Procedure(), new Procedure()];
-    const targetProcedureId = procedures[0]._id;
-    const initialRepairData = new Repair();
-    initialRepairData.procedureArr = procedures;
+    const initialRepairData = getTestRepairInstance();
+
+    const targetProcedureId = initialRepairData.procedureArr[0]._id;
 
     const { result } = renderHook(() => useContext(RepairFormDataContext), {
       wrapper: RepairContextProvider,
@@ -208,16 +215,74 @@ describe("repairform context procedure change tests", () => {
         procedureObj.imageObjs.forEach((data) => {
           if (data.imageUrl === newImageUrl) {
             expect(procedureObj._id).toBe(targetProcedureId);
-          } else {
-            expect(procedureObj._id).not.toBe(targetProcedureId);
           }
         });
       }
     });
   });
 
-  it.todo("removes image from target procedure", () => {
-    expect(images).not.toContain(testImage);
+  it("removes image from target procedure", async () => {
+    const newImageUrl = "http://new_url";
+
+    const testNewImagebj = new ImageObj();
+    testNewImagebj.imageUrl = newImageUrl;
+
+    const initialRepairData = getTestRepairInstance();
+
+    const targetProcedureId = initialRepairData.procedureArr[0]._id;
+
+    const { result } = renderHook(() => useContext(RepairFormDataContext), {
+      wrapper: RepairContextProvider,
+    });
+
+    await act(async () => {
+      await result.current.initializeRepairFormData(initialRepairData);
+    });
+
+    //add image to procedure
+    await act(async () => {
+      await result.current.formAction.addImage(
+        testNewImagebj,
+        targetProcedureId
+      );
+    });
+
+    //check image is in the procedure
+    await waitFor(() => {
+      const procedures = result.current.repairFormData.procedureArr;
+
+      for (let i = 0; i < procedures.length; i++) {
+        const procedureObj = procedures[i];
+
+        procedureObj.imageObjs.forEach((data) => {
+          if (data.imageUrl === newImageUrl) {
+            expect(procedureObj._id).toBe(targetProcedureId);
+          }
+        });
+      }
+    });
+
+    //remove image
+    await act(async () => {
+      result.current.formAction.removeImage(
+        testNewImagebj._id,
+        targetProcedureId
+      );
+    });
+
+    // verify image was removed
+    await waitFor(async () => {
+      const procedures = result.current.repairFormData.procedureArr;
+
+      for (let i = 0; i < procedures.length; i++) {
+        const procedureObj = procedures[i];
+
+        procedureObj.imageObjs.forEach((data) => {
+          console.log("data.", data.imageUrl);
+          expect(data._id).not.toBe(testNewImagebj._id);
+        });
+      }
+    });
   });
 });
 
