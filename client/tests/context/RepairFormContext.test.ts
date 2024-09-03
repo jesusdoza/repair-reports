@@ -215,6 +215,9 @@ describe("RepairFormContext form procedure change tests", () => {
       }
     });
   });
+
+  //! remove procedure from form data
+  it.todo("remove target procedure from repair", async () => {});
 });
 
 describe("repairform context image change tests", () => {
