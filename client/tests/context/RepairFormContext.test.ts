@@ -72,7 +72,7 @@ describe("repair form context method tests", () => {
   });
 });
 
-describe("RepairFormContext form changes tests", () => {
+describe("intialize repairform data tests", () => {
   it("should initialize repairFormdata with initializeRepairformData method", async () => {
     const { result } = renderHook(() => useContext(RepairFormDataContext), {
       wrapper: RepairContextProvider,
@@ -89,7 +89,9 @@ describe("RepairFormContext form changes tests", () => {
       expect(result.current.repairFormData).toEqual(newRepair);
     });
   });
+});
 
+describe("RepairFormContext form procedure change tests", () => {
   it("should add procedure to repair increasing array", async () => {
     const { result } = renderHook(() => useContext(RepairFormDataContext), {
       wrapper: RepairContextProvider,
@@ -177,9 +179,7 @@ describe("RepairFormContext form changes tests", () => {
       result.current.repairFormData.procedureArr[addAfterPos + 2]._id
     ).toBe(pushedProcId);
   });
-});
 
-describe("repairform context procedure change tests", () => {
   it("changes target procedure instructions", async () => {
     const newIntructions = "instructions changed to this";
 
@@ -215,7 +215,9 @@ describe("repairform context procedure change tests", () => {
       }
     });
   });
+});
 
+describe("repairform context image change tests", () => {
   it("adds image to target procedure", async () => {
     const newImageUrl = "http://new_url";
 
@@ -314,8 +316,4 @@ describe("repairform context procedure change tests", () => {
       }
     });
   });
-});
-
-describe("repairform context image change tests", () => {
-  it.todo("should", () => {});
 });
