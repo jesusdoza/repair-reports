@@ -216,8 +216,36 @@ describe("RepairFormContext form procedure change tests", () => {
     });
   });
 
-  //! remove procedure from form data
-  it.todo("remove target procedure from repair", async () => {});
+  //! remove procedure from form
+  it.todo("remove target procedure from repair", async () => {
+    const newProceduresAdded: Procedure[] = [];
+    const { result } = renderHook(() => useContext(RepairFormDataContext), {
+      wrapper: RepairContextProvider,
+    });
+
+    const amountOfProceduresToAdd = 2;
+
+    await act(async () => {
+      for (let i = 0; i < amountOfProceduresToAdd; i++) {
+        const procedureToAdd = new Procedure();
+
+        newProceduresAdded.push(procedureToAdd);
+        await result.current.formAction.addProcedureAtBegining(procedureToAdd);
+      }
+    });
+
+    await waitFor(() => {
+      expect(result.current.repairFormData.procedureArr.length).toEqual(
+        amountOfProceduresToAdd
+      );
+    });
+
+    //TODO remove procedure
+
+    //TODO check correct amount of procedures are left
+
+    //TODO check the removed id is no longer there
+  });
 });
 
 describe("repairform context image change tests", () => {
