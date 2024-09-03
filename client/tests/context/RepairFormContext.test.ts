@@ -21,11 +21,42 @@ import { Procedure } from "../../src/classes/Procedure";
 import { ImageObj } from "../../src/classes/ImageObj";
 
 const getTestRepairInstance = vi.fn(() => {
-  return new Repair(
+  const TestProcedures = [
+    new Procedure({
+      imageObjs: [new ImageObj(), new ImageObj()],
+      images: ["url1", "url2"],
+      imagesIdArr: ["url1", "url2"],
+      instructions: "procedure1 intructions",
+      procedureNum: 0,
+      thumbs: ["url1", "url2"],
+    }),
+    new Procedure({
+      imageObjs: [new ImageObj(), new ImageObj()],
+      images: ["url1", "url2"],
+      imagesIdArr: ["url1", "url2"],
+      instructions: "procedure2 intructions",
+      procedureNum: 1,
+      thumbs: ["url1", "url2"],
+    }),
+    new Procedure({
+      imageObjs: [new ImageObj(), new ImageObj()],
+      images: ["url1", "url2"],
+      imagesIdArr: ["url1", "url2"],
+      instructions: "procedure3 intructions",
+      procedureNum: 2,
+      thumbs: ["url1", "url2"],
+    }),
+  ];
+
+  const testRepairIntance = new Repair(
     JSON.parse(
-      '{"_id":{"$oid":"62c747111face0e18e1f76e4"},"procedureArr":[{"images":["http://res.cloudinary.com/da6jwh1id/image/upload/v1657227012/cata/th14mscnwg2aoglujrzq.jpg","http://res.cloudinary.com/da6jwh1id/image/upload/v1657227024/cata/twdfhsjlp13q8ehupjls.jpg","http://res.cloudinary.com/da6jwh1id/image/upload/v1657227025/cata/fo8cb1alrvh3s1rmgoxd.jpg"],"procedureNum":{"$numberInt":"0"},"instructions":"Accelerator signal is on pin 66 of plug J1 Pin 66 touches resistor 223 under plug From 223 resistor it goes to HC14A chip next to rams"}],"searchtags":"No tps, ","title":"No Tps 8v good","boardType":"KA","engineMake":"cat"}'
+      '{"_id":{"$oid":"66a93947cfa85842b2eadbbf"},"version":"3","title":"Intermittent vslope code","boardType":"OTHER","searchTags":[],"engineMake":"DDEC 5","procedureArr":[{"_id":"580a7b3d-a801-486f-9049-ee2d64d230c8","images":["http://res.cloudinary.com/da6jwh1id/image/upload/v1722366276/testfolder/63629c7c159bbca8835346f0/hec3qbodapo2h0mgbxrd.jpg","http://res.cloudinary.com/da6jwh1id/image/upload/v1722366274/testfolder/63629c7c159bbca8835346f0/fiklcsuodfabrj8faynh.jpg"],"imageObjs":[{"_id":"9f2d6165-5efd-496c-8e56-807cb2320458","imageUrl":"http://res.cloudinary.com/da6jwh1id/image/upload/v1722366276/testfolder/63629c7c159bbca8835346f0/hec3qbodapo2h0mgbxrd.jpg","imageThumb":"http://res.cloudinary.com/da6jwh1id/image/upload/c_thumb,w_200,g_face/v1722366276/testfolder/63629c7c159bbca8835346f0/hec3qbodapo2h0mgbxrd.jpg","caption":"","imageId":"testfolder/63629c7c159bbca8835346f0/hec3qbodapo2h0mgbxrd","folder":"testfolder/63629c7c159bbca8835346f0"},{"_id":"e215753b-2c77-4e37-b9b5-143a4a10c10a","imageUrl":"http://res.cloudinary.com/da6jwh1id/image/upload/v1722366274/testfolder/63629c7c159bbca8835346f0/fiklcsuodfabrj8faynh.jpg","imageThumb":"http://res.cloudinary.com/da6jwh1id/image/upload/c_thumb,w_200,g_face/v1722366274/testfolder/63629c7c159bbca8835346f0/fiklcsuodfabrj8faynh.jpg","caption":"","imageId":"testfolder/63629c7c159bbca8835346f0/fiklcsuodfabrj8faynh","folder":"testfolder/63629c7c159bbca8835346f0"}],"procedureNum":{"$numberInt":"0"},"instructions":"On ddec 5 everything worked but had vslope code become active randomly when powered up with injectors off. Traced vslope pine from cpu to this chip marked 28D03 but is compatible with LM2901D.","thumbs":[],"imagesIdArr":[]},{"_id":"4c5d8a11-1c36-45a2-813a-d42a17d226dc","images":["http://res.cloudinary.com/da6jwh1id/image/upload/v1722374779/testfolder/63629c7c159bbca8835346f0/yz1tf99ksgtgpwd4pgcw.jpg","http://res.cloudinary.com/da6jwh1id/image/upload/v1722374780/testfolder/63629c7c159bbca8835346f0/wroqtxhki5qj00wxuvzt.jpg"],"imageObjs":[{"_id":"385d7e5f-5f06-4864-949c-e0d3a43710d3","imageUrl":"http://res.cloudinary.com/da6jwh1id/image/upload/v1722374779/testfolder/63629c7c159bbca8835346f0/yz1tf99ksgtgpwd4pgcw.jpg","imageThumb":"http://res.cloudinary.com/da6jwh1id/image/upload/c_thumb,w_200,g_face/v1722374779/testfolder/63629c7c159bbca8835346f0/yz1tf99ksgtgpwd4pgcw.jpg","caption":"","imageId":"testfolder/63629c7c159bbca8835346f0/yz1tf99ksgtgpwd4pgcw","folder":"testfolder/63629c7c159bbca8835346f0"},{"_id":"701be252-4d3f-4d07-b62e-8b658e96b0ce","imageUrl":"http://res.cloudinary.com/da6jwh1id/image/upload/v1722374780/testfolder/63629c7c159bbca8835346f0/wroqtxhki5qj00wxuvzt.jpg","imageThumb":"http://res.cloudinary.com/da6jwh1id/image/upload/c_thumb,w_200,g_face/v1722374780/testfolder/63629c7c159bbca8835346f0/wroqtxhki5qj00wxuvzt.jpg","caption":"","imageId":"testfolder/63629c7c159bbca8835346f0/wroqtxhki5qj00wxuvzt","folder":"testfolder/63629c7c159bbca8835346f0"}],"procedureNum":{"$numberInt":"0"},"instructions":"Code still came up again but only on key on then after a few seconds code would go inactive. Checked resistance on resistors near the lm2901D sometimes marked as 28D03.There was a tiny 472 resistor reading 4M ohms a good one should be around 4K ohm","thumbs":[],"imagesIdArr":[]}],"group":"public","visibility":"public","createdBy":"63629c7c159bbca8835346f0","removed":false,"__v":{"$numberInt":"0"}}'
     )
   );
+
+  testRepairIntance.procedureArr = TestProcedures;
+
+  return testRepairIntance;
 });
 
 describe("repair form context method tests", () => {
@@ -278,7 +309,6 @@ describe("repairform context procedure change tests", () => {
         const procedureObj = procedures[i];
 
         procedureObj.imageObjs.forEach((data) => {
-          console.log("data.", data.imageUrl);
           expect(data._id).not.toBe(testNewImagebj._id);
         });
       }
