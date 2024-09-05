@@ -46,8 +46,9 @@ export default function RepairInfo({ repair, userId }: RepairInfoPageProps) {
       <section className="w-full">
         {userId == repair.createdBy && (
           <EditTools
-            data={repair}
-            editPageUrl={`/repair/edit/${repair._id}`}
+            // data={repair}
+            // editPageUrl={`/repair/edit/${repair._id}`}
+            id={repair._id}
           />
         )}
       </section>
