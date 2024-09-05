@@ -1,52 +1,51 @@
 import { NavLink } from "react-router-dom";
-import { RepairDataT } from "../../../types";
+import ModalConfirm from "../Modals/ModalConfirm";
 
 type editToolsPropsT = {
-  editPageUrl: string;
-  data: RepairDataT;
+  id: string;
 };
 
-export default function EditTools({
-  editPageUrl,
-  data: repairData,
-}: editToolsPropsT): React.ReactNode {
+export default function EditTools({ id }: editToolsPropsT): React.ReactNode {
+  const editUrl = `/repair/edit/${id}`;
+  const deleteUrl = `/repair/delete/${id}`;
+
   return (
     <section>
-      <h3>EditTools</h3>
+      {/*  */}
 
-      <section>
-        {/* You can open the modal using document.getElementById('ID').showModal() method */}
-        <button
-          className="btn"
-          onClick={() => {
-            //@ts-expect-error document exists
-            document.getElementById("my_modal_3").showModal();
-          }}>
-          Edit Repair
-        </button>
-        <dialog
-          id="my_modal_3"
-          className="modal">
-          <div className="modal-box">
-            <form method="dialog">
-              {/* if there is a button in form, it will close the modal */}
-              <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-                ✕
-              </button>
-            </form>
-            <h3 className="font-bold text-lg">Confirm you wanna edit</h3>
+      <details className="dropdown dropdown-right dropdown-end">
+        <summary className="btn m-1">Edit Tools</summary>
+        <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+          <li className="w-full">
+            <ModalConfirm label="Edit Repair">
+              <div>
+                Confirm Edit :
+                <NavLink
+                  className="btn"
+                  // state={repairData}
+                  to={editUrl}>
+                  Edit Repair
+                </NavLink>
+              </div>
+            </ModalConfirm>
+          </li>
+          <li className="w-full">
+            <ModalConfirm label="Delete Repair">
+              <div>
+                Confirm DELETE :
+                <NavLink
+                  className="btn"
+                  // state={repairData}
+                  to={deleteUrl}>
+                  DELETE REPAIR
+                </NavLink>
+              </div>
+            </ModalConfirm>
+          </li>
+        </ul>
+      </details>
 
-            <div>
-              <NavLink
-                className="btn"
-                state={repairData}
-                to={editPageUrl}>
-                Edit Repair
-              </NavLink>
-            </div>
-          </div>
-        </dialog>
-      </section>
+      {/* / */}
     </section>
   );
 }
