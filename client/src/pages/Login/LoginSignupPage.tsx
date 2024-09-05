@@ -1,8 +1,8 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import LoginForm from "./LoginForm";
-import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
-import SignupForm from "./SignupForm";
+import LoginForm from "../../components/LoginSignUp/LoginForm";
+import ErrorBoundary from "../../components/ErrorBoundary/ErrorBoundary";
+import SignupForm from "../../components/LoginSignUp/SignupForm";
 import ColabImage from "../../assets/Live collaboration-rafiki.svg";
 import { Navigate } from "react-router-dom";
 

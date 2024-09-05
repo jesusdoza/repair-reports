@@ -1,12 +1,12 @@
 // PrivateRoute.js
 import React from "react";
 import useAuthContext from "../hooks/useAuthContext";
-import LoginSignupContainer from "./LoginSignUp/LoginSignupContainer";
+import LoginSignupPage from "../pages/Login/LoginSignupPage";
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuth } = useAuthContext();
 
-  return <>{!isAuth ? <LoginSignupContainer /> : <>{children}</>}</>;
+  return <>{!isAuth ? <LoginSignupPage /> : <>{children}</>}</>;
 };
 
 export default ProtectedRoute;
