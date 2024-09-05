@@ -1,5 +1,4 @@
 import { RepairDataT } from "../../../types";
-import Comments from "../Comments/Comments";
 import EditTools from "../ProcedureList/EditTools";
 import ProcedureList from "../ProcedureList/ProcedureList";
 

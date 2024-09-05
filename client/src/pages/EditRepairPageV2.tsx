@@ -6,9 +6,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import { RepairDataT } from "../../types";
 
 import { RepairContextProvider } from "../context/RepairFormContext";
-import ModalConfirm from "../components/Modals/ModalConfirm";
-import EditTools from "../components/ProcedureList/EditTools";
-import EditRepairTools from "../components/RepairDisplay/EditToolsRepairTools";
 
 export default function EditRepairPageV2() {
   const { id: repairId } = useParams();
@@ -28,14 +25,6 @@ export default function EditRepairPageV2() {
 
       setSubmitAllowed(true);
       navigate(`/repair/${repairId}`);
-    } catch (error) {
-      setSubmitAllowed(true);
-      console.log("error handleUpdate @RepairPage ", error);
-    }
-  };
-  const handleDeleteRepair = async (id: string | undefined) => {
-    try {
-      console.log("id handle delete", id);
     } catch (error) {
       setSubmitAllowed(true);
       console.log("error handleUpdate @RepairPage ", error);
