@@ -150,6 +150,25 @@ const useRepairApi = () => {
     }
   };
 
+  const deleteRepair = async (id) => {
+    try {
+      const response = await axios.delete(`${API_URL}/api/repairs`, {
+        withCredentials: true,
+        params: { id },
+      });
+      return response.data;
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error?.response?.status && error?.response?.status == 401) {
+          console.log("unauthorized error @useRepairApi.searchForRepair");
+
+          unauthorizedError();
+        }
+      }
+      throw new Error(`unspecified PUT error ${API_URL}/api/repairs`);
+    }
+  };
+
   return {
     postRepair,
     updateRepair,
@@ -158,6 +177,7 @@ const useRepairApi = () => {
     searchForRepair,
     getRepairById,
     getUsersRepairs,
+    deleteRepair,
   };
 };
 
