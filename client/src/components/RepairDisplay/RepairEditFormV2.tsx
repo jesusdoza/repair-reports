@@ -15,11 +15,13 @@ export default function RepairEditForm({
   onSubmit,
   enabled = true,
   submitType,
+  onDelete,
 }: {
   repair?: RepairDataT | undefined;
   onSubmit?: (repair: Repair) => Promise<void>;
   enabled?: boolean;
   submitType: string;
+  onDelete: (id: string) => Promise<void>;
 }) {
   const { repairFormData, initializeRepairFormData, formAction } = useContext(
     RepairFormDataContext
@@ -75,6 +77,10 @@ export default function RepairEditForm({
       setSubmitAllowed(true);
       console.log("error handleUpdate @RepairPage ", error);
     }
+  };
+
+  const handleDelete = async () => {
+    console.log("delete repair");
   };
 
   const availableGroups: OptionT[] = [
@@ -230,6 +236,22 @@ export default function RepairEditForm({
               className="btn"
               disabled={!submitAllowed}>
               {submitType ? submitType : "Create Repair"}
+            </button>
+          </div>
+        </ModalConfirm>
+        <ModalConfirm
+          className="bg-red-600 text-black hover:bg-red-800"
+          label={"Delete Repair"}>
+          <div data-testid="delete-modal">
+            <span>Please confirm: </span>
+            <button
+              onClick={() => {
+                handleDelete();
+              }}
+              type="submit"
+              className="btn bg-red-600 text-black hover:bg-red-800 hover:scale-105"
+              disabled={!submitAllowed}>
+              {"Delete Repair"}
             </button>
           </div>
         </ModalConfirm>
