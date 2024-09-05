@@ -14,6 +14,7 @@ import ErrorBoundary from "../components/ErrorBoundary/ErrorBoundary";
 import LoginSignupContainer from "../pages/Login/LoginSignupPage";
 import ProtectedRoute from "../components/ProtectedRoute";
 import InvitePage from "../pages/Invite/InvitePage";
+import DeleteRepairPage from "../pages/Delete/DeleteRepairPage";
 
 export const routes = createBrowserRouter([
   {
@@ -92,6 +93,18 @@ export const routes = createBrowserRouter([
         <Layout>
           <ErrorBoundary componentName="EditRepairPageV2">
             <EditRepairPageV2 />
+          </ErrorBoundary>
+        </Layout>
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/repair/delete/:id",
+    element: (
+      <ProtectedRoute>
+        <Layout>
+          <ErrorBoundary componentName="DeleteRepairPage">
+            <DeleteRepairPage />
           </ErrorBoundary>
         </Layout>
       </ProtectedRoute>

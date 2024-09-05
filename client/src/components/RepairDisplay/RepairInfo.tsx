@@ -1,5 +1,4 @@
 import { RepairDataT } from "../../../types";
-import Comments from "../Comments/Comments";
 import EditTools from "../ProcedureList/EditTools";
 import ProcedureList from "../ProcedureList/ProcedureList";
 
@@ -44,16 +43,9 @@ export default function RepairInfo({ repair, userId }: RepairInfoPageProps) {
       </section>
       {/* if user id matches created by field user can use edit tools */}
       <section className="w-full">
-        {userId == repair.createdBy && (
-          <EditTools
-            data={repair}
-            editPageUrl={`/repair/edit/${repair._id}`}
-          />
-        )}
+        {userId == repair.createdBy && <EditTools id={repair._id} />}
       </section>
-      <section>
-        <Comments />
-      </section>
+      <section>{/* <Comments /> */}</section>
     </section>
   );
 }

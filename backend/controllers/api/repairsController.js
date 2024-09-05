@@ -1,4 +1,5 @@
 const Repair = require("../../models/Repair");
+const User = require("../../models/User");
 
 const REPAIR_INDEX = process.env.search_index;
 
@@ -173,24 +174,26 @@ const updateRepair = async (req, res) => {
 };
 
 //soft delete post
-const deletePost = async (req, res) => {
+const deleteRepair = async (req, res) => {
+  const userId = String(req.user._id);
+  const repairId = req.query.id;
+
   try {
-    const user = await User.findOne({ username: req.user.username });
-    const report = await Repair.findById({ _id: req.params.id });
+    //TODO create utility to verify allowed or not allowed actions
+    const user = await User.findOne({ _id: userId });
+    const repairData = await Repair.findById({ _id: repairId });
 
-    if (user.role === "admin" || report.createdBy === user.username) {
-      report.removed = true;
-      await report.save();
-      // res.send({message:'user is admin or creator',rep:report})
+    if (user.role === "admin" || repairData.createdBy === userId) {
+      repairData.removed = true;
+      await repairData.save();
 
-      res.json({ removed: report });
+      res.json({ removed: repairData });
     } else {
-      console.log("user not allowed");
       throw new Error(`user: ${user.username} not allowed`);
     }
   } catch (error) {
     res.send({
-      err: "delete error implemented ID: " + req.params.id,
+      err: "delete error ID: " + repairId,
       message: error.message,
     });
   }
@@ -252,4 +255,5 @@ module.exports = {
   updateRepair,
   getRepairsforUser,
   searchRepairs,
+  deleteRepair,
 };
