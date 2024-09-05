@@ -1,4 +1,5 @@
 const Repair = require("../../models/Repair");
+const User = require("../../models/User");
 
 const REPAIR_INDEX = process.env.search_index;
 
@@ -173,24 +174,25 @@ const updateRepair = async (req, res) => {
 };
 
 //soft delete post
-const deletePost = async (req, res) => {
-  try {
-    const user = await User.findOne({ username: req.user.username });
-    const report = await Repair.findById({ _id: req.params.id });
+const deleteRepair = async (req, res) => {
+  const userId = req.user._id;
+  const repairId = req.query.id;
 
-    if (user.role === "admin" || report.createdBy === user.username) {
+  try {
+    const user = await User.findOne({ _id: userId });
+    const report = await Repair.findById({ _id: repairId });
+
+    if (user.role === "admin" || report.createdBy === userId) {
       report.removed = true;
       await report.save();
-      // res.send({message:'user is admin or creator',rep:report})
 
       res.json({ removed: report });
     } else {
-      console.log("user not allowed");
       throw new Error(`user: ${user.username} not allowed`);
     }
   } catch (error) {
     res.send({
-      err: "delete error implemented ID: " + req.params.id,
+      err: "delete error ID: " + repairId,
       message: error.message,
     });
   }
@@ -252,4 +254,5 @@ module.exports = {
   updateRepair,
   getRepairsforUser,
   searchRepairs,
+  deleteRepair,
 };
