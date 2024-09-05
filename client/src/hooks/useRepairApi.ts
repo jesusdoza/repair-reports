@@ -150,7 +150,7 @@ const useRepairApi = () => {
     }
   };
 
-  const deleteRepair = async (id) => {
+  const deleteRepair = async (id: string) => {
     try {
       const response = await axios.delete(`${API_URL}/api/repairs`, {
         withCredentials: true,
