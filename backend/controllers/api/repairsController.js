@@ -175,18 +175,19 @@ const updateRepair = async (req, res) => {
 
 //soft delete post
 const deleteRepair = async (req, res) => {
-  const userId = req.user._id;
+  const userId = String(req.user._id);
   const repairId = req.query.id;
 
   try {
+    //TODO create utility to verify allowed or not allowed actions
     const user = await User.findOne({ _id: userId });
-    const report = await Repair.findById({ _id: repairId });
+    const repairData = await Repair.findById({ _id: repairId });
 
-    if (user.role === "admin" || report.createdBy === userId) {
-      report.removed = true;
-      await report.save();
+    if (user.role === "admin" || repairData.createdBy === userId) {
+      repairData.removed = true;
+      await repairData.save();
 
-      res.json({ removed: report });
+      res.json({ removed: repairData });
     } else {
       throw new Error(`user: ${user.username} not allowed`);
     }
