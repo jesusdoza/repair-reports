@@ -1,20 +1,20 @@
 import { createBrowserRouter } from "react-router-dom";
 import { Layout } from "../Layout";
 import LatestRepairsPage from "../pages/LatestRepairsPage";
-import ProfilePage from "../pages/Profile/ProfilePage";
+import ProfilePage from "../pages/profile/ProfilePage";
 import RepairFormPage from "../pages/CreateRepairFormPage";
-import DashboardPage from "../pages/Dashboard/DashboardPageContainer";
+import DashboardPage from "../pages/dashboard/DashboardPageContainer";
 import { RepairInfoPage } from "../pages/RepairInfoPage";
 import EditRepairPageV2 from "../pages/EditRepairPageV2";
-import SearchPage from "../pages/Search/SearchPage";
+import SearchPage from "../pages/search/SearchPage";
 import LogoutPage from "../pages/LogoutPage";
 
-import HomePage from "../pages/Home/HomePage";
+import HomePage from "../pages/home/HomePage";
 import ErrorBoundary from "../components/ErrorBoundary/ErrorBoundary";
 import LoginSignupContainer from "../components/LoginSignUp/LoginSignupContainer";
 import ProtectedRoute from "../components/ProtectedRoute";
-import InvitePage from "../pages/Invite/InvitePage";
-import DeleteRepairPage from "../pages/Delete/DeleteRepairPage";
+import InvitePage from "../pages/invite/InvitePage";
+import DeleteRepairPage from "../pages/delete/DeleteRepairPage";
 
 export const routes = createBrowserRouter([
   {
