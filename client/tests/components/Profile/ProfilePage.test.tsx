@@ -1,27 +1,14 @@
-import {
-  getAllByRole,
-  getByText,
-  render,
-  screen,
-} from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import React from "react";
 
 // import * as jest from "jest";
 import "@testing-library/jest-dom/vitest";
-import {
-  it,
-  expect,
-  describe,
-  vi,
-  Vitest,
-  VitestUtils,
-  type Mock,
-} from "vitest";
+import { it, describe, vi, type Mock } from "vitest";
 
 import useGetUserGroups from "../../../src/hooks/useGetUserGroups";
 import useGetUserRepairs from "../../../src/hooks/useGetUserRepairs";
 
-import ProfilePage from "../../../src/pages/Profile/ProfilePage";
+import ProfilePage from "../../../src/pages/profile/ProfilePage";
 import { MemoryRouter } from "react-router-dom";
 
 vi.mock("../../../src/hooks/useGetUserRepairs");
