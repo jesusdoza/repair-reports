@@ -216,7 +216,7 @@ describe("RepairFormContext form procedure change tests", () => {
     });
   });
 
-  //! remove procedure from repair data
+  //remove procedure from repair data
   it("remove target procedure from repair", async () => {
     const newProceduresAdded: Procedure[] = []; // procedures we can target for removal
     const initialProcedures: Procedure[] = [new Procedure(), new Procedure()];
@@ -260,7 +260,7 @@ describe("RepairFormContext form procedure change tests", () => {
       }
     });
 
-    //TODO remove procedure
+    //remove procedure
     await act(async () => {
       // console.log(
       //   " result.current;",
@@ -272,7 +272,7 @@ describe("RepairFormContext form procedure change tests", () => {
       }
     });
 
-    //TODO check the removed id is no longer there
+    // check the removed id is no longer there
     await waitFor(() => {
       for (const proc of newProceduresAdded) {
         expect(
