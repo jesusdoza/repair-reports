@@ -7,5 +7,6 @@ router.put("/", apiController.updateRepair);
 router.post("/search", apiController.searchRepairs);
 router.get("/user", apiController.getRepairsforUser);
 router.get("/:id", apiController.getRepairById);
+router.delete("/", apiController.deleteRepair);
 
 module.exports = router;

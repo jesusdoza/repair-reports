@@ -8,6 +8,7 @@ type modalConfirmProps = {
   id?: string;
   testId?: string;
   modalBtn?: React.ReactNode;
+  className?: string;
 };
 
 const ModalConfirm = ({
@@ -16,15 +17,17 @@ const ModalConfirm = ({
   testId,
   id,
   modalBtn,
+  className,
 }: modalConfirmProps) => {
   const modalId = id ? id : "modal" + label;
   const dataTestId = testId ? testId : "modal" + label + uuidv4().slice(-8);
 
   return (
-    <section className="">
+    <section>
       {/* You can open the modal using document.getElementById('ID').showModal() method */}
       {modalBtn ? (
         <div
+          className={className ? className : ""}
           data-test={dataTestId}
           onClick={() => {
             //@ts-expect-error document exists
@@ -34,7 +37,7 @@ const ModalConfirm = ({
         </div>
       ) : (
         <div
-          className={"btn"}
+          className={"btn" + (className ? " " + className : "")}
           data-test={dataTestId}
           onClick={() => {
             //@ts-expect-error document exists
