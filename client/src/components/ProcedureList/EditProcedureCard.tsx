@@ -102,7 +102,7 @@ export default function EditProcedureCard({
         return { _id: newImageObj._id, component };
       });
     } else {
-      console.log("no data for images");
+      // console.log("no data for images");
       initialImageCardData = [];
     }
 
@@ -133,7 +133,7 @@ export default function EditProcedureCard({
 
   async function handleRemoveProcedure() {
     if (!imageObjs) {
-      console.log("no imageObjs to use for image removal");
+      // console.log("no imageObjs to use for image removal");
       return;
     }
 
@@ -151,7 +151,7 @@ export default function EditProcedureCard({
       if (promises.length > 0) await Promise.allSettled(promises);
 
       if (onRemove) {
-        console.log("remove id:", PROCEDURE_ID);
+        // console.log("remove id:", PROCEDURE_ID);
         onRemove();
       }
     }
@@ -206,7 +206,7 @@ export default function EditProcedureCard({
               <div
                 onClick={() => {
                   //todo add image data to formContext
-                  console.log("adding image to procedure");
+                  // console.log("adding image to procedure");
 
                   const newImageData = new ImageObj();
                   formAction.addImage(newImageData, PROCEDURE_ID);

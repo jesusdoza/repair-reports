@@ -2,7 +2,6 @@ import { createContext, useState } from "react";
 import { Repair } from "../classes/Repair";
 import { addItem } from "../hooks/utils/addItem";
 import { Procedure } from "../classes/Procedure";
-import { RepairDataT } from "../../types";
 import { ImageObj } from "../classes/ImageObj";
 
 export type formActionT = {
@@ -22,7 +21,7 @@ export type formActionT = {
 
 export type RepairFormDataContextT = {
   repairFormData: Repair;
-  initializeRepairFormData: (repair: RepairDataT) => void;
+  initializeRepairFormData: (repair: Repair) => void;
   formAction: {
     addProcedureAfter: (id: string, item: Procedure) => void;
     removeProcedure: (id: string) => void;
@@ -141,11 +140,11 @@ export const RepairContextProvider = ({
   }
 
   //initialize form data
-  function initializeRepairFormData(repair: RepairDataT) {
-    const newRepair = new Repair(repair);
+  function initializeRepairFormData(newRepair: Repair) {
+    // const newRepair = new Repair(repair);
 
-    console.log("setRepairdata");
-    console.log("newRepair", newRepair);
+    // console.log("setRepairdata");
+    // console.log("newRepair", newRepair);
 
     setRepairFormData(newRepair);
   }
@@ -319,3 +318,9 @@ export const RepairContextProvider = ({
     </RepairFormDataContext.Provider>
   );
 };
+
+export function changeTitle(repair: Repair, newTitle: string) {
+  repair.title = newTitle;
+
+  return repair;
+}
