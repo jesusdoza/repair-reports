@@ -2,7 +2,6 @@ import { createContext, useState } from "react";
 import { Repair } from "../classes/Repair";
 import { addItem } from "../hooks/utils/addItem";
 import { Procedure } from "../classes/Procedure";
-import { RepairDataT } from "../../types";
 import { ImageObj } from "../classes/ImageObj";
 
 export type formActionT = {
