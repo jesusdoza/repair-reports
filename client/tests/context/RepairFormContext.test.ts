@@ -216,35 +216,83 @@ describe("RepairFormContext form procedure change tests", () => {
     });
   });
 
-  //! remove procedure from form
-  it.todo("remove target procedure from repair", async () => {
-    const newProceduresAdded: Procedure[] = [];
+  //! remove procedure from repair data
+  it("remove target procedure from repair", async () => {
+    const newProceduresAdded: Procedure[] = []; // procedures we can target for removal
+    const initialProcedures: Procedure[] = [new Procedure(), new Procedure()];
+    let expectedAmountOfProcedures = initialProcedures.length;
     const { result } = renderHook(() => useContext(RepairFormDataContext), {
       wrapper: RepairContextProvider,
     });
 
     const amountOfProceduresToAdd = 2;
 
+    //add a specific procedure to form
     await act(async () => {
+      for (const init of initialProcedures) {
+        await result.current.formAction.addProcedureAtBegining(init);
+      }
+
+      //add target procedures
       for (let i = 0; i < amountOfProceduresToAdd; i++) {
         const procedureToAdd = new Procedure();
-
-        newProceduresAdded.push(procedureToAdd);
+        newProceduresAdded.push(procedureToAdd); //add to array so we can target later
         await result.current.formAction.addProcedureAtBegining(procedureToAdd);
+        expectedAmountOfProcedures += 1;
       }
     });
 
-    await waitFor(() => {
+    //verify procedures has increased
+    await waitFor(async () => {
       expect(result.current.repairFormData.procedureArr.length).toEqual(
-        amountOfProceduresToAdd
+        expectedAmountOfProcedures
       );
+
+      const list = result.current.repairFormData.procedureArr;
+
+      //verify procedures are there by id
+      for (const proc of newProceduresAdded) {
+        expect(
+          list.findIndex((data) => {
+            return data._id == proc._id ? true : false;
+          })
+        ).toBeGreaterThan(-1);
+      }
     });
 
     //TODO remove procedure
-
-    //TODO check correct amount of procedures are left
+    await act(async () => {
+      // console.log(
+      //   " result.current;",
+      //   await result.current.repairFormData.procedureArr.map((d) => d._id)
+      // );
+      for (const proc of newProceduresAdded) {
+        await result.current.formAction.removeProcedure(proc._id);
+        expectedAmountOfProcedures -= 1;
+      }
+    });
 
     //TODO check the removed id is no longer there
+    await waitFor(() => {
+      for (const proc of newProceduresAdded) {
+        expect(
+          result.current.repairFormData.procedureArr.findIndex((data) => {
+            return data._id == proc._id ? true : false;
+          })
+        ).toBe(-1);
+      }
+    });
+
+    //verify intial procedures are untouched
+    await waitFor(() => {
+      for (const proc of initialProcedures) {
+        expect(
+          result.current.repairFormData.procedureArr.findIndex((data) => {
+            return data._id == proc._id ? true : false;
+          })
+        ).toBeGreaterThan(-1);
+      }
+    });
   });
 });
 
