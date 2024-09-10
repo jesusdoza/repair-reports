@@ -5,7 +5,9 @@ function corsOptionsHandler(req, callback) {
   let isAllowed = false;
 
   try {
-    urlList = urlList.concat(JSON.parse(ORIGINS));
+    urlList = urlList.concat(ORIGINS.split(","));
+
+    console.log("urlList", urlList);
   } catch (error) {
     console.log("error parsing oringin List", error);
     isAllowed = false;
