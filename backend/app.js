@@ -17,11 +17,9 @@ const app = express();
 // const PORT = 8000;
 const cookieMaxAge = 15 * 60 * 1000;
 
-const corsOptions = corsOptionsHandler();
-
 app.set("view engine", "ejs");
 app.use(require("./middleware/httpsRedirect").httpsRedirect);
-app.use(cors(corsOptions));
+app.use(cors(corsOptionsHandler));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); //get body data
 app.use(logger("dev"));

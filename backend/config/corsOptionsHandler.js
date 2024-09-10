@@ -1,16 +1,30 @@
-function corsOptionsHandler() {
+function corsOptionsHandler(req, callback) {
   const ORIGINS = process.env.origins_list;
-  let allowedOrigins = [];
+  let urlList = [];
+  const reqOrigin = String(req.header("Origin"));
+  let isAllowed = false;
 
   try {
-    const urlList = JSON.parse(ORIGINS);
-    allowedOrigins = allowedOrigins.concat(urlList);
+    urlList = urlList.concat(JSON.parse(ORIGINS));
   } catch (error) {
     console.log("error parsing oringin List", error);
-    allowedOrigins = false;
+    isAllowed = false;
+    callback(new Error("origin not allowed"));
   }
 
-  return { origin: allowedOrigins, credentials: true };
+  //check urlist against allowed origins
+  const matchedUrl = urlList.findIndex((url) => {
+    if (reqOrigin.startsWith(url)) {
+      return true;
+    }
+    return false;
+  });
+
+  if (matchedUrl !== -1) {
+    isAllowed = true;
+  }
+
+  callback(null, { origin: isAllowed, credentials: true });
 }
 
 module.exports = { corsOptionsHandler };
