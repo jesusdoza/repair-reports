@@ -9,6 +9,7 @@ const session = require("express-session"); //enables them to stay logged in
 const MongoStore = require("connect-mongo");
 // const mongooseDb = require("./config/dbM");
 const cookieParser = require("cookie-parser");
+const { originAllowed } = require("./config/originAllowed.js");
 
 require("dotenv").config({ path: "./config/.env" }); // to use with enviroment variables initializes enviroment vars
 require("./config/passport")(passport);
@@ -17,9 +18,10 @@ const app = express();
 // const PORT = 8000;
 const cookieMaxAge = 15 * 60 * 1000;
 
+console.log("originAllowed()", originAllowed());
+
 const corsOptions = {
-  origin:
-    process.env.NODE_ENV == "development" ? true : process.env.client_origin, // Replace with your front-end URL
+  origin: originAllowed(), // Replace with your front-end URL
   credentials: true,
 };
 
