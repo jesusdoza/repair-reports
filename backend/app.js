@@ -8,7 +8,7 @@ const passport = require("passport");
 const session = require("express-session"); //enables them to stay logged in
 const MongoStore = require("connect-mongo");
 const cookieParser = require("cookie-parser");
-const { originAllowed } = require("./config/originAllowed.js");
+const { corsOptionsHandler } = require("./config/corsOptionsHandler.js");
 
 require("dotenv").config({ path: "./config/.env" }); // to use with enviroment variables initializes enviroment vars
 require("./config/passport")(passport);
@@ -17,15 +17,11 @@ const app = express();
 // const PORT = 8000;
 const cookieMaxAge = 15 * 60 * 1000;
 
-const corsOptions = {
-  origin: originAllowed(),
-  credentials: true,
-};
+const corsOptions = corsOptionsHandler();
 
 app.set("view engine", "ejs");
 app.use(require("./middleware/httpsRedirect").httpsRedirect);
 app.use(cors(corsOptions));
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); //get body data
 app.use(logger("dev"));
@@ -54,7 +50,7 @@ const { ensureAuth } = require("./middleware/auth");
 app.use(passport.initialize());
 app.use(passport.session());
 
-// routes files
+// router files
 const formRoutes = require("./routes/formRouter.js");
 const repairRoutes = require("./routes/repair");
 const loginRoutes = require("./routes/login");
