@@ -7,7 +7,6 @@ const flash = require("express-flash");
 const passport = require("passport");
 const session = require("express-session"); //enables them to stay logged in
 const MongoStore = require("connect-mongo");
-// const mongooseDb = require("./config/dbM");
 const cookieParser = require("cookie-parser");
 const { originAllowed } = require("./config/originAllowed.js");
 
@@ -18,10 +17,8 @@ const app = express();
 // const PORT = 8000;
 const cookieMaxAge = 15 * 60 * 1000;
 
-console.log("originAllowed()", originAllowed());
-
 const corsOptions = {
-  origin: originAllowed(), // Replace with your front-end URL
+  origin: originAllowed(),
   credentials: true,
 };
 
@@ -76,14 +73,12 @@ app.use("/react", reactRoutes);
 app.use("/login", loginRoutes);
 app.use("/logout", logoutRoutes);
 app.use("/signup", signUpRoutes);
+app.use("/api", apiRoutes);
+app.use("/repairform", formRoutes);
+app.use("/", homeRoutes);
 app.use("/repair", ensureAuth, repairRoutes);
 app.use("/profile", ensureAuth, profileRoutes);
 app.use("/dashboard", ensureAuth, dashboardRoutes);
 app.use("/comments", ensureAuth, commentRoutes);
-app.use("/api", apiRoutes);
-app.use("/", homeRoutes);
-
-///route "/repairform"
-app.use("/repairform", formRoutes);
 
 module.exports = app;
