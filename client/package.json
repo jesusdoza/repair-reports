@@ -21,6 +21,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@clerk/clerk-react": "^5.8.1",
     "@cloudinary/react": "^1.13.0",
     "@cloudinary/url-gen": "^1.16.1",
     "@heroicons/react": "^2.1.1",
