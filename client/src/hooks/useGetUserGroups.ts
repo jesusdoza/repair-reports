@@ -34,7 +34,7 @@ export default function useGetUserGroups() {
 }
 
 async function fetchUserGroupData(): Promise<UserGroupDataT[]> {
-  const result = await axios.get(`${API_URL}/api/members/user`, {
+  const result = await axios.get(`${API_URL}/members/user`, {
     withCredentials: true,
   });
 

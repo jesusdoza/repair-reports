@@ -72,7 +72,7 @@ export const AuthContextProvider = ({
 
   const logout = async () => {
     // console.log("logout");
-    const response = await axios.get(`${API_URL}/api/logout`, {
+    const response = await axios.get(`${API_URL}/logout`, {
       withCredentials: true,
     });
     setUserToken(null);
@@ -81,9 +81,9 @@ export const AuthContextProvider = ({
   };
 
   const login = async (email: string, password: string) => {
-    console.log(" `${API_URL}/api/login`", `${API_URL}/api/login`);
+    console.log(" `${API_URL}/login`", `${API_URL}/login`);
     const response = await axios.post(
-      `${API_URL}/api/login`,
+      `${API_URL}/login`,
       {
         email,
         password,
@@ -115,7 +115,7 @@ export const AuthContextProvider = ({
   }) => {
     try {
       const response = await axios.post(
-        `${API_URL}/api/signup`,
+        `${API_URL}/signup`,
         {
           email,
           password,
@@ -142,7 +142,7 @@ export const AuthContextProvider = ({
   };
 
   async function verifyLogin() {
-    const response = await axios.get(`${API_URL}/api/login/verify`, {
+    const response = await axios.get(`${API_URL}/login/verify`, {
       withCredentials: true,
     });
     // console.log("response", response.data.user);

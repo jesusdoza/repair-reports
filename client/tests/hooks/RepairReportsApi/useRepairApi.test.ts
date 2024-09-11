@@ -15,12 +15,12 @@ import useRepairApi from "../../../src/hooks/useRepairApi.ts";
 const limitOnResults = 2;
 
 const expectedGetlatestArgs = [
-  `${import.meta.env.VITE_API_URL}/api/repairs`,
+  `${import.meta.env.VITE_API_URL}/repairs`,
   { withCredentials: true, params: { num: limitOnResults } },
 ];
 
 const expectedDefaultGetlatestArgs = [
-  `${import.meta.env.VITE_API_URL}/api/repairs`,
+  `${import.meta.env.VITE_API_URL}/repairs`,
   { withCredentials: true, params: { num: 1 } },
 ];
 
