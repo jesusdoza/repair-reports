@@ -1,9 +1,14 @@
 function corsOptionsHandler(req, callback) {
   const ORIGINS = process.env.origins_list;
+  const NODE_ENV = process.env.NODE_ENV;
   let urlList = [];
   const reqOrigin = String(req.header("Origin"));
   let isAllowed = false;
 
+  if (NODE_ENV === "development") {
+    callback(null, { origin: true, credentials: true });
+    return;
+  }
   try {
     urlList = urlList.concat(ORIGINS.split(","));
 
