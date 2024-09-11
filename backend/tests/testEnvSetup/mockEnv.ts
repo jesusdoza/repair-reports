@@ -1,10 +1,6 @@
+//mock env variables for tests
 import { vi } from "vitest";
 import { setupDatabase, uriEnv } from "./mockMongoDb";
-
-// export const teardownDatabase = async () => {
-//   await mongoose.disconnect();
-//   await mongoServer.stop();
-// };
 
 vi.stubEnv("NODE_ENV", "development");
 vi.stubEnv("session_secret", "fdasfsa");
