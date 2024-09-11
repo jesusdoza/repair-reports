@@ -18,6 +18,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@clerk/clerk-sdk-node": "^5.0.38",
     "@types/supertest": "^6.0.2",
     "axios": "^1.6.8",
     "bcrypt": "^5.0.1",
