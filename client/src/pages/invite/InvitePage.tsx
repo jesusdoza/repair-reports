@@ -40,7 +40,7 @@ async function joinGroup({
   password?: string;
 }) {
   await axios.post(
-    `${API_URL}/api/members/join`,
+    `${API_URL}/members/join`,
     { inviteCode, password },
     {
       withCredentials: true,

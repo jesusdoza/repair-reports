@@ -11,7 +11,7 @@ export default function useInviteManager() {
 
   async function getUserInvites() {
     try {
-      const response = await axios.get(`${API_URL}/api/invite`, {
+      const response = await axios.get(`${API_URL}/invite`, {
         withCredentials: true,
       });
 
@@ -37,7 +37,7 @@ export default function useInviteManager() {
   }) {
     const body = { groups, password };
 
-    const response = axios.post(`${API_URL}/api/invite`, body, {
+    const response = axios.post(`${API_URL}/invite`, body, {
       withCredentials: true,
     });
     return response;
@@ -51,7 +51,7 @@ export default function useInviteManager() {
     inviteCode: string;
     password?: string;
   }) {
-    const response = axios.get(`${API_URL}/api/invite11111`, {
+    const response = axios.get(`${API_URL}/invite11111`, {
       withCredentials: true,
       params: {
         invitecode: inviteCode,

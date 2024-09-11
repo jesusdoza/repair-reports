@@ -12,7 +12,7 @@ const useRepairApi = () => {
     const limit = requestLimit ? Number(requestLimit) : 1;
 
     try {
-      const response = await axios.get(`${API_URL}/api/repairs`, {
+      const response = await axios.get(`${API_URL}/repairs`, {
         withCredentials: true,
         params: { num: limit },
       });
@@ -32,7 +32,7 @@ const useRepairApi = () => {
   const searchForRepair = async (phrase: string) => {
     try {
       const response = await axios.post(
-        `${API_URL}/api/repairs/search`,
+        `${API_URL}/repairs/search`,
         { searchPhrase: phrase },
         {
           withCredentials: true,
@@ -54,7 +54,7 @@ const useRepairApi = () => {
 
   const getRepairById = async (repairId: string) => {
     try {
-      const response = await axios.get(`${API_URL}/api/repairs/${repairId}`, {
+      const response = await axios.get(`${API_URL}/repairs/${repairId}`, {
         withCredentials: true,
       });
       return response.data;
@@ -66,15 +66,13 @@ const useRepairApi = () => {
           unauthorizedError();
         }
       }
-      throw new Error(
-        `unspecified get error ${API_URL}/api/repairs/${repairId}`
-      );
+      throw new Error(`unspecified get error ${API_URL}/repairs/${repairId}`);
     }
   };
 
   //todo what folder to upload images to needs to be in signature
   const getUploadSignature = async (folder: string) => {
-    const response = await axios.get(`${API_URL}/api/signform`, {
+    const response = await axios.get(`${API_URL}/signform`, {
       withCredentials: true,
       params: {
         folder,
@@ -88,7 +86,7 @@ const useRepairApi = () => {
 
     try {
       const response = await axios.put(
-        `${API_URL}/api/repairs`,
+        `${API_URL}/repairs`,
         { repairData: repair },
         {
           withCredentials: true,
@@ -103,7 +101,7 @@ const useRepairApi = () => {
           unauthorizedError();
         }
       }
-      throw new Error(`unspecified PUT error ${API_URL}/api/repairs`);
+      throw new Error(`unspecified PUT error ${API_URL}/repairs`);
     }
   };
 
@@ -112,7 +110,7 @@ const useRepairApi = () => {
 
     try {
       const response = await axios.post(
-        `${API_URL}/api/repairs`,
+        `${API_URL}/repairs`,
         { repairData: repair },
         {
           withCredentials: true,
@@ -127,13 +125,13 @@ const useRepairApi = () => {
           unauthorizedError();
         }
       }
-      throw new Error(`unspecified PUT error ${API_URL}/api/repairs`);
+      throw new Error(`unspecified PUT error ${API_URL}/repairs`);
     }
   };
 
   const getUsersRepairs = async (limit?: number, page?: number) => {
     try {
-      const response = await axios.get(`${API_URL}/api/repairs/user`, {
+      const response = await axios.get(`${API_URL}/repairs/user`, {
         params: { limit, page },
         withCredentials: true,
       });
@@ -146,13 +144,13 @@ const useRepairApi = () => {
           unauthorizedError();
         }
       }
-      throw new Error(`unspecified PUT error ${API_URL}/api/repairs`);
+      throw new Error(`unspecified PUT error ${API_URL}/repairs`);
     }
   };
 
   const deleteRepair = async (id: string) => {
     try {
-      const response = await axios.delete(`${API_URL}/api/repairs`, {
+      const response = await axios.delete(`${API_URL}/repairs`, {
         withCredentials: true,
         params: { id },
       });
@@ -165,7 +163,7 @@ const useRepairApi = () => {
           unauthorizedError();
         }
       }
-      throw new Error(`unspecified PUT error ${API_URL}/api/repairs`);
+      throw new Error(`unspecified PUT error ${API_URL}/repairs`);
     }
   };
 
