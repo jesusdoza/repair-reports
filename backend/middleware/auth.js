@@ -12,37 +12,20 @@ module.exports = {
       res.redirect("/login");
     }
   },
+  //!remove ensureAuthApi when clerk working with failsafe ending middleware
   ensureAuthApi: function (req, res, next) {
-    // console.log("insureauthapi", req.isAuthenticated());
-    // if (req.isAuthenticated()) {
-    //   return next();
-    // }
-
     next();
   },
   clerkAuthMiddleware: function (req, res, next) {
-    const middleware = clerkClient.expressRequireAuth();
-
+    const middleware = clerkClient.expressWithAuth();
     middleware(req, res, next);
-    // .verifyToken()
-
-    // .then((result) => {
-    //   console.log("result", result);
-    //   next();
-    // })
-    // .catch((err) => {
-    //   console.log("err", err);
-    //   next();
-    // });
-
-    // const result = expressRequireAuth(req, res, next);
   },
 
   failAuthentication: function (req, res, next) {
     const passportJsAuth = req.user;
-    const clerkAuth = req.auth;
-    // console.log("clerkAuth", !!clerkAuth);
-    // console.log("passportJsAuth", !!passportJsAuth);
+    const clerkAuth = req.auth.userId;
+    console.log("clerkAuth", !!clerkAuth);
+    console.log("passportJsAuth", !!passportJsAuth);
     if (!passportJsAuth && !clerkAuth) {
       res.status(401).send({ message: "not logged in", login: "failed" });
       return;

@@ -29,7 +29,7 @@ router.get("/invite", ensureAuthApi, inviteController.getUsersInvites);
 router.post("/invite", ensureAuthApi, inviteController.postInvite);
 
 // router.use("/repairs", ensureAuthApi, repairRouter);
-router.use("/repairs", clerkAuthMiddleware, failAuthentication, repairRouter);
+router.use("/repairs", ...middlewareChain, repairRouter);
 router.use("/signform", ensureAuthApi, signatureRouter);
 router.use("/images", ensureAuthApi, imagesRouter);
 
