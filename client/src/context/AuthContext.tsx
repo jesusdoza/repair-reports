@@ -6,6 +6,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 type User = {
   username: string;
   _id: string;
+  clerkId: string;
   role: string;
   email: string;
   groups: string[];
@@ -23,6 +24,7 @@ type SingupResponseT = {
 export type authContextT = {
   userToken: string | null;
   setUserToken: object | null;
+  setUserData: (id: string) => void;
   userInfo: User | null;
   login: ((email: string, password: string) => Promise<void>) | null;
   logout: (() => Promise<void>) | null;
@@ -54,6 +56,7 @@ export const AuthContext = createContext<authContextT>({
   unauthorizedError: () => {},
   verifyLogin: () => {},
   isAuth: false,
+  setUserData: () => {},
 });
 
 export const AuthContextProvider = ({
@@ -161,6 +164,11 @@ export const AuthContextProvider = ({
     setIsAuth(false);
   }
 
+  async function getUserProfile() {
+    //TODO get users profile from backend
+    //get id and query server for user profile
+  }
+
   const values: authContextT = {
     userToken,
     setUserToken,
@@ -171,12 +179,8 @@ export const AuthContextProvider = ({
     unauthorizedError,
     verifyLogin,
     isAuth,
+    setUserData: getUserProfile,
   };
 
-  return (
-    <AuthContext.Provider value={values}>
-      {/* {!isAuth ? <LoginSignupContainer /> : <>{children}</>} */}
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
 };
