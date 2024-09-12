@@ -8,11 +8,12 @@ const passport = require("passport");
 const session = require("express-session"); //enables them to stay logged in
 const MongoStore = require("connect-mongo");
 const cookieParser = require("cookie-parser");
-const { corsOptionsHandler } = require("./config/corsOptionsHandler.js");
 
 require("dotenv").config({ path: "./config/.env" }); // to use with enviroment variables initializes enviroment vars
+const { corsOptionsHandler } = require("./config/corsOptionsHandler.js");
 require("./config/passport")(passport);
 
+require("./config/clerkClient.js");
 const app = express();
 // const PORT = 8000;
 const cookieMaxAge = 15 * 60 * 1000;
