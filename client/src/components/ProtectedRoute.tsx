@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import useAuthContext from "../hooks/useAuthContext";
 import LoginSignupContainer from "./LoginSignUp/LoginSignupContainer";
-import { useAuth, SignedIn } from "@clerk/clerk-react";
+import { useAuth } from "@clerk/clerk-react";
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuth } = useAuthContext();
