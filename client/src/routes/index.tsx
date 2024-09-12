@@ -27,7 +27,6 @@ export const routes = createBrowserRouter([
     ),
   },
   {
-    // index: true,
     path: "/login",
     element: (
       <ErrorBoundary componentName="LatestRepairsPage">
