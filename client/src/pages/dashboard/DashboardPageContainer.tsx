@@ -20,7 +20,6 @@ export default function DashboardPageContainer(): React.ReactNode {
 
   //fetchdata
   useEffect(() => {
-    console.log("fetch data");
     getUserRepairs(PAGE_LIMIT, 0);
   }, []);
 
