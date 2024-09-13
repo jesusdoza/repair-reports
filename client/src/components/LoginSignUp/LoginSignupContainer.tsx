@@ -6,6 +6,15 @@ import SignupForm from "./SignupForm";
 import ColabImage from "../../assets/Live collaboration-rafiki.svg";
 import { Navigate } from "react-router-dom";
 
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+  SignIn,
+  SignUp,
+} from "@clerk/clerk-react";
+
 export default function LoginSignupContainer(): React.ReactNode {
   const { login, signUp, isAuth } = useContext(AuthContext);
 
@@ -22,6 +31,7 @@ export default function LoginSignupContainer(): React.ReactNode {
 
   return (
     <div className="flex flex-col w-full items-center bg-slate-50">
+      <SignIn signUpUrl="/signup" />
       <div className=" flex justify-center w-full">
         <div className=" h-full flex flex-row w-full p1">
           <div className="w-1/2 absolute opacity-90 h-full "></div>
