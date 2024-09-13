@@ -4,25 +4,35 @@ const uuidv4 = require("uuid").v4;
 
 //get specific invite
 const getInvite = async (req, res) => {
-  const inviteCode = req.params["inviteCode"];
+  const inviteCode = req.params["invitecode"] || "";
+  const password = req.query.password || "";
+  console.log("invitePassword", password);
+  console.log("inviteCode", inviteCode);
 
   try {
-    if (!inviteCode || !invitePhrase)
-      throw new Error("no invite code or phrase");
+    if (!inviteCode) throw new Error("no invite code or phrase");
 
-    const invite = await Invite.findOne({ inviteCode, invitePhrase });
+    const invite = await Invite.findOne({
+      inviteCode,
+      password,
+    });
 
     if (!invite) {
-      res.status(404).send({ inviteCode, invitePhrase });
+      res.status(404).send({ inviteCode });
       return;
     }
 
-    res.send({ invite });
+    if (invite.password !== password) {
+      res.status(404).send({ inviteCode });
+      return;
+    }
+
+    res.send({ groups: invite.groups, inviteCode: invite.inviteCode });
   } catch (error) {
     console.error(error.message);
     res.status(500).send({
       message: "failed to get invite",
-      invite: { inviteCode, invitePhrase },
+      invite: { inviteCode },
     });
   }
 };
