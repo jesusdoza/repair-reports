@@ -15,6 +15,8 @@ import LoginSignupContainer from "../components/LoginSignUp/LoginSignupContainer
 import ProtectedRoute from "../components/ProtectedRoute";
 import InvitePage from "../pages/invite/InvitePage";
 import DeleteRepairPage from "../pages/delete/DeleteRepairPage";
+import SignupSetupPage from "../pages/signup/SignupSetup";
+import SignUpPage from "../pages/signup/SignUpPage";
 
 export const routes = createBrowserRouter([
   {
@@ -31,6 +33,22 @@ export const routes = createBrowserRouter([
     element: (
       <ErrorBoundary componentName="LatestRepairsPage">
         <LoginSignupContainer />
+      </ErrorBoundary>
+    ),
+  },
+  {
+    path: "/signup/setup",
+    element: (
+      <ErrorBoundary componentName="SignupPage">
+        <SignupSetupPage />
+      </ErrorBoundary>
+    ),
+  },
+  {
+    path: "/signup",
+    element: (
+      <ErrorBoundary componentName="SigninPage">
+        <SignUpPage />
       </ErrorBoundary>
     ),
   },
@@ -165,6 +183,7 @@ export const routes = createBrowserRouter([
       </Layout>
     ),
   },
+
   // {
   //   path: "/search/:search/:limit/:page",
   //   element: (
