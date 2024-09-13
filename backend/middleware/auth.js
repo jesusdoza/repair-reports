@@ -21,15 +21,24 @@ module.exports = {
     middleware(req, res, next);
   },
 
-  failAuthentication: function (req, res, next) {
+  verifyAuth: function (req, res, next) {
     const passportJsAuth = req.user;
     const clerkAuth = req.auth.userId;
+
     console.log("clerkAuth", !!clerkAuth);
     console.log("passportJsAuth", !!passportJsAuth);
     if (!passportJsAuth && !clerkAuth) {
       res.status(401).send({ message: "not logged in", login: "failed" });
       return;
     }
+
+    next();
+  },
+  loadUserIntoRequest: function (req, res, next) {
+    const passportJsAuth = req.user; //passport was used for auth
+    const clerkAuth = req.auth.userId; // clerk was used for auth
+
+    //TODO get user from mongodb if clerk was used
 
     next();
   },

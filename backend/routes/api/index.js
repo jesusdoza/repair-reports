@@ -4,7 +4,8 @@ const membersRouter = require("./membersRouter.js");
 const {
   ensureAuthApi,
   clerkAuthMiddleware,
-  failAuthentication,
+  verifyAuth,
+  loadUserIntoRequest,
 } = require("../../middleware/auth");
 const repairRouter = require("./repairs");
 const signatureRouter = require("./signature.js");
@@ -17,7 +18,8 @@ const inviteController = require("../../controllers/api/inviteController.js");
 const middlewareChain = [
   ensureAuthApi,
   clerkAuthMiddleware,
-  failAuthentication,
+  verifyAuth,
+  loadUserIntoRequest,
 ];
 
 router.post("/login", apiAuthController.apiLogin);
