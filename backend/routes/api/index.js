@@ -28,6 +28,7 @@ router.get("/logout", apiAuthController.apiLogout);
 router.post("/signup", apiAuthController.apiSignup);
 
 router.get("/invite", ensureAuthApi, inviteController.getUsersInvites);
+router.get("/invite/verify/:invitecode", inviteController.getInvite);
 router.post("/invite", ensureAuthApi, inviteController.postInvite);
 
 // router.use("/repairs", ensureAuthApi, repairRouter);
