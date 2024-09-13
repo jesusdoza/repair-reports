@@ -30,8 +30,8 @@ export default function JoinWithInviteForm({
           <div>
             <h1 className="text-5xl font-bold">Join a group</h1>
             <p className="py-6">
-              Input your invite and code and optionally if there is a passphrase
-              add that too.
+              Input your invitecode and optionally if there is a password add
+              that too.
             </p>
             <form
               onSubmit={(e) => {
