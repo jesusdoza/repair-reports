@@ -10,7 +10,10 @@ import {
 export default function SignUpPage() {
   return (
     <div className="flex w-full h-screen justify-center">
-      <SignUp signInUrl="/login"></SignUp>;
+      <SignUp
+        signInUrl="/login"
+        forceRedirectUrl={"/signup/setup"}></SignUp>
+      ;
     </div>
   );
 }
