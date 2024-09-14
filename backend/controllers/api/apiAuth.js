@@ -153,12 +153,14 @@ exports.apiSignup = async (req, res, next) => {
         try {
           //create member entries for each group in invite
 
-          const promises = createGroupMemberEntries(
-            foundInvite.groups,
-            createdUser
-          );
+          if (foundInvite) {
+            const promises = createGroupMemberEntries(
+              foundInvite.groups,
+              createdUser
+            );
 
-          await Promise.allSettled(promises);
+            await Promise.allSettled(promises);
+          }
         } catch (error) {
           console.error("failed to create member of group entries");
         }
@@ -175,6 +177,64 @@ exports.apiSignup = async (req, res, next) => {
             signup: "success",
             user: cleanUser,
           });
+        });
+      });
+    }
+  );
+};
+
+exports.apiSignupWithProvider = async (req, res, next) => {
+  const { providerId, provider, email, username } = req.body;
+
+  //create new user doc locally
+  const user = new User({
+    //new User is our user model, we grab username,email, password from request body of the form to create a new user
+    username,
+    email,
+    authProvider: provider,
+    providerId,
+  });
+
+  //verify user email is unique and create user
+  User.findOne(
+    { $or: [{ email: req.body.email }] },
+    async (err, existingUser) => {
+      if (err) {
+        return next(err);
+      }
+      if (existingUser) {
+        //TODO REMOVE CONSOLE
+        // console.log("user email in use");
+        return res.status(400).send({ error: "email invalid" });
+      }
+
+      //send creation request to database
+      const result = await user.save(async (err, createdUser) => {
+        //save the new user model to create a new user in our users collection
+        if (err) {
+          return next(err);
+        }
+
+        // try {
+        //   //create member entries for each group in invite
+
+        //   if (foundInvite) {
+        //     const promises = createGroupMemberEntries(
+        //       foundInvite.groups,
+        //       createdUser
+        //     );
+
+        //     await Promise.allSettled(promises);
+        //   }
+        // } catch (error) {
+        //   console.error("failed to create member of group entries");
+        // }
+        const { password, ...cleanUser } = createdUser._doc;
+
+        res.send({
+          message: "user created",
+          signup: "success",
+          user: cleanUser,
         });
       });
     }
