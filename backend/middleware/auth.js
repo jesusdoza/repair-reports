@@ -17,17 +17,19 @@ module.exports = {
   ensureAuthApi: function (req, res, next) {
     next();
   },
+
+  //loads clerk auth into req.auth
   clerkAuthMiddleware: function (req, res, next) {
     const middleware = clerkClient.expressWithAuth();
     middleware(req, res, next);
   },
 
+  //checks for req.user or req.auth if req.user not found load from the req.auth set by clerk
   loadUserIntoRequest: function (req, res, next) {
-    const passportJsAuth = req.user; //passport was used for auth
+    const userInRequest = req.user; //passport was used for auth
     const clerkAuthUserId = req.auth.userId; // clerk was used for auth
-    // console.log("passportJsAuth", passportJsAuth);
-    //TODO get user from mongodb if clerk was used
-    if (clerkAuthUserId && !passportJsAuth) {
+
+    if (clerkAuthUserId && !userInRequest) {
       User.findOne({ providerId: clerkAuthUserId }, (err, user) => {
         if (err) {
           next();
@@ -42,13 +44,12 @@ module.exports = {
     }
   },
 
+  //verify user was authenticated and loaded into req else return 401
   verifyAuth: function (req, res, next) {
     const passportJsAuth = req.user;
     const clerkAuth = req.auth.userId;
 
-    // if(clerkAuth &&  !passportJsAuth){
-    //   req.user=req.auth
-    // }
+    console.log("req.user verify auth", req.user);
 
     if (!passportJsAuth && !clerkAuth) {
       res.status(401).send({ message: "not logged in", login: "failed" });
