@@ -215,20 +215,6 @@ exports.apiSignupWithProvider = async (req, res, next) => {
           return next(err);
         }
 
-        // try {
-        //   //create member entries for each group in invite
-
-        //   if (foundInvite) {
-        //     const promises = createGroupMemberEntries(
-        //       foundInvite.groups,
-        //       createdUser
-        //     );
-
-        //     await Promise.allSettled(promises);
-        //   }
-        // } catch (error) {
-        //   console.error("failed to create member of group entries");
-        // }
         const { password, ...cleanUser } = createdUser._doc;
 
         res.send({
