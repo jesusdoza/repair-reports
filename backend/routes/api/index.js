@@ -26,6 +26,7 @@ router.post("/login", apiAuthController.apiLogin);
 router.get("/login/verify", ensureAuthApi, apiAuthController.apiVerifyLogin);
 router.get("/logout", apiAuthController.apiLogout);
 router.post("/signup", apiAuthController.apiSignup);
+router.post("/signup/provider", apiAuthController.apiSignupWithProvider);
 
 router.get("/invite", ensureAuthApi, inviteController.getUsersInvites);
 router.get("/invite/verify/:invitecode", inviteController.getInvite);
