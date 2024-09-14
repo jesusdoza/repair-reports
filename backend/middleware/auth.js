@@ -13,14 +13,10 @@ module.exports = {
       res.redirect("/login");
     }
   },
-  //!remove ensureAuthApi when clerk working with failsafe ending middleware
-  ensureAuthApi: function (req, res, next) {
-    next();
-  },
 
   //loads clerk auth into req.auth
-  clerkAuthMiddleware: function (req, res, next) {
-    const middleware = clerkClient.expressWithAuth();
+  clerkAuthMiddleware: async function (req, res, next) {
+    const middleware = await clerkClient.expressWithAuth();
     middleware(req, res, next);
   },
 
@@ -30,17 +26,27 @@ module.exports = {
     const clerkAuthUserId = req.auth.userId; // clerk was used for auth
 
     if (clerkAuthUserId && !userInRequest) {
-      User.findOne({ providerId: clerkAuthUserId }, (err, user) => {
-        if (err) {
-          next();
-        }
+      try {
+        User.findOne({ providerId: clerkAuthUserId }, (err, user) => {
+          if (err) {
+            console.log("error finding one load user req");
+            next();
+            return;
+          }
 
-        if (user) {
-          const { password, ...cleanUser } = user._doc;
-          req.user = cleanUser;
-          next();
-        }
-      });
+          if (user) {
+            console.log("user found load to req");
+            const { password, ...cleanUser } = user._doc;
+            req.user = cleanUser;
+            next();
+            return;
+          }
+        });
+      } catch (error) {
+        console.log("error loading user middleware");
+      }
+    } else {
+      next();
     }
   },
 
@@ -48,8 +54,6 @@ module.exports = {
   verifyAuth: function (req, res, next) {
     const passportJsAuth = req.user;
     const clerkAuth = req.auth.userId;
-
-    console.log("req.user verify auth", req.user);
 
     if (!passportJsAuth && !clerkAuth) {
       res.status(401).send({ message: "not logged in", login: "failed" });
