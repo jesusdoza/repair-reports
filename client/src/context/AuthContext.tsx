@@ -199,9 +199,10 @@ export const AuthContextProvider = ({
     const response = await axios.get(`${API_URL}/login/verify`, {
       withCredentials: true,
     });
-    // console.log("response", response.data.user);
+
+    console.log("response", response);
     if (response.status == 200) {
-      const user = response.data.user;
+      const user = response.data;
       console.log("userverify login: ", response.data.user);
       if (user) {
         setUserInfo((state) => {

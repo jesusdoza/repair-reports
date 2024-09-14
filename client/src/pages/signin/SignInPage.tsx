@@ -1,12 +1,5 @@
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  UserButton,
-  SignIn,
-  SignUp,
-} from "@clerk/clerk-react";
+import ClerkSignIn from "../../components/LoginSignUp/ClerkSignin";
 
 export default function SignInPage() {
-  return <SignIn signUpUrl="/signup"></SignIn>;
+  return <ClerkSignIn />;
 }
