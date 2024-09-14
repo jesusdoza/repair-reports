@@ -17,6 +17,7 @@ import InvitePage from "../pages/invite/InvitePage";
 import DeleteRepairPage from "../pages/delete/DeleteRepairPage";
 import SignupSetupPage from "../pages/signup/SignupSetupPage";
 import SignUpPage from "../pages/signup/SignUpPage";
+import ClerkRedirectPage from "../pages/signin/ClerkRedirectPage";
 
 export const routes = createBrowserRouter([
   {
@@ -33,6 +34,14 @@ export const routes = createBrowserRouter([
     element: (
       <ErrorBoundary componentName="LatestRepairsPage">
         <LoginSignupContainer />
+      </ErrorBoundary>
+    ),
+  },
+  {
+    path: "/login/clerk",
+    element: (
+      <ErrorBoundary componentName="ClerkRedirectPage">
+        <ClerkRedirectPage />
       </ErrorBoundary>
     ),
   },
