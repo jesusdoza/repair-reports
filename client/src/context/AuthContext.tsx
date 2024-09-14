@@ -37,10 +37,25 @@ export type authContextT = {
       }: {
         email: string;
         password: string;
-        username: string;
-        inviteCode: string;
+        username?: string | null;
+        inviteCode?: string;
       }) => Promise<void>)
     | null;
+
+  signUpWithProvider:
+    | (({
+        email,
+        username,
+        provider,
+        providerId,
+      }: {
+        email: string;
+        username?: string | null;
+        providerId: string;
+        provider: string;
+      }) => Promise<void>)
+    | null;
+
   unauthorizedError: () => void;
   verifyLogin: () => void;
   isAuth: boolean;
@@ -52,6 +67,7 @@ export const AuthContext = createContext<authContextT>({
   userInfo: null,
   login: null,
   signUp: null,
+  signUpWithProvider: null,
   logout: null,
   unauthorizedError: () => {},
   verifyLogin: () => {},
@@ -113,8 +129,8 @@ export const AuthContextProvider = ({
   }: {
     email: string;
     password: string;
-    username: string;
-    inviteCode: string;
+    username?: string | null;
+    inviteCode?: string;
   }) => {
     try {
       const response = await axios.post(
@@ -132,7 +148,42 @@ export const AuthContextProvider = ({
       setUserInfo((state) => {
         return { ...state, ...data.user };
       });
-      setIsAuth(true);
+      // setIsAuth(true);
+    } catch (error) {
+      console.log("failed to signup");
+      unauthorizedError();
+    }
+  };
+  const signUpWithProvider = async ({
+    email,
+    username,
+    provider,
+    providerId,
+  }: {
+    email: string;
+    username?: string | null;
+    provider: string;
+    providerId: string;
+  }) => {
+    try {
+      const response = await axios.post(
+        `${API_URL}/signup/provider`,
+        {
+          email,
+          username,
+          provider,
+          providerId,
+        },
+        { withCredentials: true }
+      );
+      const data = response.data as SingupResponseT;
+
+      //TODO load up user profile
+
+      setUserInfo((state) => {
+        return { ...state, ...data.user };
+      });
+      // setIsAuth(true);
     } catch (error) {
       console.log("failed to signup");
       unauthorizedError();
@@ -176,6 +227,7 @@ export const AuthContextProvider = ({
     login,
     logout,
     signUp,
+    signUpWithProvider,
     unauthorizedError,
     verifyLogin,
     isAuth,
