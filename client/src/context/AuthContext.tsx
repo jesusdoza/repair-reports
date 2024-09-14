@@ -196,6 +196,9 @@ export const AuthContextProvider = ({
   };
 
   async function verifyLogin() {
+    if (isAuth) {
+      return;
+    }
     const response = await axios.get(`${API_URL}/login/verify`, {
       withCredentials: true,
     });
@@ -203,17 +206,16 @@ export const AuthContextProvider = ({
     console.log("response", response);
     if (response.status == 200) {
       const user = response.data;
-      console.log("userverify login: ", response.data.user);
       if (user) {
         setUserInfo((state) => {
           return { ...state, ...response.data.user };
         });
         setIsAuth(true);
       }
-      return;
+      return true;
     }
-
     setIsAuth(false);
+    return false;
   }
 
   async function getUserProfile() {
