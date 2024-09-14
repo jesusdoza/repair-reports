@@ -44,6 +44,7 @@ export const routes = createBrowserRouter([
       </ErrorBoundary>
     ),
   },
+
   {
     path: "/signup",
     element: (
@@ -52,6 +53,7 @@ export const routes = createBrowserRouter([
       </ErrorBoundary>
     ),
   },
+
   {
     // index: true,
     path: "/latest",

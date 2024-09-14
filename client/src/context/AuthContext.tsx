@@ -148,7 +148,7 @@ export const AuthContextProvider = ({
       setUserInfo((state) => {
         return { ...state, ...data.user };
       });
-      // setIsAuth(true);
+      setIsAuth(true);
     } catch (error) {
       console.log("failed to signup");
       unauthorizedError();
@@ -183,7 +183,7 @@ export const AuthContextProvider = ({
       setUserInfo((state) => {
         return { ...state, ...data.user };
       });
-      // setIsAuth(true);
+      setIsAuth(true);
     } catch (error) {
       console.log("failed to signup");
       unauthorizedError();
