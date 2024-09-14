@@ -15,7 +15,7 @@ import LoginSignupContainer from "../components/LoginSignUp/LoginSignupContainer
 import ProtectedRoute from "../components/ProtectedRoute";
 import InvitePage from "../pages/invite/InvitePage";
 import DeleteRepairPage from "../pages/delete/DeleteRepairPage";
-import SignupSetupPage from "../pages/signup/SignupSetup";
+import SignupSetupPage from "../pages/signup/SignupSetupPage";
 import SignUpPage from "../pages/signup/SignUpPage";
 
 export const routes = createBrowserRouter([
