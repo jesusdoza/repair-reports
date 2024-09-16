@@ -4,24 +4,20 @@ import LoginForm from "./LoginForm";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 import SignupForm from "./SignupForm";
 import ColabImage from "../../assets/Live collaboration-rafiki.svg";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  UserButton,
-  SignIn,
-  SignUp,
-  useAuth,
-} from "@clerk/clerk-react";
+import { useAuth } from "@clerk/clerk-react";
 import ClerkSignIn from "./ClerkSignin";
 
-export default function LoginSignupContainer(): React.ReactNode {
+export default function LoginSignupContainer({
+  oldLoginScreen = true,
+}: {
+  oldLoginScreen?: boolean;
+}): React.ReactNode {
   const { login, signUp, isAuth } = useContext(AuthContext);
   const { userId } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
-  const [oldLogin, toggleOldLogin] = useState(false);
+  const [oldLogin, toggleOldLogin] = useState(oldLoginScreen);
 
   if (isAuth || userId) {
     return (

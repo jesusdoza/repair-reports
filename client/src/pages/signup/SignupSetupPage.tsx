@@ -1,12 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { useAuth, useUser } from "@clerk/clerk-react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function SignupSetupPage() {
-  const { signUpWithProvider, isAuth, userInfo } = useContext(AuthContext);
+  const { signUpWithProvider, userInfo } = useContext(AuthContext);
   // const { getInvite } = useInviteManager();
-  const { userId, ...clerkAuth } = useAuth();
+  const { userId } = useAuth();
   const { user } = useUser();
   const navigate = useNavigate();
   const [errors, setErrors] = useState<string[]>([]);
@@ -15,7 +15,6 @@ export default function SignupSetupPage() {
   // const clerkAuthProvider = user?.externalAccounts[0].provider;
 
   // console.log("password", password);
-  console.log("clerkAuth", clerkAuth);
   // console.log("clerk provider", user?.externalAccounts[0].provider);
 
   const email = user?.emailAddresses[0].emailAddress;
@@ -47,6 +46,7 @@ export default function SignupSetupPage() {
 
   return (
     <div className="h-[500px] w-full flex justify-center items-center">
+      <div className="bg-red-600">{errors}</div>
       <span>Loading your profile</span>
       <span className="loading loading-spinner loading-lg"></span>
     </div>
