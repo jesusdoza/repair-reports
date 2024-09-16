@@ -1,9 +1,13 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
-import { it, expect, describe } from "vitest";
-import React from "react";
+import { it, expect, describe, vi } from "vitest";
+import React, { ReactNode } from "react";
+import { MemoryRouter } from "react-router-dom";
 
 import LoginSignupContainer from "../../src/components/LoginSignUp/LoginSignupContainer";
+// import { ClerkProvider } from "@clerk/clerk-react";
+// import { RouterProvider } from "react-router-dom";
+// import { createBrowserRouter } from "react-router-dom";
 
 const signupFields = [
   "username",
@@ -14,11 +18,25 @@ const signupFields = [
   "invite code",
 ];
 
+vi.mock("@clerk/clerk-react", () => {
+  return {
+    useAuth: vi.fn(() => {
+      return { userId: null };
+    }),
+  };
+});
+
 describe("group", () => {
   it("should have place for username and password", () => {
-    render(<LoginSignupContainer />);
+    const screen = render(
+      <MemoryRouter>
+        <LoginSignupContainer oldLoginScreen={true} />
+      </MemoryRouter>
+    );
 
-    const userInput = screen.getByPlaceholderText(/email/i);
+    screen.debug();
+
+    const userInput = screen.getByPlaceholderText(/Email/i);
     expect(userInput).toBeInTheDocument();
     const passwordInput = screen.getByPlaceholderText(/password/i);
     expect(passwordInput).toBeInTheDocument();
