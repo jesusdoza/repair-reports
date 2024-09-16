@@ -9,6 +9,7 @@
   "scripts": {
     "coverage": "vitest run --coverage",
     "test": "vitest run",
+    "test:dev": "vitest",
     "test:ui": "vitest --ui --coverage.enabled=true --api 8001",
     "dev": "vite --port 5173 --host",
     "build": "vite build --emptyOutDir --outDir ../backend/public/react",
