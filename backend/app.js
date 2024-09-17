@@ -68,8 +68,8 @@ const reactRoutes = require("./routes/react");
 
 // =============================================================
 // ROUTES
-app.use("/", reactRoutes);
 app.use("/api", apiRoutes);
+app.use("/", reactRoutes);
 app.use("*", reactRoutes);
 // app.use("/login", loginRoutes);
 // app.use("/logout", logoutRoutes);
