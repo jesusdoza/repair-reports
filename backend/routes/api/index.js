@@ -2,7 +2,6 @@ const router = require("express").Router();
 const apiAuthController = require("../../controllers/api/apiAuth");
 const membersRouter = require("./membersRouter.js");
 const {
-  ensureAuthApi,
   clerkAuthMiddleware,
   loadUserIntoRequest,
   verifyAuth,

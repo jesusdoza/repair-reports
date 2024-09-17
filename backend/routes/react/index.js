@@ -21,7 +21,7 @@ router.get("/", (req, res) => {
     });
   });
 
-  res.sendFile(path.resolve("./public/react/index.html"));
+  res.sendFile(path.resolve("./public/index.html"));
 });
 
 module.exports = router;
