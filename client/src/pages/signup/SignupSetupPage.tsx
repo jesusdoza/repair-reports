@@ -4,14 +4,11 @@ import { useAuth, useUser } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 
 export default function SignupSetupPage() {
-  const { signUpWithProvider, userInfo } = useContext(AuthContext);
-  // const { getInvite } = useInviteManager();
-  const { userId, isLoaded, isSignedIn } = useAuth();
+  const { signUpWithProvider } = useContext(AuthContext);
+  const { userId, isSignedIn } = useAuth();
   const { user } = useUser();
   const navigate = useNavigate();
   const [errors, setErrors] = useState<string[]>([]);
-
-  console.log("user", user);
 
   const email = user?.emailAddresses[0].emailAddress;
   const username = user?.username;
