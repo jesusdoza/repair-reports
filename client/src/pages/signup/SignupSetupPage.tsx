@@ -6,16 +6,12 @@ import { useNavigate } from "react-router-dom";
 export default function SignupSetupPage() {
   const { signUpWithProvider, userInfo } = useContext(AuthContext);
   // const { getInvite } = useInviteManager();
-  const { userId } = useAuth();
+  const { userId, isLoaded, isSignedIn } = useAuth();
   const { user } = useUser();
   const navigate = useNavigate();
   const [errors, setErrors] = useState<string[]>([]);
 
-  // const password = location.hash.substring(1);
-  // const clerkAuthProvider = user?.externalAccounts[0].provider;
-
-  // console.log("password", password);
-  // console.log("clerk provider", user?.externalAccounts[0].provider);
+  console.log("user", user);
 
   const email = user?.emailAddresses[0].emailAddress;
   const username = user?.username;
@@ -38,11 +34,11 @@ export default function SignupSetupPage() {
   };
 
   useEffect(() => {
-    handleCreateUserProfile();
-  }, []);
-  useEffect(() => {
-    console.log("userInfo", userInfo);
-  }, [userInfo]);
+    if (isSignedIn) {
+      console.log("create user profile");
+      handleCreateUserProfile();
+    }
+  }, [isSignedIn]);
 
   return (
     <div className="h-[500px] w-full flex justify-center items-center">
