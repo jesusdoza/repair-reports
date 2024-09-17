@@ -42,12 +42,20 @@ describe("group", () => {
     expect(passwordInput).toBeInTheDocument();
   });
   it("should have a submit button", () => {
-    render(<LoginSignupContainer />);
+    render(
+      <MemoryRouter>
+        <LoginSignupContainer oldLoginScreen={true} />
+      </MemoryRouter>
+    );
     const submitButton = screen.getByRole("button");
     expect(submitButton).toBeInTheDocument();
   });
   it("should have a signup button", () => {
-    render(<LoginSignupContainer />);
+    render(
+      <MemoryRouter>
+        <LoginSignupContainer oldLoginScreen={true} />
+      </MemoryRouter>
+    );
 
     const signupButton = screen.getByText(/signup/i);
 
@@ -55,7 +63,11 @@ describe("group", () => {
   });
 
   it("should display signup form when clicked", () => {
-    render(<LoginSignupContainer />);
+    render(
+      <MemoryRouter>
+        <LoginSignupContainer oldLoginScreen={true} />
+      </MemoryRouter>
+    );
 
     const signupButton = screen.getByText(/signup/i);
 
