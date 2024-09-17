@@ -16,8 +16,13 @@ module.exports = {
 
   //loads clerk auth into req.auth
   clerkAuthMiddleware: async function (req, res, next) {
-    const middleware = await clerkClient.expressWithAuth();
-    middleware(req, res, next);
+    try {
+      const middleware = await clerkClient.expressWithAuth();
+      middleware(req, res, next);
+    } catch (error) {
+      console.log("clerkauthMiddleware failed : ", error);
+      next();
+    }
   },
 
   //checks for req.user or req.auth if req.user not found load from the req.auth set by clerk
