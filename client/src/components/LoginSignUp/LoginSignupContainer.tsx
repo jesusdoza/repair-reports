@@ -4,7 +4,7 @@ import LoginForm from "./LoginForm";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 import SignupForm from "./SignupForm";
 import ColabImage from "../../assets/Live collaboration-rafiki.svg";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "@clerk/clerk-react";
 import ClerkSignIn from "./ClerkSignin";
@@ -18,14 +18,10 @@ export default function LoginSignupContainer({
   const { userId } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
   const [oldLogin, toggleOldLogin] = useState(oldLoginScreen);
+  const navigate = useNavigate();
 
   if (isAuth || userId) {
-    return (
-      <Navigate
-        to="/latest"
-        replace={true}
-      />
-    );
+    navigate("/latest");
   }
 
   return (
