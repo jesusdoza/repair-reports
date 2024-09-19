@@ -64,7 +64,6 @@ const signUpRoutes = require("./routes/signup");
 const homeRoutes = require("./routes/home");
 const profileRoutes = require("./routes/profile");
 const dashboardRoutes = require("./routes/dashboard.js");
-const groupRoutes = require("./routes/group.js");
 const commentRoutes = require("./routes/comments.js");
 const apiRoutes = require("./routes/api");
 const reactRoutes = require("./routes/react");
@@ -79,11 +78,10 @@ app.use("/signup", signUpRoutes);
 app.use("/repair", ensureAuth, repairRoutes);
 app.use("/profile", ensureAuth, profileRoutes);
 app.use("/dashboard", ensureAuth, dashboardRoutes);
-app.use("/group", ensureAuth, groupRoutes);
 app.use("/comments", ensureAuth, commentRoutes);
 app.use("/api", apiRoutes);
 
 app.use(formRoutes);
 app.use(signformRoutes);
 
-module.exports = { app };
+module.exports = app;

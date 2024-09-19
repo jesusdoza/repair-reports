@@ -16,21 +16,6 @@ const imageObj = new mongoose.Schema({
   },
 });
 
-//version: 2 contains imageObjs:[imageObj] for images on procedures
-const imageObj = new mongoose.Schema({
-  imageUrl: { type: String, default: "" },
-  imageThumb: { type: String, default: "" },
-  caption: { type: String, default: "" },
-  imageId: {
-    type: String,
-    default: "",
-  },
-  folder: {
-    type: String,
-    default: "test",
-  },
-});
-
 //subdocument of RepairSchema
 const ProcedureSchema = new mongoose.Schema({
   _id: String,
