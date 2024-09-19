@@ -23,6 +23,7 @@ DEV branch hosted on [render.com](https://repair-reports-dev.onrender.com/)
 
 # Dependencies
 
+
 ```
 "dependencies": {
     "bcrypt": "^5.0.1",
@@ -46,9 +47,11 @@ DEV branch hosted on [render.com](https://repair-reports-dev.onrender.com/)
 
 ## Lessons Learned:
 
+
 uploading can be delegated to client side with only having signature from server
 
 ## Things needed to run
+
 
 - cloudinary account
 - mongodb account
@@ -59,14 +62,18 @@ uploading can be delegated to client side with only having signature from server
 
 #### cloudinary settings
 
+
 - cloud_name = //provided by cloudinary
 - cloud_key = //provided by cloudinary
 - cloud_secret = //provided by cloudinary
 - cloud_folder = //for organizing your cloudinary image into a folder
 
+
 #### mongoDb connection string
 
+
 - connect_string = //provided by mongo
+
 
 #### //port to use locally
 
@@ -76,9 +83,11 @@ uploading can be delegated to client side with only having signature from server
 
 #### node enviroment for local run
 
+
 - NODE_ENV = development
 
 # inside the file /config/.env should look like this
+
 
 ```
  cloud_name = afds355ha
@@ -97,17 +106,23 @@ uploading can be delegated to client side with only having signature from server
 
 ### Then clone repository from terminal node and git required
 
+### Then clone repository from terminal node and git required
+
 ```
 git clone https://github.com/jesusdoza/repair-reports.git
 ```
 
+
 ### move into project folder
+
 
 ```
  cd repair-reports/
 ```
 
+
 ### Open terminal prompt and run following commands
+
 
 ```
     npm install
