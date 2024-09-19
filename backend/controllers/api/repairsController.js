@@ -1,25 +1,93 @@
 const Repair = require("../../models/Repair");
+const User = require("../../models/User");
+
+const REPAIR_INDEX = process.env.search_index;
+
+const getRepairsforUser = async (req, res) => {
+  const user = req.user;
+  const { limit, page } = req.query;
+
+  const limitResults = Number(limit) > 0 ? Number(limit) : 10;
+  const currentPage = page ? Number(page) : 0;
+  const skipResults = limitResults > 0 ? Number(limitResults * currentPage) : 0;
+
+  try {
+    //!new aggreate
+    const aggregateResults = await Repair.aggregate([
+      {
+        //get only users repairs
+        $match: {
+          removed: false,
+          createdBy: user._id.toString(),
+        },
+      },
+      {
+        $sort: {
+          _id: -1,
+        },
+      },
+      {
+        //create metadata to include total from previous stage
+        $facet: {
+          metaData: [{ $count: "totalByUser" }],
+          results: [{ $skip: skipResults }, { $limit: limitResults }],
+        },
+      },
+    ]);
+
+    const metaData =
+      aggregateResults[0]?.metaData && aggregateResults[0]?.metaData.length > 0
+        ? aggregateResults[0].metaData[0]
+        : undefined;
+
+    res.status(200).json({
+      results: aggregateResults[0].results,
+      totalByUser: metaData ? metaData?.totalByUser : 0,
+      currentPage,
+      limitResults,
+    });
+  } catch (error) {
+    console.error("error getting users repairs");
+    res.status(401).json({
+      message: `error getting repairs for user: ${user._id}`,
+      error,
+    });
+  }
+
+  // get paremeter from url
+  // const repairId = req.params.id;
+  // try {
+  //   const repairObj = await Repair.findOne({ _id: repairId }).lean();
+  //   res.status(200).json(repairObj);
+  // } catch (err) {
+  //   res.status(400).json({
+  //     message: `error getting repair by ID: ${repairId}`,
+  //     error: err,
+  //   });
+  // }
+};
 
 const getRepairById = async (req, res) => {
+  // get paremeter from url
+  const repairId = req.params.id;
   try {
-    // get paremeter from url
-    const repairId = req.params.id;
     const repairObj = await Repair.findOne({ _id: repairId }).lean();
-
     res.status(200).json(repairObj);
   } catch (err) {
     res.status(400).json({
-      message: `ID: ${request.params.repairId}  NOT FOUND`,
+      message: `error getting repair by ID: ${repairId}`,
       error: err,
     });
   }
 };
 
 const addRepair = async (req, res) => {
-  const { username, title, boardType, engineMake, procedureArr, searchTags } =
+  const { title, boardType, engineMake, procedureArr, searchTags, group } =
     req.body.repairData;
 
-  console.log("req.body", req.body);
+  const createdBy = req.user._id;
+  const groupId = group; //TODO check group allowed or not
+
   try {
     const entry = {
       procedureArr,
@@ -27,14 +95,14 @@ const addRepair = async (req, res) => {
       title,
       boardType,
       engineMake,
-      createdBy: username,
+      createdBy,
       removed: false,
+      group: groupId,
     };
-    // console.log(`post at /repairform`,entry)
 
-    let result = await Repair.create(entry);
+    const response = await Repair.create(entry);
 
-    const repairId = result._id; //add link to repair
+    const repairId = response._id; //add link to repair
 
     res.send({
       message: "repair added successfully",
@@ -106,24 +174,26 @@ const updateRepair = async (req, res) => {
 };
 
 //soft delete post
-const deletePost = async (req, res) => {
+const deleteRepair = async (req, res) => {
+  const userId = String(req.user._id);
+  const repairId = req.query.id;
+
   try {
-    const user = await User.findOne({ username: req.user.username });
-    const report = await Repair.findById({ _id: req.params.id });
+    //TODO create utility to verify allowed or not allowed actions
+    const user = await User.findOne({ _id: userId });
+    const repairData = await Repair.findById({ _id: repairId });
 
-    if (user.role === "admin" || report.createdBy === user.username) {
-      report.removed = true;
-      await report.save();
-      // res.send({message:'user is admin or creator',rep:report})
+    if (user.role === "admin" || repairData.createdBy === userId) {
+      repairData.removed = true;
+      await repairData.save();
 
-      res.json({ removed: report });
+      res.json({ removed: repairData });
     } else {
-      console.log("user not allowed");
       throw new Error(`user: ${user.username} not allowed`);
     }
   } catch (error) {
     res.send({
-      err: "delete error implemented ID: " + req.params.id,
+      err: "delete error ID: " + repairId,
       message: error.message,
     });
   }
@@ -138,7 +208,7 @@ const searchRepairs = async (req, res) => {
     const results = await Repair.aggregate([
       {
         $search: {
-          index: "repairs_search",
+          index: REPAIR_INDEX,
           text: {
             query: searchStr,
             //   path:["title","searchtags","procedureArr","instructions"],
@@ -178,4 +248,12 @@ const searchRepairs = async (req, res) => {
 //   }
 // };
 
-module.exports = { getRepairById, addRepair, getNewestRepairs, updateRepair };
+module.exports = {
+  getRepairById,
+  addRepair,
+  getNewestRepairs,
+  updateRepair,
+  getRepairsforUser,
+  searchRepairs,
+  deleteRepair,
+};

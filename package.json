@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "back-install": "cd ./backend/ && npm install",
     "client-install": "cd ./client/ && npm install",
     "build-client": "cd ./client/ && npm run build",
@@ -15,6 +17,9 @@
     "dev-backend": "cd ./backend/ && npm run dev",
     "dev-client": "cd ./client/ && npm run dev",
     "copy-env": "node copyfile.js",
+    "client-test": "cd ./client/ && npm run test",
+    "backend-test": "cd ./backend/ && npm run test",
+    "test": "concurrently 'npm:client-test' 'backend-test'",
     "client-cleanup": "node cleanupClient.js"
   },
   "author": "",

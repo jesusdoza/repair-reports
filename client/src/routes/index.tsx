@@ -1,70 +1,177 @@
 import { createBrowserRouter } from "react-router-dom";
 import { Layout } from "../Layout";
 import LatestRepairsPage from "../pages/LatestRepairsPage";
-import ProfilePage from "../pages/ProfilePage";
-import RepairFormPage from "../pages/RepairFormPage";
-import DashboardPage from "../pages/DashboardPage";
+import ProfilePage from "../pages/profile/ProfilePage";
+import RepairFormPage from "../pages/CreateRepairFormPage";
+import DashboardPage from "../pages/dashboard/DashboardPageContainer";
 import { RepairInfoPage } from "../pages/RepairInfoPage";
-import EditRepairPage from "../pages/EditRepairPage";
+import EditRepairPageV2 from "../pages/EditRepairPageV2";
+import SearchPage from "../pages/search/SearchPage";
+import LogoutPage from "../pages/LogoutPage";
+
+import HomePage from "../pages/home/HomePage";
+import ErrorBoundary from "../components/ErrorBoundary/ErrorBoundary";
+import LoginSignupContainer from "../components/LoginSignUp/LoginSignupContainer";
+import ProtectedRoute from "../components/ProtectedRoute";
+import InvitePage from "../pages/invite/InvitePage";
+import DeleteRepairPage from "../pages/delete/DeleteRepairPage";
 
 export const routes = createBrowserRouter([
   {
     index: true,
     path: "/",
     element: (
-      <Layout>
-        <LatestRepairsPage />
-      </Layout>
+      <ErrorBoundary componentName="HomePage">
+        <HomePage />
+      </ErrorBoundary>
+    ),
+  },
+  {
+    // index: true,
+    path: "/login",
+    element: (
+      <ErrorBoundary componentName="LatestRepairsPage">
+        <LoginSignupContainer />
+      </ErrorBoundary>
+    ),
+  },
+  {
+    // index: true,
+    path: "/latest",
+    element: (
+      <ProtectedRoute>
+        <ErrorBoundary componentName="LatestRepairsPage">
+          <Layout>
+            <LatestRepairsPage />
+          </Layout>
+        </ErrorBoundary>
+      </ProtectedRoute>
     ),
   },
   {
     path: "/dashboard",
     element: (
-      <Layout>
-        <DashboardPage />
-      </Layout>
+      <ProtectedRoute>
+        <Layout>
+          <ErrorBoundary componentName="DashboardPage">
+            <DashboardPage />
+          </ErrorBoundary>
+        </Layout>
+      </ProtectedRoute>
     ),
   },
   {
     path: "/profile",
     element: (
-      <Layout>
-        <ProfilePage />
-      </Layout>
+      <ProtectedRoute>
+        <Layout>
+          <ErrorBoundary componentName="ProfilePage">
+            <ProfilePage />
+          </ErrorBoundary>
+        </Layout>
+      </ProtectedRoute>
     ),
   },
   {
     path: "/repairform",
     element: (
-      <Layout>
-        <RepairFormPage />
-      </Layout>
+      <ProtectedRoute>
+        <Layout>
+          <ErrorBoundary componentName="RepairFormPage">
+            <RepairFormPage />
+          </ErrorBoundary>
+        </Layout>
+      </ProtectedRoute>
     ),
   },
 
   // edit repair
   {
-    path: "/repair/edit/:repair_id",
+    path: "/repair/edit/:id",
     element: (
-      <Layout>
-        <EditRepairPage />
-      </Layout>
+      <ProtectedRoute>
+        <Layout>
+          <ErrorBoundary componentName="EditRepairPageV2">
+            <EditRepairPageV2 />
+          </ErrorBoundary>
+        </Layout>
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/repair/delete/:id",
+    element: (
+      <ProtectedRoute>
+        <Layout>
+          <ErrorBoundary componentName="DeleteRepairPage">
+            <DeleteRepairPage />
+          </ErrorBoundary>
+        </Layout>
+      </ProtectedRoute>
     ),
   },
   {
     path: "/repair/:repair_id",
     element: (
-      <Layout>
-        <RepairInfoPage />
-      </Layout>
+      <ProtectedRoute>
+        <Layout>
+          <ErrorBoundary componentName="RepairInfoPageContainer">
+            <RepairInfoPage />
+          </ErrorBoundary>
+        </Layout>
+      </ProtectedRoute>
     ),
   },
   {
     path: "/react",
     element: (
+      <ProtectedRoute>
+        <Layout>
+          <ErrorBoundary componentName="RepairInfoPageContainer">
+            <LatestRepairsPage />
+          </ErrorBoundary>
+        </Layout>
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/search",
+    element: (
+      <ProtectedRoute>
+        <Layout>
+          <ErrorBoundary componentName="RepairInfoPageContainer">
+            <SearchPage />
+          </ErrorBoundary>
+        </Layout>
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/invite",
+    element: (
+      <ProtectedRoute>
+        <Layout>
+          <ErrorBoundary componentName="InvitePage">
+            <InvitePage />
+          </ErrorBoundary>
+        </Layout>
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/logout",
+    element: (
       <Layout>
-        <LatestRepairsPage />
+        <LogoutPage />
       </Layout>
     ),
   },
+  // {
+  //   path: "/search/:search/:limit/:page",
+  //   element: (
+  //     <Layout>
+  //       <SearchPage />
+  //     </Layout>
+  //   ),
+  // },
 ]);

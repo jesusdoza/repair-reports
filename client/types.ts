@@ -1,11 +1,18 @@
 import { ImageObj } from "./src/classes/ImageObj";
-
+export interface InviteT {
+  inviteCode: string;
+  password: string;
+  groups: { id: string; name: string }[];
+  createdAt: string;
+  status: string;
+}
 export interface ImageObjT {
   imageUrl: string;
   imageThumb?: string;
   caption?: string;
   imageId: string;
   folder: string;
+  _id: string;
 }
 
 export interface ProcedureT {
@@ -15,9 +22,11 @@ export interface ProcedureT {
   instructions: string;
   procedureNum: number;
   thumbs: string[];
+  _id?: string;
 }
 
 export type RepairDataT = {
+  [key: string]: unknown;
   boardType: string;
   createdBy: string;
   engineMake: string;
@@ -27,15 +36,17 @@ export type RepairDataT = {
   title: string;
   visibility: string;
   searchTags?: string[];
+  version: number;
+
   _id: string;
 };
 
 export type ChangeFormPayloadT = {
   procIndex?: number;
   instructions?: string;
-  newImageUrl?: string;
+  imageUrl?: string;
   imageIndex?: number;
-  newImageObj?: ImageObjT;
+  newImageObj?: ImageObj;
   allProcedures?: ProcedureT[];
   formField?: Record<string, string>;
   searchTags?: string[];
@@ -43,23 +54,7 @@ export type ChangeFormPayloadT = {
   procedureId?: string;
 };
 
-// export type RepairFormDispatchType =
-//   | "ADD_IMAGE"
-//   | "ADD_PROCEDURE"
-//   | "REMOVE_PROCEDURE"
-//   | "REMOVE_IMAGE"
-//   | "UPDATE_IMAGES"
-//   | "UPDATE_INTRUC"
-//   | "UPDATE_PROCEDURES"
-//   | "UPDATE_FIELD"
-//   | "UPDATE_SEARCH_TAGS";
-
 export type RepairFormDispatchT = React.Dispatch<RepairFormStateActionT>;
-
-// export type RepairFormDispatchT = React.Dispatch<{
-//   type: RepairFormDispatchType;
-//   payload: ChangeFormPayloadT;
-// }>;
 
 export type RepairFormStateActionT =
   | {
@@ -107,18 +102,6 @@ export type RepairFormStateActionT =
       type: "UPDATE_INTRUC";
       payload: { procIndex: number; instructions: string };
     };
-
-export type repairDataT = {
-  boardType: string;
-  createdBy: string;
-  engineMake: string;
-  group: string;
-  procedureArr: ProcedureT[];
-  removed: boolean;
-  title: string;
-  visibility: string;
-  _id: string;
-};
 
 export type signatureT = {
   apikey: string;

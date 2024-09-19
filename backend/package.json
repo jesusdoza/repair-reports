@@ -4,15 +4,21 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "dev": "concurrently 'npm:devserver' 'npm:tailwind'",
+    "dev": "concurrently 'npm:devserver' 'npm:dev-tailwind'",
     "devserver": "nodemon server.js",
-    "start": "node server.js",
-    "test": "npx cypress run",
-    "tailwind": "npx tailwindcss -i ./public/stylesheets/main.css -o ./public/stylesheets/style.css --watch"
+    "start": "npm run tailwind && node server.js",
+    "test:e2e": "npx cypress run",
+    "test": "vitest run",
+    "tailwind": "npx tailwindcss -i ./public/stylesheets/main.css -o ./public/stylesheets/style.css",
+    "dev-tailwind": "npx tailwindcss -i ./public/stylesheets/main.css -o ./public/stylesheets/style.css --watch"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/supertest": "^6.0.2",
     "axios": "^1.6.8",
     "bcrypt": "^5.0.1",
     "cloudinary": "^1.30.0",
@@ -31,10 +37,14 @@
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "tailwindcss": "^3.2.7",
+    "uuid": "^10.0.0",
     "validator": "^13.7.0"
   },
   "devDependencies": {
     "concurrently": "^8.0.1",
-    "nodemon": "^2.0.20"
+    "mongodb-memory-server": "^10.0.0",
+    "nodemon": "^2.0.20",
+    "supertest": "^7.0.0",
+    "vitest": "^2.0.5"
   }
 }
