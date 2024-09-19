@@ -2,6 +2,8 @@
 
 Database for circuit board repairs that can be searched so problems that have already been resolved are not reworked
 
+Database for circuit board repairs that can be searched so problems that have already been resolved are not reworked
+
 will primarily be used on mobile to take advantage of on board camera to upload images, and such mobile design will be focused on first followed by a desktop design
 
 <div>
@@ -53,6 +55,8 @@ uploading can be delegated to client side with only having signature from server
 
 ## /config/.env file
 
+## /config/.env file
+
 #### cloudinary settings
 
 - cloud_name = //provided by cloudinary
@@ -68,6 +72,8 @@ uploading can be delegated to client side with only having signature from server
 
 - PORT =
 
+- PORT =
+
 #### node enviroment for local run
 
 - NODE_ENV = development
@@ -76,6 +82,7 @@ uploading can be delegated to client side with only having signature from server
 
 ```
  cloud_name = afds355ha
+ cloud_name = afds355ha
  cloud_key = 125554658
  cloud_secret = ckdskfalkfjai123
  cloud_folder = IMAGES
@@ -83,7 +90,10 @@ uploading can be delegated to client side with only having signature from server
  PORT = 8000
  NODE_ENV = development
  client_origin="http://localhost:5173"
+ client_origin="http://localhost:5173"
 ```
+
+### Then clone repository from terminal node and git required
 
 ### Then clone repository from terminal node and git required
 
@@ -103,6 +113,12 @@ git clone https://github.com/jesusdoza/repair-reports.git
     npm install
     npm run dev
 ```
+
+### for hosted following scripts must run
+
+- npm run install
+- npm run build
+- npm run start
 
 ### for hosted following scripts must run
 
