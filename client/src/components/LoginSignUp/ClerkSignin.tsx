@@ -3,10 +3,10 @@ import { SignIn } from "@clerk/clerk-react";
 export default function ClerkSignIn() {
   return (
     <SignIn
-      signUpUrl="/signup"
+      signUpUrl="/signup/clerk"
       afterSignOutUrl={"/"}
-      fallbackRedirectUrl={"/login/clerk"}
-      forceRedirectUrl={"/login/clerk"}
+      fallbackRedirectUrl={"/login"}
+      forceRedirectUrl={"/login/clerk/signin"}
     />
   );
 }
