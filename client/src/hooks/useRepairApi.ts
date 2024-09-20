@@ -1,16 +1,18 @@
 import axios, { AxiosError } from "axios";
 import { Repair } from "../classes/Repair";
 import useAuthContext from "./useAuthContext";
-import { signatureT } from "../../types";
+import { RepairDataT, signatureT } from "../../types";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const useRepairApi = () => {
   const { unauthorizedError } = useAuthContext();
 
-  const getLatestRepairs = async (limit: string | number) => {
+  const getLatestRepairs = async (requestLimit?: string | number) => {
+    const limit = requestLimit ? Number(requestLimit) : 1;
+
     try {
-      const response = await axios.get(`${API_URL}/api/repairs`, {
+      const response = await axios.get(`${API_URL}/repairs`, {
         withCredentials: true,
         params: { num: limit },
       });
@@ -30,13 +32,15 @@ const useRepairApi = () => {
   const searchForRepair = async (phrase: string) => {
     try {
       const response = await axios.post(
-        `http://localhost:8000/api/repairs`,
+        `${API_URL}/repairs/search`,
         { searchPhrase: phrase },
         {
           withCredentials: true,
         }
       );
-      return response.data;
+      return response?.data?.repairs
+        ? (response?.data?.repairs as RepairDataT[])
+        : [];
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error?.response?.status && error?.response?.status == 401) {
@@ -49,12 +53,26 @@ const useRepairApi = () => {
   };
 
   const getRepairById = async (repairId: string) => {
-    console.log("repairId", repairId);
+    try {
+      const response = await axios.get(`${API_URL}/repairs/${repairId}`, {
+        withCredentials: true,
+      });
+      return response.data;
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error?.response?.status && error?.response?.status == 401) {
+          console.log("unauthorized error @useRepairApi.getRepairById");
+
+          unauthorizedError();
+        }
+      }
+      throw new Error(`unspecified get error ${API_URL}/repairs/${repairId}`);
+    }
   };
 
   //todo what folder to upload images to needs to be in signature
   const getUploadSignature = async (folder: string) => {
-    const response = await axios.get(`${API_URL}/api/signform`, {
+    const response = await axios.get(`${API_URL}/signform`, {
       withCredentials: true,
       params: {
         folder,
@@ -68,7 +86,7 @@ const useRepairApi = () => {
 
     try {
       const response = await axios.put(
-        `${API_URL}/api/repairs`,
+        `${API_URL}/repairs`,
         { repairData: repair },
         {
           withCredentials: true,
@@ -83,7 +101,7 @@ const useRepairApi = () => {
           unauthorizedError();
         }
       }
-      throw new Error(`unspecified PUT error ${API_URL}/api/repairs`);
+      throw new Error(`unspecified PUT error ${API_URL}/repairs`);
     }
   };
 
@@ -92,7 +110,7 @@ const useRepairApi = () => {
 
     try {
       const response = await axios.post(
-        `${API_URL}/api/repairs`,
+        `${API_URL}/repairs`,
         { repairData: repair },
         {
           withCredentials: true,
@@ -107,7 +125,45 @@ const useRepairApi = () => {
           unauthorizedError();
         }
       }
-      throw new Error(`unspecified PUT error ${API_URL}/api/repairs`);
+      throw new Error(`unspecified PUT error ${API_URL}/repairs`);
+    }
+  };
+
+  const getUsersRepairs = async (limit?: number, page?: number) => {
+    try {
+      const response = await axios.get(`${API_URL}/repairs/user`, {
+        params: { limit, page },
+        withCredentials: true,
+      });
+      return response.data;
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error?.response?.status && error?.response?.status == 401) {
+          console.log("unauthorized error @useRepairApi.searchForRepair");
+
+          unauthorizedError();
+        }
+      }
+      throw new Error(`unspecified PUT error ${API_URL}/repairs`);
+    }
+  };
+
+  const deleteRepair = async (id: string) => {
+    try {
+      const response = await axios.delete(`${API_URL}/repairs`, {
+        withCredentials: true,
+        params: { id },
+      });
+      return response.data;
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error?.response?.status && error?.response?.status == 401) {
+          console.log("unauthorized error @useRepairApi.searchForRepair");
+
+          unauthorizedError();
+        }
+      }
+      throw new Error(`unspecified PUT error ${API_URL}/repairs`);
     }
   };
 
@@ -118,6 +174,8 @@ const useRepairApi = () => {
     getLatestRepairs,
     searchForRepair,
     getRepairById,
+    getUsersRepairs,
+    deleteRepair,
   };
 };
 

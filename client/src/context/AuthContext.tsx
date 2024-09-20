@@ -1,6 +1,5 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import axios from "axios";
-import LoginCard from "../components/LoginSignUp/LoginCard";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -10,6 +9,15 @@ type User = {
   role: string;
   email: string;
   groups: string[];
+  createdAt: string;
+};
+
+// 52c114
+// }
+type SingupResponseT = {
+  message: string;
+  signup: string;
+  user: User;
 };
 
 export type authContextT = {
@@ -19,9 +27,21 @@ export type authContextT = {
   login: ((email: string, password: string) => Promise<void>) | null;
   logout: (() => Promise<void>) | null;
   signUp:
-    | ((email: string, password: string, username: string) => Promise<void>)
+    | (({
+        email,
+        password,
+        username,
+        inviteCode,
+      }: {
+        email: string;
+        password: string;
+        username: string;
+        inviteCode: string;
+      }) => Promise<void>)
     | null;
   unauthorizedError: () => void;
+  verifyLogin: () => void;
+  isAuth: boolean;
 };
 
 export const AuthContext = createContext<authContextT>({
@@ -32,6 +52,8 @@ export const AuthContext = createContext<authContextT>({
   signUp: null,
   logout: null,
   unauthorizedError: () => {},
+  verifyLogin: () => {},
+  isAuth: false,
 });
 
 export const AuthContextProvider = ({
@@ -43,16 +65,14 @@ export const AuthContextProvider = ({
   const [isAuth, setIsAuth] = useState(false);
   const [userInfo, setUserInfo] = useState<User | null>(null);
 
-  // useEffect(() => {
-  //   console.log("userInfo", userInfo);
-  //   console.log("userToken display for testing remove this console.log", [
-  //     userToken,
-  //   ]);
-  // }, [userToken, userInfo]);
+  useEffect(() => {
+    console.log("verigy login");
+    verifyLogin();
+  }, []);
 
   const logout = async () => {
     // console.log("logout");
-    const response = await axios.get(`${API_URL}/api/logout`, {
+    const response = await axios.get(`${API_URL}/logout`, {
       withCredentials: true,
     });
     setUserToken(null);
@@ -61,9 +81,9 @@ export const AuthContextProvider = ({
   };
 
   const login = async (email: string, password: string) => {
-    console.log(" `${API_URL}/api/login`", `${API_URL}/api/login`);
+    console.log(" `${API_URL}/login`", `${API_URL}/login`);
     const response = await axios.post(
-      `${API_URL}/api/login`,
+      `${API_URL}/login`,
       {
         email,
         password,
@@ -82,19 +102,64 @@ export const AuthContextProvider = ({
     setIsAuth(false);
   };
 
-  const signUp = async (email: string, password: string, username: string) => {
-    const response = await axios.post(`${API_URL}/api/signup`, {
-      email,
-      password,
-      username,
-    });
-    console.log("response", response.data);
+  const signUp = async ({
+    email,
+    username,
+    password,
+    inviteCode,
+  }: {
+    email: string;
+    password: string;
+    username: string;
+    inviteCode: string;
+  }) => {
+    try {
+      const response = await axios.post(
+        `${API_URL}/signup`,
+        {
+          email,
+          password,
+          username,
+          inviteCode,
+        },
+        { withCredentials: true }
+      );
+      const data = response.data as SingupResponseT;
+
+      setUserInfo((state) => {
+        return { ...state, ...data.user };
+      });
+      setIsAuth(true);
+    } catch (error) {
+      console.log("failed to signup");
+      unauthorizedError();
+    }
   };
 
   const unauthorizedError = () => {
     console.log("unauthorized log in again");
     setIsAuth(false);
   };
+
+  async function verifyLogin() {
+    const response = await axios.get(`${API_URL}/login/verify`, {
+      withCredentials: true,
+    });
+    // console.log("response", response.data.user);
+    if (response.status == 200) {
+      const user = response.data.user;
+      console.log("userverify login: ", response.data.user);
+      if (user) {
+        setUserInfo((state) => {
+          return { ...state, ...response.data.user };
+        });
+        setIsAuth(true);
+      }
+      return;
+    }
+
+    setIsAuth(false);
+  }
 
   const values: authContextT = {
     userToken,
@@ -104,11 +169,14 @@ export const AuthContextProvider = ({
     logout,
     signUp,
     unauthorizedError,
+    verifyLogin,
+    isAuth,
   };
 
   return (
     <AuthContext.Provider value={values}>
-      {!isAuth ? <LoginCard /> : <>{children}</>}
+      {/* {!isAuth ? <LoginSignupContainer /> : <>{children}</>} */}
+      {children}
     </AuthContext.Provider>
   );
 };

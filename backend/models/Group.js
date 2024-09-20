@@ -1,32 +1,12 @@
 const mongoose = require("mongoose");
 
-//user groups schema
-//user is a member of a group
-const MemberSchema = new mongoose.Schema({
-  userid: {
-    type: String,
-    required: true,
-  },
-  username: {
-    type: String,
-    required: true,
-  },
-  role: {
-    // 1 - read , 2 - read write , 3 - read, write, soft delete
-    type: String,
-    default: "1",
-  },
-});
-
+//TODO create admin property on groups schema
 //parent schema
 //user can be part of one or many groups to view repairs from those groups
 const GroupSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-  },
-  members: {
-    type: [MemberSchema],
   },
   createdBy: {
     type: String,
@@ -37,10 +17,6 @@ const GroupSchema = new mongoose.Schema({
     //will use it as a set
     type: [String],
     default: ["public"],
-  },
-  inviteCodes: {
-    type: [String],
-    default: [],
   },
 });
 

@@ -1,8 +1,9 @@
 const passport = require("passport");
-// const Group = require("../../models/Group"); //user created groups
-const Group = require("../../models/Group"); //user created groups
+const Member = require("../../models/Member");
+const Group = require("../../models/Group");
 const validator = require("validator");
-const User = require("../../models/User"); //new user gets put in user collection
+const User = require("../../models/User");
+const Invite = require("../../models/Invite");
 
 exports.apiLogout = (req, res, next) => {
   req.logout((err) => {
@@ -86,10 +87,25 @@ exports.apiLogin = (req, res, next) => {
   })(req, res, next);
 };
 
+///TODO CHECK SIGNUP
 exports.apiSignup = async (req, res, next) => {
   //checking to see if password ect match
 
-  console.log(`api signup body`, req.body);
+  let foundInvite = new Invite();
+  const { inviteCode, invitePassword } = req.body;
+
+  try {
+    foundInvite = await Invite.findOne({ inviteCode });
+
+    if (!foundInvite) {
+      res.status(404).send({ invalidInvite: inviteCode });
+      return;
+    }
+  } catch (error) {
+    res.status(500).send({ error: "invite lookup failed" });
+    return;
+  }
+
   const validationErrors = validateInput(req);
 
   if (validationErrors.length) {
@@ -104,6 +120,7 @@ exports.apiSignup = async (req, res, next) => {
     gmail_remove_dots: false,
   });
 
+  //create new user doc locally
   const user = new User({
     //new User is our user model, we grab username,email, password from request body of the form to create a new user
     username: req.body.username,
@@ -111,6 +128,7 @@ exports.apiSignup = async (req, res, next) => {
     password: req.body.password,
   });
 
+  //verify user email is unique and create user
   User.findOne(
     { $or: [{ email: req.body.email }, { username: req.body.username }] },
     async (err, existingUser) => {
@@ -118,34 +136,27 @@ exports.apiSignup = async (req, res, next) => {
         return next(err);
       }
       if (existingUser) {
-        req.flash("errors", ["email already in use"]);
-        return res.redirect("../signup");
+        return res.status(400).send({ error: "email invalid" });
       }
+
+      //send creation request to database
       const result = await user.save(async (err, createdUser) => {
         //save the new user model to create a new user in our users collection
         if (err) {
           return next(err);
         }
 
-        const foundGroup = await Group.findOne({
-          name: createdUser.username,
-        });
-        console.log(`found group`, foundGroup);
-        if (!foundGroup) {
-          console.log(`user created: `, createdUser);
-          ///no group found make one
-          const newGroup = await Group.create({
-            name: user.username,
-            members: [
-              {
-                userid: createdUser._id,
-                username: createdUser.username,
-                role: "3",
-              },
-            ],
-            createdBy: createdUser._id,
-          });
-          console.log("group made: ", newGroup);
+        try {
+          //create member entries for each group in invite
+
+          const promises = createGroupMemberEntries(
+            foundInvite.groups,
+            createdUser
+          );
+
+          await Promise.allSettled(promises);
+        } catch (error) {
+          console.error("failed to create member of group entries");
         }
 
         req.logIn(user, (err) => {
@@ -153,10 +164,12 @@ exports.apiSignup = async (req, res, next) => {
             return next(err);
           }
 
+          const { password, ...cleanUser } = createdUser._doc;
+
           res.send({
             message: "user created",
             signup: "success",
-            user: createdUser,
+            user: cleanUser,
           });
         });
       });
@@ -164,14 +177,43 @@ exports.apiSignup = async (req, res, next) => {
   );
 };
 
+exports.apiVerifyLogin = async (req, res, next) => {
+  const user = req.user;
+
+  console.log("user", user);
+
+  res.status(200).send({ user });
+};
+
+///***************** UTILITY************************* */
 function validateInput(req) {
   const validationErrors = [];
   if (!validator.isEmail(req.body.email))
     validationErrors.push("Please enter a valid email address.");
   if (!validator.isLength(req.body.password, { min: 8 }))
     validationErrors.push("password must be atleast 8 characters");
-  if (req.body.password !== req.body.confirmPassword)
-    validationErrors.push("Passwords do not match");
+  // if (req.body.password !== req.body.confirmPassword)
+  //   validationErrors.push("Passwords do not match");
 
   return validationErrors;
+}
+
+//create member of group entries promises
+/**
+ *
+ * @param {groups, user} groups :{id,name}[], user:{_id, username}
+ * @returns
+ */
+function createGroupMemberEntries(groups = [], user) {
+  console.log("groups", groups);
+  return groups.map((group) => {
+    const entry = new Member({
+      groupId: group.id,
+      groupName: group.name,
+      role: ["read"],
+      userId: user._id,
+      username: user.username,
+    });
+    return entry.save();
+  });
 }
