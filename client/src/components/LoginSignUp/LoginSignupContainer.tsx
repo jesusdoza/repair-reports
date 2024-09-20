@@ -4,7 +4,7 @@ import LoginForm from "./LoginForm";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 import SignupForm from "./SignupForm";
 import ColabImage from "../../assets/Live collaboration-rafiki.svg";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { useAuth } from "@clerk/clerk-react";
 import ClerkSignIn from "./ClerkSignin";
@@ -26,13 +26,11 @@ export default function LoginSignupContainer({
 
   return (
     <div className="flex flex-col w-full items-center bg-slate-50">
-      <div
-        className="btn bg-white btn-sm "
-        onClick={() => {
-          toggleOldLogin(!oldLogin);
-        }}>
-        or use {oldLogin ? "new login page" : "old login page"} here
-      </div>
+      <Link
+        to={"/login/clerk"}
+        className="btn bg-white btn-sm ">
+        or use new login page here
+      </Link>
       {!oldLogin ? (
         <div>
           <ClerkSignIn />
