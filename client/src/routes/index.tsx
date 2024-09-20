@@ -18,6 +18,7 @@ import DeleteRepairPage from "../pages/delete/DeleteRepairPage";
 import SignupSetupPage from "../pages/signup/SignupSetupPage";
 import SignUpPage from "../pages/signup/SignUpPage";
 import ClerkRedirectPage from "../pages/signin/ClerkRedirectPage";
+import ClerkSignInPage from "../pages/signin/ClerkSignInPage";
 
 export const routes = createBrowserRouter([
   {
@@ -40,13 +41,25 @@ export const routes = createBrowserRouter([
   {
     path: "/login/clerk",
     element: (
+      <ErrorBoundary componentName="LatestRepairsPage">
+        <ClerkSignInPage />
+      </ErrorBoundary>
+    ),
+  },
+
+  //load clerk user profile
+  {
+    path: "/login/clerk/loaduser",
+    element: (
       <ErrorBoundary componentName="ClerkRedirectPage">
         <ClerkRedirectPage />
       </ErrorBoundary>
     ),
   },
+
+  //setup user profile after clerk signup
   {
-    path: "/signup/setup",
+    path: "/signup/setup/clerk",
     element: (
       <ErrorBoundary componentName="SignupPage">
         <SignupSetupPage />
@@ -54,8 +67,9 @@ export const routes = createBrowserRouter([
     ),
   },
 
+  //clerk signupPage
   {
-    path: "/signup",
+    path: "/signup/clerk",
     element: (
       <ErrorBoundary componentName="SigninPage">
         <SignUpPage />
