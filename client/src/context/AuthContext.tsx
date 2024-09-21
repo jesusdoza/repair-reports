@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -53,7 +53,10 @@ export type authContextT = {
         username?: string | null;
         providerId: string;
         provider: string;
-      }) => Promise<void>)
+      }) => Promise<{
+        userInfo?: User | null | undefined;
+        error?: string | null | undefined;
+      }>)
     | null;
 
   unauthorizedError: () => void;
@@ -156,6 +159,7 @@ export const AuthContextProvider = ({
       unauthorizedError();
     }
   };
+
   const signUpWithProvider = async ({
     email,
     username,
@@ -180,15 +184,25 @@ export const AuthContextProvider = ({
       );
       const data = response.data as SingupResponseT;
 
+      console.log("data from signup response", data);
+
       //TODO load up user profile
 
       setUserInfo((state) => {
         return { ...state, ...data.user };
       });
+
       setIsAuth(true);
-    } catch (error) {
-      console.log("failed to signup");
-      unauthorizedError();
+
+      return { error: null, userInfo: data.user };
+    } catch (err) {
+      // console.log("failed to signup", err);
+      // unauthorizedError();
+      if (err instanceof AxiosError) {
+        return { error: err?.response?.data?.error as string, userInfo: null };
+      }
+
+      return { error: "unknown error signUpWithProvider", userInfo: null };
     }
   };
 
