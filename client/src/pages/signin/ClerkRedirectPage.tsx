@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import useAuthContext from "../../hooks/useAuthContext";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useUser, useAuth } from "@clerk/clerk-react";
 
 export default function ClerkRedirectPage() {
