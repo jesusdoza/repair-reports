@@ -6,7 +6,7 @@ export default function ClerkSignIn() {
       signUpUrl="/signup/clerk"
       afterSignOutUrl={"/"}
       fallbackRedirectUrl={"/login"}
-      forceRedirectUrl={"/login/clerk/signin"}
+      forceRedirectUrl={"/login/clerk/loaduser"}
     />
   );
 }

@@ -40,12 +40,13 @@ module.exports = {
           }
 
           if (user) {
-            console.log("user found load to req");
             const { password, ...cleanUser } = user._doc;
             req.user = cleanUser;
             next();
             return;
           }
+
+          next();
         });
       } catch (error) {
         console.log("error loading user middleware");
@@ -61,6 +62,11 @@ module.exports = {
     const clerkAuth = req.auth.userId;
 
     if (!passportJsAuth && !clerkAuth) {
+      res.status(401).send({ message: "not logged in", login: "failed" });
+      return;
+    }
+
+    if (clerkAuth && !passportJsAuth) {
       res.status(401).send({ message: "not logged in", login: "failed" });
       return;
     }

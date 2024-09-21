@@ -57,7 +57,7 @@ export type authContextT = {
     | null;
 
   unauthorizedError: () => void;
-  verifyLogin: () => void;
+  verifyLogin: () => Promise<boolean>;
   isAuth: boolean;
 };
 
@@ -70,7 +70,9 @@ export const AuthContext = createContext<authContextT>({
   signUpWithProvider: null,
   logout: null,
   unauthorizedError: () => {},
-  verifyLogin: () => {},
+  verifyLogin: () => {
+    return new Promise((res) => res(true));
+  },
   isAuth: false,
   setUserData: () => {},
 });
@@ -85,7 +87,7 @@ export const AuthContextProvider = ({
   const [userInfo, setUserInfo] = useState<User | null>(null);
 
   useEffect(() => {
-    console.log("verigy login");
+    console.log("verify login authcontext render");
     verifyLogin();
   }, []);
 
@@ -196,26 +198,34 @@ export const AuthContextProvider = ({
   };
 
   async function verifyLogin() {
+    console.log("isAuth", isAuth);
     if (isAuth) {
-      return;
-    }
-    const response = await axios.get(`${API_URL}/login/verify`, {
-      withCredentials: true,
-    });
-
-    console.log("response", response);
-    if (response.status == 200) {
-      const user = response.data;
-      if (user) {
-        setUserInfo((state) => {
-          return { ...state, ...response.data.user };
-        });
-        setIsAuth(true);
-      }
       return true;
     }
-    setIsAuth(false);
-    return false;
+
+    try {
+      const response = await axios.get(`${API_URL}/login/verify`, {
+        withCredentials: true,
+      });
+
+      console.log("response", response);
+      if (response.status == 200) {
+        const user = response.data;
+        if (user) {
+          setUserInfo((state) => {
+            return { ...state, ...response.data.user };
+          });
+          setIsAuth(true);
+        }
+        return true;
+      }
+      setIsAuth(false);
+      return false;
+    } catch (error) {
+      console.log("error verifying login");
+
+      return false;
+    }
   }
 
   async function getUserProfile() {

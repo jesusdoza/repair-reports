@@ -1,19 +1,35 @@
 import { useEffect } from "react";
 import useAuthContext from "../../hooks/useAuthContext";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "@clerk/clerk-react";
+import { useUser, useAuth } from "@clerk/clerk-react";
 
 export default function ClerkRedirectPage() {
-  const { verifyLogin } = useAuthContext();
-
-  const { isSignedIn } = useUser();
+  const { verifyLogin, signUpWithProvider } = useAuthContext();
+  const { userId, isSignedIn } = useAuth();
+  const { user } = useUser();
   const navigate = useNavigate();
+
+  const email = user?.emailAddresses[0].emailAddress;
+  const username = user?.username;
 
   useEffect(() => {
     async function loadUserInfo() {
       if (isSignedIn) {
-        verifyLogin();
-        navigate("/dashboard");
+        const userProfile = await verifyLogin();
+        if (userProfile) {
+          navigate("/dashboard");
+        } else if (email && signUpWithProvider) {
+          console.log("user does not exists making profile one", userProfile);
+
+          await signUpWithProvider({
+            email,
+            username,
+            provider: "clerk",
+            providerId: userId!,
+          });
+
+          navigate("/dashboard");
+        }
       }
     }
     loadUserInfo();
