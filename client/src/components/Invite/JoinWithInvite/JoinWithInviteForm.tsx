@@ -2,8 +2,8 @@ import { useRef } from "react";
 import image from "../../../assets/Live collaboration-rafiki.svg";
 
 type JoinWithInvitePropsT = {
-  onSubmit: (inviteCode: string, password?: string) => void;
-  errors: string[];
+  onSubmit?: (inviteCode: string, password?: string) => void;
+  errors?: string[];
 };
 
 export default function JoinWithInviteForm({
@@ -15,7 +15,7 @@ export default function JoinWithInviteForm({
 
   return (
     <div className="w-full">
-      {errors.length ? (
+      {errors && errors.length ? (
         <div className="absolute w-full">
           <ErrorDisplay errors={errors} />
         </div>
@@ -30,14 +30,14 @@ export default function JoinWithInviteForm({
           <div>
             <h1 className="text-5xl font-bold">Join a group</h1>
             <p className="py-6">
-              Input your invite and code and optionally if there is a passphrase
-              add that too.
+              Input your invitecode and optionally if there is a password add
+              that too.
             </p>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
 
-                if (inviteCode.current) {
+                if (inviteCode.current && onSubmit) {
                   onSubmit(inviteCode.current, password.current);
                 }
               }}>

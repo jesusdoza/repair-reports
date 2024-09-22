@@ -15,6 +15,10 @@ import LoginSignupContainer from "../components/LoginSignUp/LoginSignupContainer
 import ProtectedRoute from "../components/ProtectedRoute";
 import InvitePage from "../pages/invite/InvitePage";
 import DeleteRepairPage from "../pages/delete/DeleteRepairPage";
+// import SignupSetupPage from "../pages/signup/SignupSetupPage";
+import SignUpPage from "../pages/signup/SignUpPage";
+import ClerkRedirectPage from "../pages/signin/ClerkRedirectPage";
+import ClerkSignInPage from "../pages/signin/ClerkSignInPage";
 
 export const routes = createBrowserRouter([
   {
@@ -27,7 +31,6 @@ export const routes = createBrowserRouter([
     ),
   },
   {
-    // index: true,
     path: "/login",
     element: (
       <ErrorBoundary componentName="LatestRepairsPage">
@@ -35,6 +38,45 @@ export const routes = createBrowserRouter([
       </ErrorBoundary>
     ),
   },
+  {
+    path: "/login/clerk",
+    element: (
+      <ErrorBoundary componentName="LatestRepairsPage">
+        <ClerkSignInPage />
+      </ErrorBoundary>
+    ),
+  },
+
+  //load clerk user profile
+  {
+    path: "/login/clerk/loaduser",
+    element: (
+      <ErrorBoundary componentName="ClerkRedirectPage">
+        <ClerkRedirectPage />
+      </ErrorBoundary>
+    ),
+  },
+
+  //setup user profile after clerk signup
+  // {
+  //   path: "/signup/setup/clerk",
+  //   element: (
+  //     <ErrorBoundary componentName="SignupPage">
+  //       <SignupSetupPage />
+  //     </ErrorBoundary>
+  //   ),
+  // },
+
+  //clerk signupPage
+  {
+    path: "/signup/clerk",
+    element: (
+      <ErrorBoundary componentName="SigninPage">
+        <SignUpPage />
+      </ErrorBoundary>
+    ),
+  },
+
   {
     // index: true,
     path: "/latest",
@@ -166,6 +208,7 @@ export const routes = createBrowserRouter([
       </Layout>
     ),
   },
+
   // {
   //   path: "/search/:search/:limit/:page",
   //   element: (

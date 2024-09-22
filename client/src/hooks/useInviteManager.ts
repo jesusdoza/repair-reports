@@ -51,10 +51,10 @@ export default function useInviteManager() {
     inviteCode: string;
     password?: string;
   }) {
-    const response = axios.get(`${API_URL}/invite11111`, {
+    const response = axios.get(`${API_URL}/invite/verify/${inviteCode}`, {
       withCredentials: true,
       params: {
-        invitecode: inviteCode,
+        // invitecode: inviteCode,
         password,
       },
     });

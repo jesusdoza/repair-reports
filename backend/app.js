@@ -8,11 +8,16 @@ const passport = require("passport");
 const session = require("express-session"); //enables them to stay logged in
 const MongoStore = require("connect-mongo");
 const cookieParser = require("cookie-parser");
-const { corsOptionsHandler } = require("./config/corsOptionsHandler.js");
 
 require("dotenv").config({ path: "./config/.env" }); // to use with enviroment variables initializes enviroment vars
-require("./config/passport")(passport);
+const { corsOptionsHandler } = require("./config/corsOptionsHandler.js");
 
+try {
+  require("./config/clerkClient.js");
+} catch (error) {
+  console.error("failed to load clerk client");
+}
+require("./config/passport")(passport);
 const app = express();
 // const PORT = 8000;
 const cookieMaxAge = 15 * 60 * 1000;
@@ -63,16 +68,17 @@ const reactRoutes = require("./routes/react");
 
 // =============================================================
 // ROUTES
-app.use("/react", reactRoutes);
-app.use("/login", loginRoutes);
-app.use("/logout", logoutRoutes);
-app.use("/signup", signUpRoutes);
 app.use("/api", apiRoutes);
-app.use("/repairform", formRoutes);
-app.use("/", homeRoutes);
-app.use("/repair", ensureAuth, repairRoutes);
-app.use("/profile", ensureAuth, profileRoutes);
-app.use("/dashboard", ensureAuth, dashboardRoutes);
-app.use("/comments", ensureAuth, commentRoutes);
+app.use("/", reactRoutes);
+app.use("*", reactRoutes);
+// app.use("/login", loginRoutes);
+// app.use("/logout", logoutRoutes);
+// app.use("/signup", signUpRoutes);
+// app.use("/repairform", formRoutes);
+// app.use("/", homeRoutes);
+// app.use("/repair", ensureAuth, repairRoutes);
+// app.use("/profile", ensureAuth, profileRoutes);
+// app.use("/dashboard", ensureAuth, dashboardRoutes);
+// app.use("/comments", ensureAuth, commentRoutes);
 
 module.exports = app;

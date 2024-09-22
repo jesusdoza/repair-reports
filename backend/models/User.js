@@ -6,12 +6,11 @@ const UserSchema = new mongoose.Schema(
     username: {
       type: String,
       required: true,
-      unique: true,
       lowercase: true,
     },
     password: {
       type: String,
-      required: true,
+      default: null,
     },
     createdAt: {
       type: Date,
@@ -33,6 +32,17 @@ const UserSchema = new mongoose.Schema(
       default: "no_email@no_email.com",
       lowercase: true,
     },
+    authProvider: {
+      type: String,
+      lowercase: true,
+      required: true,
+      default: "local",
+    },
+    providerId: {
+      type: String,
+      lowercase: true,
+      default: null,
+    },
     // groups: {
     //   //groups user belongs to default personal group
     //   type: [String],
@@ -50,9 +60,13 @@ const UserSchema = new mongoose.Schema(
 UserSchema.pre("save", function save(next) {
   // console.log(`pre save`, this)
   const user = this;
-  if (!user.isModified("password")) {
+  // console.log("user", user);
+  // console.log("first", !user.isModified("password"));
+  // console.log('user.authProvider !== "local"', user.authProvider !== "local");
+  if (!user.isModified("password") || user.authProvider !== "local") {
     return next();
   }
+
   bcrypt.genSalt(10, (err, salt) => {
     if (err) {
       return next(err);
