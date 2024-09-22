@@ -49,7 +49,7 @@ const getRepairsforUser = async (req, res) => {
   } catch (error) {
     console.error("error getting users repairs");
     res.status(401).json({
-      message: `error getting repairs for user: ${user._id}`,
+      message: `error getting repairs for user:`,
       error,
     });
   }

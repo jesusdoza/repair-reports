@@ -1,11 +1,12 @@
 import React, { createContext, useEffect, useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 type User = {
   username: string;
   _id: string;
+  clerkId: string;
   role: string;
   email: string;
   groups: string[];
@@ -23,6 +24,7 @@ type SingupResponseT = {
 export type authContextT = {
   userToken: string | null;
   setUserToken: object | null;
+  setUserData: (id: string) => void;
   userInfo: User | null;
   login: ((email: string, password: string) => Promise<void>) | null;
   logout: (() => Promise<void>) | null;
@@ -35,12 +37,30 @@ export type authContextT = {
       }: {
         email: string;
         password: string;
-        username: string;
-        inviteCode: string;
+        username?: string | null;
+        inviteCode?: string;
       }) => Promise<void>)
     | null;
+
+  signUpWithProvider:
+    | (({
+        email,
+        username,
+        provider,
+        providerId,
+      }: {
+        email: string;
+        username?: string | null;
+        providerId: string;
+        provider: string;
+      }) => Promise<{
+        userInfo?: User | null | undefined;
+        error?: string | null | undefined;
+      }>)
+    | null;
+
   unauthorizedError: () => void;
-  verifyLogin: () => void;
+  verifyLogin: () => Promise<boolean>;
   isAuth: boolean;
 };
 
@@ -50,10 +70,14 @@ export const AuthContext = createContext<authContextT>({
   userInfo: null,
   login: null,
   signUp: null,
+  signUpWithProvider: null,
   logout: null,
   unauthorizedError: () => {},
-  verifyLogin: () => {},
+  verifyLogin: () => {
+    return new Promise((res) => res(true));
+  },
   isAuth: false,
+  setUserData: () => {},
 });
 
 export const AuthContextProvider = ({
@@ -66,7 +90,7 @@ export const AuthContextProvider = ({
   const [userInfo, setUserInfo] = useState<User | null>(null);
 
   useEffect(() => {
-    console.log("verigy login");
+    console.log("verify login authcontext render");
     verifyLogin();
   }, []);
 
@@ -110,8 +134,8 @@ export const AuthContextProvider = ({
   }: {
     email: string;
     password: string;
-    username: string;
-    inviteCode: string;
+    username?: string | null;
+    inviteCode?: string;
   }) => {
     try {
       const response = await axios.post(
@@ -136,29 +160,91 @@ export const AuthContextProvider = ({
     }
   };
 
+  const signUpWithProvider = async ({
+    email,
+    username,
+    provider,
+    providerId,
+  }: {
+    email: string;
+    username?: string | null;
+    provider: string;
+    providerId: string;
+  }) => {
+    try {
+      const response = await axios.post(
+        `${API_URL}/signup/provider`,
+        {
+          email,
+          username,
+          provider,
+          providerId,
+        },
+        { withCredentials: true }
+      );
+      const data = response.data as SingupResponseT;
+
+      console.log("data from signup response", data);
+
+      //TODO load up user profile
+
+      setUserInfo((state) => {
+        return { ...state, ...data.user };
+      });
+
+      setIsAuth(true);
+
+      return { error: null, userInfo: data.user };
+    } catch (err) {
+      // console.log("failed to signup", err);
+      // unauthorizedError();
+      if (err instanceof AxiosError) {
+        return { error: err?.response?.data?.error as string, userInfo: null };
+      }
+
+      return { error: "unknown error signUpWithProvider", userInfo: null };
+    }
+  };
+
   const unauthorizedError = () => {
     console.log("unauthorized log in again");
     setIsAuth(false);
   };
 
   async function verifyLogin() {
-    const response = await axios.get(`${API_URL}/login/verify`, {
-      withCredentials: true,
-    });
-    // console.log("response", response.data.user);
-    if (response.status == 200) {
-      const user = response.data.user;
-      console.log("userverify login: ", response.data.user);
-      if (user) {
-        setUserInfo((state) => {
-          return { ...state, ...response.data.user };
-        });
-        setIsAuth(true);
-      }
-      return;
+    console.log("isAuth", isAuth);
+    if (isAuth) {
+      return true;
     }
 
-    setIsAuth(false);
+    try {
+      const response = await axios.get(`${API_URL}/login/verify`, {
+        withCredentials: true,
+      });
+
+      console.log("response", response);
+      if (response.status == 200) {
+        const user = response.data;
+        if (user) {
+          setUserInfo((state) => {
+            return { ...state, ...response.data.user };
+          });
+          setIsAuth(true);
+        }
+        return true;
+      }
+      setIsAuth(false);
+      return false;
+    } catch (error) {
+      console.log("error verifying login");
+
+      return false;
+    }
+  }
+
+  async function getUserProfile() {
+    //TODO get users profile from backend
+    //get id and query server for user profile
   }
 
   const values: authContextT = {
@@ -168,15 +254,12 @@ export const AuthContextProvider = ({
     login,
     logout,
     signUp,
+    signUpWithProvider,
     unauthorizedError,
     verifyLogin,
     isAuth,
+    setUserData: getUserProfile,
   };
 
-  return (
-    <AuthContext.Provider value={values}>
-      {/* {!isAuth ? <LoginSignupContainer /> : <>{children}</>} */}
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
 };

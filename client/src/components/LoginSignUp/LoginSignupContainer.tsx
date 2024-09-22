@@ -4,24 +4,28 @@ import LoginForm from "./LoginForm";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 import SignupForm from "./SignupForm";
 import ColabImage from "../../assets/Live collaboration-rafiki.svg";
-import { Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+import { useAuth } from "@clerk/clerk-react";
 
 export default function LoginSignupContainer(): React.ReactNode {
   const { login, signUp, isAuth } = useContext(AuthContext);
-
+  const { userId } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
+  const navigate = useNavigate();
 
-  if (isAuth) {
-    return (
-      <Navigate
-        to="/latest"
-        replace={true}
-      />
-    );
+  if (isAuth || userId) {
+    navigate("/latest");
   }
 
   return (
     <div className="flex flex-col w-full items-center bg-slate-50">
+      <Link
+        to={"/login/clerk"}
+        className="btn bg-white btn-sm ">
+        or use new login page here
+      </Link>
+
       <div className=" flex justify-center w-full">
         <div className=" h-full flex flex-row w-full p1">
           <div className="w-1/2 absolute opacity-90 h-full "></div>

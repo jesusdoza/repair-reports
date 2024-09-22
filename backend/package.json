@@ -4,13 +4,11 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "dev": "concurrently 'npm:devserver' 'npm:dev-tailwind'",
+    "dev": "concurrently 'npm:devserver'",
     "devserver": "nodemon server.js",
-    "start": "npm run tailwind && node server.js",
+    "start": "node server.js",
     "test:e2e": "npx cypress run",
-    "test": "vitest run",
-    "tailwind": "npx tailwindcss -i ./public/stylesheets/main.css -o ./public/stylesheets/style.css",
-    "dev-tailwind": "npx tailwindcss -i ./public/stylesheets/main.css -o ./public/stylesheets/style.css --watch"
+    "test": "vitest run"
   },
   "engines": {
     "node": ">=20"
@@ -18,6 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@clerk/clerk-sdk-node": "^5.0.38",
     "@types/supertest": "^6.0.2",
     "axios": "^1.6.8",
     "bcrypt": "^5.0.1",

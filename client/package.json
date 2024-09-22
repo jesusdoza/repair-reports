@@ -9,10 +9,11 @@
   "scripts": {
     "coverage": "vitest run --coverage",
     "test": "vitest run",
+    "test:dev": "vitest",
     "test:ui": "vitest --ui --coverage.enabled=true --api 8001",
     "dev": "vite --port 5173 --host",
-    "build": "vite build --emptyOutDir --outDir ../backend/public/react",
-    "build-dev": "vite build --watch --emptyOutDir --outDir ../backend/public/react",
+    "build": "vite build --emptyOutDir --outDir ../backend/public/",
+    "build-dev": "vite build --watch --emptyOutDir --outDir ../backend/public/",
     "build-local": "vite build --emptyOutDir --outDir ./dist",
     "tsc": "npx tsc",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
@@ -21,6 +22,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@clerk/clerk-react": "^5.8.1",
     "@cloudinary/react": "^1.13.0",
     "@cloudinary/url-gen": "^1.16.1",
     "@heroicons/react": "^2.1.1",
