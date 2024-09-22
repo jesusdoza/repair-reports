@@ -116,7 +116,6 @@ exports.apiSignup = async (req, res, next) => {
       reason: validationErrors,
     });
   }
-
   req.body.email = validator.normalizeEmail(req.body.email, {
     gmail_remove_dots: false,
   });
@@ -127,7 +126,6 @@ exports.apiSignup = async (req, res, next) => {
     username: req.body.username,
     email: req.body.email,
     password: req.body.password,
-    // groups: foundInvite.groups,//! handling group membership with members database collection
   });
 
   //verify user email is unique and create user
@@ -138,8 +136,6 @@ exports.apiSignup = async (req, res, next) => {
         return next(err);
       }
       if (existingUser) {
-        //TODO REMOVE CONSOLE
-        // console.log("user email in use");
         return res.status(400).send({ error: "email invalid" });
       }
 
