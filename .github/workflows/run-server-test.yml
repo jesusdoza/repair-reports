@@ -25,7 +25,11 @@ jobs:
         working-directory: backend
         run: npm ci
 
-      - name: install server dependencies
+      - name: create test public dir
+        working-directory: backend
+        run: makdir public
+
+      - name: create test index file to serve for tests
         working-directory: backend
         run: touch ./public/index.html
 
