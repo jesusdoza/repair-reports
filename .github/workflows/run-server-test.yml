@@ -27,7 +27,7 @@ jobs:
 
       - name: create test public dir
         working-directory: backend
-        run: makdir public
+        run: mkdir public
 
       - name: create test index file to serve for tests
         working-directory: backend
