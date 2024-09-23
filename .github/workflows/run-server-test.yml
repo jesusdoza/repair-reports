@@ -25,6 +25,10 @@ jobs:
         working-directory: backend
         run: npm ci
 
+      - name: install server dependencies
+        working-directory: backend
+        run: touch ./public/index.html
+
       - name: run tests
         working-directory: backend
         run: npm run test
