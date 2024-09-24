@@ -21,13 +21,6 @@ export default function UserStats({
 
   return (
     <div className="flex flex-col gap-1">
-      <div className="self-center w-full flex justify-center">
-        <div className="avatar placeholder w-full">
-          <div className="bg-neutral text-neutral-content w-full rounded-full">
-            <span className="text-[100px] w-full">{username}</span>
-          </div>
-        </div>
-      </div>
       <div className="flex justify-center items-center flex-wrap gap-1">
         {/* <section className="flex gap-1"> */}
         <section>
