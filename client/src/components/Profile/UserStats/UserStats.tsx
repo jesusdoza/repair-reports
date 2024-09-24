@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 type UserStatsPropsT = {
   totalRepairs?: number;
   groupsList?: GroupListingT[];
-  username?: string;
 };
 
 export type GroupListingT = {
@@ -13,7 +12,6 @@ export type GroupListingT = {
 };
 
 export default function UserStats({
-  username = "user name",
   totalRepairs = 0,
   groupsList = [],
 }: UserStatsPropsT) {

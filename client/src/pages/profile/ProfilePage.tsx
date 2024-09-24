@@ -56,7 +56,6 @@ export default function ProfilePage(): React.ReactNode {
             <UserStats
               groupsList={userGroupMemberships}
               totalRepairs={metaData.totalByUser}
-              username={userInfo?.username}
             />
           </ErrorBoundary>
         </aside>
