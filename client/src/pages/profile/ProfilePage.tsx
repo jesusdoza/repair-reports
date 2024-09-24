@@ -2,20 +2,15 @@ import { useEffect } from "react";
 import ErrorBoundary from "../../components/ErrorBoundary/ErrorBoundary";
 import InviteToolContainer from "../../components/Invite/InviteToolContainer";
 import UserInfoContainer from "../../components/Profile/UserInfoContainer";
-import UserStats from "../../components/Profile/UserStats/UserStats";
 import useGetUserGroups from "../../hooks/useGetUserGroups";
 import useGetUserRepairs from "../../hooks/useGetUserRepairs";
-import useAuthContext from "../../hooks/useAuthContext";
+import { UserButton, UserProfile } from "@clerk/clerk-react";
 // import Modal from "../../components/Modal/Modal";
 
 export default function ProfilePage(): React.ReactNode {
   const { data: userGroupMemberships, fetchData: getUserGroupData } =
     useGetUserGroups();
   const { getData, metaData } = useGetUserRepairs();
-
-  const { userInfo } = useAuthContext();
-
-  console.log("userInfo", userInfo);
 
   useEffect(() => {
     getUserGroupData();
@@ -28,11 +23,22 @@ export default function ProfilePage(): React.ReactNode {
         {/* side bar */}
         <aside className="w-2/6 min-h-[400px] m-0 p-1">
           <ErrorBoundary componentName="UserStats">
-            <UserStats
+            {/* <UserProfile></UserProfile> */}
+            <UserButton
+              appearance={{
+                elements: {
+                  rootBox: "w-full",
+                  avatarBox: "w-full h-full",
+                  userButtonTrigger: "w-full h-full",
+                  userButtonBox: "w-[300px] h-[300px]",
+                },
+              }}
+            />
+            {/* <UserStats
               groupsList={userGroupMemberships}
               totalRepairs={metaData.totalByUser}
               username={userInfo?.username}
-            />
+            /> */}
           </ErrorBoundary>
         </aside>
 
