@@ -91,6 +91,10 @@ const RepairSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    modifiedAt: {
+      type: Date,
+      default: Date.now(),
+    },
   },
   {
     collection: "repair-reports",
