@@ -129,9 +129,12 @@ const getNewestRepairs = async (req, res) => {
     //retrieve certain number of repairs that have not been removed
     const results = await Repair.find({
       removed: { $ne: true },
-      $or: userGroups.map((groupName) => ({
-        group: { $regex: groupName, $options: "i" },
-      })),
+      $or: [
+        { visibility: "public" },
+        ...userGroups.map((groupName) => ({
+          group: { $regex: groupName, $options: "i" },
+        })),
+      ],
     })
       .sort({ _id: -1 })
       .limit(numRepairs);
