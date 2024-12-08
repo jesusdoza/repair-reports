@@ -1,5 +1,6 @@
 const Repair = require("../../models/Repair");
 const User = require("../../models/User");
+const RepairHistory = require("../../models/RepairHistory");
 
 const REPAIR_INDEX = process.env.search_index;
 
@@ -151,18 +152,16 @@ const getNewestRepairs = async (req, res) => {
 };
 
 const updateRepair = async (req, res) => {
-  let updateResponse;
+  let previousData; //hold original before update
   try {
     const updatedDoc = req.body.repairData;
     const filter = { _id: updatedDoc._id };
     updatedDoc.boardType = updatedDoc.boardType.toUpperCase();
 
-    console.log("repair data", updatedDoc);
-    console.log("filter", filter);
-
+    //update document
     try {
-      updateResponse = await Repair.findOneAndUpdate(filter, updatedDoc, {
-        returnOriginal: false,
+      previousData = await Repair.findOneAndUpdate(filter, updatedDoc, {
+        new: false, //return data before update
       });
     } catch (err) {
       res.status(400).json({
@@ -170,6 +169,21 @@ const updateRepair = async (req, res) => {
         error: err?.message,
       });
       return;
+    }
+
+    //backup original to history
+    try {
+      await RepairHistory.findOneAndUpdate(
+        { repairId: previousData._id },
+        {
+          data: previousData,
+        },
+        {
+          upsert: true,
+        }
+      );
+    } catch (err) {
+      console.log("failed to backup original after update");
     }
 
     res
