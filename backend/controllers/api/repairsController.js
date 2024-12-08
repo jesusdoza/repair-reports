@@ -3,6 +3,7 @@ const User = require("../../models/User");
 const RepairHistory = require("../../models/RepairHistory");
 
 const REPAIR_INDEX = process.env.search_index;
+const MAX_BACKUPS = Number(process.env.max_repair_backups ?? 3);
 
 const getRepairsforUser = async (req, res) => {
   const user = req.user;
@@ -153,6 +154,7 @@ const getNewestRepairs = async (req, res) => {
 
 const updateRepair = async (req, res) => {
   let previousData; //hold original before update
+  const maxBackups = MAX_BACKUPS;
   try {
     const updatedDoc = req.body.repairData;
     const filter = { _id: updatedDoc._id };
@@ -173,18 +175,17 @@ const updateRepair = async (req, res) => {
 
     //backup original to history
     try {
-      await RepairHistory.findOneAndUpdate(
-        { repairId: previousData._id },
-        {
-          data: previousData,
-        },
-        {
-          upsert: true,
-        }
-      );
+      await RepairHistory.create({
+        repairId: previousData._id,
+        data: previousData,
+      });
     } catch (err) {
       console.log("failed to backup original after update");
     }
+
+    //clean up older versions if any
+    //no need to await response not needed for api request
+    enforceMaxDocuments(previousData._id, RepairHistory, maxBackups);
 
     res
       .status(200)
@@ -271,6 +272,34 @@ const searchRepairs = async (req, res) => {
 //     });
 //   }
 // };
+
+async function enforceMaxDocuments(repairId, schema, maxBackups) {
+  const backupLimit = maxBackups;
+  try {
+    // Find all documents with the given `repairId`, sorted by `createdAt`
+    const backups = await schema.find({ repairId }).sort({
+      createdAt: 1,
+    });
+
+    // Check if there are more than 3 documents
+    if (backups.length > backupLimit) {
+      // Calculate how many extra documents to delete
+      const excessCount = backups.length - backupLimit;
+
+      // Get the IDs of the oldest documents
+      const idsToDelete = backups.slice(0, excessCount).map((doc) => doc._id);
+
+      // Delete the excess documents
+      await schema.deleteMany({ _id: { $in: idsToDelete } });
+
+      // console.log(
+      //   `${excessCount} old documents deleted for repairId: ${repairId}`
+      // );
+    }
+  } catch (error) {
+    console.error("Error enforcing max documents:", error);
+  }
+}
 
 module.exports = {
   getRepairById,
