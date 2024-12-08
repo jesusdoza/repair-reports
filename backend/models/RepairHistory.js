@@ -6,10 +6,14 @@ const RepairHistorySchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
+  repairId: {
+    type: String,
+    required: true,
+  },
   data: {
     type: RepairSchema,
     required: true,
   },
 });
 
-module.exports = mongoose.model("RepairHistorySchema");
+module.exports = mongoose.model("RepairHistory", RepairHistorySchema);
