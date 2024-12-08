@@ -102,3 +102,4 @@ const RepairSchema = new mongoose.Schema(
 );
 
 module.exports = mongoose.model("Repair", RepairSchema);
+module.exports.RepairSchema = RepairSchema;
