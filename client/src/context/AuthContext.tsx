@@ -5,9 +5,6 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 type User = {
   username: string;
-  authProvider: string;
-  providerId: string;
-  version: number;
   _id: string;
   clerkId: string;
   role: string;

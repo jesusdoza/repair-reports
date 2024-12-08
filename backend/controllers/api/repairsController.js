@@ -123,19 +123,9 @@ const getNewestRepairs = async (req, res) => {
     // console.log(`number of repairs requested`, req.params.num);
     const numRepairs = req.query.num ? req.query.num : 8;
 
-    const userGroups = ["public"];
-
     // console.log("req.params", req.query.num);
     //retrieve certain number of repairs that have not been removed
-    const results = await Repair.find({
-      removed: { $ne: true },
-      $or: [
-        { visibility: "public" },
-        ...userGroups.map((groupName) => ({
-          group: { $regex: groupName, $options: "i" },
-        })),
-      ],
-    })
+    const results = await Repair.find({ removed: { $ne: true } })
       .sort({ _id: -1 })
       .limit(numRepairs);
     console.log(`number of repairs returned`, results.length);
