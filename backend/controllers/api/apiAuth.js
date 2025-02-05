@@ -110,12 +110,13 @@ exports.apiSignup = async (req, res, next) => {
 
   if (validationErrors.length) {
     req.flash("errors", validationErrors);
-    return res.send({
+    return res.status(400).send({
       message: "failed to create user",
       signup: "failed",
       reason: validationErrors,
     });
   }
+
   req.body.email = validator.normalizeEmail(req.body.email, {
     gmail_remove_dots: false,
   });
@@ -233,11 +234,14 @@ exports.apiVerifyLogin = async (req, res, next) => {
 
 ///***************** UTILITY************************* */
 function validateInput(req) {
+  const passwordMinLength = 6;
   const validationErrors = [];
   if (!validator.isEmail(req.body.email))
     validationErrors.push("Please enter a valid email address.");
-  if (!validator.isLength(req.body.password, { min: 8 }))
-    validationErrors.push("password must be atleast 8 characters");
+  if (!validator.isLength(req.body.password, { min: passwordMinLength }))
+    validationErrors.push(
+      `password must be atleast ${passwordMinLength} characters`
+    );
   // if (req.body.password !== req.body.confirmPassword)
   //   validationErrors.push("Passwords do not match");
 
@@ -251,7 +255,7 @@ function validateInput(req) {
  * @returns
  */
 function createGroupMemberEntries(groups = [], user) {
-  console.log("groups", groups);
+  // console.log("groups", groups);
   return groups.map((group) => {
     const entry = new Member({
       groupId: group.id,
