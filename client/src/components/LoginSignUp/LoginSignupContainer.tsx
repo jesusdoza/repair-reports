@@ -52,7 +52,7 @@ export default function LoginSignupContainer(): React.ReactNode {
 
                         if (result.error) {
                           console.log("login error", result.error);
-                          setDisplayErrors([result.error]);
+                          setDisplayErrors(result.error);
                         }
                       }
                     }}
