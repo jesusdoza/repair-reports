@@ -9,7 +9,7 @@ export default function HomePage() {
     <div className="w-full">
       <section className="relative overflow-hidden">
         <div className="mx-auto max-w-7xl">
-          <div className="relative bg-white z-10  pb-8 sm:pb-16 md:pb-20 lg:w-full lg:max-w-2xl lg:pb-28 xl:pb-32">
+          <div className="relative bg-white z-10 pb-8 sm:pb-16 md:pb-20 lg:w-full lg:max-w-2xl lg:pb-28 xl:pb-32">
             <div>
               <div className="relative px-4  pt-6 sm:px-6 lg:px-8">
                 <nav
@@ -17,12 +17,13 @@ export default function HomePage() {
                   aria-label="Global">
                   <div className="navbar bg-content ">
                     <div className="navbar-start">
+                      {/* mobile nav start */}
                       <div
                         data-test="mobile-nav"
                         className="dropdown">
                         <label
                           tabIndex={0}
-                          className="btn btn-ghost lg:hidden">
+                          className="text-black shadow-md border-4 border-slate-300 bg-white btn btn-ghost lg:hidden">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="h-5 w-5"
@@ -52,6 +53,9 @@ export default function HomePage() {
                       </div>
                       {/* <!-- mobile nav end --> */}
                     </div>
+
+                    {/* full navbar start */}
+
                     <div className="navbar-center hidden md:visible lg:flex ">
                       <ul
                         data-test="full-menu"
@@ -66,6 +70,7 @@ export default function HomePage() {
                       </ul>
                     </div>
                     <div className="navbar-end">
+                      {/* full navbar end */}
                       {/* <!-- <a className="btn">Get started</a> --> */}
                     </div>
                   </div>
