@@ -26,7 +26,18 @@ export type authContextT = {
   setUserToken: object | null;
   setUserData: (id: string) => void;
   userInfo: User | null;
-  login: ((email: string, password: string) => Promise<void>) | null;
+  login: (
+    email: string,
+    password: string
+  ) => Promise<
+    | {
+        error: null;
+      }
+    | {
+        error: string[];
+      }
+  >;
+  // login: ((email: string, password: string) => Promise<void>) | null;
   logout: (() => Promise<void>) | null;
   signUp:
     | (({
@@ -39,7 +50,14 @@ export type authContextT = {
         password: string;
         username?: string | null;
         inviteCode?: string;
-      }) => Promise<void>)
+      }) => Promise<
+        | {
+            error: null;
+          }
+        | {
+            error: string[];
+          }
+      >)
     | null;
 
   signUpWithProvider:
@@ -55,7 +73,7 @@ export type authContextT = {
         provider: string;
       }) => Promise<{
         userInfo?: User | null | undefined;
-        error?: string | null | undefined;
+        error?: string[] | null | undefined;
       }>)
     | null;
 
@@ -68,8 +86,8 @@ export const AuthContext = createContext<authContextT>({
   userToken: null,
   setUserToken: null,
   userInfo: null,
-  login: null,
-  signUp: null,
+  login: () => Promise.resolve({ error: null }),
+  signUp: () => Promise.resolve({ error: null }),
   signUpWithProvider: null,
   logout: null,
   unauthorizedError: () => {},
@@ -105,25 +123,34 @@ export const AuthContextProvider = ({
   };
 
   const login = async (email: string, password: string) => {
-    console.log(" `${API_URL}/login`", `${API_URL}/login`);
-    const response = await axios.post(
-      `${API_URL}/login`,
-      {
-        email,
-        password,
-      },
-      { withCredentials: true }
-    );
-    // console.log("response", response.data.user);
-    if (response.data.login === "success") {
-      setUserInfo((state) => {
-        return { ...state, ...response.data.user };
-      });
-      setIsAuth(true);
-      return;
-    }
+    try {
+      const response = await axios.post(
+        `${API_URL}/login`,
+        {
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
 
-    setIsAuth(false);
+      // console.log("response", response.data.user);
+      if (response.data.status === "success") {
+        setUserInfo((state) => {
+          return { ...state, ...response.data.user };
+        });
+        setIsAuth(true);
+
+        return { error: null };
+      }
+      setIsAuth(false);
+      return { error: ["failed to login"] };
+    } catch (error) {
+      console.log("failed to login");
+      if (error instanceof AxiosError) {
+        return handleAxiosError(error);
+      }
+      return { error: ["failed to login"] };
+    }
   };
 
   const signUp = async ({
@@ -154,9 +181,16 @@ export const AuthContextProvider = ({
         return { ...state, ...data.user };
       });
       setIsAuth(true);
+      return { error: null };
     } catch (error) {
-      console.log("failed to signup");
+      // console.log("failed to signup");
       unauthorizedError();
+
+      if (error instanceof AxiosError) {
+        return handleAxiosError(error);
+      }
+
+      return { error: ["failed to signup"] };
     }
   };
 
@@ -184,7 +218,7 @@ export const AuthContextProvider = ({
       );
       const data = response.data as SingupResponseT;
 
-      console.log("data from signup response", data);
+      // console.log("data from signup response", data);
 
       //TODO load up user profile
 
@@ -196,13 +230,11 @@ export const AuthContextProvider = ({
 
       return { error: null, userInfo: data.user };
     } catch (err) {
-      // console.log("failed to signup", err);
-      // unauthorizedError();
       if (err instanceof AxiosError) {
-        return { error: err?.response?.data?.error as string, userInfo: null };
+        return handleAxiosError(err);
       }
 
-      return { error: "unknown error signUpWithProvider", userInfo: null };
+      return { error: ["unknown error signUpWithProvider"], userInfo: null };
     }
   };
 
@@ -263,3 +295,14 @@ export const AuthContextProvider = ({
 
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
 };
+
+function handleAxiosError(error: AxiosError) {
+  if (error.response) {
+    // @ts-expect-error errors exist
+    return { error: error.response?.data?.errors as string[], userInfo: null };
+  } else {
+    // Something happened in setting up the request that triggered an Error
+
+    return { error: [error.message], userInfo: null };
+  }
+}

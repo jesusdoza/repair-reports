@@ -36,9 +36,7 @@ export default function ClerkRedirectPage() {
             });
 
             if (error) {
-              if (error == "email invalid") {
-                setErrors(["email already in use"]);
-              }
+              setErrors(error);
 
               return;
             }

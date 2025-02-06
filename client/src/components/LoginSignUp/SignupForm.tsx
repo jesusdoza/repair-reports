@@ -78,7 +78,7 @@ export default function SignupForm({ onSubmit }: SignUpProps) {
           ))}
         </div>
         <div className="flex flex-col align-middle justify-center items-center gap-2">
-          <label className="max-w-xs flex flex-col">
+          <label className="max-w-xs flex flex-col w-full">
             <div className="label">
               <span className="label-text">Username: </span>
             </div>
@@ -95,7 +95,7 @@ export default function SignupForm({ onSubmit }: SignUpProps) {
             />
           </label>
 
-          <label className="max-w-xs  flex flex-col justify-center">
+          <label className="max-w-xs flex flex-col justify-center w-full">
             <div className="label">
               <span className="label-text">Email: </span>
             </div>
@@ -112,7 +112,7 @@ export default function SignupForm({ onSubmit }: SignUpProps) {
             />
           </label>
 
-          <label className="max-w-xs  flex flex-col justify-center">
+          <label className="max-w-xs flex flex-col justify-center w-full">
             <div className="label">
               <span className="label-text">Confirm Email: </span>
             </div>
@@ -130,7 +130,7 @@ export default function SignupForm({ onSubmit }: SignUpProps) {
             />
           </label>
 
-          <label className="max-w-xs flex flex-col justify-center">
+          <label className="max-w-xs flex flex-col justify-center w-full">
             <div className="label">
               <span className="label-text">Password:</span>
             </div>
@@ -147,7 +147,7 @@ export default function SignupForm({ onSubmit }: SignUpProps) {
             />
           </label>
 
-          <label className="max-w-xs flex flex-col">
+          <label className="max-w-xs flex flex-col w-full">
             <div className="label">
               <span className="label-text">Confirm Password:</span>
             </div>
@@ -169,7 +169,7 @@ export default function SignupForm({ onSubmit }: SignUpProps) {
 
           {/* invite code section */}
 
-          <label className="max-w-xs flex flex-col">
+          <label className="max-w-xs flex flex-col w-full">
             <div className="label">
               <span className="label-text">Invite Code:</span>
             </div>
