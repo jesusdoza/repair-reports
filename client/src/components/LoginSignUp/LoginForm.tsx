@@ -25,7 +25,7 @@ export default function LoginForm({ onLogin }: LoginProps) {
   }, [formData]);
 
   return (
-    <div>
+    <div className="">
       <form
         className="w-5/6"
         onSubmit={(event) => {
@@ -54,7 +54,7 @@ export default function LoginForm({ onLogin }: LoginProps) {
           ))}
         </div>
         <div className="flex flex-col align-middle justify-center items-center gap-2">
-          <label className="max-w-xs flex flex-col justify-center">
+          <label className="max-w-xs flex flex-col justify-center w-full">
             <div className="label">
               <span className="label-text">Email: </span>
             </div>
@@ -70,7 +70,7 @@ export default function LoginForm({ onLogin }: LoginProps) {
               className="input input-bordered text-black max-w-xs bg-slate-300"
             />
           </label>
-          <label className="max-w-xs flex flex-col justify-center">
+          <label className="max-w-xs flex flex-col justify-center w-full">
             <div className="label">
               <span className="label-text">Password:</span>
             </div>
