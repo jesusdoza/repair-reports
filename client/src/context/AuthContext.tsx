@@ -34,7 +34,7 @@ export type authContextT = {
         error: null;
       }
     | {
-        error: string;
+        error: string[];
       }
   >;
   // login: ((email: string, password: string) => Promise<void>) | null;
@@ -50,7 +50,14 @@ export type authContextT = {
         password: string;
         username?: string | null;
         inviteCode?: string;
-      }) => Promise<void>)
+      }) => Promise<
+        | {
+            error: null;
+          }
+        | {
+            error: string[];
+          }
+      >)
     | null;
 
   signUpWithProvider:
@@ -66,7 +73,7 @@ export type authContextT = {
         provider: string;
       }) => Promise<{
         userInfo?: User | null | undefined;
-        error?: string | null | undefined;
+        error?: string[] | null | undefined;
       }>)
     | null;
 
@@ -80,7 +87,7 @@ export const AuthContext = createContext<authContextT>({
   setUserToken: null,
   userInfo: null,
   login: () => Promise.resolve({ error: null }),
-  signUp: () => Promise.resolve(),
+  signUp: () => Promise.resolve({ error: null }),
   signUpWithProvider: null,
   logout: null,
   unauthorizedError: () => {},
@@ -116,8 +123,6 @@ export const AuthContextProvider = ({
   };
 
   const login = async (email: string, password: string) => {
-    // console.log(" `${API_URL}/login`", `${API_URL}/login`);
-
     try {
       const response = await axios.post(
         `${API_URL}/login`,
@@ -129,7 +134,7 @@ export const AuthContextProvider = ({
       );
 
       // console.log("response", response.data.user);
-      if (response.data.login === "success") {
+      if (response.data.status === "success") {
         setUserInfo((state) => {
           return { ...state, ...response.data.user };
         });
@@ -138,13 +143,13 @@ export const AuthContextProvider = ({
         return { error: null };
       }
       setIsAuth(false);
-      return { error: "failed to login" };
+      return { error: ["failed to login"] };
     } catch (error) {
       console.log("failed to login");
       if (error instanceof AxiosError) {
-        return { error: error.response?.data?.reason as string };
+        return handleAxiosError(error);
       }
-      return { error: "failed to login" };
+      return { error: ["failed to login"] };
     }
   };
 
@@ -182,10 +187,10 @@ export const AuthContextProvider = ({
       unauthorizedError();
 
       if (error instanceof AxiosError) {
-        return { error: error.response?.data?.reason as string };
+        return handleAxiosError(error);
       }
 
-      return { error: "failed to signup" };
+      return { error: ["failed to signup"] };
     }
   };
 
@@ -213,7 +218,7 @@ export const AuthContextProvider = ({
       );
       const data = response.data as SingupResponseT;
 
-      console.log("data from signup response", data);
+      // console.log("data from signup response", data);
 
       //TODO load up user profile
 
@@ -225,13 +230,11 @@ export const AuthContextProvider = ({
 
       return { error: null, userInfo: data.user };
     } catch (err) {
-      // console.log("failed to signup", err);
-      // unauthorizedError();
       if (err instanceof AxiosError) {
-        return { error: err?.response?.data?.error as string, userInfo: null };
+        return handleAxiosError(err);
       }
 
-      return { error: "unknown error signUpWithProvider", userInfo: null };
+      return { error: ["unknown error signUpWithProvider"], userInfo: null };
     }
   };
 
@@ -292,3 +295,14 @@ export const AuthContextProvider = ({
 
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
 };
+
+function handleAxiosError(error: AxiosError) {
+  if (error.response) {
+    // @ts-expect-error errors exist
+    return { error: error.response?.data?.errors as string[], userInfo: null };
+  } else {
+    // Something happened in setting up the request that triggered an Error
+
+    return { error: [error.message], userInfo: null };
+  }
+}

@@ -37,15 +37,14 @@ exports.apiLogin = (req, res, next) => {
 
   console.log("validation errors", validationErrors);
   if (validationErrors.length) {
-    console.log("setting errors in flash");
+    // console.log("setting errors in flash");
     // req.flash("errors", validationErrors);
     // console.log("req flash is", locals.messages);
     // return res.redirect("/login");
-    res.status(401).json({
-      message: "login failed",
-      login: "failed",
-      reason: validationErrors,
-    });
+
+    res
+      .status(401)
+      .json(new AuthResponse("failed", "login failed", {}, validationErrors));
     return;
   }
   req.body.email = validator.normalizeEmail(req.body.email, {
@@ -54,53 +53,71 @@ exports.apiLogin = (req, res, next) => {
 
   passport.authenticate("local", (err, user, info) => {
     if (err) {
-      console.error("authen failed");
-      resstatus(401).send({
-        message: "login failed",
-        login: "failed",
-        reason: ["Not authorized check credentials 1"],
-      });
+      // console.error("authen failed");
+
+      res
+        .status(401)
+        .send(
+          new AuthResponse("failed", "login failed", {}, [
+            "Not authorized check credentials 1",
+          ])
+        );
       return;
     }
     if (info) {
       console.log("**********info", info);
       req.flash("errors", ["Not authorized check credentials"]);
-      res.status(401).send({
-        message: "login failed",
-        login: "failed",
-        reason: ["Not authorized check credentials 2"],
-      });
+      res
+        .status(401)
+        .send(
+          new AuthResponse("failed", "login failed", {}, [
+            "Not authorized check credentials 2",
+          ])
+        );
+
       return;
     }
     if (!user) {
       req.flash("errors", ["Not authorized check credentials"]);
       // console.error("no user found");
-      res.status(401).send({
-        message: "login failed",
-        login: "failed",
-        reason: ["Not authorized check credentials 3"],
-      });
+      res
+        .status(401)
+        .send(
+          new AuthResponse("failed", "login failed", {}, [
+            "Not authorized check credentials 3",
+          ])
+        );
+
       return;
     }
     req.logIn(user, (err) => {
       if (err) {
         req.flash("errors", ["Not authorized check credentials"]);
-        res.status(401).send({
-          message: "login failed",
-          login: "failed",
-          reason: ["Not authorized check credentials 4"],
-        });
+        res
+          .status(401)
+          .send(
+            new AuthResponse("failed", "login failed", {}, [
+              "Not authorized check credentials 4",
+            ])
+          );
+
         return;
       }
 
       //clean
       const { password, ...cleanUser } = user._doc;
-
-      res.send({
-        user: cleanUser,
-        loginExpires: req.session.cookie._expires,
-        login: "success",
-      });
+      const authResponse = new AuthResponse(
+        "success",
+        "login success",
+        cleanUser
+      );
+      authResponse.loginExpires = req.session.cookie._expires;
+      res.send(authResponse);
+      // res.send({
+      //   user: cleanUser,
+      //   loginExpires: req.session.cookie._expires,
+      //   login: "success",
+      // });
     });
   })(req, res, next);
 };
@@ -284,4 +301,31 @@ function createGroupMemberEntries(groups = [], user) {
     });
     return entry.save();
   });
+}
+
+class AuthResponse {
+  /**
+   * Creates an instance of AuthResponse.
+   * @param {string} [status=""] - The status of the response.
+   * @param {string} [message=""] - The message of the response.
+   * @param {Object} [user={}] - The user object.
+   * @param {Array<string>|null} [errors=null] - The errors object, if any.
+   */
+
+  status = "";
+  message = "";
+  user = {};
+  errors = null;
+  loginExpires = null;
+
+  constructor(status = "", message = "", user = {}, errors = null) {
+    this.status = status;
+    this.message = message;
+    this.user = user;
+    this.errors = errors;
+  }
+
+  set loginExpires(value) {
+    this.loginExpires = value;
+  }
 }
