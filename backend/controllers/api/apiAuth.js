@@ -55,25 +55,41 @@ exports.apiLogin = (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     if (err) {
       console.error("authen failed");
-      resstatus(401).send({ message: "login failed", login: "failed" });
+      resstatus(401).send({
+        message: "login failed",
+        login: "failed",
+        reason: ["Not authorized check credentials 1"],
+      });
       return;
     }
     if (info) {
       console.log("**********info", info);
       req.flash("errors", ["Not authorized check credentials"]);
-      res.status(401).send({ message: "login failed", login: "failed" });
+      res.status(401).send({
+        message: "login failed",
+        login: "failed",
+        reason: ["Not authorized check credentials 2"],
+      });
       return;
     }
     if (!user) {
       req.flash("errors", ["Not authorized check credentials"]);
-      console.error("no user found");
-      res.status(401).send({ message: "login failed", login: "failed" });
+      // console.error("no user found");
+      res.status(401).send({
+        message: "login failed",
+        login: "failed",
+        reason: ["Not authorized check credentials 3"],
+      });
       return;
     }
     req.logIn(user, (err) => {
       if (err) {
         req.flash("errors", ["Not authorized check credentials"]);
-        res.status(401).send({ message: "login failed", login: "failed" });
+        res.status(401).send({
+          message: "login failed",
+          login: "failed",
+          reason: ["Not authorized check credentials 4"],
+        });
         return;
       }
 

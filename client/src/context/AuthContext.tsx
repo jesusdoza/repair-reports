@@ -26,7 +26,18 @@ export type authContextT = {
   setUserToken: object | null;
   setUserData: (id: string) => void;
   userInfo: User | null;
-  login: ((email: string, password: string) => Promise<void>) | null;
+  login: (
+    email: string,
+    password: string
+  ) => Promise<
+    | {
+        error: null;
+      }
+    | {
+        error: string;
+      }
+  >;
+  // login: ((email: string, password: string) => Promise<void>) | null;
   logout: (() => Promise<void>) | null;
   signUp:
     | (({
@@ -68,8 +79,8 @@ export const AuthContext = createContext<authContextT>({
   userToken: null,
   setUserToken: null,
   userInfo: null,
-  login: null,
-  signUp: null,
+  login: () => Promise.resolve({ error: null }),
+  signUp: () => Promise.resolve(),
   signUpWithProvider: null,
   logout: null,
   unauthorizedError: () => {},
@@ -105,25 +116,36 @@ export const AuthContextProvider = ({
   };
 
   const login = async (email: string, password: string) => {
-    console.log(" `${API_URL}/login`", `${API_URL}/login`);
-    const response = await axios.post(
-      `${API_URL}/login`,
-      {
-        email,
-        password,
-      },
-      { withCredentials: true }
-    );
-    // console.log("response", response.data.user);
-    if (response.data.login === "success") {
-      setUserInfo((state) => {
-        return { ...state, ...response.data.user };
-      });
-      setIsAuth(true);
-      return;
-    }
+    // console.log(" `${API_URL}/login`", `${API_URL}/login`);
 
-    setIsAuth(false);
+    try {
+      const response = await axios.post(
+        `${API_URL}/login`,
+        {
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
+
+      // console.log("response", response.data.user);
+      if (response.data.login === "success") {
+        setUserInfo((state) => {
+          return { ...state, ...response.data.user };
+        });
+        setIsAuth(true);
+
+        return { error: null };
+      }
+      setIsAuth(false);
+      return { error: "failed to login" };
+    } catch (error) {
+      console.log("failed to login");
+      if (error instanceof AxiosError) {
+        return { error: error.response?.data?.reason as string };
+      }
+      return { error: "failed to login" };
+    }
   };
 
   const signUp = async ({
@@ -154,9 +176,16 @@ export const AuthContextProvider = ({
         return { ...state, ...data.user };
       });
       setIsAuth(true);
+      return { error: null };
     } catch (error) {
-      console.log("failed to signup");
+      // console.log("failed to signup");
       unauthorizedError();
+
+      if (error instanceof AxiosError) {
+        return { error: error.response?.data?.reason as string };
+      }
+
+      return { error: "failed to signup" };
     }
   };
 

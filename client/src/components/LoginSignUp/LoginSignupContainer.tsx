@@ -7,11 +7,13 @@ import ColabImage from "../../assets/Live collaboration-rafiki.svg";
 import { Link, useNavigate } from "react-router-dom";
 
 import { useAuth } from "@clerk/clerk-react";
+import { XCircle } from "lucide-react";
 
 export default function LoginSignupContainer(): React.ReactNode {
   const { login, signUp, isAuth } = useContext(AuthContext);
   const { userId } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
+  const [displayErrors, setDisplayErrors] = useState([] as string[]);
   const navigate = useNavigate();
 
   if (isAuth || userId) {
@@ -44,8 +46,15 @@ export default function LoginSignupContainer(): React.ReactNode {
               {isLogin ? (
                 <ErrorBoundary componentName="Login Form">
                   <LoginForm
-                    onLogin={(username, password) => {
-                      if (login) login(username, password);
+                    onLogin={async (username, password) => {
+                      if (login) {
+                        const result = await login(username, password);
+
+                        if (result.error) {
+                          console.log("login error", result.error);
+                          setDisplayErrors([result.error]);
+                        }
+                      }
                     }}
                   />
                 </ErrorBoundary>
@@ -68,6 +77,55 @@ export default function LoginSignupContainer(): React.ReactNode {
               alt="image of 2 people shaking hands"
             />
           </section>
+        </div>
+      </div>
+      <div>
+        {displayErrors.length > 0 ? (
+          <ErrorBanner errors={displayErrors} />
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+interface ErrorBannerProps {
+  errors: string[];
+  // onDismiss: () => void;
+}
+
+function ErrorBanner({ errors }: ErrorBannerProps) {
+  return (
+    <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-4 rounded-md shadow-md">
+      <div className="flex items-start">
+        <div className="flex-shrink-0">
+          <XCircle
+            className="h-5 w-5 text-red-400"
+            aria-hidden="true"
+          />
+        </div>
+        <div className="ml-3 flex-1">
+          {/* <h3 className="text-sm font-medium text-red-800">
+            There {errors.length === 1 ? "is an error" : "are errors"} with your
+            submission
+          </h3> */}
+          <div className="mt-2 text-sm text-red-700">
+            <ul className="list-disc pl-5 space-y-1">
+              {errors.map((error, index) => (
+                <li key={index}>{error}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <div className="ml-auto pl-3">
+          <div className="-mx-1.5 -my-1.5">
+            <button className="inline-flex rounded-md p-1.5 text-red-500 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+              <span className="sr-only">Dismiss</span>
+              <XCircle
+                className="h-5 w-5"
+                aria-hidden="true"
+              />
+            </button>
+          </div>
         </div>
       </div>
     </div>
