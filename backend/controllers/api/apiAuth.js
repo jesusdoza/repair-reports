@@ -24,6 +24,7 @@ exports.apiLogout = (req, res, next) => {
 
 exports.apiLogin = (req, res, next) => {
   const validationErrors = [];
+
   if (!validator.isEmail(req.body.email)) {
     console.log("invalid email");
     validationErrors.push("Please enter a valid email address.");
@@ -34,12 +35,13 @@ exports.apiLogin = (req, res, next) => {
     validationErrors.push("Password cannot be blank.");
   }
 
+  console.log("validation errors", validationErrors);
   if (validationErrors.length) {
     console.log("setting errors in flash");
-    req.flash("errors", validationErrors);
+    // req.flash("errors", validationErrors);
     // console.log("req flash is", locals.messages);
     // return res.redirect("/login");
-    res.send({
+    res.status(401).json({
       message: "login failed",
       login: "failed",
       reason: validationErrors,
@@ -53,25 +55,25 @@ exports.apiLogin = (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     if (err) {
       console.error("authen failed");
-      res.send({ message: "login failed", login: "failed" });
+      resstatus(401).send({ message: "login failed", login: "failed" });
       return;
     }
     if (info) {
       console.log("**********info", info);
       req.flash("errors", ["Not authorized check credentials"]);
-      res.send({ message: "login failed", login: "failed" });
+      res.status(401).send({ message: "login failed", login: "failed" });
       return;
     }
     if (!user) {
       req.flash("errors", ["Not authorized check credentials"]);
       console.error("no user found");
-      res.send({ message: "login failed", login: "failed" });
+      res.status(401).send({ message: "login failed", login: "failed" });
       return;
     }
     req.logIn(user, (err) => {
       if (err) {
         req.flash("errors", ["Not authorized check credentials"]);
-        res.send({ message: "login failed", login: "failed" });
+        res.status(401).send({ message: "login failed", login: "failed" });
         return;
       }
 
