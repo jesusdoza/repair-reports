@@ -121,11 +121,8 @@ const addRepair = async (req, res) => {
 //get a number of newest repairs
 const getNewestRepairs = async (req, res) => {
   try {
-    // console.log(`controller repair.getNewestRepairs`);
-    // console.log(`number of repairs requested`, req.params.num);
     const numRepairs = req.query.num ? req.query.num : 8;
 
-    // console.log("req.params", req.query.num);
     //retrieve certain number of repairs that have not been removed
     const results = await Repair.find({ removed: { $ne: true } })
       .sort({ _id: -1 })
@@ -217,7 +214,6 @@ const deleteRepair = async (req, res) => {
 //retrieve repairs matching query
 const searchRepairs = async (req, res) => {
   try {
-    // console.log(`repairsController.searchRepairs`, req.body);
     const searchStr = req.body.searchPhrase;
     const limit = Number(req.body.limit) || 10;
     const results = await Repair.aggregate([
@@ -281,10 +277,6 @@ async function enforceMaxDocuments(repairId, schema, maxBackups) {
 
       // Delete the excess documents
       await schema.deleteMany({ _id: { $in: idsToDelete } });
-
-      // console.log(
-      //   `${excessCount} old documents deleted for repairId: ${repairId}`
-      // );
     }
   } catch (error) {
     console.error("Error enforcing max documents:", error);
