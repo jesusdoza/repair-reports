@@ -6,8 +6,8 @@ const uuidv4 = require("uuid").v4;
 const getInvite = async (req, res) => {
   const inviteCode = req.params["invitecode"] || "";
   const password = req.query.password || "";
-  console.log("invitePassword", password);
-  console.log("inviteCode", inviteCode);
+  // console.log("invitePassword", password);
+  // console.log("inviteCode", inviteCode);
 
   try {
     if (!inviteCode) throw new Error("no invite code or phrase");
@@ -100,7 +100,7 @@ const postInvite = async (req, res) => {
   //todo create the invite document with random uuid with maybe 6 chars
   //must be unique invite code
   const newInvite = new Invite({
-    inviteCode: uuidv4().slice(0, 6),
+    inviteCode: uuidv4().slice(0, 6).toUpperCase(),
     password,
     groups: allowedGroups,
     createdBy: userId,
