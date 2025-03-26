@@ -130,7 +130,7 @@ const getNewestRepairs = async (req, res) => {
     const results = await Repair.find({ removed: { $ne: true } })
       .sort({ _id: -1 })
       .limit(numRepairs);
-    console.log(`number of repairs returned`, results.length);
+    // console.log(`number of repairs returned`, results.length);
 
     res.json({
       repairs: results,
@@ -217,7 +217,7 @@ const deleteRepair = async (req, res) => {
 //retrieve repairs matching query
 const searchRepairs = async (req, res) => {
   try {
-    console.log(`repairsController.searchRepairs`, req.body);
+    // console.log(`repairsController.searchRepairs`, req.body);
     const searchStr = req.body.searchPhrase;
     const limit = Number(req.body.limit) || 10;
     const results = await Repair.aggregate([
