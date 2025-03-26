@@ -8,6 +8,7 @@ export default function SearchPage() {
   const { searchForRepair } = useRepairApi();
   const [searchParams] = useSearchParams();
   const [repairsFound, setRepairsFound] = useState<RepairDataT[]>([]);
+  const [loading, setLoading] = useState(false);
 
   //todo add limit and page number to request
   // const limit = searchParams.get("limit") || 10;
@@ -15,9 +16,10 @@ export default function SearchPage() {
   const search = searchParams.get("search");
 
   async function getSearchResults(search: string) {
+    setLoading(true);
     const results = await searchForRepair(search);
 
-    console.log("results", results);
+    setLoading(false);
     if (results) {
       setRepairsFound(results);
     }
@@ -29,9 +31,18 @@ export default function SearchPage() {
     }
   }, [searchParams]);
 
+  if (loading) {
+    return (
+      <div className="flex flex-col justify-center items-center h-screen">
+        <p>Loading...</p>
+        <span className="loading loading-bars loading-xl size-40"></span>
+      </div>
+    );
+  }
+
   if (!search) {
     return (
-      <div>
+      <div className="flex flex-col justify-center items-center h-screen">
         <p>No search phrase provided</p>
       </div>
     );
@@ -39,7 +50,7 @@ export default function SearchPage() {
 
   return (
     <div>
-      <p>Search Results for {search}</p>
+      <p>Search Results for: {search}</p>
       <RepairList repairList={repairsFound} />
     </div>
   );
