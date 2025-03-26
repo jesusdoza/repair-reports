@@ -118,6 +118,45 @@ const postInvite = async (req, res) => {
   }
 };
 
+//delete invite
+const deleteInvite = async (req, res) => {
+  const userId = String(req.user._id);
+
+  const inviteCode = req.params.inviteCode;
+
+  if (inviteCode === undefined) {
+    res.status(400).send({
+      message: "no invite code provided",
+    });
+    return;
+  }
+
+  try {
+    const invite = await Invite.findOne({ inviteCode, createdBy: userId });
+
+    if (!invite) {
+      res.status(400).send({
+        message: "invite not found",
+        inviteCode,
+      });
+      return;
+    }
+
+    await invite.deleteOne();
+
+    res.send({
+      message: "invite deleted",
+      inviteCode,
+    });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send({
+      message: "failed to delete invite",
+      inviteCode,
+    });
+  }
+};
+
 //utility functions
 //pass in group ids to verify user is member with valid role
 //todo verify user has correct permissions to create invite
@@ -137,4 +176,4 @@ async function verifyGroupMembership(groupIds = [], userId) {
   });
 }
 
-module.exports = { getInvite, getUsersInvites, postInvite };
+module.exports = { getInvite, getUsersInvites, postInvite, deleteInvite };
