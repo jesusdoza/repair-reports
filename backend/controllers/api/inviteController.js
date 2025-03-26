@@ -6,8 +6,8 @@ const uuidv4 = require("uuid").v4;
 const getInvite = async (req, res) => {
   const inviteCode = req.params["invitecode"] || "";
   const password = req.query.password || "";
-  console.log("invitePassword", password);
-  console.log("inviteCode", inviteCode);
+  // console.log("invitePassword", password);
+  // console.log("inviteCode", inviteCode);
 
   try {
     if (!inviteCode) throw new Error("no invite code or phrase");
@@ -100,7 +100,7 @@ const postInvite = async (req, res) => {
   //todo create the invite document with random uuid with maybe 6 chars
   //must be unique invite code
   const newInvite = new Invite({
-    inviteCode: uuidv4().slice(0, 6),
+    inviteCode: uuidv4().slice(0, 6).toUpperCase(),
     password,
     groups: allowedGroups,
     createdBy: userId,
@@ -114,6 +114,45 @@ const postInvite = async (req, res) => {
     res.status(500).send({
       message: "failed to create invite",
       groups,
+    });
+  }
+};
+
+//delete invite
+const deleteInvite = async (req, res) => {
+  const userId = String(req.user._id);
+
+  const inviteCode = req.params.inviteCode;
+
+  if (inviteCode === undefined) {
+    res.status(400).send({
+      message: "no invite code provided",
+    });
+    return;
+  }
+
+  try {
+    const invite = await Invite.findOne({ inviteCode, createdBy: userId });
+
+    if (!invite) {
+      res.status(400).send({
+        message: "invite not found",
+        inviteCode,
+      });
+      return;
+    }
+
+    await invite.deleteOne();
+
+    res.send({
+      message: "invite deleted",
+      inviteCode,
+    });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send({
+      message: "failed to delete invite",
+      inviteCode,
     });
   }
 };
@@ -137,4 +176,4 @@ async function verifyGroupMembership(groupIds = [], userId) {
   });
 }
 
-module.exports = { getInvite, getUsersInvites, postInvite };
+module.exports = { getInvite, getUsersInvites, postInvite, deleteInvite };

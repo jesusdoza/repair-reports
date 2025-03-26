@@ -51,7 +51,8 @@ export default function DashboardPageContainer(): React.ReactNode {
           />
         </ErrorBoundary>
       </aside>
-      <main className="w-5/6 bg-green-600 ">
+      <main className="w-5/6 bg-slate-700">
+        <h1 className="text-2xl font-bold text-center">Dashboard</h1>
         <ErrorBoundary componentName="UsersRepairs">
           <UsersRepairs repairList={filteredList} />
         </ErrorBoundary>
