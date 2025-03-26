@@ -5,6 +5,7 @@ import useRepairApi from "../hooks/useRepairApi";
 import { useNavigate } from "react-router-dom";
 import { RepairContextProvider } from "../context/RepairFormContext";
 import { RepairDataT } from "../../types";
+import { RepairForm } from "@/components/RepairFormV0/RepairForm";
 
 export default function RepairFormPage(): React.ReactNode {
   const { postRepair } = useRepairApi();
@@ -30,7 +31,7 @@ export default function RepairFormPage(): React.ReactNode {
   return (
     <RepairContextProvider>
       <h1>Create new repair</h1>
-
+      <RepairForm />
       <RepairEditForm
         onSubmit={createRepair}
         enabled={submitAllowed}
