@@ -18,13 +18,15 @@ export default function UserStats({
   groupsList = [],
 }: UserStatsPropsT) {
   const joinedGroupsRows = createRows(groupsList);
-
+  const formatedUserName = username[0].toUpperCase() + username.slice(1);
   return (
     <div className="flex flex-col gap-1">
       <div className="self-center w-full flex justify-center">
-        <div className="avatar placeholder w-full">
-          <div className="bg-neutral text-neutral-content w-full rounded-full">
-            <span className="text-[100px] w-full">{username}</span>
+        <div className="avatar placeholder w-full ">
+          <div className="bg-neutral text-neutral-content w-full rounded-full ">
+            <span className="text-[100px] w-full text-center">
+              {formatedUserName}
+            </span>
           </div>
         </div>
       </div>
