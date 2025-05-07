@@ -41,7 +41,7 @@ export default function Navbar({
 
   return (
     <>
-      <div className="navbar bg-base-100 gap-3 px-3">
+      <div className="navbar gap-3 px-3 bg-secondary text-text-primary">
         <div className="flex-1">
           <div>
             <Link
