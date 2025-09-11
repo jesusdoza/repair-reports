@@ -6,7 +6,8 @@ import mongoose from "mongoose";
 //user groups schema
 //user is a member of a group
 const MemberSchema = new mongoose.Schema({
-  userId: {
+  user: {
+    //user id
     type: String,
     required: true,
   },
@@ -19,11 +20,8 @@ const MemberSchema = new mongoose.Schema({
     type: [String],
     default: ["read"],
   },
-  groupId: {
-    type: String,
-    required: true,
-  },
-  groupName: {
+  organization: {
+    //organization id
     type: String,
     required: true,
   },

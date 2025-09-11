@@ -56,7 +56,7 @@ const RepairSchema = new Schema(
       type: String,
       required: true,
     },
-    boardType: {
+    type: {
       type: String,
       required: true,
     },
@@ -64,15 +64,15 @@ const RepairSchema = new Schema(
       type: [String],
       default: [],
     },
-    engineMake: {
+    manufacturer: {
       type: String,
       required: true,
     },
     procedureArr: {
       type: [ProcedureSchema],
     },
-    group: {
-      //client sent group repair belongs to
+    organization: {
+      //client sent organization repair belongs to
       type: String,
       default: "public",
     },

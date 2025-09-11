@@ -52,3 +52,35 @@
       },
   },
 ];
+
+// MongoDB Playground
+// Use Ctrl+Space inside a snippet or a string literal to trigger completions.
+
+// The current database to use.
+use("Cata");
+
+db.getCollection("repair-reports").aggregate([
+  {
+    $addFields: {
+      searchTags: "$searchtags",
+      manufacturer: "$engineMake",
+      organization: "public",
+    },
+  },
+  {
+    $merge:
+      /**
+       * into: The target collection.
+       * on: Fields to  identify.
+       * let: Defined variables.
+       * whenMatched: Action for matching docs.
+       * whenNotMatched: Action for non-matching docs.
+       */
+      {
+        into: "repair-reports",
+        on: "_id",
+        whenMatched: "merge",
+        whenNotMatched: "discard",
+      },
+  },
+]);
