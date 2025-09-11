@@ -1,6 +1,6 @@
 import { it, expect, describe, test } from "vitest";
 import dataProfile, { findMissing } from "../dataProfile.ts";
-import * as Repair from "../../models/Repair.js";
+import * as Repair from "../../src/models/Repair.js";
 let testDataPath = "./utilities/testFiles/test.json";
 
 describe("dataProfile", () => {

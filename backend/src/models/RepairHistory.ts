@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const { RepairSchema } = require("./Repair");
+import mongoose from "mongoose";
+import { RepairSchema } from "./Repair.js";
 
 const RepairHistorySchema = new mongoose.Schema({
   createdAt: {
@@ -16,4 +16,4 @@ const RepairHistorySchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("RepairHistory", RepairHistorySchema);
+export default mongoose.model("RepairHistory", RepairHistorySchema);

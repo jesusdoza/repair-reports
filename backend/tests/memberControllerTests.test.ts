@@ -14,8 +14,8 @@ import request from "supertest";
 import express from "express";
 import { App } from "supertest/types.js";
 
-import Member from "../models/Member.js";
-import Invite from "../models/Invite.js";
+import Member from "../src/models/Member.js";
+import Invite from "../src/models/Invite.js";
 
 import "./testEnvSetup/mockEnv.js"; //mock env variables loaded need to load before app wont work in same file for some reason
 
@@ -26,7 +26,7 @@ import { setupDatabase, teardownDatabase } from "./testEnvSetup/mockMongoDb.js";
 import {
   getUsersGroups,
   addMemberTogroup,
-} from "../controllers/api/membersController.js";
+} from "../src/controllers/api/membersController.js";
 
 const mockMemberEntries = [new Member({ userId: "userId", groupId: "group1" })];
 const mockInviteEntries = new Invite({
