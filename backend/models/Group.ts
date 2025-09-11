@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 //TODO create admin property on groups schema
 //parent schema
@@ -20,4 +20,4 @@ const GroupSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Group", GroupSchema);
+export default mongoose.model("Group", GroupSchema);

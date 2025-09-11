@@ -1,8 +1,8 @@
-const mongoose = require("mongoose");
-const uuid = require("uuid");
+import mongoose, { Schema, model } from "mongoose";
+import { v4 } from "uuid";
 //version: 2 contains imageObjs:[imageObj] for images on procedures
-const imageObj = new mongoose.Schema({
-  _id: { type: String, default: uuid.v4() },
+const imageObj = new Schema({
+  _id: { type: String, default: v4() },
   imageUrl: { type: String, default: "" },
   imageThumb: { type: String, default: "" },
   caption: { type: String, default: "" },
@@ -17,7 +17,7 @@ const imageObj = new mongoose.Schema({
 });
 
 //subdocument of RepairSchema
-const ProcedureSchema = new mongoose.Schema({
+const ProcedureSchema = new Schema({
   _id: String,
   images: [String],
   imageObjs: [imageObj], //version 2 to be used instead of seperate images[],thumbs[],imagesIdArr[]
@@ -45,7 +45,7 @@ const ProcedureSchema = new mongoose.Schema({
 
 //parent schema
 //version 3 has searchTags:string[] to allow for sorting
-const RepairSchema = new mongoose.Schema(
+const RepairSchema = new Schema(
   {
     version: {
       type: String,
@@ -101,5 +101,5 @@ const RepairSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("Repair", RepairSchema);
-module.exports.RepairSchema = RepairSchema;
+export default mongoose.model("Repair", RepairSchema);
+export { RepairSchema };

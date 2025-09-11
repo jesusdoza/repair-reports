@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const GroupData = new mongoose.Schema({
   id: String,
@@ -38,4 +38,4 @@ const Invite = mongoose.models?.Invite
   ? mongoose.models.Invite
   : mongoose.model("Invite", InviteSchema);
 
-module.exports = Invite;
+export default Invite;

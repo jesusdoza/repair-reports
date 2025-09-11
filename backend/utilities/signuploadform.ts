@@ -3,7 +3,7 @@ require("dotenv").config; //! do i need this since already in enviroment???
 const apiSecret = process.env.cloud_secret;
 
 // Server-side function used to sign an upload form for cloudinary
-const signuploadform = (folderName) => {
+const signuploadform = (folderName: string) => {
   const timestamp = Math.round(new Date().getTime() / 1000);
   const signature = cloudinary.utils.api_sign_request(
     {

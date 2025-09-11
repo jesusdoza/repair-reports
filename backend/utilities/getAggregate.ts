@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Repair = require("../models/Repair");
 
 //returns array to use in aggregate
-function getAggregate(str) {
+function getAggregate(str: string) {
   if (str === "" || str === undefined) return [];
   const aggregateArr = makeQuerys(str);
 
@@ -10,7 +10,7 @@ function getAggregate(str) {
 }
 
 //make querys for aggregate query
-function makeQuerys(str) {
+function makeQuerys(str: string) {
   if (str === "" || str === undefined) return [];
   //get all words and remove spaces and save into array
   const wordsArr = str.split(" ").filter((word) => {

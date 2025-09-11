@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 //Member collection will track group to user relationships,
 //user can have multiple member entries detailing their role in a group
@@ -33,4 +33,4 @@ const Member = mongoose.models?.Member
   ? mongoose.models?.Member
   : mongoose.model("Member", MemberSchema);
 
-module.exports = Member;
+export default Member;
