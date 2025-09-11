@@ -1,105 +1,57 @@
-import mongoose, { Schema, model } from "mongoose";
-import { v4 } from "uuid";
-//version: 2 contains imageObjs:[imageObj] for images on procedures
-const imageObj = new Schema({
-  _id: { type: String, default: v4() },
-  imageUrl: { type: String, default: "" },
-  imageThumb: { type: String, default: "" },
-  caption: { type: String, default: "" },
-  imageId: {
-    type: String,
-    default: "",
-  },
-  folder: {
-    type: String,
-    default: "test",
-  },
-});
+import mongoose from "mongoose";
 
-//subdocument of RepairSchema
-const ProcedureSchema = new Schema({
-  _id: String,
-  images: [String],
-  imageObjs: [imageObj], //version 2 to be used instead of seperate images[],thumbs[],imagesIdArr[]
-  procedureNum: {
-    type: Number,
-    default: 0,
-  },
-  instructions: {
-    type: String,
-  },
-  thumbs: [String],
-  imagesIdArr: [String],
-});
-
-// const memberSchema = new mongoose.Schema({
-//    user:{
-//     type:String,
-//    },
-//    role:{
-//     type:String,
-//     default:'1'
-//    }
-
-//   })
-
-//parent schema
-//version 3 has searchTags:string[] to allow for sorting
-const RepairSchema = new Schema(
+const ImageSchema = new mongoose.Schema(
   {
-    version: {
+    url: { type: String, required: true },
+    caption: { type: String },
+    folder: { type: String },
+    imageId: { type: String },
+    thumbnail: { type: String },
+  },
+  { _id: true }
+);
+
+const ProcedureSchema = new mongoose.Schema(
+  {
+    images: [ImageSchema],
+    instructions: { type: String, required: true },
+  },
+  { _id: true }
+); // Keep _id for procedures so you can update/delete them individually
+
+const RepairSchema = new mongoose.Schema(
+  {
+    title: { type: String, required: true, trim: true },
+    status: {
       type: String,
-      required: true,
-      default: "3",
-    },
-    title: {
-      type: String,
-      required: true,
+      enum: ["pending", "in_progress", "completed"],
+      default: "pending",
     },
     type: {
       type: String,
+      enum: ["board", "computer", "other"],
       required: true,
     },
-    searchTags: {
-      type: [String],
-      default: [],
-    },
-    manufacturer: {
-      type: String,
-      required: true,
-    },
-    procedureArr: {
-      type: [ProcedureSchema],
-    },
-    organization: {
-      //client sent organization repair belongs to
-      type: String,
-      default: "public",
-    },
+    category: { type: String },
+    manufacturer: { type: String },
     visibility: {
-      //client sent allows to be seen to public feed
-      default: "public",
       type: String,
+      enum: ["public", "private", "organization"],
+      default: "public",
     },
     createdBy: {
-      //asigned serverside
-      type: String,
-      default: "public",
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
-    removed: {
-      //soft delete
-      type: Boolean,
-      default: false,
-    },
-    modifiedAt: {
-      type: Date,
-      default: Date.now(),
-    },
+    removed: { type: Boolean, default: false },
+    procedures: [ProcedureSchema],
   },
   {
-    collection: "repair-reports",
+    timestamps: { createdAt: true, updatedAt: true },
   }
 );
 
-export default mongoose.model("Repair", RepairSchema);
-export { RepairSchema };
+export const Repair = mongoose.model("Repair", RepairSchema);
+export const Image = mongoose.model("Image", ImageSchema);
+export const Procedure = mongoose.model("Procedure", ProcedureSchema);

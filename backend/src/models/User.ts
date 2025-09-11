@@ -16,15 +16,14 @@ const UserSchema = new mongoose.Schema(
     role: {
       // application wide role default basic
       type: String,
-      default: "basic",
+      default: "user",
     },
     email: {
-      unique: true, //! made unique
+      unique: true,
       type: String,
       default: "no_email@no_email.com",
       lowercase: true,
     },
-
     isActive: {
       type: Boolean,
       default: true,
@@ -32,6 +31,7 @@ const UserSchema = new mongoose.Schema(
   },
   {
     collection: "users",
+    timesestamps: { createdAt: true, updatedAt: true },
   }
 );
 

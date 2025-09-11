@@ -1,17 +1,18 @@
 import mongoose from "mongoose";
-import { RepairSchema } from "./Repair.js";
+import { Repair } from "./Repair.js";
 
 const RepairHistorySchema = new mongoose.Schema({
   createdAt: {
     type: Date,
-    default: Date.now(),
+    default: Date.now,
   },
   repair: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId, // <-- Use ObjectId for references
+    ref: "Repair",
     required: true,
   },
   data: {
-    type: RepairSchema,
+    type: Repair.schema,
     required: true,
   },
 });
