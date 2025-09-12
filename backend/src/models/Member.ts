@@ -7,9 +7,8 @@ import mongoose from "mongoose";
 //user is a member of a group
 const MemberSchema = new mongoose.Schema({
   user: {
-    //user id
-    type: String,
-    required: true,
+    type: mongoose.Schema.Types.ObjectId, // <-- Reference to User
+    ref: "User",
   },
   username: {
     type: String,
@@ -22,11 +21,12 @@ const MemberSchema = new mongoose.Schema({
   },
   organization: {
     //organization id
-    type: String,
-    required: true,
+    type: mongoose.Schema.Types.ObjectId, // <-- Reference to Organization
+    ref: "Organization",
   },
 });
 
+// Prevent model overwrite upon initial compiler for fast refresh
 const Member = mongoose.models?.Member
   ? mongoose.models?.Member
   : mongoose.model("Member", MemberSchema);

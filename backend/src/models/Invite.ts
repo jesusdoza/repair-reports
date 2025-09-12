@@ -1,38 +1,36 @@
 import mongoose from "mongoose";
 
-const GroupData = new mongoose.Schema({
-  id: String,
-  name: String,
-  roles: { type: [String], default: ["read"] },
-});
+const InviteSchema = new mongoose.Schema(
+  {
+    inviteCode: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    //security for specific invite optional
+    password: {
+      type: String,
+      default: null,
+    },
+    organization: {
+      type: mongoose.Schema.Types.ObjectId, // <-- Reference to Organization
+      ref: "Organization",
+      required: false,
+    },
 
-const InviteSchema = new mongoose.Schema({
-  inviteCode: {
-    type: String,
-    required: true,
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    status: {
+      type: String,
+      enum: ["pending", "accepted", "expired"],
+      default: "pending",
+    },
   },
-  //security for specific invite optional
-  password: {
-    type: String,
-    default: null,
-  },
-  groups: {
-    type: [GroupData],
-    default: [],
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  createdBy: {
-    type: String,
-    required: true,
-  },
-  status: {
-    type: String,
-    default: "pending",
-  },
-});
+  { timestamps: true }
+);
 
 const Invite = mongoose.models?.Invite
   ? mongoose.models.Invite
