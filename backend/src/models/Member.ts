@@ -27,8 +27,5 @@ const MemberSchema = new mongoose.Schema({
 });
 
 // Prevent model overwrite upon initial compiler for fast refresh
-const Member = mongoose.models?.Member
-  ? mongoose.models?.Member
-  : mongoose.model("Member", MemberSchema);
 
-export default Member;
+export default mongoose.model("Member", MemberSchema);

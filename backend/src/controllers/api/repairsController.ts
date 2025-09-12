@@ -1,11 +1,13 @@
-const Repair = require("../../models/Repair");
-const User = require("../../models/User");
-const RepairHistory = require("../../models/RepairHistory");
+import Repair from "../../models/Repair";
+import User from "../../models/User.js";
+import RepairHistory from "../../models/RepairHistory";
+
+import type { Request, Response } from "express";
 
 const REPAIR_INDEX = process.env.search_index;
 const MAX_BACKUPS = Number(process.env.max_repair_backups ?? 3);
 
-const getRepairsforUser = async (req, res) => {
+const getRepairsforUser = async (req: Request, res: Response) => {
   const user = req.user;
   const { limit, page } = req.query;
 
@@ -69,7 +71,7 @@ const getRepairsforUser = async (req, res) => {
   // }
 };
 
-const getRepairById = async (req, res) => {
+const getRepairById = async (req: Request, res: Response) => {
   // get paremeter from url
   const repairId = req.params.id;
   try {
@@ -83,7 +85,7 @@ const getRepairById = async (req, res) => {
   }
 };
 
-const addRepair = async (req, res) => {
+const addRepair = async (req: Request, res: Response) => {
   const { title, boardType, engineMake, procedureArr, searchTags, group } =
     req.body.repairData;
 
@@ -119,7 +121,7 @@ const addRepair = async (req, res) => {
 };
 
 //get a number of newest repairs
-const getNewestRepairs = async (req, res) => {
+const getNewestRepairs = async (req: Request, res: Response) => {
   try {
     const numRepairs = req.query.num ? req.query.num : 8;
 
@@ -139,7 +141,7 @@ const getNewestRepairs = async (req, res) => {
   }
 };
 
-const updateRepair = async (req, res) => {
+const updateRepair = async (req: Request, res: Response) => {
   let previousData; //hold original before update
   const maxBackups = MAX_BACKUPS;
   try {
@@ -186,7 +188,7 @@ const updateRepair = async (req, res) => {
 };
 
 //soft delete post
-const deleteRepair = async (req, res) => {
+const deleteRepair = async (req: Request, res: Response) => {
   const userId = String(req.user._id);
   const repairId = req.query.id;
 
@@ -212,7 +214,7 @@ const deleteRepair = async (req, res) => {
 };
 
 //retrieve repairs matching query
-const searchRepairs = async (req, res) => {
+const searchRepairs = async (req: Request, res: Response) => {
   try {
     const searchStr = req.body.searchPhrase;
     const limit = Number(req.body.limit) || 10;
@@ -237,29 +239,11 @@ const searchRepairs = async (req, res) => {
   }
 };
 
-//!permanent delete
-//const deletePost = async (req, res) => {
-//   try {
-//     const user = await User.findOne({ username: req.user.username });
-//     const report = await Repair.findById({ _id: req.params.id });
-
-//     // if(user.role === 'admin' || report.createdBy === user.username ){
-//     //     report.removed = true;
-//     //     await report.save()
-//     //     res.redirect('/repair/')
-//     // }else{
-//     //     console.log('user not allowed')
-//     //     throw new Error(`user: ${user.username} not allowed`)
-//     // }
-//   } catch (error) {
-//     res.send({
-//       err: "delete error implemented ID: " + req.params.id,
-//       message: error.message,
-//     });
-//   }
-// };
-
-async function enforceMaxDocuments(repairId, schema, maxBackups) {
+async function enforceMaxDocuments(
+  repairId: string,
+  schema,
+  maxBackups: number
+) {
   const backupLimit = maxBackups;
   try {
     // Find all documents with the given `repairId`, sorted by `createdAt`

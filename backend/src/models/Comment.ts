@@ -1,5 +1,10 @@
 import mongoose from "mongoose";
+// NOT DONE OR REVIEWED
 
+//comments on repair reports
+//users can comment on repair reports
+//comments can be replied to
+//comments can be nested
 const commentSchema = new mongoose.Schema({
   userid: {
     type: String,

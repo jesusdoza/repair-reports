@@ -1,7 +1,8 @@
-const { cloudinary } = require("../../config/cloudinarySdk");
-const signatureUtility = require("../../utilities/signuploadform");
+import cloudinary from "../../config/cloudinarySdk.js";
+import signatureUtility from "../../utilities/signuploadform.js";
 
-const deleteImage = async (req, res) => {
+import type { Request, Response } from "express";
+const deleteImage = async (req: Request, res: Response) => {
   const { imageId } = req.body;
 
   // const { signature, timestamp } = signatureUtility.signuploadform();
@@ -20,7 +21,7 @@ const deleteImage = async (req, res) => {
       result: "delete",
       asset: imageId,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.log("error", error);
 
     if (error?.message == "not found") {
@@ -37,4 +38,4 @@ const deleteImage = async (req, res) => {
   }
 };
 
-module.exports = { deleteImage };
+export default { deleteImage };

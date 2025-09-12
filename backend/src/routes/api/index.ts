@@ -1,16 +1,16 @@
 const router = require("express").Router();
-const apiAuthController = require("../../controllers/api/apiAuth");
-const membersRouter = require("./membersRouter.js");
-const {
+import apiAuthController from "../../controllers/api/apiAuth";
+import membersRouter from "./membersRouter.js";
+import {
   clerkAuthMiddleware,
   loadUserIntoRequest,
   verifyAuth,
-} = require("../../middleware/auth");
-const repairRouter = require("./repairs");
-const signatureRouter = require("./signature.js");
-const imagesRouter = require("./imagesRouter.js");
+} from "../../middleware/auth";
+import repairRouter from "./repairs";
+import signatureRouter from "./signature.js";
+import imagesRouter from "./imagesRouter.js";
 
-const inviteController = require("../../controllers/api/inviteController.js");
+import inviteController from "../../controllers/api/inviteController.js";
 
 // /api/*
 

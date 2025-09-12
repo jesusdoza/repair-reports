@@ -1,9 +1,10 @@
-const Invite = require("../../models/Invite");
-const Member = require("../../models/Member");
-const uuidv4 = require("uuid").v4;
+import Invite from "../../models/Invite.js";
+import Member from "../../models/Member.js";
+import { v4 as uuidv4 } from "uuid";
+import type { Request, Response } from "express";
 
 //get specific invite
-const getInvite = async (req, res) => {
+const getInvite = async (req: Request, res: Response) => {
   const inviteCode = req.params["invitecode"] || "";
   const password = req.query.password || "";
   // console.log("invitePassword", password);
@@ -38,7 +39,7 @@ const getInvite = async (req, res) => {
 };
 
 //get all invites user has created
-const getUsersInvites = async (req, res) => {
+const getUsersInvites = async (req: Request, res: Response) => {
   const userId = req.user._id;
   try {
     const invites = await Invite.find({ createdBy: userId });
@@ -70,7 +71,7 @@ createdBy:string
 }
 
 */
-const postInvite = async (req, res) => {
+const postInvite = async (req: Request, res: Response) => {
   const { password, groups } = req.body;
   const userId = String(req.user._id);
 
@@ -119,7 +120,8 @@ const postInvite = async (req, res) => {
 };
 
 //delete invite
-const deleteInvite = async (req, res) => {
+const deleteInvite = async (req: Request, res: Response) => {
+  // @ts-expect-error req will have user
   const userId = String(req.user._id);
 
   const inviteCode = req.params.inviteCode;
@@ -148,7 +150,7 @@ const deleteInvite = async (req, res) => {
       message: "invite deleted",
       inviteCode,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error(error.message);
     res.status(500).send({
       message: "failed to delete invite",
@@ -161,7 +163,7 @@ const deleteInvite = async (req, res) => {
 //pass in group ids to verify user is member with valid role
 //todo verify user has correct permissions to create invite
 //TODO create an allowed group
-async function verifyGroupMembership(groupIds = [], userId) {
+async function verifyGroupMembership(groupIds: string[] = [], userId: string) {
   if (groupIds.length == 0) return [];
 
   const allowed = await Member.find({

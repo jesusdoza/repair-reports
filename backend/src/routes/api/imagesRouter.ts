@@ -1,6 +1,8 @@
-const router = require("express").Router();
-const imagesController = require("../../controllers/api/imagesController.js");
+import { Router } from "express";
+import imagesController from "../../controllers/api/imagesController.js";
+
+const router = Router();
 
 router.delete("/", imagesController.deleteImage);
 
-module.exports = router;
+export default router;

@@ -5,7 +5,7 @@
 
 import type { Request, Response } from "express";
 
-const signature = require("../utilities/signuploadform");
+import signature from "../utilities/signuploadform.js";
 
 // const postSignForm = async (req: Request, res: Response) => {
 //   const userId = req.user._id;

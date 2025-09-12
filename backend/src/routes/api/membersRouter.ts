@@ -1,7 +1,8 @@
-const router = require("express").Router();
-const membersController = require("../../controllers/api/membersController.js");
+import { Router } from "express";
+import membersController from "../../controllers/api/membersController.js";
 
+const router = Router();
 router.post("/join", membersController.addMemberTogroup);
 router.get("/user", membersController.getUsersGroups);
 
-module.exports = router;
+export default router;
