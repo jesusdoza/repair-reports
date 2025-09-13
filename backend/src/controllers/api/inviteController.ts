@@ -2,6 +2,7 @@ import Invite from "../../models/Invite.js";
 import Member from "../../models/Member.js";
 import { v4 as uuidv4 } from "uuid";
 import type { Request, Response } from "express";
+import type Organization from "../../models/Organization.js";
 
 //get specific invite
 const getInvite = async (req: Request, res: Response) => {
@@ -16,7 +17,7 @@ const getInvite = async (req: Request, res: Response) => {
     const invite = await Invite.findOne({
       inviteCode,
       password,
-    });
+    }).lean();
 
     if (!invite) {
       res.status(404).send({ inviteCode });
@@ -28,8 +29,11 @@ const getInvite = async (req: Request, res: Response) => {
       return;
     }
 
-    res.send({ groups: invite.groups, inviteCode: invite.inviteCode });
-  } catch (error) {
+    res.send({
+      organization: invite.organizationName,
+      message: "invite found",
+    });
+  } catch (error: any) {
     console.error(error.message);
     res.status(500).send({
       message: "failed to get invite",
@@ -40,9 +44,10 @@ const getInvite = async (req: Request, res: Response) => {
 
 //get all invites user has created
 const getUsersInvites = async (req: Request, res: Response) => {
+  // @ts-expect-error req will have user
   const userId = req.user._id;
   try {
-    const invites = await Invite.find({ createdBy: userId });
+    const invites = await Invite.find({ createdBy: userId }).lean();
 
     if (invites.length === 0) {
       res.status(404).send({
@@ -52,7 +57,7 @@ const getUsersInvites = async (req: Request, res: Response) => {
     }
 
     res.send({ invites });
-  } catch (error) {
+  } catch (error: any) {
     console.error(error.message);
     res.status(500).send({
       message: "failed to get users invites",
@@ -61,8 +66,6 @@ const getUsersInvites = async (req: Request, res: Response) => {
 };
 
 //create single invite
-
-/* 
 type Invite = {
 inviteCode:string
 groupsId:string[]
@@ -72,49 +75,51 @@ createdBy:string
 
 */
 const postInvite = async (req: Request, res: Response) => {
-  const { password, groups } = req.body;
-  const userId = String(req.user._id);
+  // @ts-expect-error req will have user
+  const userId = req.user._id
+  const { password, organizationId } = req.body;
 
   //no groups provided to create invite
-  if (!groups) {
-    res.status(404).send({ groups });
+  if (!organizationId) {
+    res.status(404).send({ message: "no organization provided" });
     return;
   }
 
   // const allowedGroups: [{ id: string, name: string }] = [];
-  let allowedGroups = [];
+  let allowedToInvite = false;
   try {
-    allowedGroups = await verifyGroupMembership(groups, userId);
+    allowedToInvite = await verifyOrgInviteRole(organizationId, userId);
 
     //not allowed to invite in any group
-    if (allowedGroups.length === 0) throw Error("User Not Allowed");
-  } catch (error) {
+    if (!allowedToInvite) throw Error("User Not Allowed");
+
+  } catch (error:any) {
     console.error("error.message", error.message);
 
     res.status(401).send({
       message: "failed to create invite",
-      groups,
+      error: error.message,
+      organizationId,
     });
     return;
   }
 
-  //todo create the invite document with random uuid with maybe 6 chars
   //must be unique invite code
   const newInvite = new Invite({
     inviteCode: uuidv4().slice(0, 6).toUpperCase(),
     password,
-    groups: allowedGroups,
+    groups: allowedToInvite,
     createdBy: userId,
   });
 
   try {
     await newInvite.save();
     res.send({ newInvite });
-  } catch (error) {
+  } catch (error:any) {
     console.error(error.message);
     res.status(500).send({
       message: "failed to create invite",
-      groups,
+      error: error.message,
     });
   }
 };
@@ -163,19 +168,15 @@ const deleteInvite = async (req: Request, res: Response) => {
 //pass in group ids to verify user is member with valid role
 //todo verify user has correct permissions to create invite
 //TODO create an allowed group
-async function verifyGroupMembership(groupIds: string[] = [], userId: string) {
-  if (groupIds.length == 0) return [];
+async function verifyOrgInviteRole(orgId: string, userId: string) {
 
-  const allowed = await Member.find({
+  const allowed = await Member.findOne({
     userId,
-    groupId: { $in: groupIds },
-  });
+    organization: orgId,
+  }).lean();
 
-  console.log("allowed", allowed);
 
-  return allowed.map((g) => {
-    return { id: g.groupId, name: g.groupName };
-  });
+ return !!allowed;
 }
 
 module.exports = { getInvite, getUsersInvites, postInvite, deleteInvite };

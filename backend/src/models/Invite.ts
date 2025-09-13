@@ -17,7 +17,10 @@ const InviteSchema = new mongoose.Schema(
       ref: "Organization",
       required: false,
     },
-
+    organizationName: {
+      type: String,
+      required: true,
+    },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
