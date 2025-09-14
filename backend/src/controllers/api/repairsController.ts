@@ -4,6 +4,7 @@ import type { RepairT } from "../../services/RepairService.js";
 import { get } from "http";
 import Organization from "../../models/Organization.js";
 import mongoose, { mongo } from "mongoose";
+import { Repair } from "../../models/Repair.js";
 
 const REPAIR_INDEX = process.env.search_index;
 const MAX_BACKUPS = Number(process.env.max_repair_backups ?? 3);
@@ -124,17 +125,18 @@ const getNewestRepairs = async (req: Request, res: Response) => {
 };
 
 const updateRepair = async (req: Request, res: Response) => {
-  let previousData; //hold original before update
-  const maxBackups = MAX_BACKUPS;
+  const id = req.body.id;
+  const updateData: Partial<RepairT> = req.body.repairData;
+  if (!id) throw new Error("no id provided");
   try {
-    const updatedDoc = req.body.repairData;
+    const updatedDoc = await RepairService.updateRepair(id, updateData);
 
     res
       .status(200)
       .json({ message: "repair update", status: "success", updatedDoc });
   } catch (error: any) {
     res.status(400).json({
-      message: `failed to update document: ${updatedDoc._id}`,
+      message: `failed to update document: ${id}`,
       error: error.message,
     });
   }
@@ -142,23 +144,18 @@ const updateRepair = async (req: Request, res: Response) => {
 
 //soft delete post
 const deleteRepair = async (req: Request, res: Response) => {
+  // @ts-expect-error
   const userId = String(req.user._id);
-  const repairId = req.query.id;
+  const repairId = String(req.query.id);
+
+  if (!repairId) {
+    res.status(400).json({ message: "no repair ID provided" });
+    return;
+  }
 
   try {
-    //TODO create utility to verify allowed or not allowed actions
-    const user = await User.findOne({ _id: userId });
-    const repairData = await Repair.findById({ _id: repairId });
-
-    if (user.role === "admin" || repairData.createdBy === userId) {
-      repairData.removed = true;
-      await repairData.save();
-
-      res.json({ removed: repairData });
-    } else {
-      throw new Error(`user: ${user.username} not allowed`);
-    }
-  } catch (error) {
+    await RepairService.deleteRepair(repairId);
+  } catch (error: any) {
     res.send({
       err: "delete error ID: " + repairId,
       message: error.message,
@@ -171,20 +168,23 @@ const searchRepairs = async (req: Request, res: Response) => {
   try {
     const searchStr = req.body.searchPhrase;
     const limit = Number(req.body.limit) || 10;
-    const results = await Repair.aggregate([
-      {
-        $search: {
-          index: REPAIR_INDEX,
-          text: {
-            query: searchStr,
-            //   path:["title","searchtags","procedureArr","instructions"],
-            path: { wildcard: "*" },
-            fuzzy: { maxEdits: 2, prefixLength: 3 },
-          },
-        },
-      },
-    ]).limit(limit);
-    res.json({ repairs: results });
+
+    const results = RepairService.searchRepairs(searchStr, limit);
+
+    // const results = await Repair.aggregate([
+    //   {
+    // $search: {
+    //   index: REPAIR_INDEX,
+    //   text: {
+    //     query: searchStr,
+    //     //   path:["title","searchtags","procedureArr","instructions"],
+    //     path: { wildcard: "*" },
+    //     fuzzy: { maxEdits: 2, prefixLength: 3 },
+    //   },
+    // },
+    //   },
+    // ]).limit(limit);
+    // res.json({ repairs: results });
   } catch (error) {
     res
       .status(400)

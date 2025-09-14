@@ -1,6 +1,8 @@
 import Mongoose from "mongoose";
 import { Repair } from "../models/Repair.js";
 
+const REPAIRS_INDEX = process.env.search_index || "repairs_index";
+
 type ImageObjectT = {
   url: string;
   caption?: string;
@@ -110,6 +112,43 @@ class RepairService {
       },
     ]);
     return aggregateResults;
+  }
+
+  static async searchRepairs({
+    searchStr,
+    limit = 10,
+    searchIndex,
+  }: {
+    searchStr: string;
+    limit?: number;
+    searchIndex?: string | undefined;
+  }) {
+    const results = await Repair.aggregate([
+      {
+        $search: {
+          index: REPAIRS_INDEX,
+          text: {
+            query: searchStr,
+            searchAfter: searchIndex,
+            //   path:["title","searchtags","procedureArr","instructions"],
+            path: { wildcard: "*" },
+            fuzzy: { maxEdits: 2, prefixLength: 3 },
+          },
+        },
+      },
+      {
+        $addFields: {
+          paginationToken: { $meta: "searchSequenceToken" },
+        },
+      },
+      {
+        $facet: {
+          metaData: [{ $count: "total" }],
+          results: [{ $limit: 5 }],
+        },
+      },
+    ]);
+    return results;
   }
 }
 
