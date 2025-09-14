@@ -14,7 +14,7 @@ const ImageSchema = new mongoose.Schema(
 const ProcedureSchema = new mongoose.Schema(
   {
     images: [ImageSchema],
-    instructions: { type: String, required: true },
+    instructions: { type: String },
   },
   { _id: true }
 ); // Keep _id for procedures so you can update/delete them individually
@@ -22,6 +22,11 @@ const ProcedureSchema = new mongoose.Schema(
 const RepairSchema = new mongoose.Schema(
   {
     title: { type: String, required: true, trim: true },
+    organizationId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Organization",
+      required: true,
+    },
     status: {
       type: String,
       enum: ["pending", "in_progress", "completed"],
@@ -29,8 +34,6 @@ const RepairSchema = new mongoose.Schema(
     },
     type: {
       type: String,
-      enum: ["board", "computer", "other"],
-      required: true,
     },
     category: { type: String },
     manufacturer: { type: String },
@@ -45,7 +48,10 @@ const RepairSchema = new mongoose.Schema(
       required: true,
     },
     removed: { type: Boolean, default: false },
-    procedures: [ProcedureSchema],
+    procedures: {
+      type: [ProcedureSchema],
+      default: [],
+    },
   },
   {
     timestamps: { createdAt: true, updatedAt: true },
