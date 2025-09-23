@@ -1,7 +1,6 @@
 import type { Request, Response } from "express";
 import RepairService from "../../services/RepairService.js";
 import type { RepairT } from "../../services/RepairService.js";
-import { get } from "http";
 import Organization from "../../models/Organization.js";
 import mongoose, { mongo } from "mongoose";
 import { Repair } from "../../models/Repair.js";
@@ -169,7 +168,7 @@ const searchRepairs = async (req: Request, res: Response) => {
     const searchStr = req.body.searchPhrase;
     const limit = Number(req.body.limit) || 10;
 
-    const results = RepairService.searchRepairs(searchStr, limit);
+    const results = await RepairService.searchRepairs({ searchStr, limit });
 
     // const results = await Repair.aggregate([
     //   {
@@ -185,42 +184,42 @@ const searchRepairs = async (req: Request, res: Response) => {
     //   },
     // ]).limit(limit);
     // res.json({ repairs: results });
-  } catch (error) {
+  } catch (error: any) {
     res
       .status(400)
       .json({ message: "failed to get repairs", error: error.message });
   }
 };
 
-async function enforceMaxDocuments(
-  repairId: string,
-  schema,
-  maxBackups: number
-) {
-  const backupLimit = maxBackups;
-  try {
-    // Find all documents with the given `repairId`, sorted by `createdAt`
-    const backups = await schema.find({ repairId }).sort({
-      createdAt: 1,
-    });
+// async function enforceMaxBackupsDocuments(
+//   repairId: string,
+//   schema,
+//   maxBackups: number
+// ) {
+//   const backupLimit = maxBackups;
+//   try {
+//     // Find all documents with the given `repairId`, sorted by `createdAt`
+//     const backups = await schema.find({ repairId }).sort({
+//       createdAt: 1,
+//     });
 
-    // Check if there are more than 3 documents
-    if (backups.length > backupLimit) {
-      // Calculate how many extra documents to delete
-      const excessCount = backups.length - backupLimit;
+//     // Check if there are more than 3 documents
+//     if (backups.length > backupLimit) {
+//       // Calculate how many extra documents to delete
+//       const excessCount = backups.length - backupLimit;
 
-      // Get the IDs of the oldest documents
-      const idsToDelete = backups.slice(0, excessCount).map((doc) => doc._id);
+//       // Get the IDs of the oldest documents
+//       const idsToDelete = backups.slice(0, excessCount).map((doc) => doc._id);
 
-      // Delete the excess documents
-      await schema.deleteMany({ _id: { $in: idsToDelete } });
-    }
-  } catch (error) {
-    console.error("Error enforcing max documents:", error);
-  }
-}
+//       // Delete the excess documents
+//       await schema.deleteMany({ _id: { $in: idsToDelete } });
+//     }
+//   } catch (error) {
+//     console.error("Error enforcing max documents:", error);
+//   }
+// }
 
-module.exports = {
+export default {
   getRepairById,
   addRepair,
   getNewestRepairs,
