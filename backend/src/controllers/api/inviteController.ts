@@ -2,7 +2,7 @@ import Invite from "../../models/Invite.js";
 import Member from "../../models/Member.js";
 import { v4 as uuidv4 } from "uuid";
 import type { Request, Response } from "express";
-import type Organization from "../../models/Organization.js";
+// import type Organization from "../../models/Organization.js";
 
 //get specific invite
 const getInvite = async (req: Request, res: Response) => {
@@ -67,16 +67,15 @@ const getUsersInvites = async (req: Request, res: Response) => {
 
 //create single invite
 type Invite = {
-inviteCode:string
-groupsId:string[]
-createdAt:Date
-createdBy:string
-}
+  inviteCode: string;
+  groupsId: string[];
+  createdAt: Date;
+  createdBy: string;
+};
 
-*/
 const postInvite = async (req: Request, res: Response) => {
   // @ts-expect-error req will have user
-  const userId = req.user._id
+  const userId = req.user._id;
   const { password, organizationId } = req.body;
 
   //no groups provided to create invite
@@ -92,8 +91,7 @@ const postInvite = async (req: Request, res: Response) => {
 
     //not allowed to invite in any group
     if (!allowedToInvite) throw Error("User Not Allowed");
-
-  } catch (error:any) {
+  } catch (error: any) {
     console.error("error.message", error.message);
 
     res.status(401).send({
@@ -115,7 +113,7 @@ const postInvite = async (req: Request, res: Response) => {
   try {
     await newInvite.save();
     res.send({ newInvite });
-  } catch (error:any) {
+  } catch (error: any) {
     console.error(error.message);
     res.status(500).send({
       message: "failed to create invite",
@@ -169,14 +167,12 @@ const deleteInvite = async (req: Request, res: Response) => {
 //todo verify user has correct permissions to create invite
 //TODO create an allowed group
 async function verifyOrgInviteRole(orgId: string, userId: string) {
-
   const allowed = await Member.findOne({
     userId,
     organization: orgId,
   }).lean();
 
-
- return !!allowed;
+  return !!allowed;
 }
 
-module.exports = { getInvite, getUsersInvites, postInvite, deleteInvite };
+export default { getInvite, getUsersInvites, postInvite, deleteInvite };

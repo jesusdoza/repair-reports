@@ -3,4 +3,4 @@ const formController = require("../../controllers/formController");
 
 router.get("/", formController.signForm);
 
-module.exports = router;
+export default router;
