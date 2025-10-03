@@ -7,7 +7,7 @@ import cors from "cors";
 // import MongoStore from "connect-mongo";
 // import cookieParser from "cookie-parser";
 
-require("dotenv").config({ path: "./config/.env" }); // to use with enviroment variables initializes enviroment vars
+// require("dotenv").config({ path: "./config/.env" }); // to use with enviroment variables initializes enviroment vars
 import { corsOptionsHandler } from "./config/corsOptionsHandler.js";
 
 try {
@@ -21,7 +21,7 @@ const app = express();
 const cookieMaxAge = 15 * 60 * 1000;
 
 app.set("view engine", "ejs");
-app.use(require("./middleware/httpsRedirect").httpsRedirect);
+// app.use(require("./middleware/httpsRedirect").httpsRedirect);
 app.use(cors(corsOptionsHandler));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); //get body data
@@ -61,13 +61,13 @@ app.use(express.static("public"));
 // import dashboardRoutes from "./routes/dashboard.js";
 // import commentRoutes from "./routes/comments.js";
 import apiRoutes from "./routes/api/index.js";
-import reactRoutes from "./routes/react/index.js";
+// import reactRoutes from "./routes/react/index.js";
 
 // =============================================================
 // ROUTES
 app.use("/api", apiRoutes);
-app.use("/", reactRoutes);
-app.use("*", reactRoutes);
+// app.use("/", reactRoutes);
+// app.use("*", reactRoutes);
 // app.use("/login", loginRoutes);
 // app.use("/logout", logoutRoutes);
 // app.use("/signup", signUpRoutes);

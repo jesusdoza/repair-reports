@@ -1,5 +1,7 @@
-const router = require("express").Router();
-const apiController = require("../../controllers/api/repairsController");
+import apiController from "../../controllers/api/repairsController.js";
+import { Router } from "express";
+
+const router = Router();
 
 router.get("/", apiController.getNewestRepairs);
 router.post("/", apiController.addRepair);
