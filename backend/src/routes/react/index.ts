@@ -1,7 +1,9 @@
-const router = require("express").Router();
+import { Router } from "express";
 
-const path = require("path");
-const fs = require("fs");
+import { resolve } from "path";
+import { readdir, readFile } from "fs";
+
+const router = Router();
 
 router.get("/", async (req, res) => {
   console.log("getting page for react");
@@ -9,19 +11,19 @@ router.get("/", async (req, res) => {
 
   try {
     // Read the contents of the directory
-    fs.readdir(directoryPath, (err, files) => {
+    readdir(directoryPath, (err, files) => {
       if (err) {
         console.error("Error reading directory:", err);
         return;
       }
     });
 
-    await fs.readFile(path.resolve("./public/index.html"));
+    await readFile(resolve("./public/index.html"));
 
-    res.sendFile(path.resolve("./public/index.html"));
+    res.sendFile(resolve("./public/index.html"));
   } catch (error) {
     res.send({ error: "no file found" });
   }
 });
 
-module.exports = router;
+export default router;

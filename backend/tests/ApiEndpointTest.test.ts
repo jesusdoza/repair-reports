@@ -4,7 +4,7 @@ import { App } from "supertest/types.js";
 
 import "./testEnvSetup/mockEnv.js"; //mock env variables loaded need to load before app wont work in same file for some reason
 
-import app from "../app.js";
+import app from "../src/app.js";
 import { setupDatabase, teardownDatabase } from "./testEnvSetup/mockMongoDb.js";
 
 beforeAll(async () => {

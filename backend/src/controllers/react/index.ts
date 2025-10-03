@@ -3,4 +3,4 @@ const serveApp = (req, res) => {
   res.sendFile(path.resolve("/public/react/index.html"));
 };
 
-module.exports = { serveApp };
+export { serveApp };

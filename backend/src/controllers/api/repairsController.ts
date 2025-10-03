@@ -9,8 +9,7 @@ const REPAIR_INDEX = process.env.search_index;
 const MAX_BACKUPS = Number(process.env.max_repair_backups ?? 3);
 
 const fetchUserRepairs = async (req: Request, res: Response) => {
-  // @ts-expect-error
-  const userId = req.user.id;
+  const userId = req.user?.appUserId;
 
   const limit = req.query.limit || 10;
   const currentPage = req.query.page || 1;

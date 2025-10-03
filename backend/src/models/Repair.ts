@@ -22,21 +22,24 @@ const ProcedureSchema = new mongoose.Schema(
 const RepairSchema = new mongoose.Schema(
   {
     title: { type: String, required: true, trim: true },
-    organizationId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Organization",
-      required: true,
-    },
+    // organizationId: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "Organization",
+    //   required: true,
+    // },
     status: {
       type: String,
       enum: ["pending", "in_progress", "completed"],
       default: "pending",
     },
+    //model of board or partnumber
     type: {
       type: String,
+      default: "",
     },
-    category: { type: String },
-    manufacturer: { type: String },
+    //brand of board or other name
+    category: { type: String, default: "" },
+    manufacturer: { type: String, default: "" },
     visibility: {
       type: String,
       enum: ["public", "private", "organization"],

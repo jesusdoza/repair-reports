@@ -2,12 +2,12 @@
   "name": "repair-reports",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "server.ts",
   "type": "module",
   "scripts": {
     "dev": "concurrently 'npm:devserver'",
-    "devserver": "nodemon server.js",
-    "start": "node server.js",
+    "devserver": "nodemon --exec tsx src/server.ts",
+    "start": "node dist/server.js",
     "test:e2e": "npx cypress run",
     "test": "vitest run"
   },
@@ -31,7 +31,7 @@
     "mongodb": "^4.17.2",
     "mongoose": "^6.13.8",
     "morgan": "^1.10.1",
-    "tailwindcss": "^3.4.18",
+    "tsx": "^4.20.6",
     "typescript": "^5.9.3",
     "uuid": "^10.0.0"
   },
@@ -39,8 +39,9 @@
     "@types/uuid": "^10.0.0",
     "concurrently": "^8.0.1",
     "mongodb-memory-server": "^10.0.0",
-    "nodemon": "^3.1.9",
+    "nodemon": "^3.1.10",
     "supertest": "^7.0.0",
+    "ts-node": "^10.9.2",
     "vitest": "^3.0.9"
   }
 }

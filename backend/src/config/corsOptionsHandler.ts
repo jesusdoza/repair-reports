@@ -1,7 +1,9 @@
-function corsOptionsHandler(req, callback) {
+import type { Request } from "express";
+
+function corsOptionsHandler(req: Request, callback: Function) {
   const ORIGINS = process.env.origins_list;
   const NODE_ENV = process.env.NODE_ENV;
-  let urlList = [];
+  let urlList: string[] = [];
   const reqOrigin = String(req.header("Origin"));
   let isAllowed = false;
 
@@ -10,11 +12,12 @@ function corsOptionsHandler(req, callback) {
     return;
   }
   try {
+    if (!ORIGINS) throw new Error("no origins provided");
     urlList = urlList.concat(ORIGINS.split(","));
 
     console.log("urlList", urlList);
   } catch (error) {
-    console.log("error parsing oringin List", error);
+    console.log("error parsing origin List", error);
     isAllowed = false;
     callback(new Error("origin not allowed"));
   }
@@ -34,4 +37,4 @@ function corsOptionsHandler(req, callback) {
   callback(null, { origin: isAllowed, credentials: true });
 }
 
-module.exports = { corsOptionsHandler };
+export { corsOptionsHandler };

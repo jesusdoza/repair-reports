@@ -4,7 +4,7 @@ import request from "supertest";
 import { App } from "supertest/types.js";
 // import { setupDatabase, teardownDatabase } from "./testEnvSetup/setupTests.js";
 
-import app from "../app.js";
+import app from "../src/app.js";
 
 //in memory server setup and teardown
 import { setupDatabase, teardownDatabase } from "./testEnvSetup/mockMongoDb.js";
