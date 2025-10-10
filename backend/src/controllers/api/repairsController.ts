@@ -102,7 +102,7 @@ const addRepair = async (req: Request, res: Response) => {
 //get a number of newest repairs
 const getNewestRepairs = async (req: Request, res: Response) => {
   // @ts-expect-error
-  const organization = req.user.organization || "public";
+  const organization: string | undefined = req?.user?.organization || undefined;
   try {
     const numRepairs = req.query.num ? Number(req.query.num) : 8;
 

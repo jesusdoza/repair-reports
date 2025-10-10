@@ -82,20 +82,23 @@ class RepairService {
   }
 
   static async getLatestRepairs(limit = 10, page = 1, organizationId?: string) {
-    // return await Repair.find().sort({ createdAt: -1 }).limit(10);/
+    //no organization, no results
+    let orgId: Mongoose.Types.ObjectId | undefined = undefined;
 
     if (!organizationId) {
       return [];
     }
 
-    const orgId = new Mongoose.Types.ObjectId(organizationId);
+    orgId = new Mongoose.Types.ObjectId(organizationId);
+
     const skips = limit * (page - 1);
     const aggregateResults = await Repair.aggregate([
       {
-        //get only users repairs
+        //get only repairs
         $match: {
           removed: false,
           organizationId: orgId,
+          visibility: "public",
         },
       },
       {
