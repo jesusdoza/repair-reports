@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { set } from "mongoose";
 
 const ImageSchema = new mongoose.Schema(
   {
@@ -36,13 +36,23 @@ const RepairSchema = new mongoose.Schema(
     type: {
       type: String,
       default: "",
+      //lowercase and no spaces
+      set: (v: string) => v.toLowerCase().trim().replace(/\s+/g, "_"),
     },
     //brand of board or other name
-    category: { type: String, default: "" },
-    manufacturer: { type: String, default: "" },
+    category: {
+      type: String,
+      default: "",
+      set: (v: string) => v.toLowerCase().trim().replace(/\s+/g, "_"),
+    },
+    manufacturer: {
+      type: String,
+      default: "",
+      set: (v: string) => v.toLowerCase().trim().replace(/\s+/g, "_"),
+    },
     visibility: {
       type: String,
-      enum: ["public", "private", "organization"],
+      enum: ["public", "organization"],
       default: "public",
     },
     createdBy: {
