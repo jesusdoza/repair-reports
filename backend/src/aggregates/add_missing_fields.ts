@@ -55,13 +55,14 @@
   },
 ];
 
-// MongoDB Playground
-// Use Ctrl+Space inside a snippet or a string literal to trigger completions.
-
 // The current database to use.
-use("Cata");
+//this will add missing fields to all documents in the collection
+// new fields will have default values of previously defined schema
+// existing fields will remain unchanged
+// run this only once
+use("dev");
 
-db.getCollection("repair-reports").aggregate([
+db.getCollection("repairs").aggregate([
   {
     $addFields: {
       searchTags: "$searchtags",
@@ -79,7 +80,40 @@ db.getCollection("repair-reports").aggregate([
        * whenNotMatched: Action for non-matching docs.
        */
       {
-        into: "repair-reports",
+        into: "repairs",
+        on: "_id",
+        whenMatched: "merge",
+        whenNotMatched: "discard",
+      },
+  },
+]);
+
+//need to run on repairs collection
+// The current database to use.
+use("dev");
+
+// Find a document in a collection.
+db.getCollection("repairs").aggregate([
+  {
+    $addFields: {
+      status: "completed",
+      //   organization: "public", todo: later
+      type: "$boardType",
+      category: "$engineMake",
+      manufacturer: "$engineMake",
+    },
+  },
+  {
+    $merge:
+      /**
+       * into: The target collection.
+       * on: Fields to  identify.
+       * let: Defined variables.
+       * whenMatched: Action for matching docs.
+       * whenNotMatched: Action for non-matching docs.
+       */
+      {
+        into: "repairs",
         on: "_id",
         whenMatched: "merge",
         whenNotMatched: "discard",
