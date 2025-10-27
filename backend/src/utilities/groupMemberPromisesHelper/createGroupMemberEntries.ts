@@ -1,3 +1,4 @@
+//@ts-nocheck not recognized as module
 //UTILITY ********************************8
 //create member of group entries promises
 
