@@ -1,4 +1,4 @@
-//ts-nocheck data profile not updated for typescript
+//@ts-nocheck
 import * as fs from "fs";
 import * as readline from "readline";
 import * as path from "path";

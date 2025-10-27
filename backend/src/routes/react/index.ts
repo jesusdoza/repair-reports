@@ -18,7 +18,12 @@ router.get("/", async (req, res) => {
       }
     });
 
-    await readFile(resolve("./public/index.html"));
+    await readFile(resolve("./public/index.html"), (err, data) => {
+      if (err) {
+        console.error("Error reading file:", err);
+        return;
+      }
+    });
 
     res.sendFile(resolve("./public/index.html"));
   } catch (error) {
