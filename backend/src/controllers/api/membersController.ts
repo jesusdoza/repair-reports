@@ -21,7 +21,6 @@ const getUsersOrganization = async (req: Request, res: Response) => {
 const addMemberToOrganization = async (req: Request, res: Response) => {
   const invitecode = req.body.inviteCode;
   const password = req.body?.password;
-  // @ts-expect-error user will exist from auth middleware
   const user = req.user;
 
   if (!invitecode) {
@@ -45,8 +44,7 @@ const addMemberToOrganization = async (req: Request, res: Response) => {
 
   //create organization member entry
   const newMember = new Member({
-    user: user._id,
-    username: user.username,
+    user: user?.appUserId,
     roles: ["read"],
     organization: foundInvite.organization,
   });
