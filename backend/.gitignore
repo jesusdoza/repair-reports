@@ -10,6 +10,7 @@ compose.yaml
 /stylesheets/style.css
 ignoreFiles
 ignoreFiles
+/dist
 
 
 
