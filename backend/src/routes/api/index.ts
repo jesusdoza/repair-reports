@@ -31,7 +31,8 @@ const middlewareChain: any = [];
 //   ...middlewareChain,
 //   apiAuthController.apiVerifyLogin
 // );
-router.use("/repairs", ...middlewareChain, repairRouter);
+
+router.use("/repair", ...middlewareChain, repairRouter);
 // router.get("/invite", ...middlewareChain, inviteController.getUsersInvites);
 // router.post("/invite", ...middlewareChain, inviteController.postInvite);
 // router.use("/signform", ...middlewareChain, signatureRouter);

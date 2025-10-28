@@ -1,6 +1,8 @@
 // import packages
 import express from "express";
 import cors from "cors";
+import router from "./routes/index.js";
+
 // import mongoose from "mongoose";
 // import morgan from "morgan";
 // import flash from "express-flash";
@@ -9,7 +11,7 @@ import cors from "cors";
 
 // require("dotenv").config({ path: "./config/.env" }); // to use with enviroment variables initializes enviroment vars
 import { corsOptionsHandler } from "./config/corsOptionsHandler.js";
-
+import clerkMiddleware from "./middleware/clerkMidleware.js";
 try {
   require("./config/clerkClient.js");
 } catch (error) {
@@ -20,7 +22,7 @@ const app = express();
 // const PORT = 8000;
 const cookieMaxAge = 15 * 60 * 1000;
 
-app.set("view engine", "ejs");
+app.use(clerkMiddleware()); //clerk middleware to load user info
 // app.use(require("./middleware/httpsRedirect").httpsRedirect);
 app.use(cors(corsOptionsHandler));
 app.use(express.json());
@@ -65,7 +67,8 @@ import apiRoutes from "./routes/api/index.js";
 
 // =============================================================
 // ROUTES
-app.use("/api", apiRoutes);
+app.use(router);
+// app.use("/api", apiRoutes);
 // app.use("/", reactRoutes);
 // app.use("*", reactRoutes);
 // app.use("/login", loginRoutes);
