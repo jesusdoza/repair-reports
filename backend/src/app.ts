@@ -2,6 +2,7 @@
 import express from "express";
 import cors from "cors";
 import router from "./routes/index.js";
+import { clerkMiddleware } from "@clerk/express";
 
 // import mongoose from "mongoose";
 // import morgan from "morgan";
@@ -11,7 +12,6 @@ import router from "./routes/index.js";
 
 // require("dotenv").config({ path: "./config/.env" }); // to use with enviroment variables initializes enviroment vars
 import { corsOptionsHandler } from "./config/corsOptionsHandler.js";
-import clerkMiddleware from "./middleware/clerkMidleware.js";
 try {
   require("./config/clerkClient.js");
 } catch (error) {
