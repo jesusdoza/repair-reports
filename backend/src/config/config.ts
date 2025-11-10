@@ -9,14 +9,14 @@ const config = {
   ORIGIN_LIST: process.env.ORIGIN_LIST || "http://localhost:5173",
 
   //   clerk
-  CLERK_PUBLISHABLE_KEY: process.env.CLERK_PUBLISHABLE_KEY || "",
-  CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY || "",
-  CLERK_JWT_KEY: process.env.CLERK_JWT_KEY || "",
+  CLERK_PUBLISHABLE_KEY: process.env.CLERK_PUBLISHABLE_KEY || undefined,
+  CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY || undefined,
+  CLERK_JWT_KEY: process.env.CLERK_JWT_KEY || undefined,
 
   //cloudinary
-  CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME || "",
-  CLOUDINARY_CLOUD_KEY: process.env.CLOUDINARY_CLOUD_KEY || "",
-  CLOUDINARY_CLOUD_SECRET: process.env.CLOUDINARY_CLOUD_SECRET || "",
+  CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME || undefined,
+  CLOUDINARY_CLOUD_KEY: process.env.CLOUDINARY_CLOUD_KEY || undefined,
+  CLOUDINARY_CLOUD_SECRET: process.env.CLOUDINARY_CLOUD_SECRET || undefined,
   CLOUDINARY_CLOUD_FOLDER: process.env.CLOUDINARY_CLOUD_FOLDER || "repairs", //default folder
 };
 
