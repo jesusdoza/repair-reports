@@ -7,7 +7,7 @@ export default async function middleware(
   res: Response,
   next: Function
 ) {
-  //load user info from clerk and attach to req.user
+  //load user token from clerk and attach to req.user
   const token = req.headers.authorization?.split(" ")[1];
 
   if (!token) {
