@@ -74,39 +74,7 @@ const clerkLoadUserMiddleware = async (
         return next();
       }
 
-      //no existing user auth account found in db load from clerk
-      const externalAuthAccount = await clerkService.getUser(userId);
-
-      if (externalAuthAccount) {
-        // Associate the user with their external auth account
-        req.user = externalAuthAccount;
-      } else {
-        // No external auth account found for this user continue without setting req.user and allow rest of middleware chain to handle it
-        return next();
-      }
-
-      //find app user that matches external auth email
-      const appUserAccount = await User.findOne({
-        email: externalAuthAccount?.email,
-      });
-
-      //associate app user with external auth account
-      if (appUserAccount) {
-        req.user.appUserId = appUserAccount._id.toString();
-
-        //save user auth account to db for future requests
-        await UserAuthAccount.create({
-          userId: appUserAccount._id,
-          provider: authProvider,
-          email: externalAuthAccount.email,
-          providerUserId: externalAuthAccount.user_id,
-        });
-
-        next();
-        return;
-      }
-
-      // No app user found, continue with request using basic external auth data
+      //no existing user found continue with middleware
       return next();
     } catch (error) {
       next();
