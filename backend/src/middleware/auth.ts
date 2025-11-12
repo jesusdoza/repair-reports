@@ -6,8 +6,6 @@ import {
   clerkMiddleware,
 } from "@clerk/express";
 
-import User from "../models/User.js";
-import { clerkService } from "../services/auth/ClerkService.js";
 import type { NextFunction, Request, Response } from "express";
 import UserAuthAccount from "../models/UserAuthAccount.js";
 //middle ware verify user is authenticated
