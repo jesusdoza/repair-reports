@@ -8,11 +8,6 @@ const UserSchema = new mongoose.Schema(
       required: true,
       lowercase: true,
     },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-      immutable: true,
-    },
     role: {
       // application wide role default basic
       type: String,
@@ -21,8 +16,8 @@ const UserSchema = new mongoose.Schema(
     email: {
       unique: true,
       type: String,
-      default: "no_email@no_email.com",
       lowercase: true,
+      required: true,
     },
     isActive: {
       type: Boolean,
