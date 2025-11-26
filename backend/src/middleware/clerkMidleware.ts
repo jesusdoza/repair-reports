@@ -1,6 +1,7 @@
 // middleware to load clerk user info
 import type { Request, Response } from "express";
 import UserAuthAccount from "../models/UserAuthAccount.js";
+import { clerkClient } from "@clerk/express";
 
 export default async function middleware(
   req: Request,
@@ -22,6 +23,9 @@ export default async function middleware(
 
       //@ts-expect-error clerk middleware will set user
       const userId = clerkAuthSession?.userId || undefined;
+      const clerkUser = await clerkClient.users.getUser(userId);
+
+      const username = clerkUser.username || "new user";
 
       const existingUserAuthAccount = await UserAuthAccount.findOne({
         provider: authProvider,
@@ -34,6 +38,7 @@ export default async function middleware(
           userId: existingUserAuthAccount.providerUserId,
           provider: existingUserAuthAccount.provider,
           email: existingUserAuthAccount.email,
+          username: username,
           emailVerified: existingUserAuthAccount.emailVerified,
           appUserId: existingUserAuthAccount.userId.toString(),
         };
