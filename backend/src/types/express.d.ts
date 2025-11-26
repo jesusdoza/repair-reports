@@ -13,6 +13,7 @@ declare global {
         provider?: string;
         emailVerified?: boolean;
         appUserId?: string;
+        username?: string;
       };
       auth?: () => Promise<AuthObject>; // clerk middleware will add if user session exists
     }
