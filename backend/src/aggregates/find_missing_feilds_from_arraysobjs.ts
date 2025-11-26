@@ -10,11 +10,14 @@
         //on procerdures array, find objects missing imageObjs field
         procedures: {
           //match any
-          $elemMatch: {
+          $elemMatch: {$or:
+            [
             //where imageObjs field does not exist
             imageObjs: {
               $exists: false,
             },
+            
+          ],
           },
         },
       },
