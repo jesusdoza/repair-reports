@@ -1,0 +1,114 @@
+erDiagram
+    User {
+        ObjectId _id PK
+        string username
+        string role
+        string email
+        boolean isActive
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    Organization {
+        ObjectId _id PK
+        string name
+        ObjectId createdBy FK
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    Member {
+        ObjectId _id PK
+        ObjectId user FK
+        string username
+        string[] roles
+        ObjectId organization FK
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    Invite {
+        ObjectId _id PK
+        string inviteCode
+        string password
+        ObjectId organization FK
+        string organizationName
+        ObjectId createdBy FK
+        string status
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    Repair {
+        ObjectId _id PK
+        string title
+        string status
+        string type
+        string category
+        string manufacturer
+        string visibility
+        ObjectId createdBy FK
+        boolean removed
+        Procedure[] procedures
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    RepairHistory {
+        ObjectId _id PK
+        ObjectId repair FK
+        Object data
+        datetime createdAt
+    }
+
+    UserAuthAccount {
+        ObjectId _id PK
+        ObjectId userId FK
+        string provider
+        string providerUserId
+        string email
+        boolean emailVerified
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    Procedure {
+        ObjectId _id PK
+        Image[] images
+        string instructions
+    }
+
+    Image {
+        ObjectId _id PK
+        string url
+        string caption
+        string folder
+        string imageId
+        string thumbnail
+    }
+
+    %% Relationships
+    User ||--o{ Organization : "creates"
+    User ||--o{ Member : "belongs to"
+    Organization ||--o{ Member : "has"
+    User ||--o{ Invite : "creates"
+    Organization ||--o{ Invite : "for"
+    User ||--o{ Repair : "creates"
+    Repair ||--o{ RepairHistory : "has history"
+    Repair ||--o{ Comment : "has comments"
+    Comment ||--o{ Comment : "replies to"
+    User ||--o{ UserAuthAccount : "has auth"
+    Repair ||--o{ Procedure : "contains"
+    Procedure ||--o{ Image : "contains"
+
+%% styling
+style User fill:#90ee90,stroke:#000,stroke-width:2px,color:#000
+style Organization fill:#87cefa,stroke:#000,stroke-width:2px,color:#000
+style Member fill:#ffd580,stroke:#000,stroke-width:2px,color:#000
+style Invite fill:#ffb6b6,stroke:#000,stroke-width:2px,color:#000
+style Repair fill:#dab6ff,stroke:#000,stroke-width:2px,color:#000
+style RepairHistory fill:#ffb6ff,stroke:#000,stroke-width:2px,color:#000
+style Comment fill:#b0c4de,stroke:#000,stroke-width:2px,color:#000
+style UserAuthAccount fill:#a0ffff,stroke:#000,stroke-width:2px,color:#000
+style Procedure fill:#ffe4b5,stroke:#000,stroke-width:2px,color:#000
+style Image fill:#b0aaff,stroke:#000,stroke-width:2px,color:#000
