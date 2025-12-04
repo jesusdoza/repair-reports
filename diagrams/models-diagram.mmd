@@ -2,14 +2,14 @@ erDiagram
     User {
         ObjectId _id PK
         string username
-        string role
+        string role "admin, user, ?"
         string email
         boolean isActive
         datetime createdAt
         datetime updatedAt
     }
 
-    Organization {
+    Organization { 
         ObjectId _id PK
         string name
         ObjectId createdBy FK
@@ -29,12 +29,12 @@ erDiagram
 
     Invite {
         ObjectId _id PK
-        string inviteCode
+        string inviteCode "6 digit code"
         string password
         ObjectId organization FK
         string organizationName
         ObjectId createdBy FK
-        string status
+        string status "pending, accepted, revoked"
         datetime createdAt
         datetime updatedAt
     }
@@ -42,13 +42,14 @@ erDiagram
     Repair {
         ObjectId _id PK
         string title
-        string status
-        string type
-        string category
-        string manufacturer
-        string visibility
+        string status "pending, in-progress, completed"
+        string type "repair, maintenance, inspection could be FK to a predefined types"
+        string category "user defined categories"
+        string manufacturer "user defined manufacturers"
+        string model "user defined models"
+        string visibility "public, private"
         ObjectId createdBy FK
-        boolean removed
+        boolean removed "default: false"
         Procedure[] procedures
         datetime createdAt
         datetime updatedAt
@@ -57,15 +58,15 @@ erDiagram
     RepairHistory {
         ObjectId _id PK
         ObjectId repair FK
-        Object data
+        Object data "snapshot of repair data as its updated"
         datetime createdAt
     }
 
     UserAuthAccount {
         ObjectId _id PK
         ObjectId userId FK
-        string provider
-        string providerUserId
+        string provider "google, facebook, etc."
+        string providerUserId "user ID from the provider"
         string email
         boolean emailVerified
         datetime createdAt
@@ -82,8 +83,8 @@ erDiagram
         ObjectId _id PK
         string url
         string caption
-        string folder
-        string imageId
+        string folder "folder name or path in storage could be bucket name"
+        string imageId "unique identifier for the image"
         string thumbnail
     }
 
