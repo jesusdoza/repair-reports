@@ -1,6 +1,32 @@
 import mongoose, { set } from "mongoose";
 
-const ImageSchema = new mongoose.Schema(
+type ImageType = {
+  url: string;
+  caption?: string;
+  folder?: string;
+  imageId?: string;
+  thumbnail?: string;
+};
+
+type ProcedureType = {
+  images: ImageType[];
+  instructions: string;
+};
+
+type RepairType = {
+  title: string;
+  status: "pending" | "in_progress" | "completed";
+  type: string;
+  category: string;
+  manufacturer: string;
+  visibility: "public" | "organization";
+  createdBy: mongoose.Types.ObjectId;
+  organizationId: mongoose.Types.ObjectId;
+  removed: boolean;
+  procedures: ProcedureType[];
+};
+
+const ImageSchema = new mongoose.Schema<ImageType>(
   {
     url: { type: String, required: true },
     caption: { type: String },
@@ -11,7 +37,7 @@ const ImageSchema = new mongoose.Schema(
   { _id: true }
 );
 
-const ProcedureSchema = new mongoose.Schema(
+const ProcedureSchema = new mongoose.Schema<ProcedureType>(
   {
     images: [ImageSchema],
     instructions: { type: String },
@@ -19,14 +45,14 @@ const ProcedureSchema = new mongoose.Schema(
   { _id: true }
 ); // Keep _id for procedures so you can update/delete them individually
 
-const RepairSchema = new mongoose.Schema(
+const RepairSchema = new mongoose.Schema<RepairType>(
   {
     title: { type: String, required: true, trim: true },
-    // organizationId: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "Organization",
-    //   required: true,
-    // },
+    organizationId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Organization",
+      required: true,
+    },
     status: {
       type: String,
       enum: ["pending", "in_progress", "completed"],
@@ -71,6 +97,9 @@ const RepairSchema = new mongoose.Schema(
   }
 );
 
-export const Repair = mongoose.model("Repair", RepairSchema);
-export const Image = mongoose.model("Image", ImageSchema);
-export const Procedure = mongoose.model("Procedure", ProcedureSchema);
+export const Repair = mongoose.model<RepairType>("repairs", RepairSchema);
+export const Image = mongoose.model<ImageType>("Image", ImageSchema);
+export const Procedure = mongoose.model<ProcedureType>(
+  "Procedure",
+  ProcedureSchema
+);
