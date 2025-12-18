@@ -48,6 +48,7 @@ erDiagram
         string manufacturer "user defined manufacturers"
         string model "user defined models"
         string visibility "public, private"
+        ObjectId organizationId FK "organization association all repairs must belong to an organization"
         ObjectId createdBy FK
         boolean removed "default: false"
         Procedure[] procedures
