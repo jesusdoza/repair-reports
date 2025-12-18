@@ -1,0 +1,41 @@
+flowchart TD
+A[clerk signup] 
+B1(prompt user for organization invite code)
+B2(validate invite code)
+
+
+c1{valid code ?}
+c2(user redirected to error page allow continue signup)
+c31(user retrys entering invite code)
+c3(user continues signup without organization invite code)
+c4(user added to default organization as guest)
+
+d1(user continues signup with organization invite code)
+d2(user added to organization as member)
+d3(user redirected to welcome page)
+
+B10(create user profile)
+C(add user to organization)
+
+
+    A -->|redirect to client| B1
+    B1 --> B2
+    B2 --> c1
+    %% Decision: is the code valid?
+    c1 -->|yes| d1
+    c1 -->|no| c2 
+    %% invlalid code path
+    c2 --> c31
+    c31 -.-> c1
+    c31 --> c3
+    c3 --> c4
+    c4 --> B10
+
+    %% valid code path
+    d1 --> d2
+    d2 --> d3
+    d3 --> B10
+
+
+    %% user profile creation and organization addition
+    B10 --> C
