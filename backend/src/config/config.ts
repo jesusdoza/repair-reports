@@ -20,4 +20,19 @@ const config = {
   CLOUDINARY_CLOUD_FOLDER: process.env.CLOUDINARY_CLOUD_FOLDER || "repairs", //default folder
 };
 
+if (!config.MONGO_URI) {
+  throw new Error("MONGO_URI is not defined in environment variables");
+}
+
+if (
+  !config.CLOUDINARY_CLOUD_FOLDER ||
+  !config.CLOUDINARY_CLOUD_NAME ||
+  !config.CLOUDINARY_CLOUD_KEY ||
+  !config.CLOUDINARY_CLOUD_SECRET
+) {
+  throw new Error(
+    "Cloudinary configuration is incomplete in environment variables"
+  );
+}
+
 export default config;

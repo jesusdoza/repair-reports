@@ -5,6 +5,10 @@ const cloud_name = config.CLOUDINARY_CLOUD_NAME;
 const api_key = config.CLOUDINARY_CLOUD_KEY;
 const api_secret = config.CLOUDINARY_CLOUD_SECRET;
 
+if (!cloud_name || !api_key || !api_secret) {
+  throw new Error("Cloudinary configuration variables are missing");
+}
+
 cloudinary.config({
   api_key,
   api_secret,

@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 //finding out if procedures array has any objects missing imageObjs field
 
 [
