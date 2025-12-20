@@ -30,16 +30,16 @@ export const routes = createBrowserRouter([
       </ErrorBoundary>
     ),
   },
+  // {
+  //   path: "/login",
+  //   element: (
+  //     <ErrorBoundary componentName="LatestRepairsPage">
+  //       <LoginSignupContainer />
+  //     </ErrorBoundary>
+  //   ),
+  // },
   {
     path: "/login",
-    element: (
-      <ErrorBoundary componentName="LatestRepairsPage">
-        <LoginSignupContainer />
-      </ErrorBoundary>
-    ),
-  },
-  {
-    path: "/login/clerk",
     element: (
       <ErrorBoundary componentName="LatestRepairsPage">
         <ClerkSignInPage />
