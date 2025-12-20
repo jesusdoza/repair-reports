@@ -24,6 +24,7 @@ type RepairType = {
   organizationId: mongoose.Types.ObjectId;
   removed: boolean;
   procedures: ProcedureType[];
+  description?: string;
 };
 
 const ImageSchema = new mongoose.Schema<ImageType>(
@@ -53,6 +54,7 @@ const RepairSchema = new mongoose.Schema<RepairType>(
       ref: "Organization",
       required: true,
     },
+    description: { type: String, default: "" },
     status: {
       type: String,
       enum: ["pending", "in_progress", "completed"],
