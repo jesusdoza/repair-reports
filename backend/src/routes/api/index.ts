@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import { Router } from "express";
+import signupRouter from "./signupRouter.js";
 
 import {
   clerkAuthMiddleware,
@@ -33,6 +34,7 @@ const middlewareChain: any = [];
 // );
 
 router.use("/repair", ...middlewareChain, repairRouter);
+router.use("/signup", signupRouter);
 // router.get("/invite", ...middlewareChain, inviteController.getUsersInvites);
 // router.post("/invite", ...middlewareChain, inviteController.postInvite);
 // router.use("/signform", ...middlewareChain, signatureRouter);
