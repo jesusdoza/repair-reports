@@ -1,7 +1,15 @@
 import { time } from "console";
 import mongoose from "mongoose";
 
-const userAuthAccountSchema = new mongoose.Schema(
+interface IUserAuthAccountType {
+  userId: mongoose.Types.ObjectId;
+  provider: string;
+  providerUserId: string;
+  email: string;
+  emailVerified: boolean;
+}
+
+const userAuthAccountSchema = new mongoose.Schema<IUserAuthAccountType>(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -24,7 +32,7 @@ const userAuthAccountSchema = new mongoose.Schema(
 userAuthAccountSchema.index({ provider: 1 }, { unique: true });
 // Fast lookups for user’s accounts & primary
 
-const UserAuthAccount = mongoose.model(
+const UserAuthAccount = mongoose.model<IUserAuthAccountType>(
   "UserAuthAccount",
   userAuthAccountSchema
 );

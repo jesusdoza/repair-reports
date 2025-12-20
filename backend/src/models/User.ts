@@ -1,7 +1,14 @@
 import mongoose from "mongoose";
 // import bcrypt from "bcrypt";
 
-const UserSchema = new mongoose.Schema(
+type UserT = {
+  username: string;
+  role: "user";
+  email: string;
+  isActive: boolean;
+};
+
+const UserSchema = new mongoose.Schema<UserT>(
   {
     username: {
       type: String,
@@ -11,6 +18,7 @@ const UserSchema = new mongoose.Schema(
     role: {
       // application wide role default basic
       type: String,
+      enum: ["user"],
       default: "user",
     },
     email: {
@@ -26,8 +34,8 @@ const UserSchema = new mongoose.Schema(
   },
   {
     collection: "users",
-    timesestamps: { createdAt: true, updatedAt: true },
+    timestamps: true,
   }
 );
 
-export default mongoose.model("User", UserSchema);
+export default mongoose.model<UserT>("User", UserSchema);
