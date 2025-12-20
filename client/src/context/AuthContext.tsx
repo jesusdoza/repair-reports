@@ -194,6 +194,7 @@ export const AuthContextProvider = ({
     }
   };
 
+  //signup with provider like clerk oauth
   const signUpWithProvider = async ({
     email,
     username,

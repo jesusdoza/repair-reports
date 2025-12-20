@@ -5,6 +5,9 @@ const { CLOUDINARY_CLOUD_SECRET: apiSecret } = config;
 
 // Server-side function used to sign an upload form for cloudinary
 const signuploadform = (folderName: string) => {
+  if (!apiSecret) {
+    throw new Error("Cloudinary API secret is not defined");
+  }
   const timestamp = Math.round(new Date().getTime() / 1000);
   const signature = cloudinary.v2.utils.api_sign_request(
     {
