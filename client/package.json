@@ -27,6 +27,7 @@
     "@cloudinary/url-gen": "^1.16.1",
     "@heroicons/react": "^2.1.1",
     "@radix-ui/react-slot": "^1.1.2",
+    "@tanstack/react-query": "^5.90.12",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.17",
     "axios": "^1.6.7",
