@@ -50,6 +50,7 @@
   },
   "devDependencies": {
     "@shadcn/ui": "^0.0.4",
+    "@tanstack/eslint-plugin-query": "^5.91.2",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.4.6",
     "@testing-library/react": "^16.0.0",
