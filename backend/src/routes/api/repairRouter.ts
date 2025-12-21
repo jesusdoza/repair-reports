@@ -4,6 +4,9 @@ import { Router } from "express";
 const router = Router();
 
 router.get("/", apiController.getNewestRepairs);
+// router.get("/", (req, res) => {
+//   res.send("Repair endpoint is working");
+// });
 router.post("/", apiController.addRepair);
 router.put("/", apiController.updateRepair);
 router.post("/search", apiController.searchRepairs);

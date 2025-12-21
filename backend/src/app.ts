@@ -20,7 +20,7 @@ try {
 
 const app = express();
 // const PORT = 8000;
-const cookieMaxAge = 15 * 60 * 1000;
+// const cookieMaxAge = 15 * 60 * 1000;
 
 app.use(clerkMiddleware()); //clerk middleware to load user info
 // app.use(require("./middleware/httpsRedirect").httpsRedirect);

@@ -2,11 +2,7 @@ import type { Request, Response } from "express";
 import { Router } from "express";
 import signupRouter from "./signupRouter.js";
 
-import {
-  clerkAuthMiddleware,
-  clerkLoadUserMiddleware as loadUserIntoRequest,
-  verifyAuth,
-} from "../../middleware/auth.js";
+import { clerkLoadUserMiddleware, verifyAuth } from "../../middleware/auth.js";
 import repairRouter from "./repairRouter.js";
 // import membersRouter from "./membersRouter.js";
 // import imagesRouter from "./imagesRouter.js";
@@ -16,8 +12,8 @@ import repairRouter from "./repairRouter.js";
 
 // /api/*
 const router = Router();
-// const middlewareChain = [clerkAuthMiddleware, loadUserIntoRequest, verifyAuth];
-const middlewareChain: any = [];
+const middlewareChain = [clerkLoadUserMiddleware, verifyAuth];
+// const middlewareChain: any = [];
 
 //open endpoints
 // router.post("/login", apiAuthController.apiLogin);

@@ -21,7 +21,7 @@ type RepairType = {
   manufacturer: string;
   visibility: "public" | "organization";
   createdBy: mongoose.Types.ObjectId;
-  organizationId: mongoose.Types.ObjectId;
+  organization: mongoose.Types.ObjectId;
   removed: boolean;
   procedures: ProcedureType[];
   description?: string;
@@ -49,7 +49,7 @@ const ProcedureSchema = new mongoose.Schema<ProcedureType>(
 const RepairSchema = new mongoose.Schema<RepairType>(
   {
     title: { type: String, required: true, trim: true },
-    organizationId: {
+    organization: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Organization",
       required: true,

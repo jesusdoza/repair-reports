@@ -1,22 +1,36 @@
-import { useEffect, useState } from "react";
-
 import { RepairDataT } from "../../types";
-import useRepairApi from "./useRepairApi";
+import { useQuery } from "@tanstack/react-query";
+import RepairReportsApi from "@/api/RepairReportsApi";
 
-const useGetLatest = (limit: number) => {
-  const [repairsData, setRepairsData] = useState<RepairDataT[] | []>([]);
-  const { getLatestRepairs } = useRepairApi();
-  useEffect(() => {
-    const getData = async () => {
-      const response = await getLatestRepairs(limit);
+import { useAuth } from "@clerk/clerk-react";
 
-      setRepairsData(response);
-    };
+const useGetLatestRepairs = ({
+  requestLimit,
+}: {
+  requestLimit?: string | number;
+}) => {
+  const { getToken } = useAuth();
+  const limit = requestLimit ? Number(requestLimit) : 1;
 
-    getData();
-  }, []);
+  const tokenData = useQuery({
+    queryKey: ["userToken"],
+    queryFn: async () => {
+      return await getToken();
+    },
+  });
 
-  return repairsData;
+  const userToken = tokenData.data;
+
+  const { data, isError, isLoading } = useQuery<{
+    metaData: Map<string, string>;
+    results: RepairDataT[];
+  }>({
+    queryKey: ["latestRepairs", limit],
+    queryFn: () => RepairReportsApi.getLatestRepairs(limit, userToken),
+    staleTime: 0,
+    enabled: !!userToken,
+    initialData: { metaData: new Map(), results: [] },
+  });
+  return { data, isError, isLoading };
 };
-
-export default useGetLatest;
+export default useGetLatestRepairs;

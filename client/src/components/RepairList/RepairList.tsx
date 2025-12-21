@@ -11,13 +11,14 @@ interface latestRepairsProps {
 export default function RepairList({
   repairList,
 }: latestRepairsProps): React.ReactNode {
-  if (!repairList) {
+  if (!repairList || repairList?.length === 0) {
     return (
       <li>
         <h3>No repairs to display</h3>
       </li>
     );
   }
+
   const repairs = repairList.map((data) => {
     return (
       <li
@@ -30,12 +31,16 @@ export default function RepairList({
           <RepairCard
             title={data.title}
             summary={
-              data.procedureArr.length > 0 && data.procedureArr[0]?.instructions
+              data.procedureArr &&
+              data.procedureArr?.length &&
+              data.procedureArr[0]?.instructions
                 ? data.procedureArr[0]?.instructions
-                : ""
+                : "test summary"
             }
             previewUrl={
-              data.procedureArr.length > 0 && data?.procedureArr[0]?.images[0]
+              data.procedureArr &&
+              data.procedureArr?.length &&
+              data.procedureArr[0]?.images[0]
                 ? data.procedureArr[0].images[0]
                 : noImagePlaceholder
             }

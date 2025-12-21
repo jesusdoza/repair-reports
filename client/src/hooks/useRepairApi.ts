@@ -8,27 +8,6 @@ const API_URL = import.meta.env.VITE_API_URL;
 const useRepairApi = () => {
   const { unauthorizedError } = useAuthContext();
 
-  const getLatestRepairs = async (requestLimit?: string | number) => {
-    const limit = requestLimit ? Number(requestLimit) : 1;
-
-    try {
-      const response = await axios.get(`${API_URL}/repairs`, {
-        withCredentials: true,
-        params: { num: limit },
-      });
-
-      return response.data.repairs;
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        if (error?.response?.status && error?.response?.status == 401) {
-          console.log("unauthorized error @useRepairApi.getLatestRepairs");
-
-          unauthorizedError();
-        }
-      }
-    }
-  };
-
   const searchForRepair = async (phrase: string) => {
     try {
       const response = await axios.post(
@@ -171,7 +150,7 @@ const useRepairApi = () => {
     postRepair,
     updateRepair,
     getUploadSignature,
-    getLatestRepairs,
+    // getLatestRepairs: useGetLatestRepairs,
     searchForRepair,
     getRepairById,
     getUsersRepairs,

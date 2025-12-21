@@ -3,14 +3,28 @@ import { Repair } from "../classes/Repair";
 import { signatureT } from "../../types";
 const API_URL = import.meta.env.VITE_API_URL;
 
-const getLatestRepairs = async (limit: string | number) => {
-  // const response = await axios.get(`http://localhost:8000/api/repairs`, {
-  const response = await axios.get(`${API_URL}/api/repairs`, {
-    withCredentials: true,
-    params: { num: limit },
-  });
+const getLatestRepairs = async (
+  limit: string | number,
+  userToken: string | null | undefined
+) => {
+  if (!userToken) {
+    throw new Error("no user token provided");
+  }
+  try {
+    const response = await axios.get(`${API_URL}/api/repair`, {
+      withCredentials: true,
+      params: { num: limit },
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    });
 
-  return response.data.repairs;
+    console.log("response", response);
+
+    return response.data;
+  } catch (error) {
+    return [];
+  }
 };
 const searchForRepair = async (phrase: string) => {
   const response = await axios.post(

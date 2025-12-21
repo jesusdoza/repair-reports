@@ -35,11 +35,14 @@ class RepairService {
     return await Repair.create(data);
   }
 
-  static async getRepairById(id: string, organizationId: string) {
+  static async getRepairById(id: string, organization: string) {
     if (!id) throw new Error("no repair ID provided");
-    if (!organizationId) throw new Error("no organization ID provided");
+    if (!organization) throw new Error("no organization ID provided");
 
-    return await Repair.findOne({ _id: id, organizationId }).lean();
+    return await Repair.findOne({
+      _id: id,
+      organization: new Mongoose.Types.ObjectId(organization),
+    }).lean();
   }
 
   static async updateRepair(id: string, data: Partial<RepairT>) {
@@ -90,14 +93,13 @@ class RepairService {
     }
 
     orgId = new Mongoose.Types.ObjectId(organizationId);
-
     const skips = limit * (page - 1);
     const aggregateResults = await Repair.aggregate([
       {
         //get only repairs
         $match: {
           removed: false,
-          organizationId: orgId,
+          organization: orgId,
           visibility: "public",
         },
       },
@@ -114,7 +116,7 @@ class RepairService {
         },
       },
     ]);
-    return aggregateResults;
+    return aggregateResults[0];
   }
 
   static async searchRepairs({
@@ -151,7 +153,7 @@ class RepairService {
         },
       },
     ]);
-    return results;
+    return results[0];
   }
 }
 
