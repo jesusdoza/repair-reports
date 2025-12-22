@@ -6,7 +6,6 @@ import { readdir, readFile } from "fs";
 const router = Router();
 
 router.get("/", async (req, res) => {
-  console.log("getting page for react");
   const directoryPath = "../backend/public"; // Replace this with your directory path
 
   try {

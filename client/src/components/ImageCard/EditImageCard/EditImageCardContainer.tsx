@@ -105,8 +105,6 @@ export default function EditImageCardContainer({
         return;
       }
 
-      console.log("url change");
-
       formAction.updateImage({ ...imageData, imageUrl: urlText }, procedureId);
 
       //url changed of image either manually or file changed

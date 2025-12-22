@@ -53,7 +53,6 @@ function RepairsList({
   controls: ControlOption[];
   repairList: RepairDataT[];
 }) {
-  console.log("repairList 1", repairList);
   //create react components
   const list = repairList.map((repairObj) => {
     const title = repairObj?.title || "untitled repair";

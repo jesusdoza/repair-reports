@@ -40,7 +40,6 @@ export class Procedure implements ProcedureT {
       return;
     }
 
-    console.log("no procedure", procedure);
     return;
   }
 
@@ -60,7 +59,6 @@ export class Procedure implements ProcedureT {
     }
     //else nothing to instantiate so send back empty []
     else {
-      console.log("no imageobj or urls return empty []");
       return [];
     }
   }

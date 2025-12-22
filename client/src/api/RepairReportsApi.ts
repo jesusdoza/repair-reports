@@ -83,8 +83,6 @@ const getUploadSignature = async (folder: string) => {
 };
 
 const updateRepair = async (repair: Repair) => {
-  console.log("repair @updateRepair ", repair);
-
   try {
     const response = await axios.put(
       `${API_URL}/api/repairs`,
@@ -104,8 +102,6 @@ const updateRepair = async (repair: Repair) => {
 };
 
 const postRepair = async (repair: Repair) => {
-  console.log("repair @updateRepair ", repair);
-
   try {
     const response = await axios.post(
       `${API_URL}/api/repairs`,

@@ -22,8 +22,6 @@ const deleteImage = async (req: Request, res: Response) => {
       asset: imageId,
     });
   } catch (error: any) {
-    console.log("error", error);
-
     if (error?.message == "not found") {
       res.status(404).send({
         error: "not found",

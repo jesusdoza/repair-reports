@@ -14,8 +14,6 @@ function corsOptionsHandler(req: Request, callback: Function) {
   try {
     if (!ORIGINS) throw new Error("no origins provided");
     urlList = urlList.concat(ORIGINS.split(","));
-
-    console.log("urlList", urlList);
   } catch (error) {
     console.log("error parsing origin List", error);
     isAllowed = false;

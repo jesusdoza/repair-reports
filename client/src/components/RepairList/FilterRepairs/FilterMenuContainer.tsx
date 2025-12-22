@@ -30,7 +30,6 @@ export default function FilterMenuContainer({
   ///filter list displayed
   useEffect(() => {
     const newList = applyFilters(repairList, appliedFilters);
-    console.log("newList", newList);
     setFilteredList(newList);
   }, [appliedFilters]);
 
@@ -112,8 +111,6 @@ function createFilters(list: RepairDataT[]) {
   });
 
   const filterCategories: string[] = Array.from(categories.values());
-
-  // console.log("filterOptionsMap", Array.from(filterOptionsMap.entries()));
 
   return { filterCategories, filterOptionsMap };
 }

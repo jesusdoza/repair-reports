@@ -60,8 +60,6 @@ const signForm = async (req: Request, res: Response) => {
 
   const sig = signature.signuploadform(imageFolder);
 
-  console.log(`signform signature received `, sig);
-
   try {
     res.status(200).json({
       signature: sig.signature,
