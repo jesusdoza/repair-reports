@@ -8,7 +8,7 @@ import { Repair } from "../../models/Repair.js";
 const REPAIR_INDEX = process.env.search_index;
 const MAX_BACKUPS = Number(process.env.max_repair_backups ?? 3);
 
-const fetchUserRepairs = async (req: Request, res: Response) => {
+const getUsersRepairs = async (req: Request, res: Response) => {
   const userId = req.user?.appUserId;
 
   const limit = req.query.limit || 10;
@@ -18,14 +18,15 @@ const fetchUserRepairs = async (req: Request, res: Response) => {
     return res.status(401).json({ message: "Unauthorized" });
   }
 
-  const repairs = await RepairService.getUserRepairs(
+  const repairs = await RepairService.getUserRepairs({
     userId,
-    Number(req.query.limit),
-    Number(req.query.page)
-  );
+    limit: Number(req.query.limit),
+    skips: Number(req.query.page),
+  });
 
   res.status(200).json({
-    results: repairs,
+    results: repairs.results,
+    metaData: repairs.metaData,
     currentPage: Number(req.query.page) || 1,
     limitResults: Number(req.query.limit) || 10,
   });
@@ -223,7 +224,7 @@ export default {
   addRepair,
   getNewestRepairs,
   updateRepair,
-  getRepairsforUser: fetchUserRepairs,
+  getUsersRepairs,
   searchRepairs,
   deleteRepair,
 };

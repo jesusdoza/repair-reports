@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Repair } from "../classes/Repair";
-import { signatureT } from "../../types";
+import { RepairDataT, signatureT } from "../../types";
 const API_URL = import.meta.env.VITE_API_URL;
 
 const getLatestRepairs = async (
@@ -19,13 +19,43 @@ const getLatestRepairs = async (
       },
     });
 
-    console.log("response", response);
-
     return response.data;
   } catch (error) {
-    return [];
+    return {
+      metaData: new Map<string, string>(),
+      results: [] as RepairDataT[],
+    };
   }
 };
+
+const getUsersRepairs = async ({
+  limit,
+  page,
+  userToken,
+}: {
+  userToken?: string | null | undefined;
+  limit?: number;
+  page?: number;
+}) => {
+  if (!userToken) return;
+  try {
+    const response = await axios.get(`${API_URL}/api/repair/user`, {
+      params: { limit, page },
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    });
+
+    return response.data as {
+      results: RepairDataT[];
+      metaData: Record<string, string>;
+    };
+  } catch (error) {
+    throw new Error(`error getting user repairs`);
+  }
+};
+
 const searchForRepair = async (phrase: string) => {
   const response = await axios.post(
     `http://localhost:8000/api/repairs`,
@@ -102,4 +132,5 @@ export default {
   getLatestRepairs,
   searchForRepair,
   getRepairById,
+  getUsersRepairs,
 };

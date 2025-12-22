@@ -10,7 +10,7 @@ router.get("/", apiController.getNewestRepairs);
 router.post("/", apiController.addRepair);
 router.put("/", apiController.updateRepair);
 router.post("/search", apiController.searchRepairs);
-router.get("/user", apiController.getRepairsforUser);
+router.get("/user", apiController.getUsersRepairs);
 router.get("/:id", apiController.getRepairById);
 router.delete("/", apiController.deleteRepair);
 export default router;

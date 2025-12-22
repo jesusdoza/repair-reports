@@ -3,33 +3,27 @@ import { useQuery } from "@tanstack/react-query";
 import RepairReportsApi from "@/api/RepairReportsApi";
 
 import { useAuth } from "@clerk/clerk-react";
+import useGetUserToken from "./useGetUserToken";
 
 const useGetLatestRepairs = ({
   requestLimit,
 }: {
   requestLimit?: string | number;
 }) => {
-  const { getToken } = useAuth();
   const limit = requestLimit ? Number(requestLimit) : 1;
 
-  const tokenData = useQuery({
-    queryKey: ["userToken"],
-    queryFn: async () => {
-      return await getToken();
-    },
-  });
-
+  const tokenData = useGetUserToken();
   const userToken = tokenData.data;
 
   const { data, isError, isLoading } = useQuery<{
-    metaData: Map<string, string>;
+    metaData: Record<string, string>;
     results: RepairDataT[];
   }>({
     queryKey: ["latestRepairs", limit],
     queryFn: () => RepairReportsApi.getLatestRepairs(limit, userToken),
     staleTime: 0,
     enabled: !!userToken,
-    initialData: { metaData: new Map(), results: [] },
+    initialData: { metaData: {}, results: [] },
   });
   return { data, isError, isLoading };
 };

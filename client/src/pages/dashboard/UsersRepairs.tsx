@@ -53,16 +53,19 @@ function RepairsList({
   controls: ControlOption[];
   repairList: RepairDataT[];
 }) {
+  console.log("repairList 1", repairList);
   //create react components
   const list = repairList.map((repairObj) => {
-    const title = repairObj.title;
-    const url = repairObj?.procedureArr[0]?.images[0]
-      ? repairObj?.procedureArr[0].images[0]
-      : "";
+    const title = repairObj?.title || "untitled repair";
 
-    const summary = repairObj?.procedureArr[0]?.instructions
-      ? repairObj?.procedureArr[0]?.instructions
-      : "";
+    const url =
+      repairObj?.procedures && repairObj?.procedures.length > 0
+        ? repairObj?.procedures[0]?.images[0]
+        : "#";
+
+    // const summary = repairObj?.procedures[0]?.instructions
+    //   ? repairObj?.procedures[0]?.instructions
+    //   : "";
 
     return (
       <li
@@ -75,7 +78,7 @@ function RepairsList({
           <RepairCard
             title={title}
             previewUrl={url}
-            summary={summary}
+            summary={"summary"}
           />
         </div>
       </li>

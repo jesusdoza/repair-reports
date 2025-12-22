@@ -53,17 +53,21 @@ class RepairService {
     return await Repair.findByIdAndDelete(id);
   }
 
-  static async getUserRepairs(
-    userId: string,
+  static async getUserRepairs({
+    userId,
     limit = 10,
-    page = 1,
-    searchIndex?: string | undefined
-  ) {
-    const skips = limit * (page - 1);
+    skips,
+    searchIndex,
+  }: {
+    userId: string;
+    limit?: number;
+    skips?: number;
+    searchIndex?: string | undefined;
+  }) {
     const aggregateResults = await Repair.aggregate([
       {
         //get only users repairs
-        $search: {
+        $match: {
           removed: false,
           createdBy: new Mongoose.Types.ObjectId(userId),
           searchAfter: searchIndex,
@@ -76,12 +80,21 @@ class RepairService {
       },
       {
         //create metadata to include total from previous stage
-        $addFields: {
+        // $addFields: {
+        //   metaData: [{ $count: "total" }],
+        //   results: [{ $skip: skips }, { $limit: limit }],
+        // },
+        $facet: {
           metaData: [{ $count: "total" }],
-          results: [{ $skip: skips }, { $limit: limit }],
+          results: [{ $skip: skips || 0 }, { $limit: limit }],
         },
       },
     ]);
+
+    return aggregateResults[0] as {
+      results: RepairT[];
+      metaData: { total: number };
+    };
   }
 
   static async getLatestRepairs(limit = 10, page = 1, organizationId?: string) {

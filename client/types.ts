@@ -27,17 +27,14 @@ export interface ProcedureT {
 
 export type RepairDataT = {
   [key: string]: unknown;
-  boardType: string;
+  type: string;
   createdBy: string;
-  engineMake: string;
-  group: string;
-  procedureArr: ProcedureT[];
+  manufacturer: string;
+  organization: string;
+  procedures: ProcedureT[];
   removed: boolean;
   title: string;
   visibility: string;
-  searchTags?: string[];
-  version: number;
-
   _id: string;
 };
 

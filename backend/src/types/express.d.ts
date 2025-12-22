@@ -22,12 +22,5 @@ declare global {
     }
   }
 }
-        username?: string;
-        organization?: string;
-      };
-      auth?: () => Promise<AuthObject>; // clerk middleware will add if user session exists
-    }
-  }
-}
 
 export {};

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import UsersRepairs from "./UsersRepairs";
 import FilterMenuContainer from "../../components/RepairList/FilterRepairs/FilterMenuContainer";
@@ -7,45 +7,27 @@ import { RepairDataT } from "../../../types";
 import ErrorBoundary from "../../components/ErrorBoundary/ErrorBoundary";
 
 export default function DashboardPageContainer(): React.ReactNode {
-  const { repairsData: foundRepairs, getData: getUserRepairs } =
-    useGetUserRepairs();
+  const [page, setPage] = useState(0);
 
-  const PAGE_LIMIT = 10;
+  const { data: usersRepairs, isLoading } = useGetUserRepairs({
+    limit: 10,
+    page,
+  });
 
-  const [repairList, setRepairList] = useState<RepairDataT[]>(foundRepairs); //data
+  const [filteredList, setFilteredList] = useState<RepairDataT[]>(
+    usersRepairs?.results || []
+  ); //optionally filtered data
 
-  const [filteredList, setFilteredList] = useState<RepairDataT[]>(repairList); //optionally filtered data
-
-  // const [appliedFilters, setAppliedFilters] = useState<Filter[]>([]);
-
-  //fetchdata
-  useEffect(() => {
-    getUserRepairs(PAGE_LIMIT, 0);
-  }, []);
-
-  //load data when done fetching
-  useEffect(() => {
-    setRepairList(foundRepairs);
-    setFilteredList(foundRepairs);
-  }, [foundRepairs]);
-
-  ///filter list displayed
-  // useEffect(() => {
-  //   const newList = applyFilters(repairList, appliedFilters);
-  //   setFilteredList(newList);
-
-  //   console.log("failed to applyfilters");
-  //   setFilteredList(repairList);
-  // }, [appliedFilters]);
-
-  // const { filterOptionsMap } = createFilters(filteredList);
+  if (isLoading) {
+    return <div>loading repairs...</div>;
+  }
 
   return (
     <div className="flex  min-h-screen">
       <aside className=" w-1/6 bg-slate-600">
         <ErrorBoundary componentName="FilterMenuContainer">
           <FilterMenuContainer
-            repairList={repairList}
+            repairList={usersRepairs?.results || []}
             setFilteredList={setFilteredList}
             // categories={filterOptionsMap}
           />
@@ -60,7 +42,7 @@ export default function DashboardPageContainer(): React.ReactNode {
           <ErrorBoundary componentName="UsersRepairs">
             <PaganationControls
               onPageChange={(pageNumber: number) => {
-                getUserRepairs(PAGE_LIMIT, pageNumber);
+                setPage(pageNumber);
               }}
             />
           </ErrorBoundary>
