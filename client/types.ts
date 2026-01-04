@@ -7,34 +7,31 @@ export interface InviteT {
   status: string;
 }
 export interface ImageObjT {
-  imageUrl: string;
-  imageThumb?: string;
+  url: string;
   caption?: string;
-  imageId: string;
-  folder: string;
+  folder?: string;
+  imageId?: string;
+  thumbnail?: string;
   _id: string;
 }
 
 export interface ProcedureT {
-  images: string[];
-  imageObjs: ImageObjT[];
-  imagesIdArr: string[];
+  images: ImageObjT[];
   instructions: string;
-  procedureNum: number;
-  thumbs: string[];
-  _id?: string;
 }
 
 export type RepairDataT = {
-  [key: string]: unknown;
-  type: string;
-  createdBy: string;
-  manufacturer: string;
-  organization: string;
-  procedures: ProcedureT[];
-  removed: boolean;
   title: string;
-  visibility: string;
+  status: "pending" | "in_progress" | "completed";
+  type: string;
+  category: string;
+  manufacturer: string;
+  visibility: "public" | "organization";
+  createdBy: string;
+  organization: string;
+  removed: boolean;
+  procedures: ProcedureT[];
+  description?: string;
   _id: string;
 };
 
