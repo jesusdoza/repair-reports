@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import UsersRepairs from "./UsersRepairs";
 import FilterMenuContainer from "../../components/RepairList/FilterRepairs/FilterMenuContainer";
@@ -9,14 +9,24 @@ import ErrorBoundary from "../../components/ErrorBoundary/ErrorBoundary";
 export default function DashboardPageContainer(): React.ReactNode {
   const [page, setPage] = useState(0);
 
-  const { data: usersRepairs, isLoading } = useGetUserRepairs({
+  const {
+    data: usersRepairs,
+    isLoading,
+    isError,
+  } = useGetUserRepairs({
     limit: 10,
     page,
   });
 
-  const [filteredList, setFilteredList] = useState<RepairDataT[]>(
-    usersRepairs?.results || []
-  ); //optionally filtered data
+  const [filteredList, setFilteredList] = useState<RepairDataT[]>([]); //optionally filtered data
+
+  useEffect(() => {
+    if (usersRepairs) setFilteredList(usersRepairs?.results);
+  }, [usersRepairs]);
+
+  if (isError) {
+    return <div>error loading repairs</div>;
+  }
 
   if (isLoading) {
     return <div>loading repairs...</div>;
