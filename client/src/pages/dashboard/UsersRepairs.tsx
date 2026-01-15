@@ -56,10 +56,10 @@ function RepairsList({
   //create react components
   const list = repairList.map((repairObj) => {
     const title = repairObj?.title || "untitled repair";
-
+    console.log("Repair Data: ", repairObj);
     const url =
       repairObj?.procedures && repairObj?.procedures.length > 0
-        ? repairObj?.procedures[0]?.images[0]
+        ? repairObj?.procedures[0]?.images[0].url
         : "#";
 
     // const summary = repairObj?.procedures[0]?.instructions
