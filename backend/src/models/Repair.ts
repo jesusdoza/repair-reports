@@ -95,7 +95,7 @@ const RepairSchema = new mongoose.Schema<RepairType>(
     },
   },
   {
-    timestamps: { createdAt: true, updatedAt: true },
+    timestamps: true,
   }
 );
 
