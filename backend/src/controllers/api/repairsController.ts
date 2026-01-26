@@ -1,9 +1,7 @@
 import type { Request, Response } from "express";
 import RepairService from "../../services/RepairService.js";
 import type { RepairT } from "../../services/RepairService.js";
-import Organization from "../../models/Organization.js";
 import mongoose, { mongo } from "mongoose";
-import { Repair } from "../../models/Repair.js";
 
 const REPAIR_INDEX = process.env.search_index;
 const MAX_BACKUPS = Number(process.env.max_repair_backups ?? 3);
