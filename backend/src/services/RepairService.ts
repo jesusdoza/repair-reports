@@ -1,5 +1,6 @@
 import Mongoose from "mongoose";
 import { Repair } from "../models/Repair.js";
+import Member from "../models/Member.js";
 
 const REPAIRS_INDEX = process.env.search_index || "repairs_index";
 
@@ -56,27 +57,40 @@ class RepairService {
   static async getUserRepairs({
     userId,
     limit = 10,
-    skips,
+    skips = 0,
     searchIndex,
   }: {
     userId: string;
     limit?: number;
-    skips?: number;
+    skips?: number; // howmany entries to skip for pagination
     searchIndex?: string | undefined;
   }) {
+    const membership = await Member.find({
+      user: new Mongoose.Types.ObjectId(userId),
+    }).lean();
+
+    const skipEntries = skips ? skips * limit : 0;
+
+    const userOrgIds = membership.map((m) => m.organization);
+
     const aggregateResults = await Repair.aggregate([
       {
         //get only users repairs
         $match: {
+          $or: [
+            { createdBy: new Mongoose.Types.ObjectId(userId) },
+            { organization: { $in: userOrgIds } },
+          ],
           removed: false,
-          createdBy: new Mongoose.Types.ObjectId(userId),
-          searchAfter: searchIndex,
         },
       },
       {
         $sort: {
           _id: -1,
         },
+      },
+      {
+        $skip: skipEntries,
       },
       {
         //create metadata to include total from previous stage
@@ -86,7 +100,7 @@ class RepairService {
         // },
         $facet: {
           metaData: [{ $count: "total" }],
-          results: [{ $skip: skips || 0 }, { $limit: limit }],
+          results: [{ $skip: skipEntries }, { $limit: limit }],
         },
       },
     ]);
