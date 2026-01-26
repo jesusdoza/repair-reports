@@ -11,8 +11,8 @@ const MAX_BACKUPS = Number(process.env.max_repair_backups ?? 3);
 const getUsersRepairs = async (req: Request, res: Response) => {
   const userId = req.user?.appUserId;
 
-  const limit = req.query.limit || 10;
-  const currentPage = req.query.page || 1;
+  const limit = Number(req.query.limit) || 10;
+  const currentPage = Number(req.query.page) || 1;
 
   if (!userId) {
     return res.status(401).json({ message: "Unauthorized" });
@@ -20,15 +20,15 @@ const getUsersRepairs = async (req: Request, res: Response) => {
 
   const repairs = await RepairService.getUserRepairs({
     userId,
-    limit: Number(req.query.limit),
-    skips: Number(req.query.page),
+    limit,
+    skips: currentPage - 1,
   });
 
   res.status(200).json({
     results: repairs.results,
     metaData: repairs.metaData,
-    currentPage: Number(req.query.page) || 1,
-    limitResults: Number(req.query.limit) || 10,
+    currentPage: currentPage,
+    limitResults: limit,
   });
 };
 
@@ -111,7 +111,7 @@ const getNewestRepairs = async (req: Request, res: Response) => {
     const results = await RepairService.getLatestRepairs(
       numRepairs,
       1,
-      organization
+      organization,
     );
     // console.log(`number of repairs returned`, results.length);
 
