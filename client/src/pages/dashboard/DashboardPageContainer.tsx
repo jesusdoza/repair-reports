@@ -23,8 +23,8 @@ export default function DashboardPageContainer(): React.ReactNode {
     isLoading,
     isError,
   } = useGetUserRepairs({
-    limit: 10,
-    page: page,
+    limit,
+    page,
   });
 
   const [filteredList, setFilteredList] = useState<RepairDataT[]>([]); //optionally filtered data

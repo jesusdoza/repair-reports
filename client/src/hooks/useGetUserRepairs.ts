@@ -10,7 +10,7 @@ export type metaDataT = {
 
 const useGetUserRepairs = ({
   limit = 10,
-  page = 1,
+  page = 0,
 }: {
   limit?: number;
   page?: number;
