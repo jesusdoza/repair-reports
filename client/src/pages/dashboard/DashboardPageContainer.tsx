@@ -9,16 +9,15 @@ import { useSearchParams } from "react-router-dom";
 
 export default function DashboardPageContainer(): React.ReactNode {
   // const [page, setPage] = useState(0);
-  const [params] = useSearchParams();
-  // const pageParam = Number(params.get("page")) || 1;
-  // const limit = Number(params.get("limit")) || 10;
-  // const skips = Number(params.get("skips")) || 0;
+  const [params, setParams] = useSearchParams();
+  const page = Number(params.get("page")) || 0;
+  const limit = Number(params.get("limit")) || 10;
+  const skips = Number(params.get("skips")) || 0;
 
   // useEffect(() => {
   //   console.log("params changed", params);
   // }, [params]);
 
-  const [page, setPage] = useState(0);
   const {
     data: usersRepairs,
     isLoading,
@@ -62,8 +61,9 @@ export default function DashboardPageContainer(): React.ReactNode {
           <ErrorBoundary componentName="UsersRepairs">
             <PaganationControls
               onPageChange={(pageNumber: number) => {
-                setPage(pageNumber);
+                setParams({ page: pageNumber.toString() });
               }}
+              currentPage={page}
             />
           </ErrorBoundary>
         </section>
@@ -74,10 +74,15 @@ export default function DashboardPageContainer(): React.ReactNode {
 
 type paginationProps = {
   onPageChange: (pageNumber: number) => void;
+  currentPage?: number;
 };
 
-function PaganationControls({ onPageChange = () => {} }: paginationProps) {
-  const [page, setPage] = useState(0);
+function PaganationControls({
+  onPageChange = () => {},
+  currentPage = 0,
+}: paginationProps) {
+  // const [page, setPage] = useState(0);
+  const page = currentPage;
   return (
     <>
       {/* <h3>current page {page + 1}</h3> */}
@@ -87,10 +92,7 @@ function PaganationControls({ onPageChange = () => {} }: paginationProps) {
         ) : (
           <div
             onClick={() => {
-              setPage((p) => {
-                onPageChange(p - 1);
-                return p - 1;
-              });
+              onPageChange(page - 1);
             }}
             className="btn">
             page {page}
@@ -99,10 +101,7 @@ function PaganationControls({ onPageChange = () => {} }: paginationProps) {
         <div className="badge h-14">{page + 1}</div>
         <div
           onClick={() => {
-            setPage((p) => {
-              onPageChange(p + 1);
-              return p + 1;
-            });
+            onPageChange(page + 1);
           }}
           className="btn">
           page {page + 2}
