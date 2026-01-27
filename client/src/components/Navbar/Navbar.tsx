@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Search from "../Search/Search";
 import useAuthContext from "../../hooks/useAuthContext";
+import { v4 } from "uuid";
 
 export type NavLinkT = {
   url: string;
@@ -20,21 +21,21 @@ export default function Navbar({
 
   function MenuItem({ label, url }: NavLinkT) {
     return (
-      <li>
-        <Link to={url}>
-          <span>{label}</span>
-        </Link>
-      </li>
+      <Link to={url}>
+        <span>{label}</span>
+      </Link>
     );
   }
 
   const NavbarMenu = () => {
     return mainMenu.map((item) => {
       return (
-        <MenuItem
-          label={item.label}
-          url={item.url}
-        />
+        <li key={v4()}>
+          <MenuItem
+            label={item.label}
+            url={item.url}
+          />
+        </li>
       );
     });
   };
@@ -54,7 +55,9 @@ export default function Navbar({
 
         <ul className=" flex menu menu-horizontal gap-1">
           <NavbarMenu />
-          <li className="form-control">
+          <li
+            key={v4()}
+            className="form-control">
             <Search />
           </li>
         </ul>
@@ -76,23 +79,23 @@ function ProfileNavItem({
 }) {
   function MenuItem(item: NavLinkT) {
     return (
-      <li>
-        <Link to={item.url}>
-          <span className="justify-between">
-            {item.label}
-            <span className="badge">New</span>
-          </span>
-        </Link>
-      </li>
+      <Link to={item.url}>
+        <span className="justify-between">
+          {item.label}
+          <span className="badge">New</span>
+        </span>
+      </Link>
     );
   }
 
   const menuItems = menu.map((item) => {
     return (
-      <MenuItem
-        label={item.label}
-        url={item.url}
-      />
+      <li key={v4()}>
+        <MenuItem
+          label={item.label}
+          url={item.url}
+        />
+      </li>
     );
   });
   return (

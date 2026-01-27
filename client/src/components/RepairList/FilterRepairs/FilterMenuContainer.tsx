@@ -39,12 +39,12 @@ export default function FilterMenuContainer({
 
   return (
     <div>
-      <ul></ul>
+      {/* <ul></ul>
       <FilterMenu
         onFilterChangeCallback={handleFilterChange}
         filterCategories={filterCategories}
         filterCategoryOptions={filterOptionsMap}
-      />
+      /> */}
     </div>
   );
 }
@@ -91,7 +91,7 @@ function createFilters(list: RepairDataT[]) {
 
   list.forEach((item) => {
     const fields = Object.getOwnPropertyNames(item).filter(
-      (str) => !ignoreFields.has(str)
+      (str) => !ignoreFields.has(str),
     );
 
     //add values for each field to map to know how many different values there are

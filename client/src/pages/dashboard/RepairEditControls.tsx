@@ -1,3 +1,4 @@
+import { v4 } from "uuid";
 import { ControlOption } from "./UsersRepairs";
 
 export function RepairEditControls({
@@ -7,7 +8,7 @@ export function RepairEditControls({
 }) {
   const buttons = controls.map((control: ControlOption) => {
     return (
-      <li>
+      <li key={v4()}>
         <a
           className="btn w-full hover:bg-slate-600"
           onClick={() => {

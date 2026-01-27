@@ -3,6 +3,7 @@ import CircuitBoardHeroImage from "../../assets/HomePage/Printed-circuit-board-p
 import FirmwareImage from "../../assets/HomePage/Firmware-amico.svg";
 import { Link } from "react-router-dom";
 import { homePageNavLinks } from "../../config/HomePageNavLinks";
+import { v4 } from "uuid";
 
 export default function HomePage() {
   return (
@@ -44,7 +45,7 @@ export default function HomePage() {
                           className="bg-white menu menu-compact dropdown-content mt-3 p-2 shadow rounded-box w-52">
                           {homePageNavLinks.map((link) => {
                             return (
-                              <li>
+                              <li key={v4()}>
                                 <Link to={link.url}>{link.label}</Link>
                               </li>
                             );
@@ -62,7 +63,7 @@ export default function HomePage() {
                         className="menu menu-horizontal p-0">
                         {homePageNavLinks.map((link) => {
                           return (
-                            <li>
+                            <li key={v4()}>
                               <Link to={link.url}>{link.label}</Link>
                             </li>
                           );

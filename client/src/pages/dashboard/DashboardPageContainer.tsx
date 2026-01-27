@@ -5,17 +5,27 @@ import FilterMenuContainer from "../../components/RepairList/FilterRepairs/Filte
 import useGetUserRepairs from "../../hooks/useGetUserRepairs";
 import { RepairDataT } from "../../../types";
 import ErrorBoundary from "../../components/ErrorBoundary/ErrorBoundary";
+import { useSearchParams } from "react-router-dom";
 
 export default function DashboardPageContainer(): React.ReactNode {
-  const [page, setPage] = useState(0);
+  // const [page, setPage] = useState(0);
+  const [params] = useSearchParams();
+  // const pageParam = Number(params.get("page")) || 1;
+  // const limit = Number(params.get("limit")) || 10;
+  // const skips = Number(params.get("skips")) || 0;
 
+  // useEffect(() => {
+  //   console.log("params changed", params);
+  // }, [params]);
+
+  const [page, setPage] = useState(0);
   const {
     data: usersRepairs,
     isLoading,
     isError,
   } = useGetUserRepairs({
     limit: 10,
-    page,
+    page: page,
   });
 
   const [filteredList, setFilteredList] = useState<RepairDataT[]>([]); //optionally filtered data

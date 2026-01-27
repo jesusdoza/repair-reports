@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { RepairCard } from "./RepairCard";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4, v4 } from "uuid";
 import noImagePlaceholder from "../../assets/no-image.png";
 import { RepairDataT } from "../../../types";
 
@@ -13,7 +13,7 @@ export default function RepairList({
 }: latestRepairsProps): React.ReactNode {
   if (!repairList || repairList?.length === 0) {
     return (
-      <li>
+      <li key={v4()}>
         <h3>No repairs to display</h3>
       </li>
     );

@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import ModalConfirm from "../Modals/ModalConfirm";
+import { v4 } from "uuid";
 
 type editToolsPropsT = {
   id: string;
@@ -16,7 +17,9 @@ export default function EditTools({ id }: editToolsPropsT): React.ReactNode {
       <details className="dropdown dropdown-right dropdown-end">
         <summary className="btn m-1">Edit Tools</summary>
         <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-          <li className="w-full">
+          <li
+            key={v4()}
+            className="w-full">
             <ModalConfirm label="Edit Repair">
               <div>
                 Confirm Edit :
@@ -29,7 +32,9 @@ export default function EditTools({ id }: editToolsPropsT): React.ReactNode {
               </div>
             </ModalConfirm>
           </li>
-          <li className="w-full">
+          <li
+            key={v4()}
+            className="w-full">
             <ModalConfirm label="Delete Repair">
               <div>
                 Confirm DELETE :
