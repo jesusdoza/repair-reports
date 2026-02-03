@@ -33,23 +33,15 @@ export default function RepairFormPage(): React.ReactNode {
   return (
     <RepairContextProvider>
       <h1>Create new repair</h1>
-      <button
+      {/* <button
         className="btn"
         onClick={() => {
           setEnableNewForm(!enableNewForm);
         }}>
         show new form
-      </button>
-      {enableNewForm ? (
-        <RepairFormV0 />
-      ) : (
-        <RepairEditForm
-          onSubmit={createRepair}
-          enabled={submitAllowed}
-          submitType="Create"
-          repair={newRepair}
-        />
-      )}
+      </button> */}
+      <RepairFormV0 />
+
       {/* <RepairFormV0 />
       <RepairEditForm
         onSubmit={createRepair}
