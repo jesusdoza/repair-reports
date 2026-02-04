@@ -5,21 +5,36 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { FormStep } from "./FormStep";
 import { ChevronLeft, ChevronRight, Save, Plus, Trash2 } from "lucide-react";
+import { Repair } from "@/classes/Repair";
+
+type imageData = {
+  url: string;
+  caption: string;
+};
 
 // Define the form data structure
 type RepairStep = {
-  images: string[];
-  notes: string;
+  images: imageData[];
+  instructions: string;
 };
 
-export function RepairForm() {
+export function RepairForm({
+  onSubmit = () => {},
+  enableSubmit,
+}: {
+  onSubmit: (repairData: Repair) => void;
+  enableSubmit: boolean;
+}) {
   // State for tracking current step and form data
   const [currentStep, setCurrentStep] = useState(0);
-  const [steps, setSteps] = useState<RepairStep[]>([{ images: [], notes: "" }]);
+  const [steps, setSteps] = useState<RepairStep[]>([
+    { images: [], instructions: "" },
+  ]);
+  const [title, setTitle] = useState("");
 
   // Add a new step to the form
   const addStep = () => {
-    setSteps([...steps, { images: [], notes: "" }]);
+    setSteps([...steps, { images: [], instructions: "" }]);
     setCurrentStep(steps.length);
   };
 
@@ -58,11 +73,22 @@ export function RepairForm() {
   const handleSubmit = () => {
     console.log("Form submitted:", steps);
     // In a real app, you would send this data to your backend
+    onSubmit(new Repair());
     alert("Form submitted successfully!");
   };
 
   return (
     <div className="space-y-6">
+      <h1 className="text-2xl font-bold">Repair Form</h1>
+      <div className="flex ">
+        <input
+          type="text"
+          placeholder="Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="input input-bordered bg-white"
+        />
+      </div>
       <Card>
         <CardContent className="pt-6">
           <div className="flex items-center justify-between mb-4">
@@ -106,7 +132,9 @@ export function RepairForm() {
 
         <div className="flex gap-2">
           {currentStep === steps.length - 1 && (
-            <Button onClick={handleSubmit}>
+            <Button
+              disabled={!enableSubmit}
+              onClick={handleSubmit}>
               <Save className="h-4 w-4 mr-1" />
               Save Documentation
             </Button>

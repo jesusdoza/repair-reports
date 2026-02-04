@@ -4,7 +4,7 @@ import { ImageObjT } from "../../../../types";
 import { useDebouncedCallback } from "use-debounce";
 
 import useImageManager from "../../../hooks/useImageManager";
-import { ImageObj } from "../../../classes/ImageObj";
+import { ImageAsset } from "../../../classes/RepairImage";
 
 import useCreateThumbUrl from "../../../hooks/useCreateThumbUrl";
 import { RepairFormDataContext } from "../../../context/RepairFormContext";
@@ -30,7 +30,7 @@ export default function EditImageCardContainer({
   id: string;
   url: string;
   onRemove?: () => void;
-  imageData: ImageObj;
+  imageData: ImageAsset;
 }) {
   //hook for handling image database
   const { uploadImage, deleteImage } = useImageManager();
@@ -58,12 +58,12 @@ export default function EditImageCardContainer({
   //after image is uploaded store details
   //!maybe just update upload status state and handle if upload happend that way
   const [imageUploadedObj, setImageUploadedObj] = useState<null | ImageObjT>(
-    imageData
+    imageData,
   );
 
   //show status of image action
   const [imageUploadStatus, setImageUploadStatus] = useState<UploadStatus>(
-    isDeletable ? UploadStatus.SUCCESS : UploadStatus.IDLE
+    isDeletable ? UploadStatus.SUCCESS : UploadStatus.IDLE,
   );
 
   const [errorMessage, setErrorMessage] = useState<string[]>([]);
@@ -78,7 +78,7 @@ export default function EditImageCardContainer({
 
   //image preview of file selected or image captured from camera
   const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>(
-    url
+    url,
   );
 
   //close camera tracks and turn off video stream on dismount
@@ -105,7 +105,7 @@ export default function EditImageCardContainer({
         return;
       }
 
-      formAction.updateImage({ ...imageData, imageUrl: urlText }, procedureId);
+      formAction.updateImage({ ...imageData, url: urlText }, procedureId);
 
       //url changed of image either manually or file changed
       //todo have folder be added according to user organization in authcontext
@@ -115,7 +115,7 @@ export default function EditImageCardContainer({
       //   imageUrl: urlText,
       // });
     },
-    300
+    300,
   );
 
   const handleImageUpload = useDebouncedCallback(async (folder: string) => {
@@ -156,7 +156,7 @@ export default function EditImageCardContainer({
         };
 
         //update form data in context
-        formAction.updateImage(new ImageObj(imageObj), procedureId);
+        formAction.updateImage(new ImageAsset(imageObj), procedureId);
 
         setUploadProgress(70);
         // setFormImageObj(imageObj);
@@ -210,7 +210,7 @@ export default function EditImageCardContainer({
   };
 
   const handleFileChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     //check input element for files
     const imageFile = event.target.files && event.target.files[0];
