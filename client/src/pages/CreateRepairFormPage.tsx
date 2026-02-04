@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Repair } from "../classes/Repair";
-import RepairEditForm from "../components/RepairDisplay/RepairEditFormV2";
+// import RepairEditForm from "../components/RepairDisplay/RepairEditFormV2";
 import useRepairApi from "../hooks/useRepairApi";
 import { useNavigate } from "react-router-dom";
 import { RepairContextProvider } from "../context/RepairFormContext";
-import { RepairDataT } from "../../types";
+// import { RepairDataT } from "../../types";
 import { RepairForm as RepairFormV0 } from "@/components/RepairFormV0/RepairForm";
 
 export default function RepairFormPage(): React.ReactNode {
@@ -12,9 +12,8 @@ export default function RepairFormPage(): React.ReactNode {
   const [submitAllowed, setSubmitAllowed] = useState(true);
 
   const navigate = useNavigate();
-  const [enableNewForm, setEnableNewForm] = useState(false);
 
-  const newRepair = new Repair() as unknown as RepairDataT;
+  // const newRepair = new Repair() as unknown as RepairDataT;
 
   const createRepair = async (repair: Repair) => {
     console.log("update currentFormState", repair);
@@ -33,14 +32,11 @@ export default function RepairFormPage(): React.ReactNode {
   return (
     <RepairContextProvider>
       <h1>Create new repair</h1>
-      {/* <button
-        className="btn"
-        onClick={() => {
-          setEnableNewForm(!enableNewForm);
-        }}>
-        show new form
-      </button> */}
-      <RepairFormV0 />
+
+      <RepairFormV0
+        onSubmit={createRepair}
+        enableSubmit={submitAllowed}
+      />
 
       {/* <RepairFormV0 />
       <RepairEditForm
