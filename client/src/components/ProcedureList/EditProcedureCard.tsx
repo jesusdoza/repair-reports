@@ -1,161 +1,77 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 
-import EditImageCard from "../ImageCard/EditImageCard/EditImageCardContainer";
+// import EditImageCard from "../ImageCard/EditImageCard/EditImageCardContainer";
 import { v4 as uuidv4 } from "uuid";
-import { ImageObjT, ProcedureT } from "../../../types";
-import { ImageObj } from "../../classes/ImageObj";
+// import { ImageObjT, ProcedureT } from "../../../types";
+// import { RepairImage } from "../../classes/RepairImage";
 // import ModalConfirm from "../Modals/ModalConfirm";
 import { Procedure } from "../../classes/Procedure";
 import { RepairFormDataContext } from "../../context/RepairFormContext";
-import useImageManager from "../../hooks/useImageManager";
+// import useImageManager from "../../hooks/useImageManager";
 
 type ImageCardListT = { _id: string; component: React.ReactNode };
 
 export default function EditProcedureCard({
   procedureData = new Procedure(),
   id = uuidv4(),
-  onRemove,
+  onRemove = () => {},
 }: {
-  procedureData: ProcedureT;
+  procedureData: Partial<Procedure>;
   id?: string;
   onRemove?: () => void;
 }) {
   const { formAction } = useContext(RepairFormDataContext);
   const { updateInstructions } = formAction;
-  // const { imageObjs } = procedureData; //TODO images on procedure
-  const imageObjs = procedureData?.imageObjs ? procedureData?.imageObjs : [];
+  // const imageObjs = procedureData?.imageObjs ? procedureData?.imageObjs : [];
 
-  const imageUrls = procedureData?.images ? procedureData?.images : undefined;
+  // const imageUrls = procedureData?.images ? procedureData?.images : undefined;
 
   const PROCEDURE_ID = procedureData._id ? procedureData._id : id;
-  const { deleteImage } = useImageManager();
+  // const { deleteImage } = useImageManager();
 
   const [instructions, setInstructions] = useState(procedureData.instructions);
 
   const [imageCards, setImageCards] = useState<ImageCardListT[]>([]);
-  const [message, setMessage] = useState<string[]>([]);
+  // const [message, setMessage] = useState<string[]>([]);
 
-  //load initial state after mount
-  useEffect(() => {
-    console.log("imageObjs", imageObjs);
-    //create cards for initial prop data passed in
+  // async function handleDeleteImage(imageObj: ImageObjT) {
+  //   // console.log("delete image");
 
-    // const updatedImageObjs: ImageObj[] = [];
+  //   const procedureId = id;
+  //   //delete from database
+  //   await deleteImage({ imageId: imageObj.imageId });
 
-    let initialImageCardData: ImageCardListT[];
+  //   //remove from formcontext
+  //   formAction.removeImage(imageObj._id, procedureId);
 
-    //new format normal flow
-    if (imageObjs.length > 0) {
-      console.log("new data creating imageObjs");
-      initialImageCardData = imageObjs.map((data) => {
-        const component = createEditImageCard({
-          procedureId: PROCEDURE_ID,
-          imageObj: new ImageObj(data),
-          setter: setImageCards,
-        });
-        return { _id: data._id, component };
-      });
+  //   //remove from dom
+  //   setImageCards((state) => {
+  //     return state.filter((data) => {
+  //       if (data._id == imageObj._id) return false;
 
-      //older repair version convert over to bring inline with new format
-    } else if (imageUrls?.length && imageUrls.length > 0) {
-      console.log("old data converting image Urls to imageObjs");
+  //       return true;
+  //     });
+  //   });
+  // }
 
-      setMessage((arr) => {
-        return [
-          ...arr,
-          "old data format detected please click update to upgrade format",
-        ];
-      });
+  // async function handleRemoveProcedure() {
+  //   if (!imageObjs) {
+  //     // console.log("no imageObjs to use for image removal");
+  //     return;
+  //   }
 
-      initialImageCardData = imageUrls.map((url) => {
-        const newImageObj = new ImageObj();
+  //   if (confirm("delete procedure? ")) {
+  //     const promises: Promise<void>[] = [];
 
-        //TODO create imageObj from just the url
-        newImageObj.imageUrl = url;
-        newImageObj.imageThumb = url;
-        newImageObj.imageId = url
-          .split(".com")[1]
-          .split("upload")[1]
-          .split("/")
-          .slice(2)
-          .join("/")
-          .slice(0, -4);
-        newImageObj.folder = url
-          .split(".com")[1]
-          .split("upload")[1]
-          .split("/")
-          .slice(2)
-          .join("/")
-          .slice(0, -4)
-          .split("/")[0];
+  //     //delete images from database promises
+  //     if (promises.length > 0) await Promise.allSettled(promises);
 
-        // console.log("adding imageobj", newImageObj);
-        // updatedImageObjs.push(newImageObj);
-
-        // url.split(".com")[1].split("upload")[1].split("/").slice(2).join('/').slice(0,-4)
-        const component = createEditImageCard({
-          procedureId: PROCEDURE_ID,
-          imageObj: newImageObj,
-          setter: setImageCards,
-        });
-
-        return { _id: newImageObj._id, component };
-      });
-    } else {
-      // console.log("no data for images");
-      initialImageCardData = [];
-    }
-
-    // formAction.replaceImageObjs(updatedImageObjs, PROCEDURE_ID);
-
-    setImageCards(initialImageCardData);
-  }, []);
-
-  async function handleDeleteImage(imageObj: ImageObjT) {
-    // console.log("delete image");
-
-    const procedureId = id;
-    //delete from database
-    await deleteImage({ imageId: imageObj.imageId });
-
-    //remove from formcontext
-    formAction.removeImage(imageObj._id, procedureId);
-
-    //remove from dom
-    setImageCards((state) => {
-      return state.filter((data) => {
-        if (data._id == imageObj._id) return false;
-
-        return true;
-      });
-    });
-  }
-
-  async function handleRemoveProcedure() {
-    if (!imageObjs) {
-      // console.log("no imageObjs to use for image removal");
-      return;
-    }
-
-    if (confirm("delete procedure? ")) {
-      const promises: Promise<void>[] = [];
-
-      //delete images from database promises
-      imageObjs.forEach((data) => {
-        //only delete if url is http and not data: buffer
-        if (data.imageUrl.includes("http")) {
-          promises.push(handleDeleteImage(data));
-        }
-      });
-
-      if (promises.length > 0) await Promise.allSettled(promises);
-
-      if (onRemove) {
-        // console.log("remove id:", PROCEDURE_ID);
-        onRemove();
-      }
-    }
-  }
+  //     if (onRemove) {
+  //       // console.log("remove id:", PROCEDURE_ID);
+  //       onRemove();
+  //     }
+  //   }
+  // }
 
   return (
     <div
@@ -163,7 +79,7 @@ export default function EditProcedureCard({
       className="p-3 card relative border border-solid border-slate-700">
       {/* delete procedure button */}
 
-      {message.length ? (
+      {/* {message.length ? (
         <div
           role="alert"
           className="alert alert-warning">
@@ -208,24 +124,24 @@ export default function EditProcedureCard({
                   //todo add image data to formContext
                   // console.log("adding image to procedure");
 
-                  const newImageData = new ImageObj();
-                  formAction.addImage(newImageData, PROCEDURE_ID);
+                  // const newImageData = new ImageAsset();
+                  // formAction.addImage(newImageData, PROCEDURE_ID);
 
                   setImageCards((state) => {
                     //data
                     //function component
-                    const newImageCard = createEditImageCard({
-                      procedureId: PROCEDURE_ID,
-                      imageObj: newImageData,
-                      setter: setImageCards,
-                    });
+                    // const newImageCard = createEditImageCard({
+                    //   procedureId: PROCEDURE_ID,
+                    //   imageObj: newImageData,
+                    //   setter: setImageCards,
+                    // });
 
                     //format for storing in state
-                    const newItem: ImageCardListT = {
-                      _id: newImageData._id,
-                      component: newImageCard,
-                    };
-                    return [...state, newItem];
+                    // const newItem: ImageCardListT = {
+                    //   _id: newImageData._id,
+                    //   component: newImageCard,
+                    // };
+                    return [...state];
                   });
                 }}
                 className="text-xl btn btn-active btn-accent hover:bg-green-300">
@@ -261,41 +177,41 @@ export default function EditProcedureCard({
 }
 
 //create image card components
-function createEditImageCard({
-  imageObj,
-  procedureId,
-  setter,
-}: {
-  imageObj: ImageObj;
-  procedureId: string;
-  setter: React.Dispatch<React.SetStateAction<ImageCardListT[]>>;
-}) {
-  return (
-    <li
-      className="w-full card md:w-1/3 bg-slate-700 p-2"
-      key={uuidv4()}>
-      <EditImageCard
-        procedureId={procedureId}
-        imageData={imageObj}
-        id={imageObj._id}
-        key={uuidv4()}
-        url={imageObj.imageUrl}
-        onRemove={() => removeItem(setter, imageObj._id)}
-      />
-    </li>
-  ) as React.ReactNode;
-}
+// function createEditImageCard({
+//   imageObj,
+//   procedureId,
+//   setter,
+// }: {
+//   imageObj: ImageAsset;
+//   procedureId: string;
+//   setter: React.Dispatch<React.SetStateAction<ImageCardListT[]>>;
+// }) {
+//   return (
+//     <li
+//       className="w-full card md:w-1/3 bg-slate-700 p-2"
+//       key={uuidv4()}>
+//       <EditImageCard
+//         procedureId={procedureId}
+//         imageData={imageObj}
+//         id={imageObj._id}
+//         key={uuidv4()}
+//         url={imageObj.url}
+//         onRemove={() => removeItem(setter, imageObj._id)}
+//       />
+//     </li>
+//   ) as React.ReactNode;
+// }
 
-function removeItem(
-  setter: React.Dispatch<React.SetStateAction<ImageCardListT[]>>,
-  id: string
-) {
-  setter((state) => {
-    const newState = state.filter((imageCard) => {
-      if (imageCard._id == id) return false;
-      return true;
-    });
+// function removeItem(
+//   setter: React.Dispatch<React.SetStateAction<ImageCardListT[]>>,
+//   id: string,
+// ) {
+//   setter((state) => {
+//     const newState = state.filter((imageCard) => {
+//       if (imageCard._id == id) return false;
+//       return true;
+//     });
 
-    return newState;
-  });
-}
+//     return newState;
+//   });
+// }
