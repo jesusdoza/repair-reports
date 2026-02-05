@@ -3,16 +3,16 @@ import RepairEditForm from "../components/RepairDisplay/RepairEditFormV2";
 import useRepairApi from "../hooks/useRepairApi";
 import { Repair } from "../classes/Repair";
 import { useParams, useNavigate } from "react-router-dom";
-import { RepairDataT } from "../../types";
+// import { RepairDataT } from "../../types";
 
-import { RepairContextProvider } from "../context/RepairFormContext";
+// import { RepairContextProvider } from "../context/RepairFormContext";
 
 export default function EditRepairPageV2() {
   const { id: repairId } = useParams();
   const { getRepairById, updateRepair } = useRepairApi();
   const navigate = useNavigate();
 
-  const [repair, setRepair] = useState<RepairDataT | null>(null);
+  const [repair, setRepair] = useState<Repair | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [submitAllowed, setSubmitAllowed] = useState(true);
 
@@ -41,7 +41,7 @@ export default function EditRepairPageV2() {
     getRepairById(repairId)
       .then((data) => {
         console.log("data", data);
-        setRepair(data as RepairDataT);
+        setRepair(data as Repair);
       })
       .catch((error) => {
         console.log("error getting repair for edit", error);
@@ -54,18 +54,18 @@ export default function EditRepairPageV2() {
   }
 
   return (
-    <RepairContextProvider>
-      <section>
-        <h3>Edit Your Repair here V2</h3>
-        {repair && (
-          <RepairEditForm
-            onSubmit={handleUpdateRepair}
-            repair={repair}
-            enabled={submitAllowed}
-            submitType="Update"
-          />
-        )}
-      </section>
-    </RepairContextProvider>
+    // <RepairContextProvider>
+    <section>
+      <h3>Edit Your Repair here V2</h3>
+      {repair && (
+        <RepairEditForm
+          onSubmit={handleUpdateRepair}
+          repair={repair}
+          enabled={submitAllowed}
+          submitType="Update"
+        />
+      )}
+    </section>
+    // </RepairContextProvider>
   );
 }

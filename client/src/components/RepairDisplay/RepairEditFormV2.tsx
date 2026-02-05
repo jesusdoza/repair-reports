@@ -1,4 +1,4 @@
-import { ChangeEvent, useContext, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import AvailableOptions, {
   OptionT,
 } from "../AvailableOptions/AvailableOptions";
@@ -6,9 +6,9 @@ import AvailableOptionsMulti from "../AvailableOptions/AvailableOptionsMulti";
 import { Repair } from "../../classes/Repair";
 import EditProcedureList from "../ProcedureList/EditProcedureList";
 import ModalConfirm from "../Modals/ModalConfirm";
-import { RepairDataT } from "../../../types";
-import { RepairFormDataContext } from "../../context/RepairFormContext";
-import { isValidForm } from "../../hooks/utils/isValidForm";
+// import { RepairDataT } from "../../../types";
+// import { RepairFormDataContext } from "../../context/RepairFormContext";
+// import { isValidForm } from "../../hooks/utils/isValidForm";
 
 export default function RepairEditForm({
   repair,
@@ -16,31 +16,29 @@ export default function RepairEditForm({
   enabled = true,
   submitType,
 }: {
-  repair?: RepairDataT | undefined;
+  repair?: Repair;
   onSubmit?: (repair: Repair) => Promise<void>;
   enabled?: boolean;
   submitType: string;
 }) {
-  const { repairFormData, initializeRepairFormData, formAction } = useContext(
-    RepairFormDataContext
-  );
+  // const { repairFormData, initializeRepairFormData, formAction } = useContext(
+  //   RepairFormDataContext
+  // );
 
   //have individual state
   const [title, setTitle] = useState(repair ? repair.title : "new title here");
-  const [engineMake, setEngineMake] = useState(
-    repair ? repair.engineMake : "engine Make"
-  );
+  const [category] = useState(repair ? repair.category : "Category");
 
   const [submitAllowed, setSubmitAllowed] = useState(enabled);
   const [formError, setFormError] = useState<string[] | null>(null);
 
-  useEffect(() => {
-    if (repair) {
-      //sync form data only
+  // useEffect(() => {
+  //   if (repair) {
+  //     //sync form data only
 
-      initializeRepairFormData(new Repair(repair));
-    }
-  }, [repair]);
+  //     // initializeRepairFormData(new Repair(repair));
+  //   }
+  // }, [repair]);
 
   const handleSubmit = async () => {
     // event.preventDefault();
@@ -48,12 +46,12 @@ export default function RepairEditForm({
     setFormError(null); //reset error on submit
 
     //validate formdata
-    const formStatus = isValidForm(repairFormData);
+    // const formStatus = isValidForm(repairFormData);
 
     //if invalid set error for display
-    if (!formStatus.isValid) {
-      setFormError(formStatus.reason);
-    }
+    // if (!formStatus.isValid) {
+    //   setFormError(formStatus.reason);
+    // }
 
     //pressed submit now disable to allow processing
     setSubmitAllowed(false);
@@ -67,11 +65,11 @@ export default function RepairEditForm({
     });
 
     try {
-      if (onSubmit && formStatus.isValid) {
-        //! todo enable submit
-        // console.log("repairFormData", repairFormData);
-        onSubmit(repairFormData);
-      }
+      console.log("repairFormData", repairFormData);
+      // if (onSubmit && formStatus.isValid) {
+      //   //! todo enable submit
+      //   onSubmit(repairFormData);
+      // }
     } catch (error) {
       setSubmitAllowed(true);
       console.log("error handleUpdate @RepairPage ", error);
@@ -88,8 +86,8 @@ export default function RepairEditForm({
 
   const availableBoardTypes: OptionT[] = [
     {
-      label: `original: ${repair?.boardType}`,
-      value: repair?.boardType ? repair.boardType : "boardType",
+      label: `original: ${repair?.category}`,
+      value: repair?.category ? repair.category : "boardType",
     },
     { label: "Cat70 IK", value: "IK" },
     { label: "Cat40 CA", value: "CA" },
@@ -100,8 +98,8 @@ export default function RepairEditForm({
 
   const availableEngines: OptionT[] = [
     {
-      label: `original: ${engineMake}`,
-      value: engineMake,
+      label: `original: ${category}`,
+      value: category,
     },
     { label: "Caterpillar", value: "cat" },
     { label: "Cummins", value: "cummins" },

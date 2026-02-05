@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 
 // import EditImageCard from "../ImageCard/EditImageCard/EditImageCardContainer";
 import { v4 as uuidv4 } from "uuid";
@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 // import { RepairImage } from "../../classes/RepairImage";
 // import ModalConfirm from "../Modals/ModalConfirm";
 import { Procedure } from "../../classes/Procedure";
-import { RepairFormDataContext } from "../../context/RepairFormContext";
+// import { RepairFormDataContext } from "../../context/RepairFormContext";
 // import useImageManager from "../../hooks/useImageManager";
 
 type ImageCardListT = { _id: string; component: React.ReactNode };
@@ -20,8 +20,8 @@ export default function EditProcedureCard({
   id?: string;
   onRemove?: () => void;
 }) {
-  const { formAction } = useContext(RepairFormDataContext);
-  const { updateInstructions } = formAction;
+  // const { formAction } = useContext(RepairFormDataContext);
+  // const { updateInstructions } = formAction;
   // const imageObjs = procedureData?.imageObjs ? procedureData?.imageObjs : [];
 
   // const imageUrls = procedureData?.images ? procedureData?.images : undefined;
@@ -161,7 +161,7 @@ export default function EditProcedureCard({
             // handleInstructionsUpdate(e.target.value);
             const text = e.target.value;
             setInstructions(() => {
-              updateInstructions(id, text);
+              // updateInstructions(id, text);
               return text;
             });
           }}

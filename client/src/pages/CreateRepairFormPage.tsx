@@ -3,7 +3,7 @@ import { Repair } from "../classes/Repair";
 // import RepairEditForm from "../components/RepairDisplay/RepairEditFormV2";
 import useRepairApi from "../hooks/useRepairApi";
 import { useNavigate } from "react-router-dom";
-import { RepairContextProvider } from "../context/RepairFormContext";
+// import { RepairContextProvider } from "../context/RepairFormContext";
 // import { RepairDataT } from "../../types";
 import { RepairForm as RepairFormV0 } from "@/components/RepairFormV0/RepairForm";
 
@@ -30,21 +30,13 @@ export default function RepairFormPage(): React.ReactNode {
     }
   };
   return (
-    <RepairContextProvider>
+    <div>
       <h1>Create new repair</h1>
 
       <RepairFormV0
         onSubmit={createRepair}
         enableSubmit={submitAllowed}
       />
-
-      {/* <RepairFormV0 />
-      <RepairEditForm
-        onSubmit={createRepair}
-        enabled={submitAllowed}
-        submitType="Create"
-        repair={newRepair}
-      /> */}
-    </RepairContextProvider>
+    </div>
   );
 }

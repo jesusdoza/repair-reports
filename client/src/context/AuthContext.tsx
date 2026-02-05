@@ -28,7 +28,7 @@ export type authContextT = {
   userInfo: User | null;
   login: (
     email: string,
-    password: string
+    password: string,
   ) => Promise<
     | {
         error: null;
@@ -130,7 +130,7 @@ export const AuthContextProvider = ({
           email,
           password,
         },
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       // console.log("response", response.data.user);
@@ -173,7 +173,7 @@ export const AuthContextProvider = ({
           username,
           inviteCode,
         },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       const data = response.data as SingupResponseT;
 
@@ -215,7 +215,7 @@ export const AuthContextProvider = ({
           provider,
           providerId,
         },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       const data = response.data as SingupResponseT;
 
