@@ -1,11 +1,11 @@
 import axios from "axios";
 import { Repair } from "../classes/Repair";
-import { RepairDataT, signatureT } from "../../types";
+// import { RepairDataT, signatureT } from "../../types";
 const API_URL = import.meta.env.VITE_API_URL;
 
 const getLatestRepairs = async (
   limit: string | number,
-  userToken: string | null | undefined
+  userToken: string | null | undefined,
 ) => {
   if (!userToken) {
     throw new Error("no user token provided");
@@ -58,11 +58,11 @@ const getUsersRepairs = async ({
 
 const searchForRepair = async (phrase: string) => {
   const response = await axios.post(
-    `http://localhost:8000/api/repairs`,
+    `${API_URL}/api/repair/search`,
     { searchPhrase: phrase },
     {
       withCredentials: true,
-    }
+    },
   );
   return response.data;
 };
@@ -89,7 +89,7 @@ const updateRepair = async (repair: Repair) => {
       { repairData: repair },
       {
         withCredentials: true,
-      }
+      },
     );
     return response.data;
   } catch (err) {
@@ -108,7 +108,7 @@ const postRepair = async (repair: Repair) => {
       { repairData: repair },
       {
         withCredentials: true,
-      }
+      },
     );
 
     return response.data;

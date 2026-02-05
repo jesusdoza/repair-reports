@@ -11,14 +11,15 @@ const useRepairApi = () => {
   const searchForRepair = async (phrase: string) => {
     try {
       const response = await axios.post(
-        `${API_URL}/repairs/search`,
+        `${API_URL}/api/repair/search`,
         { searchPhrase: phrase },
         {
           withCredentials: true,
-        }
+        },
       );
-      return response?.data?.repairs
-        ? (response?.data?.repairs as RepairDataT[])
+
+      return response?.data?.results
+        ? (response?.data?.results as RepairDataT[])
         : [];
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -67,7 +68,7 @@ const useRepairApi = () => {
         { repairData: repair },
         {
           withCredentials: true,
-        }
+        },
       );
       return response.data;
     } catch (error) {
@@ -89,7 +90,7 @@ const useRepairApi = () => {
         { repairData: repair },
         {
           withCredentials: true,
-        }
+        },
       );
       return response.data;
     } catch (error) {
