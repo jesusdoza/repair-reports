@@ -168,20 +168,7 @@ const searchRepairs = async (req: Request, res: Response) => {
 
     const results = await RepairService.searchRepairs({ searchStr, limit });
 
-    // const results = await Repair.aggregate([
-    //   {
-    // $search: {
-    //   index: REPAIR_INDEX,
-    //   text: {
-    //     query: searchStr,
-    //     //   path:["title","searchtags","procedureArr","instructions"],
-    //     path: { wildcard: "*" },
-    //     fuzzy: { maxEdits: 2, prefixLength: 3 },
-    //   },
-    // },
-    //   },
-    // ]).limit(limit);
-    // res.json({ repairs: results });
+    res.json(results);
   } catch (error: any) {
     res
       .status(400)
