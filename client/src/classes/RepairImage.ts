@@ -1,6 +1,6 @@
 export class RepairImage {
   public url = "";
-  public imageThumb = "";
+  public thumbnail = "";
   public caption = "";
   public imageId = "";
   public folder = "testFolder";
@@ -8,7 +8,7 @@ export class RepairImage {
   constructor(imageData?: Partial<RepairImage>) {
     if (imageData) {
       this.url = imageData.url || "";
-      this.imageThumb = imageData.imageThumb || "";
+      this.thumbnail = imageData.thumbnail || "";
       this.caption = imageData.caption || "";
       this.imageId = imageData.imageId || "";
       this.folder = imageData.folder || "testFolder";
@@ -20,8 +20,8 @@ export class RepairImage {
     return this;
   }
 
-  setImageThumb(imageThumb: string) {
-    this.imageThumb = imageThumb;
+  setThumbnail(thumbnail: string) {
+    this.thumbnail = thumbnail;
     return this;
   }
 
