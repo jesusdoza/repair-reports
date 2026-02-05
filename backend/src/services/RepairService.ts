@@ -161,7 +161,7 @@ class RepairService {
           index: REPAIRS_INDEX,
           text: {
             query: searchStr,
-            searchAfter: searchIndex,
+            // searchAfter: searchIndex || undefined,
             //   path:["title","searchtags","procedureArr","instructions"],
             path: { wildcard: "*" },
             fuzzy: { maxEdits: 2, prefixLength: 3 },
@@ -180,7 +180,7 @@ class RepairService {
         },
       },
     ]);
-    return results[0];
+    return results[0] as { metaData: { total: number }; results: RepairT[] };
   }
 }
 
