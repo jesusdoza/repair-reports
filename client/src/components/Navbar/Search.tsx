@@ -16,7 +16,7 @@ export default function Search(): React.ReactNode {
         type="text"
         name="searchPhrase"
         placeholder="Search"
-        className="input input-bordered w-24 md:w-auto"
+        className="input input-bordered w-24 md:w-auto text-white"
       />
     </form>
   );

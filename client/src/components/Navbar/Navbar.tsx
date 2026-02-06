@@ -13,32 +13,36 @@ type NavbarPropsT = {
   profileMenu: NavLinkT[];
 };
 
+//button on navbar
+function MenuItem({ label, url }: NavLinkT) {
+  return (
+    <Link
+      to={url}
+      className="bg-slate-300">
+      <span className="text-black">{label}</span>
+    </Link>
+  );
+}
+
+const NavbarMenu = ({ mainMenu }: { mainMenu: NavLinkT[] }) => {
+  if (!mainMenu || mainMenu.length === 0) return null;
+  return mainMenu.map((item) => {
+    return (
+      <li key={v4()}>
+        <MenuItem
+          label={item.label}
+          url={item.url}
+        />
+      </li>
+    );
+  });
+};
+
 export default function Navbar({
   mainMenu = [],
   profileMenu = [],
 }: NavbarPropsT): React.ReactNode {
   const { userInfo } = useAuthContext();
-
-  function MenuItem({ label, url }: NavLinkT) {
-    return (
-      <Link to={url}>
-        <span>{label}</span>
-      </Link>
-    );
-  }
-
-  const NavbarMenu = () => {
-    return mainMenu.map((item) => {
-      return (
-        <li key={v4()}>
-          <MenuItem
-            label={item.label}
-            url={item.url}
-          />
-        </li>
-      );
-    });
-  };
 
   return (
     <>
@@ -53,18 +57,22 @@ export default function Navbar({
           </div>
         </div>
 
-        <ul className=" flex menu menu-horizontal gap-1">
-          <NavbarMenu />
+        {/* <ul className=" flex menu menu-horizontal gap-1"> */}
+        <ul className="menu menu-vertical lg:menu-horizontal bg-base-200 rounded-box bg-secondary ">
+          <NavbarMenu mainMenu={mainMenu} />
           <li
             key={v4()}
-            className="form-control">
+            className="form-control text-white">
             <Search />
           </li>
+
+          <li className="form-control text-white">
+            <ProfileNavItem
+              username={userInfo?.username}
+              menu={profileMenu}
+            />
+          </li>
         </ul>
-        <ProfileNavItem
-          username={userInfo?.username}
-          menu={profileMenu}
-        />
       </div>
     </>
   );
@@ -72,7 +80,7 @@ export default function Navbar({
 
 function ProfileNavItem({
   menu,
-  username = "",
+  username = "username",
 }: {
   menu: NavLinkT[];
   username?: string;
