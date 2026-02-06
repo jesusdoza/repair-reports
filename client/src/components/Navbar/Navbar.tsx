@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import Search from "../Search/Search";
 import useAuthContext from "../../hooks/useAuthContext";
 import { v4 } from "uuid";
+import { useAuth, useUser } from "@clerk/clerk-react";
 
 export type NavLinkT = {
   url: string;
@@ -26,7 +27,7 @@ function MenuItem({ label, url }: NavLinkT) {
 
 const NavbarMenu = ({ mainMenu }: { mainMenu: NavLinkT[] }) => {
   if (!mainMenu || mainMenu.length === 0) return null;
-  return mainMenu.map((item) => {
+  const items = mainMenu.map((item) => {
     return (
       <li key={v4()}>
         <MenuItem
@@ -36,17 +37,22 @@ const NavbarMenu = ({ mainMenu }: { mainMenu: NavLinkT[] }) => {
       </li>
     );
   });
+
+  return <ul>{items}</ul>;
 };
 
 export default function Navbar({
   mainMenu = [],
   profileMenu = [],
 }: NavbarPropsT): React.ReactNode {
-  const { userInfo } = useAuthContext();
+  // const { userInfo } = useAuthContext();
+  const { user: userInfo, isLoaded } = useUser();
+
+  console.log("userInfo", userInfo);
 
   return (
     <>
-      <div className="navbar gap-3 px-3 bg-secondary text-text-primary">
+      {/* <div className="navbar gap-3 px-3 bg-secondary text-text-primary">
         <div className="flex-1">
           <div>
             <Link
@@ -57,7 +63,6 @@ export default function Navbar({
           </div>
         </div>
 
-        {/* <ul className=" flex menu menu-horizontal gap-1"> */}
         <ul className="menu menu-vertical lg:menu-horizontal bg-base-200 rounded-box bg-secondary ">
           <NavbarMenu mainMenu={mainMenu} />
           <li
@@ -73,6 +78,40 @@ export default function Navbar({
             />
           </li>
         </ul>
+      </div> */}
+      <div>
+        <div className="navbar bg-base-100 shadow-sm">
+          <div className="flex-1">
+            <a className="btn btn-ghost text-xl">daisyUI</a>
+          </div>
+          <NavbarMenu mainMenu={mainMenu} />
+          <div className="flex gap-2">
+            <input
+              type="text"
+              placeholder="Search"
+              className="input input-bordered w-24 md:w-auto"
+            />
+            <div className="dropdown dropdown-end">
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn btn-ghost btn-circle avatar">
+                <div className="w-10 rounded-full">
+                  <img
+                    alt="Tailwind CSS Navbar component"
+                    src={userInfo?.imageUrl}
+                  />
+                </div>
+              </div>
+              <div>
+                <ul className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow z-40">
+                  <ProfileNavItem menu={profileMenu} />
+                </ul>
+                {userInfo?.username}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );
@@ -80,10 +119,9 @@ export default function Navbar({
 
 function ProfileNavItem({
   menu,
-  username = "username",
 }: {
   menu: NavLinkT[];
-  username?: string;
+  username?: string | null | undefined;
 }) {
   function MenuItem(item: NavLinkT) {
     return (
@@ -106,26 +144,12 @@ function ProfileNavItem({
       </li>
     );
   });
+
   return (
-    <div className="dropdown dropdown-end ">
-      <div
-        data-testid="nav-profile-menu"
-        tabIndex={0}
-        role="button"
-        className="btn btn-ghost btn-circle avatar">
-        <div className="w-10 rounded-full">
-          <img
-            alt="USERIMAGE"
-            src="#"
-          />
-        </div>
-        <span>{username}</span>
-      </div>
-      <ul
-        tabIndex={0}
-        className="mt-3 z-[30] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
-        {menuItems}
-      </ul>
-    </div>
+    <ul
+      tabIndex={0}
+      className="mt-3 z-[30] p-2 bg-base-100 w-52">
+      {menuItems}
+    </ul>
   );
 }
