@@ -5,7 +5,7 @@ export default function SignUpPage() {
     <div className="flex w-full h-screen justify-center">
       <div>
         <SignUp
-          signInUrl={"/login/clerk"}
+          signInUrl={"/login"}
           forceRedirectUrl={`/login/clerk/loaduser`}
         />
       </div>
