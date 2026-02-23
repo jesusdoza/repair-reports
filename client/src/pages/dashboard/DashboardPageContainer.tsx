@@ -43,7 +43,7 @@ export default function DashboardPageContainer(): React.ReactNode {
 
   return (
     <div className="flex  min-h-screen">
-      <aside className=" w-1/6 bg-slate-600">
+      {/* <aside className=" w-1/6 bg-slate-600">
         <ErrorBoundary componentName="FilterMenuContainer">
           <FilterMenuContainer
             repairList={usersRepairs?.results || []}
@@ -51,7 +51,7 @@ export default function DashboardPageContainer(): React.ReactNode {
             // categories={filterOptionsMap}
           />
         </ErrorBoundary>
-      </aside>
+      </aside> */}
       <main className="w-5/6 bg-slate-700">
         <h1 className="text-2xl font-bold text-center">Dashboard</h1>
         <ErrorBoundary componentName="UsersRepairs">
