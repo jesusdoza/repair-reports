@@ -18,8 +18,8 @@ function MenuItem({ label, url }: NavLinkT) {
   return (
     <Link
       to={url}
-      className="">
-      <span className="text-black">{label}</span>
+      className="px-4 py-2 rounded-md text-foreground hover:bg-primary/10 transition-colors font-medium">
+      <span>{label}</span>
     </Link>
   );
 }
@@ -40,9 +40,7 @@ const NavbarMenu = ({ mainMenu }: { mainMenu: NavLinkT[] }) => {
   });
 
   return (
-    <ul className="menu menu-vertical lg:menu-horizontal bg-secondary rounded-box ">
-      {items}
-    </ul>
+    <ul className="flex flex-row gap-2 items-center bg-transparent">{items}</ul>
   );
 };
 
@@ -84,35 +82,52 @@ export default function Navbar({
           </li>
         </ul>
       </div> */}
-      <div>
-        <div className="navbar bg-secondary shadow-sm">
-          <div className="flex-1">
-            <a className="btn btn-ghost text-xl">daisyUI</a>
+      <div className="w-full bg-secondary shadow-sm sticky top-0 z-50">
+        <nav className="navbar max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
+          <div className="flex items-center gap-4 flex-1">
+            <Link
+              to="/"
+              className="text-2xl font-bold text-primary-foreground tracking-tight px-2 py-1 rounded-md hover:bg-primary/20 transition-colors">
+              Circuit Chaser
+            </Link>
+            <div className="hidden lg:block">
+              <NavbarMenu mainMenu={mainMenu} />
+            </div>
           </div>
-          <NavbarMenu mainMenu={mainMenu} />
-          <div className="flex gap-2">
-            <Search />
+          <div className="flex items-center gap-3">
+            <div className="hidden md:block">
+              <Search />
+            </div>
             <div className="dropdown dropdown-end">
               <div
                 tabIndex={0}
                 role="button"
-                className="btn btn-ghost btn-circle avatar">
-                <div className="w-10 rounded-full">
-                  <img
-                    alt="Tailwind CSS Navbar component"
-                    src={userInfo?.imageUrl}
-                  />
+                className="btn btn-ghost btn-circle avatar border border-border hover:border-primary transition-colors">
+                <div className="w-10 h-10 rounded-full overflow-hidden bg-muted flex items-center justify-center">
+                  {userInfo?.imageUrl ? (
+                    <img
+                      alt="User avatar"
+                      src={userInfo?.imageUrl}
+                      className="object-cover w-full h-full"
+                    />
+                  ) : (
+                    <span className="text-lg font-bold text-muted-foreground">
+                      ?
+                    </span>
+                  )}
                 </div>
               </div>
-              <div>
-                <ul className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow z-40">
-                  <ProfileNavItem menu={profileMenu} />
-                </ul>
-                {userInfo?.username}
-              </div>
+              <ul className="menu menu-sm dropdown-content bg-card rounded-box mt-3 w-52 p-2 shadow z-40 border border-border">
+                <ProfileNavItem menu={profileMenu} />
+                {userInfo?.username && (
+                  <li className="mt-2 px-2 text-xs text-muted-foreground">
+                    {userInfo.username}
+                  </li>
+                )}
+              </ul>
             </div>
           </div>
-        </div>
+        </nav>
       </div>
     </>
   );
@@ -126,31 +141,22 @@ function ProfileNavItem({
 }) {
   function MenuItem(item: NavLinkT) {
     return (
-      <Link to={item.url}>
-        <span className="justify-between">
-          {item.label}
-          <span className="badge">New</span>
-        </span>
+      <Link
+        to={item.url}
+        className="flex items-center px-3 py-2 rounded-md hover:bg-primary/10 text-foreground transition-colors">
+        <span>{item.label}</span>
       </Link>
     );
   }
 
-  const menuItems = menu.map((item) => {
-    return (
-      <li key={v4()}>
-        <MenuItem
-          label={item.label}
-          url={item.url}
-        />
-      </li>
-    );
-  });
+  const menuItems = menu.map((item) => (
+    <li key={v4()}>
+      <MenuItem
+        label={item.label}
+        url={item.url}
+      />
+    </li>
+  ));
 
-  return (
-    <ul
-      tabIndex={0}
-      className="mt-3 z-[30] p-2 bg-base-100 w-52">
-      {menuItems}
-    </ul>
-  );
+  return <>{menuItems}</>;
 }

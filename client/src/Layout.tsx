@@ -11,8 +11,8 @@ export const Layout = ({
   children: React.ReactNode;
 }): React.ReactNode => {
   return (
-    <>
-      <nav>
+    <div className="min-h-screen bg-background text-foreground flex flex-col">
+      <nav className="mb-2">
         <ErrorBoundary componentName="Navbar">
           <Navbar
             mainMenu={navMenu}
@@ -20,7 +20,9 @@ export const Layout = ({
           />
         </ErrorBoundary>
       </nav>
-      {children}
-    </>
+      <main className="flex-1 w-full max-w-7xl mx-auto px-4 py-6">
+        {children}
+      </main>
+    </div>
   );
 };
