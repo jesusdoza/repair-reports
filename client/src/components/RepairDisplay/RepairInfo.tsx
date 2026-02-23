@@ -9,40 +9,49 @@ type RepairInfoPageProps = {
 
 export default function RepairInfo({ repair, userId }: RepairInfoPageProps) {
   return (
-    <section className="print:flex print:flex-col">
-      <section className="w-full">
-        <legend className=" border-4 rounded-lg p-2 border-gray-600">
-          <h1 className=" text-4xl">{repair.title ? repair.title : ""}</h1>
-          <h3>repair info</h3>
-          <div>
-            <span>Repair Id:</span>
-            <div className="badge badge-neutral"> {repair._id}</div>
+    <section className="print:flex print:flex-col w-full max-w-3xl mx-auto">
+      <section className="w-full mb-6">
+        <div className="bg-card border border-border rounded-xl shadow p-6">
+          <h1 className="text-3xl font-bold text-primary mb-2">
+            {repair.title ? repair.title : ""}
+          </h1>
+          <h3 className="text-lg text-muted-foreground mb-4">Repair Info</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <span className="font-medium text-foreground">Repair Id:</span>
+              <div className="badge bg-muted text-xs ml-2">{repair._id}</div>
+            </div>
+            <div>
+              <span className="font-medium text-foreground">Created by:</span>
+              <div className="badge bg-muted text-xs ml-2">
+                {repair.createdBy}
+              </div>
+            </div>
+            <div>
+              <span className="font-medium text-foreground">Engine Make:</span>
+              <div className="badge bg-muted text-xs ml-2">
+                {repair.engineMake}
+              </div>
+            </div>
+            <div>
+              <span className="font-medium text-foreground">User Group:</span>
+              <div className="badge bg-muted text-xs ml-2">{repair.group}</div>
+            </div>
+            <div>
+              <span className="font-medium text-foreground">Board Type:</span>
+              <div className="badge bg-muted text-xs ml-2">
+                {repair.boardType}
+              </div>
+            </div>
           </div>
-          <div>
-            <span>created by user:</span>
-            <div className="badge badge-neutral"> {repair.createdBy}</div>
-          </div>
-          <div>
-            <span>engine make:</span>
-            <div className="badge badge-neutral"> {repair.engineMake}</div>
-          </div>
-          <div>
-            <span>user group:</span>
-            <div className="badge badge-neutral"> {repair.group}</div>
-          </div>
-          <div>
-            <span>board type:</span>
-            <div className="badge badge-neutral"> {repair.boardType}</div>
-          </div>
-        </legend>
+        </div>
       </section>
 
-      <section className="w-full">
-        {/* <h3 className="text-xl">Repair procedures</h3> */}
+      <section className="w-full mb-6">
         <ProcedureList list={repair.procedureArr} />
       </section>
       {/* if user id matches created by field user can use edit tools */}
-      <section className="w-full">
+      <section className="w-full mb-6">
         {userId == repair.createdBy && <EditTools id={repair._id} />}
       </section>
       <section>{/* <Comments /> */}</section>
