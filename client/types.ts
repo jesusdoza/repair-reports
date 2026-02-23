@@ -20,21 +20,6 @@
 // //   instructions: string;
 // // }
 
-// // export type RepairDataT = {
-// //   title: string;
-// //   status: "pending" | "in_progress" | "completed";
-// //   type: string;
-// //   category: string;
-// //   manufacturer: string;
-// //   visibility: "public" | "organization";
-// //   createdBy: string;
-// //   organization: string;
-// //   removed: boolean;
-// //   procedures: ProcedureT[];
-// //   description?: string;
-// //   _id: string;
-// // };
-
 // // export type ChangeFormPayloadT = {
 // //   procIndex?: number;
 // //   instructions?: string;
@@ -105,22 +90,34 @@
 //   folder: string;
 // };
 
-// // export type imageObjT = {
-// //   imageUrl: string;
-// //   imageThumb: string;
-// //   caption: string;
-// //   imageId: string;
-// //   folder: string;
-// // };
+export type RepairDataT = {
+  title: string;
+  status: "pending" | "in_progress" | "completed";
+  type: string;
+  category: string;
+  manufacturer: string;
+  visibility: "public" | "organization";
+  createdBy: string;
+  organization: string;
+  removed: boolean;
+  procedures: ProcedureT[];
+  description?: string;
+  _id: string;
+};
 
-// // export type ProcedureT = {
-// //   images: string[];
-// //   imageObjs?: imageObjT[];
-// //   imagesIdArr: string[];
-// //   instructions: string;
-// //   procedureNum: number;
-// //   thumbs: string[];
-// // };
+export type imageDataT = {
+  url: string;
+  thumbnail: string;
+  caption: string;
+  imageId: string;
+  folder: string;
+};
+
+export type ProcedureT = {
+  images?: imageDataT[];
+  instructions: string;
+};
+
 // // export type repairDataT = Record<string, string>;
 // // export type repairDataT = {
 // //   boardType: string;
