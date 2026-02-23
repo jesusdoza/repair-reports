@@ -34,8 +34,10 @@ const controls: ControlOption[] = [
 
 export default function UsersRepairs({ repairList = [] }: UsersRepairsProps) {
   return (
-    <div>
-      <h3>Your Repairs</h3>
+    <div className="w-full px-6 py-8 bg-background rounded-xl shadow-md">
+      <h3 className="text-2xl font-bold text-primary mb-6 tracking-tight">
+        Your Repairs
+      </h3>
       <section>
         <RepairsList
           controls={controls}
@@ -56,22 +58,17 @@ function RepairsList({
   //create react components
   const list = repairList.map((repairObj) => {
     const title = repairObj?.title || "untitled repair";
-    // console.log("Repair Data: ", repairObj);
     const url =
       repairObj?.procedures && repairObj?.procedures.length > 0
         ? repairObj?.procedures[0]?.images[0].url
         : "#";
 
-    // const summary = repairObj?.procedures[0]?.instructions
-    //   ? repairObj?.procedures[0]?.instructions
-    //   : "";
-
     return (
       <li
-        className="sm:w-full md:w-1/2 lg:w-1/5 p-1"
+        className="sm:w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-3 flex"
         key={uuidv4()}>
-        <div className="relative h-full">
-          <div className="card-actions justify-end absolute h-full flex z-[21] right-0 ">
+        <div className="relative h-full w-full bg-card rounded-xl shadow-lg border border-border flex flex-col transition-transform hover:scale-[1.025] hover:shadow-xl">
+          <div className="card-actions justify-end absolute top-3 right-3 z-10">
             <RepairEditControls controls={controls} />
           </div>
           <RepairCard
@@ -84,5 +81,5 @@ function RepairsList({
     );
   });
 
-  return <ul className="flex flex-wrap w-full items-center ">{list}</ul>;
+  return <ul className="flex flex-wrap w-full items-stretch gap-6">{list}</ul>;
 }
