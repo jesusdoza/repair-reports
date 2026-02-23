@@ -13,8 +13,12 @@ export default function RepairList({
 }: latestRepairsProps): React.ReactNode {
   if (!repairList || repairList?.length === 0) {
     return (
-      <li key={v4()}>
-        <h3>No repairs to display</h3>
+      <li
+        key={v4()}
+        className="w-full text-center py-8">
+        <h3 className="text-lg text-muted-foreground font-medium">
+          No repairs to display
+        </h3>
       </li>
     );
   }
@@ -22,12 +26,12 @@ export default function RepairList({
   const repairs = repairList.map((data) => {
     return (
       <li
-        className="w-full p-1 sm:w-1/3 md:w-1/4"
+        className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 p-3 flex"
         key={uuidv4()}>
         <Link
           state={{ repair: data }}
           to={`/repair/${data._id}`}
-          className="w-full">
+          className="w-full h-full block group">
           <RepairCard
             title={data.title}
             summary={
@@ -49,5 +53,9 @@ export default function RepairList({
       </li>
     );
   });
-  return <ul className="flex flex-wrap gap-0 justify-center ">{repairs}</ul>;
+  return (
+    <ul className="flex flex-wrap gap-6 justify-center items-stretch w-full">
+      {repairs}
+    </ul>
+  );
 }
