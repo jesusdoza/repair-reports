@@ -18,19 +18,30 @@ export const RepairCard = ({
     <div className="w-full h-[400px] p-2">
       <div
         data-test="entry"
-        className="card bg-base-100 shadow-xl image-full h-full">
-        <figure className="h-full">
+        className="bg-card border border-border rounded-xl shadow-lg h-full flex flex-col overflow-hidden transition-transform hover:scale-[1.02] hover:shadow-xl">
+        <figure className="h-2/3 w-full bg-muted flex items-center justify-center overflow-hidden">
           <img
-            className="w-full"
+            className="object-cover w-full h-full"
             src={previewImageUrl}
+            alt={title || "Repair preview"}
             onError={() => {
               setPreviewUrl(noImagePlaceholder);
             }}
           />
         </figure>
-        <div className="card-body w-full">
-          {title && <h2 className="card-title">{title}</h2>}
-          {summary && <p>{summary}</p>}
+        <div className="flex-1 flex flex-col justify-between p-4">
+          {title && (
+            <h2
+              className="text-lg font-semibold text-primary mb-2 truncate"
+              title={title}>
+              {title}
+            </h2>
+          )}
+          {summary && (
+            <p className="text-sm text-muted-foreground line-clamp-3">
+              {summary}
+            </p>
+          )}
         </div>
       </div>
     </div>
