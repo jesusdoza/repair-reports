@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Camera, X, ImagePlus } from "lucide-react";
 
-type FormStepProps = {
+type RepairProcedureCardProps = {
   step: {
     images: string[];
     notes: string;
@@ -14,7 +14,11 @@ type FormStepProps = {
   onChange: (data: { images?: string[]; notes?: string }) => void;
 };
 
-export function FormStep({ step, onChange }: FormStepProps) {
+// This component represents a single step in the repair form, allowing users to upload images and add notes about the repair process.
+export function FormProcedureCard({
+  step,
+  onChange,
+}: RepairProcedureCardProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Handle image upload

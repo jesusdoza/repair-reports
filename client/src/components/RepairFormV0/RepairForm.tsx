@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { FormStep } from "./FormStep";
-import { ChevronLeft, ChevronRight, Save, Plus, Trash2 } from "lucide-react";
+import { FormProcedureCard } from "./FormStep";
+import { Save, Plus, Trash2 } from "lucide-react";
 import { Repair } from "@/classes/Repair";
 
 type imageData = {
@@ -13,11 +13,12 @@ type imageData = {
 };
 
 // Define the form data structure
-type RepairStep = {
+type ProcedureStep = {
   images: imageData[];
   instructions: string;
 };
 
+// Main component for the repair form, which manages the overall state and layout of the form, including the side panel and step navigation.
 export function RepairForm({
   onSubmit = () => {},
   enableSubmit,
@@ -27,7 +28,7 @@ export function RepairForm({
 }) {
   // State for tracking current step and form data
   const [currentStep, setCurrentStep] = useState(0);
-  const [steps, setSteps] = useState<RepairStep[]>([
+  const [steps, setSteps] = useState<ProcedureStep[]>([
     { images: [], instructions: "" },
   ]);
   const [title, setTitle] = useState("");
@@ -56,7 +57,7 @@ export function RepairForm({
   };
 
   // Update the current step's data
-  const updateCurrentStep = (data: Partial<RepairStep>) => {
+  const updateCurrentStep = (data: Partial<ProcedureStep>) => {
     const newSteps = [...steps];
     newSteps[currentStep] = { ...newSteps[currentStep], ...data };
     setSteps(newSteps);
@@ -95,13 +96,13 @@ export function RepairForm({
       </div>
       <div className="flex-1 space-y-6">
         <h1 className="text-2xl font-bold">Repair Form</h1>
-        <StepCard
+        <ProcedureFormCard
           currentStep={currentStep}
           steps={steps}
           addStep={addStep}
           removeStep={removeStep}
           updateCurrentStep={updateCurrentStep}
-          FormStep={FormStep}
+          FormStep={FormProcedureCard}
         />
         {/* submit button */}
         <div className="flex flex-col gap-2">
@@ -118,26 +119,27 @@ export function RepairForm({
   );
 }
 
-type StepCardProps = {
+type ProcedureFormCardProps = {
   currentStep: number;
-  steps: RepairStep[];
+  steps: ProcedureStep[];
   addStep: () => void;
   removeStep: () => void;
-  updateCurrentStep: (data: Partial<RepairStep>) => void;
+  updateCurrentStep: (data: Partial<ProcedureStep>) => void;
   FormStep: React.ComponentType<{
-    step: RepairStep;
-    onChange: (data: Partial<RepairStep>) => void;
+    step: ProcedureStep;
+    onChange: (data: Partial<ProcedureStep>) => void;
   }>;
 };
 
-function StepCard({
+//main procedure form card component that contains the form for editing a single step, as well as buttons to add/remove steps and navigate between them
+function ProcedureFormCard({
   currentStep,
   steps,
   addStep,
   removeStep,
   updateCurrentStep,
   FormStep,
-}: StepCardProps) {
+}: ProcedureFormCardProps) {
   return (
     <Card>
       <CardContent className="pt-6">
@@ -172,68 +174,6 @@ function StepCard({
   );
 }
 
-type StepNavigationProps = {
-  currentStep: number;
-  steps: RepairStep[];
-  setCurrentStep: (step: number) => void;
-  prevStep: () => void;
-  nextStep: () => void;
-  enableSubmit: boolean;
-  handleSubmit: () => void;
-};
-
-function StepNavigation({
-  currentStep,
-  steps,
-  setCurrentStep,
-  prevStep,
-  nextStep,
-  enableSubmit,
-  handleSubmit,
-}: StepNavigationProps) {
-  return (
-    <>
-      <div className="flex justify-between">
-        <Button
-          variant="outline"
-          onClick={prevStep}
-          disabled={currentStep === 0}>
-          <ChevronLeft className="h-4 w-4 mr-1" />
-          Previous
-        </Button>
-        <div className="flex gap-2">
-          {currentStep === steps.length - 1 && (
-            <Button
-              disabled={!enableSubmit}
-              onClick={handleSubmit}>
-              <Save className="h-4 w-4 mr-1" />
-              Save Documentation
-            </Button>
-          )}
-          <Button
-            onClick={nextStep}
-            disabled={currentStep === steps.length - 1}>
-            Next
-            <ChevronRight className="h-4 w-4 ml-1" />
-          </Button>
-        </div>
-      </div>
-      <div className="flex justify-center mt-4">
-        {steps.map((_: any, index: number) => (
-          <Button
-            key={index}
-            variant={index === currentStep ? "default" : "outline"}
-            size="icon"
-            className="h-8 w-8 mx-1"
-            onClick={() => setCurrentStep(index)}>
-            {index + 1}
-          </Button>
-        ))}
-      </div>
-    </>
-  );
-}
-
 // Panel for editing extra data (title, description, etc.)
 type RepairDetailsPanelProps = {
   title: string;
@@ -250,6 +190,7 @@ type RepairDetailsPanelProps = {
   setVisibility: (v: "public" | "organization") => void;
 };
 
+// Component for editing the repair details, such as title, description, category, etc.
 function RepairDetailsPanel({
   title,
   setTitle,
@@ -272,13 +213,13 @@ function RepairDetailsPanel({
         placeholder="Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        className="input input-bordered w-full"
+        className="input input-bordered w-full bg-gray-100"
       />
       <textarea
         placeholder="Description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
-        className="textarea textarea-bordered w-full"
+        className="textarea textarea-bordered w-full bg-gray-100"
         rows={2}
       />
       <input
@@ -286,21 +227,21 @@ function RepairDetailsPanel({
         placeholder="Category"
         value={category}
         onChange={(e) => setCategory(e.target.value)}
-        className="input input-bordered w-full"
+        className="input input-bordered w-full bg-gray-100"
       />
       <input
         type="text"
         placeholder="Manufacturer"
         value={manufacturer}
         onChange={(e) => setManufacturer(e.target.value)}
-        className="input input-bordered w-full"
+        className="input input-bordered w-full bg-gray-100"
       />
       <input
         type="text"
         placeholder="Type"
         value={type}
         onChange={(e) => setType(e.target.value)}
-        className="input input-bordered w-full"
+        className="input input-bordered w-full bg-gray-100"
       />
       <div className="flex items-center gap-2">
         <label className="font-medium">Visibility:</label>
@@ -309,7 +250,7 @@ function RepairDetailsPanel({
           onChange={(e) =>
             setVisibility(e.target.value as "public" | "organization")
           }
-          className="select select-bordered">
+          className="select select-bordered bg-gray-100">
           <option value="public">Public</option>
           <option value="organization">Organization</option>
         </select>
@@ -318,13 +259,13 @@ function RepairDetailsPanel({
   );
 }
 
-// Panel for previewing steps
 type StepPreviewPanelProps = {
-  steps: RepairStep[];
+  steps: ProcedureStep[];
   currentStep: number;
   setCurrentStep: (step: number) => void;
 };
 
+// Component for previewing the steps in a side panel, allowing users to quickly navigate between steps and see a summary of each step.
 function StepPreviewPanel({
   steps,
   currentStep,
@@ -355,123 +296,5 @@ function StepPreviewPanel({
         ))}
       </ul>
     </section>
-  );
-}
-type SidePanelProps = {
-  title: string;
-  setTitle: (v: string) => void;
-  description: string;
-  setDescription: (v: string) => void;
-  category: string;
-  setCategory: (v: string) => void;
-  manufacturer: string;
-  setManufacturer: (v: string) => void;
-  type: string;
-  setType: (v: string) => void;
-  visibility: "public" | "organization";
-  setVisibility: (v: "public" | "organization") => void;
-  steps: RepairStep[];
-  currentStep: number;
-  setCurrentStep: (step: number) => void;
-};
-
-function SidePanelTextInput({
-  title,
-  setTitle,
-  description,
-  setDescription,
-  category,
-  setCategory,
-  manufacturer,
-  setManufacturer,
-  type,
-  setType,
-  visibility,
-  setVisibility,
-  steps,
-  currentStep,
-  setCurrentStep,
-}: SidePanelProps) {
-  return (
-    <aside className="w-full md:w-80 bg-card border border-border rounded-xl shadow p-4 flex flex-col gap-6 h-fit">
-      <div>
-        <h2 className="text-lg font-semibold mb-2">Repair Details</h2>
-        <div className="space-y-2 bg-white/10 p-4 rounded">
-          <input
-            type="text"
-            placeholder="Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="input input-bordered w-full"
-          />
-          <textarea
-            placeholder="Description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="textarea textarea-bordered w-full"
-            rows={2}
-          />
-          <input
-            type="text"
-            placeholder="Category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className="input input-bordered w-full"
-          />
-          <input
-            type="text"
-            placeholder="Manufacturer"
-            value={manufacturer}
-            onChange={(e) => setManufacturer(e.target.value)}
-            className="input input-bordered w-full"
-          />
-          <input
-            type="text"
-            placeholder="Type"
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-            className="input input-bordered w-full"
-          />
-          <div className="flex items-center gap-2">
-            <label className="font-medium">Visibility:</label>
-            <select
-              value={visibility}
-              onChange={(e) =>
-                setVisibility(e.target.value as "public" | "organization")
-              }
-              className="select select-bordered">
-              <option value="public">Public</option>
-              <option value="organization">Organization</option>
-            </select>
-          </div>
-        </div>
-      </div>
-      <div>
-        <h2 className="text-lg font-semibold mb-2">Step Preview</h2>
-        <ul className="space-y-2">
-          {steps.map((step, idx) => (
-            <li
-              key={idx}
-              className={`p-2 rounded border ${idx === currentStep ? "border-primary bg-primary/10" : "border-border bg-muted/50"} cursor-pointer transition-colors`}
-              onClick={() => setCurrentStep(idx)}>
-              <div className="flex items-center gap-2">
-                <span className="font-semibold text-primary">
-                  Step {idx + 1}
-                </span>
-                <span className="text-xs text-muted-foreground truncate max-w-[120px]">
-                  {step.instructions?.slice(0, 30) || "No instructions"}
-                </span>
-                {step.images && step.images.length > 0 && (
-                  <span className="badge badge-accent">
-                    {step.images.length} image
-                    {step.images.length > 1 ? "s" : ""}
-                  </span>
-                )}
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </aside>
   );
 }
