@@ -55,20 +55,6 @@ export function RepairForm({
     setCurrentStep(Math.min(currentStep, newSteps.length - 1));
   };
 
-  // Navigate to previous step
-  const prevStep = () => {
-    if (currentStep > 0) {
-      setCurrentStep(currentStep - 1);
-    }
-  };
-
-  // Navigate to next step
-  const nextStep = () => {
-    if (currentStep < steps.length - 1) {
-      setCurrentStep(currentStep + 1);
-    }
-  };
-
   // Update the current step's data
   const updateCurrentStep = (data: Partial<RepairStep>) => {
     const newSteps = [...steps];
@@ -117,6 +103,16 @@ export function RepairForm({
           updateCurrentStep={updateCurrentStep}
           FormStep={FormStep}
         />
+        {/* submit button */}
+        <div className="flex flex-col gap-2">
+          <Button
+            onClick={handleSubmit}
+            disabled={!enableSubmit}
+            className="w-full">
+            <Save className="h-4 w-4 mr-2" />
+            Save Documentation
+          </Button>
+        </div>
       </div>
     </div>
   );
@@ -379,7 +375,7 @@ type SidePanelProps = {
   setCurrentStep: (step: number) => void;
 };
 
-function SidePanel({
+function SidePanelTextInput({
   title,
   setTitle,
   description,
@@ -400,7 +396,7 @@ function SidePanel({
     <aside className="w-full md:w-80 bg-card border border-border rounded-xl shadow p-4 flex flex-col gap-6 h-fit">
       <div>
         <h2 className="text-lg font-semibold mb-2">Repair Details</h2>
-        <div className="space-y-2">
+        <div className="space-y-2 bg-white/10 p-4 rounded">
           <input
             type="text"
             placeholder="Title"
