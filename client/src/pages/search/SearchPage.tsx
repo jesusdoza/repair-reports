@@ -11,13 +11,17 @@ export default function SearchPage() {
   const [loading, setLoading] = useState(false);
 
   //todo add limit and page number to request
-  // const limit = searchParams.get("limit") || 10;
-  // const page = searchParams.get("page") || 1;
+  const limit = parseInt(searchParams.get("limit") || "10", 10);
+  const page = parseInt(searchParams.get("page") || "1", 10);
   const search = searchParams.get("search");
 
-  async function getSearchResults(search: string) {
+  async function getSearchResults(
+    search: string,
+    limit: number = 10,
+    page: number = 1,
+  ) {
     setLoading(true);
-    const results = await searchForRepair(search);
+    const results = await searchForRepair(search, limit, page);
 
     setLoading(false);
     if (results) {
@@ -27,7 +31,7 @@ export default function SearchPage() {
 
   useEffect(() => {
     if (search) {
-      getSearchResults(search);
+      getSearchResults(search, limit, page);
     }
   }, [searchParams]);
 
