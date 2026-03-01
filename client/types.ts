@@ -82,13 +82,13 @@
 //       payload: { procIndex: number; instructions: string };
 //     };
 
-// export type signatureT = {
-//   apikey: string;
-//   cloudname: string;
-//   signature: string;
-//   timestamp: number;
-//   folder: string;
-// };
+export type signatureT = {
+  apikey: string;
+  cloudname: string;
+  signature: string;
+  timestamp: number;
+  folder: string;
+};
 
 export type RepairDataT = {
   title: string;
