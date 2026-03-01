@@ -8,11 +8,15 @@ const API_URL = import.meta.env.VITE_API_URL;
 const useRepairApi = () => {
   const { unauthorizedError } = useAuthContext();
 
-  const searchForRepair = async (phrase: string) => {
+  const searchForRepair = async (
+    phrase: string,
+    limit: number = 10,
+    page: number = 1,
+  ) => {
     try {
       const response = await axios.post(
         `${API_URL}/api/repair/search`,
-        { searchPhrase: phrase },
+        { searchPhrase: phrase, limit, page },
         {
           withCredentials: true,
         },
