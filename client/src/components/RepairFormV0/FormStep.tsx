@@ -125,7 +125,7 @@ export function FormProcedureCard({
         <Textarea
           placeholder="Describe the repair process, components replaced, and any other relevant details..."
           className="min-h-[150px]"
-          value={step.notes}
+          value={step.notes || ""}
           onChange={updateNotes}
         />
       </div>
