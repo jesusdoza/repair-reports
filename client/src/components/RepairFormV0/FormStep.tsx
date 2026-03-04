@@ -5,13 +5,11 @@ import { useRef, type ChangeEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Camera, X, ImagePlus } from "lucide-react";
+import { ProcedureStep } from "./RepairForm";
 
 type RepairProcedureCardProps = {
-  step: {
-    images: string[];
-    notes: string;
-  };
-  onChange: (data: { images?: string[]; notes?: string }) => void;
+  step: ProcedureStep;
+  onChange: (data: Partial<ProcedureStep>) => void;
 };
 
 // This component represents a single step in the repair form, allowing users to upload images and add notes about the repair process.
@@ -34,7 +32,7 @@ export function FormProcedureCard({
 
       reader.onload = (event) => {
         if (event.target?.result) {
-          newImages.push(event.target.result as string);
+          newImages.push({ url: event.target.result as string, caption: "" });
           onChange({ images: newImages });
         }
       };
@@ -57,7 +55,7 @@ export function FormProcedureCard({
 
   // Update notes
   const updateNotes = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    onChange({ notes: e.target.value });
+    onChange({ instructions: e.target.value });
   };
 
   return (
@@ -75,7 +73,7 @@ export function FormProcedureCard({
               className="relative group">
               <div className="aspect-square relative overflow-hidden rounded-md border">
                 <img
-                  src={image || "/placeholder.svg"}
+                  src={image.url || "/placeholder.svg"}
                   alt={`Repair image ${index + 1}`}
                   className="object-cover"
                 />
@@ -125,7 +123,7 @@ export function FormProcedureCard({
         <Textarea
           placeholder="Describe the repair process, components replaced, and any other relevant details..."
           className="min-h-[150px]"
-          value={step.notes || ""}
+          value={step.instructions || ""}
           onChange={updateNotes}
         />
       </div>
