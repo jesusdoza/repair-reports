@@ -11,29 +11,27 @@ export type OptionT = {
 
 export default function AvailableOptionsMulti({
   options,
-  title,
   callback,
+  id,
 }: // defaultValue,
 {
   options: OptionT[];
-  title: string;
+  id: string;
   callback?: (options: string[]) => void;
   // defaultValue?: OptionT[];
 }) {
-  const inputTitle = title ? title : "multi select";
+  // const inputTitle = title ? title : "multi select";
 
   // const id = uuidv4().slice(0, 5);
 
   return (
     <div
       data-testid="available-options-multi"
-      className="flex flex-col justify-around items-center items-center">
-      <div className="flex-1 flex w-11/12 justify-center">
-        <span className="text-center">{inputTitle}</span>
-      </div>
-      <div className="flex-1 flex justify-center w-[300px]">
+      className="flex flex-col justify-around items-center">
+      <div className="flex-1 flex justify-center w-full">
         <CreatableSelect
           isMulti
+          inputId={`${id}`}
           className="w-full"
           // defaultValue={defaultValue ? defaultValue : options[0]}
           isClearable
@@ -49,7 +47,6 @@ export default function AvailableOptionsMulti({
           options={options}
         />
       </div>
-      <div className="flex-1 flex justify-center w-[300px]"></div>
     </div>
   );
 }

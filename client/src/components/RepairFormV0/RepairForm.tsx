@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { FormProcedureCard } from "./FormStep";
 import { Save } from "lucide-react";
@@ -8,6 +8,7 @@ import { Repair } from "@/classes/Repair";
 import { StepPreviewPanel } from "./StepPreviewPanel";
 import { RepairDetailsPanel } from "./RepairDetailsPanel";
 import ProcedureForm from "./ProcedureForm";
+import AvailableOptionsMulti from "../AvailableOptions/AvailableOptionsMulti";
 
 type imageData = {
   url: string;
@@ -20,6 +21,16 @@ export type ProcedureStep = {
   instructions: string;
 };
 
+export type RepairFormData = {
+  title: string;
+  description: string;
+  category: string;
+  manufacturer: string;
+  type: string;
+  visibility: "public" | "organization";
+  procedures: ProcedureStep[];
+};
+
 // Main component for the repair form, which manages the overall state and layout of the form, including the side panel and step navigation.
 export function RepairForm({
   onSubmit = () => {},
@@ -28,46 +39,53 @@ export function RepairForm({
   onSubmit: (repairData: Repair) => void;
   enableSubmit: boolean;
 }) {
-  // State for tracking current step and form data
+  // Initialize form data with default values
+  const [formData, setFormData] = useState<RepairFormData>({
+    title: "",
+    description: "",
+    category: "",
+    manufacturer: "",
+    type: "",
+    visibility: "public",
+    procedures: [{ images: [], instructions: "" }],
+  });
+
   const [currentStep, setCurrentStep] = useState(0);
-  const [steps, setSteps] = useState<ProcedureStep[]>([
+  const [procedures, setProcedures] = useState<ProcedureStep[]>([
     { images: [], instructions: "" },
   ]);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
-  const [manufacturer, setManufacturer] = useState("");
-  const [type, setType] = useState("");
-  const [visibility, setVisibility] = useState<"public" | "organization">(
-    "public",
-  );
+
+  useEffect(() => {
+    // log steps whenever they change
+    console.log("Current form data:", formData);
+  }, [formData]);
 
   // Add a new step to the form
   const addStep = () => {
-    setSteps([...steps, { images: [], instructions: "" }]);
-    setCurrentStep(steps.length);
+    setProcedures([...procedures, { images: [], instructions: "" }]);
+    setCurrentStep(procedures.length);
   };
 
   // Remove the current step
   const removeStep = () => {
-    if (steps.length <= 1) return;
+    if (procedures.length <= 1) return;
 
-    const newSteps = [...steps];
+    const newSteps = [...procedures];
     newSteps.splice(currentStep, 1);
-    setSteps(newSteps);
+    setProcedures(newSteps);
     setCurrentStep(Math.min(currentStep, newSteps.length - 1));
   };
 
   // Update the current step's data
   const updateCurrentStep = (data: Partial<ProcedureStep>) => {
-    const newSteps = [...steps];
+    const newSteps = [...procedures];
     newSteps[currentStep] = { ...newSteps[currentStep], ...data };
-    setSteps(newSteps);
+    setProcedures(newSteps);
   };
 
   // Handle form submission
   const handleSubmit = () => {
-    console.log("Form submitted:", steps);
+    console.log("Form submitted:", procedures);
     // In a real app, you would send this data to your backend
     onSubmit(new Repair());
     alert("Form submitted successfully!");
@@ -77,21 +95,31 @@ export function RepairForm({
     <div className="flex flex-col md:flex-row gap-8">
       <div className="w-full md:w-80 flex flex-col gap-6 h-fit">
         <RepairDetailsPanel
-          title={title}
-          setTitle={setTitle}
-          description={description}
-          setDescription={setDescription}
-          category={category}
-          setCategory={setCategory}
-          manufacturer={manufacturer}
-          setManufacturer={setManufacturer}
-          type={type}
-          setType={setType}
-          visibility={visibility}
-          setVisibility={setVisibility}
+          title={formData?.title || ""}
+          setTitle={(title) =>
+            setFormData((prev) => ({ ...prev, title: title }))
+          }
+          description={formData?.description || ""}
+          setDescription={(description) =>
+            setFormData((prev) => ({ ...prev, description: description }))
+          }
+          category={formData?.category || ""}
+          setCategory={(category) =>
+            setFormData((prev) => ({ ...prev, category: category }))
+          }
+          manufacturer={formData?.manufacturer || ""}
+          setManufacturer={(manufacturer) =>
+            setFormData((prev) => ({ ...prev, manufacturer: manufacturer }))
+          }
+          type={formData?.type || ""}
+          setType={(type) => setFormData((prev) => ({ ...prev, type: type }))}
+          visibility={formData?.visibility || "public"}
+          setVisibility={(visibility) =>
+            setFormData((prev) => ({ ...prev, visibility: visibility }))
+          }
         />
         <StepPreviewPanel
-          steps={steps}
+          steps={procedures}
           currentStep={currentStep}
           setCurrentStep={setCurrentStep}
         />
@@ -100,7 +128,7 @@ export function RepairForm({
         <h1 className="text-2xl font-bold">Repair Form</h1>
         <ProcedureForm
           currentStep={currentStep}
-          steps={steps}
+          steps={procedures}
           addStep={addStep}
           removeStep={removeStep}
           updateCurrentStep={updateCurrentStep}
