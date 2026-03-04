@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { FormProcedureCard } from "./FormStep";
-import { Save, Plus, Trash2 } from "lucide-react";
+import { Save } from "lucide-react";
 import { Repair } from "@/classes/Repair";
+import { StepPreviewPanel } from "./StepPreviewPanel";
+import { RepairDetailsPanel } from "./RepairDetailsPanel";
+import ProcedureForm from "./ProcedureForm";
 
 type imageData = {
   url: string;
@@ -96,7 +98,7 @@ export function RepairForm({
       </div>
       <div className="flex-1 space-y-6">
         <h1 className="text-2xl font-bold">Repair Form</h1>
-        <ProcedureFormCard
+        <ProcedureForm
           currentStep={currentStep}
           steps={steps}
           addStep={addStep}
@@ -116,214 +118,5 @@ export function RepairForm({
         </div>
       </div>
     </div>
-  );
-}
-
-type ProcedureFormCardProps = {
-  currentStep: number;
-  steps: ProcedureStep[];
-  addStep: () => void;
-  removeStep: () => void;
-  updateCurrentStep: (data: Partial<ProcedureStep>) => void;
-  FormStep: React.ComponentType<{
-    step: ProcedureStep;
-    onChange: (data: Partial<ProcedureStep>) => void;
-  }>;
-};
-
-//main procedure form card component that contains the form for editing a single step, as well as buttons to add/remove steps and navigate between them
-function ProcedureFormCard({
-  currentStep,
-  steps,
-  addStep,
-  removeStep,
-  updateCurrentStep,
-  FormStep,
-}: ProcedureFormCardProps) {
-  return (
-    <Card>
-      <CardContent className="pt-6">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold">
-            Step {currentStep + 1} of {steps.length}
-          </h2>
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={removeStep}
-              disabled={steps.length <= 1}>
-              <Trash2 className="h-4 w-4 mr-1" />
-              Remove Step
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={addStep}>
-              <Plus className="h-4 w-4 mr-1" />
-              Add Step
-            </Button>
-          </div>
-        </div>
-        <FormStep
-          step={steps[currentStep]}
-          onChange={updateCurrentStep}
-        />
-      </CardContent>
-    </Card>
-  );
-}
-
-// Panel for editing extra data (title, description, etc.)
-type RepairDetailsPanelProps = {
-  title: string;
-  setTitle: (v: string) => void;
-  description: string;
-  setDescription: (v: string) => void;
-  category: string;
-  setCategory: (v: string) => void;
-  manufacturer: string;
-  setManufacturer: (v: string) => void;
-  type: string;
-  setType: (v: string) => void;
-  visibility: "public" | "organization";
-  setVisibility: (v: "public" | "organization") => void;
-};
-
-// Component for editing the repair details, such as title, description, category, etc.
-function RepairDetailsPanel({
-  title,
-  setTitle,
-  description,
-  setDescription,
-  category,
-  setCategory,
-  manufacturer,
-  setManufacturer,
-  type,
-  setType,
-  visibility,
-  setVisibility,
-}: RepairDetailsPanelProps) {
-  return (
-    <section className="bg-card border border-border rounded-xl shadow p-4 flex flex-col gap-4">
-      <h2 className="text-lg font-semibold mb-2">Repair Details</h2>
-      <label htmlFor="title">
-        Title
-        <input
-          id="title"
-          type="text"
-          placeholder="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="input input-bordered w-full bg-gray-100"
-        />
-      </label>
-
-      <label htmlFor="description">
-        Description
-        <textarea
-          id="description"
-          placeholder="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          className="textarea textarea-bordered w-full bg-gray-100"
-          rows={2}
-        />
-      </label>
-      <label htmlFor="category">
-        Category
-        <input
-          id="category"
-          type="text"
-          placeholder="Category"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          className="input input-bordered w-full bg-gray-100"
-        />
-      </label>
-
-      <label htmlFor="manufacturer">
-        Manufacturer
-        <input
-          id="manufacturer"
-          type="text"
-          placeholder="Manufacturer"
-          value={manufacturer}
-          onChange={(e) => setManufacturer(e.target.value)}
-          className="input input-bordered w-full bg-gray-100"
-        />
-      </label>
-
-      <label htmlFor="type">
-        Type
-        <input
-          id="type"
-          type="text"
-          placeholder="Type"
-          value={type}
-          onChange={(e) => setType(e.target.value)}
-          className="input input-bordered w-full bg-gray-100"
-        />
-      </label>
-
-      <div className="flex items-center gap-2">
-        <label
-          htmlFor="visibility"
-          className="font-medium">
-          Visibility:
-          <select
-            id="visibility"
-            value={visibility}
-            onChange={(e) =>
-              setVisibility(e.target.value as "public" | "organization")
-            }
-            className="select select-bordered bg-gray-100">
-            <option value="public">Public</option>
-            <option value="organization">Organization</option>
-          </select>
-        </label>
-      </div>
-    </section>
-  );
-}
-
-type StepPreviewPanelProps = {
-  steps: ProcedureStep[];
-  currentStep: number;
-  setCurrentStep: (step: number) => void;
-};
-
-// Component for previewing the steps in a side panel, allowing users to quickly navigate between steps and see a summary of each step.
-function StepPreviewPanel({
-  steps,
-  currentStep,
-  setCurrentStep,
-}: StepPreviewPanelProps) {
-  return (
-    <section className="bg-card border border-border rounded-xl shadow p-4 flex flex-col gap-4">
-      <h2 className="text-lg font-semibold mb-2">Step Preview</h2>
-      <ul className="space-y-2">
-        {steps.map((step, idx) => (
-          <li
-            key={idx}
-            className={`p-2 rounded border ${idx === currentStep ? "border-primary bg-primary/10" : "border-border bg-muted/50"} cursor-pointer transition-colors`}
-            onClick={() => setCurrentStep(idx)}>
-            <div className="flex items-center gap-2">
-              <span className="font-semibold text-primary">Step {idx + 1}</span>
-              <span className="text-xs text-muted-foreground truncate max-w-[120px]">
-                {step.instructions?.slice(0, 30) || "No instructions"}
-              </span>
-              {step.images && step.images.length > 0 && (
-                <span className="badge badge-accent">
-                  {step.images.length} image
-                  {step.images.length > 1 ? "s" : ""}
-                </span>
-              )}
-            </div>
-          </li>
-        ))}
-      </ul>
-    </section>
   );
 }
