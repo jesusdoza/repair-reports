@@ -1,11 +1,30 @@
 import { v4 } from "uuid";
 import { ControlOption } from "./UsersRepairs";
+import { useNavigate } from "react-router-dom";
 
-export function RepairEditControls({
-  controls,
-}: {
-  controls: ControlOption[];
-}) {
+export function RepairEditControls({ id }: { id: string }) {
+  const navigate = useNavigate();
+  const controls: ControlOption[] = [
+    {
+      name: "view",
+      action: () => {
+        navigate(`/repair/${id}`);
+        // navigate to the repair details page
+      },
+    },
+    {
+      name: "edit",
+      action: () => {
+        console.log("edit button");
+      },
+    },
+    {
+      name: "delete",
+      action: () => {
+        console.log("delete button");
+      },
+    },
+  ];
   const buttons = controls.map((control: ControlOption) => {
     return (
       <li key={v4()}>

@@ -3,7 +3,7 @@ import { Layout } from "../Layout";
 import LatestRepairsPage from "../pages/LatestRepairsPage";
 import ProfilePage from "../pages/profile/ProfilePage";
 import RepairFormPage from "../pages/CreateRepairFormPage";
-import DashboardPage from "../pages/dashboard/DashboardPageContainer";
+// import DashboardPage from "../pages/dashboard/DashboardPageContainer";
 import { RepairInfoPage } from "../pages/RepairInfoPage";
 import EditRepairPageV2 from "../pages/EditRepairPageV2";
 import SearchPage from "../pages/search/SearchPage";
@@ -18,6 +18,7 @@ import DeleteRepairPage from "../pages/delete/DeleteRepairPage";
 import SignUpPage from "../pages/signup/SignUpPage";
 import ClerkRedirectPage from "../pages/signin/ClerkRedirectPage";
 import ClerkSignInPage from "../pages/signin/ClerkSignInPage";
+import DashboardPage from "@/pages/DashboardPage";
 
 export const routes = createBrowserRouter([
   {
@@ -95,6 +96,7 @@ export const routes = createBrowserRouter([
       <ProtectedRoute>
         <Layout>
           <ErrorBoundary componentName="DashboardPage">
+            {/* <DashboardPage /> */}
             <DashboardPage />
           </ErrorBoundary>
         </Layout>
@@ -152,7 +154,7 @@ export const routes = createBrowserRouter([
     ),
   },
   {
-    path: "/repair/:repair_id",
+    path: "/repair/:id",
     element: (
       <ProtectedRoute>
         <Layout>

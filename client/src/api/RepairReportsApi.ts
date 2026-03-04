@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Repair } from "../classes/Repair";
+import { RepairDataT } from "types";
 // import { RepairDataT, signatureT } from "../../types";
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -67,8 +68,28 @@ const searchForRepair = async (phrase: string) => {
   return response.data;
 };
 
-const getRepairById = async (repairId: string) => {
-  console.log("repairId", repairId);
+const getRepairById = async ({
+  repairId,
+  userToken,
+}: {
+  repairId: string | undefined | null;
+  userToken: string | null | undefined;
+}) => {
+  if (!userToken) {
+    throw new Error("no user token provided");
+  }
+  if (!repairId) throw new Error("no repair id provided");
+  try {
+    const response = await axios.get(`${API_URL}/api/repair/${repairId}`, {
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    });
+    return response.data as RepairDataT;
+  } catch (error) {
+    throw new Error(`error getting repair by id: ${repairId}`);
+  }
 };
 
 //todo what folder to upload images to needs to be in signature

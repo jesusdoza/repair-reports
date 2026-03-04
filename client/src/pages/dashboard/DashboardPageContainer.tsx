@@ -1,22 +1,24 @@
 import React, { useEffect, useState } from "react";
 
 import UsersRepairs from "./UsersRepairs";
-import FilterMenuContainer from "../../components/RepairList/FilterRepairs/FilterMenuContainer";
 import useGetUserRepairs from "../../hooks/useGetUserRepairs";
-// import { RepairDataT } from "../../../types";
+import { RepairDataT } from "../../../types";
 import ErrorBoundary from "../../components/ErrorBoundary/ErrorBoundary";
 import { useSearchParams } from "react-router-dom";
 
-export default function DashboardPageContainer(): React.ReactNode {
-  // const [page, setPage] = useState(0);
-  const [params, setParams] = useSearchParams();
-  const page = Number(params.get("page")) || 0;
-  const limit = Number(params.get("limit")) || 10;
-  const skips = Number(params.get("skips")) || 0;
-
+export default function DashboardPageContainer({
+  page = 0,
+  limit = 10,
+  skips = 0,
+}: {
+  page?: number;
+  limit?: number;
+  skips?: number;
+}): React.ReactNode {
   // useEffect(() => {
   //   console.log("params changed", params);
   // }, [params]);
+  const [_, setParams] = useSearchParams();
 
   const {
     data: usersRepairs,
