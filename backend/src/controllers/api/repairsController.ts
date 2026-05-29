@@ -109,7 +109,7 @@ const getNewestRepairs = async (req: Request, res: Response) => {
     const results = await RepairService.getLatestRepairs(
       numRepairs,
       1,
-      organization,
+      // organization,
     );
     // console.log(`number of repairs returned`, results.length);
 
