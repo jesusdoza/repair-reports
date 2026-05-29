@@ -1,8 +1,9 @@
 import Mongoose from "mongoose";
 import { Repair } from "../models/Repair.js";
 import Member from "../models/Member.js";
+import config from "../config/config.js";
 
-const REPAIRS_INDEX = process.env.search_index || "repairs_index";
+const REPAIRS_INDEX = config.MONGO_SEARCH_INDEX || "repairs_index";
 
 type ImageObjectT = {
   url: string;
@@ -155,6 +156,8 @@ class RepairService {
     limit?: number;
     searchIndex?: string | undefined;
   }) {
+    // const tenResults = await Repair.find().limit(limit).lean();
+
     const results = await Repair.aggregate([
       {
         $search: {
@@ -162,7 +165,7 @@ class RepairService {
           text: {
             query: searchStr,
             // searchAfter: searchIndex || undefined,
-            //   path:["title","searchtags","procedureArr","instructions"],
+            // path: ["title", "searchtags", "procedureArr", "instructions"],
             path: { wildcard: "*" },
             fuzzy: { maxEdits: 2, prefixLength: 3 },
           },
@@ -176,7 +179,7 @@ class RepairService {
       {
         $facet: {
           metaData: [{ $count: "total" }],
-          results: [{ $limit: 5 }],
+          results: [{ $limit: 50 }],
         },
       },
     ]);
