@@ -34,13 +34,12 @@ const getRepairById = async (req: Request, res: Response) => {
   // get paremeter from url
   const repairId = req.params.id;
 
-  //@ts-expect-error
-  const organization = req.user.organization;
+  const organization = req.user?.organization;
 
-  if (!organization) {
-    res.status(400).json({ message: "no organization ID provided" });
-    return;
-  }
+  // if (!organization) {
+  //   res.status(400).json({ message: "no organization ID provided" });
+  //   return;
+  // }
 
   if (!repairId) {
     res.status(400).json({ message: "no repair ID provided" });

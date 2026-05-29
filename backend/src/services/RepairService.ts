@@ -37,13 +37,13 @@ class RepairService {
     return await Repair.create(data);
   }
 
-  static async getRepairById(id: string, organization: string) {
+  static async getRepairById(id: string, organization?: string) {
     if (!id) throw new Error("no repair ID provided");
-    if (!organization) throw new Error("no organization ID provided");
+    // if (!organization) throw new Error("no organization ID provided");
 
     return await Repair.findOne({
       _id: id,
-      organization: new Mongoose.Types.ObjectId(organization),
+      // organization: new Mongoose.Types.ObjectId(organization),
     }).lean();
   }
 
