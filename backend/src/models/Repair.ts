@@ -35,7 +35,7 @@ const ImageSchema = new mongoose.Schema<ImageType>(
     imageId: { type: String },
     thumbnail: { type: String },
   },
-  { _id: true }
+  { _id: true },
 );
 
 const ProcedureSchema = new mongoose.Schema<ProcedureType>(
@@ -43,7 +43,7 @@ const ProcedureSchema = new mongoose.Schema<ProcedureType>(
     images: [ImageSchema],
     instructions: { type: String },
   },
-  { _id: true }
+  { _id: true },
 ); // Keep _id for procedures so you can update/delete them individually
 
 const RepairSchema = new mongoose.Schema<RepairType>(
@@ -96,12 +96,13 @@ const RepairSchema = new mongoose.Schema<RepairType>(
   },
   {
     timestamps: true,
-  }
+    collection: "repair-reports",
+  },
 );
 
 export const Repair = mongoose.model<RepairType>("repairs", RepairSchema);
 export const Image = mongoose.model<ImageType>("Image", ImageSchema);
 export const Procedure = mongoose.model<ProcedureType>(
   "Procedure",
-  ProcedureSchema
+  ProcedureSchema,
 );
