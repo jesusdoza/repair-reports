@@ -29,7 +29,7 @@ const middlewareChain = [clerkLoadUserMiddleware, verifyAuth];
 //   apiAuthController.apiVerifyLogin
 // );
 
-router.use("/repair", ...middlewareChain, repairRouter);
+router.use("/repair", repairRouter);
 router.use("/signup", signupRouter);
 // router.get("/invite", ...middlewareChain, inviteController.getUsersInvites);
 // router.post("/invite", ...middlewareChain, inviteController.postInvite);

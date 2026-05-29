@@ -32,7 +32,7 @@ import { Repair } from "../models/Repair.js";
 const clerkLoadUserMiddleware = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   //previous middle ware has loaded basic user auth data into req
   if (req?.user) return next();
@@ -56,8 +56,20 @@ const clerkLoadUserMiddleware = async (
         providerUserId: userId,
       }).lean();
 
+      if (!existingUserAuthAccount) {
+        //no existing user auth account found in db
+        //TODO create new user auth account in db
+
+        const newUserAuthAccount = await UserAuthAccount.create({
+          provider: authProvider,
+          providerUserId: userId,
+          email: clerkAuthSession?.emailAddresses[0]?.emailAddress || "",
+          emailVerified: clerkAuthSession?.emailAddresses[0]?.verified || false,
+        });
+      }
+
       //case user auth account already exists in db set req.user and continue
-      if (existingUserAuthAccount) {
+      else if (existingUserAuthAccount) {
         // await Member.create({
         //   roles: ["member"],
         //   username: "testdoza",
@@ -80,17 +92,6 @@ const clerkLoadUserMiddleware = async (
           appUserId: existingUserAuthAccount.userId.toString(),
           organization,
         };
-
-        // await Repair.create({
-        //   title: "test repair",
-        //   organization: membership?.organization,
-        //   createdBy: existingUserAuthAccount.userId,
-        //   manufacturer: "test manufacturer",
-        //   status: "pending",
-        //   removed: false,
-        //   visibility: "public",
-        //   procedures: [],
-        // });
 
         req.user = user;
         return next();
