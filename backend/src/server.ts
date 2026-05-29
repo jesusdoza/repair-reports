@@ -1,9 +1,11 @@
 "use strict";
 
+import "./config/loadEnv.js";
+
 import app from "./app.js";
 
-import dotenv from "dotenv";
-dotenv.config({ path: "./src/config/.env" });
+// import dotenv from "dotenv";
+// dotenv.config({ path: "./src/config/.env" });
 
 import connectDB from "./config/dbM.js";
 
