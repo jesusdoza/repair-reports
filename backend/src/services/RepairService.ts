@@ -179,7 +179,7 @@ class RepairService {
       {
         $facet: {
           metaData: [{ $count: "total" }],
-          results: [{ $limit: 50 }],
+          results: [{ $limit: 500 }],
         },
       },
     ]);
